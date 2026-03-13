@@ -4,238 +4,240 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>OdonTeck | Capacitación odontológica especializada</title>
-  <meta name="description" content="OdonTeck ofrece capacitación odontológica especializada, cursos en línea en vivo y formación clínica premium para odontólogos y estudiantes." />
+  <meta name="description" content="Capacitación odontológica especializada con cursos actualizados, certificado con valor curricular, QR verificable y folio único de registro." />
   <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
-
   <div class="topbar">
-    <div class="topbar-inner">
-      <span><i class="fa fa-envelope"></i> odontckconsul@gmail.com</span>
-      <span><i class="fab fa-whatsapp"></i> +52 238 147 9365</span>
+    <div class="container topbar-inner">
+      <a href="mailto:odontckconsul@gmail.com"><i class="fa fa-envelope"></i> odontckconsul@gmail.com</a>
+      <a href="https://wa.me/5212381479365" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> +52 238 147 9365</a>
     </div>
   </div>
 
-  <nav class="navbar" id="navbar">
-    <div class="nav-inner">
-      <a href="index.html" class="nav-logo">
-        <img src="assets/img/logo/logo.jpg" alt="OdonTeck Logo" />
-        <span>OdonTeck <small>Capacitación odontológica especializada</small></span>
+  <header class="site-header">
+    <nav class="navbar container">
+      <a href="index.html" class="brand">
+        <img src="assets/img/logo/logo.jpg" alt="Logo OdonTeck" />
+        <div>
+          <strong>OdonTeck</strong>
+          <span>Capacitación odontológica especializada</span>
+        </div>
       </a>
-      <button class="hamburger" id="hamburger" aria-label="Menú">
+
+      <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
+
       <ul class="nav-links" id="navLinks">
-        <li><a href="index.html" class="active">Inicio</a></li>
-        <li><a href="pages/servicios.html">Servicios</a></li>
+        <li><a class="active" href="index.html">Inicio</a></li>
         <li><a href="pages/cursos.html">Cursos</a></li>
+        <li><a href="pages/servicios.html">Servicios</a></li>
         <li><a href="pages/nosotros.html">Nosotros</a></li>
         <li><a href="pages/galeria.html">Galería</a></li>
         <li><a href="pages/contacto.html">Contacto</a></li>
-        <li><a href="https://wa.me/5212381479365" class="btn-whatsapp" target="_blank">Inscribirme</a></li>
+        <li><a class="nav-cta" href="https://wa.me/5212381479365" target="_blank" rel="noopener">WhatsApp</a></li>
       </ul>
-    </div>
-  </nav>
+    </nav>
+  </header>
 
-  <section class="hero hero-apple" id="inicio">
-    <div class="hero-bg">
-      <img src="assets/img/banner/hero-doctors.png" alt="Equipo clínico" class="hero-bg-img" />
-      <div class="hero-overlay"></div>
-    </div>
-    <div class="container hero-grid">
-      <div class="hero-content reveal-up">
-        <p class="hero-label">ODONTECK</p>
-        <h1 class="hero-title">Capacitación<br>odontológica<br><span>especializada</span></h1>
-        <p class="hero-sub">Cursos clínicos premium, formación en vivo y actualización profesional para odontólogos, estudiantes y equipos de salud bucal.</p>
-        <div class="hero-btns">
-          <a href="pages/cursos.html" class="btn-primary">Ver cursos</a>
-          <a href="pages/nosotros.html" class="btn-secondary">Conocer OdonTeck</a>
+  <main>
+    <section class="hero-section">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Capacitación odontológica especializada</p>
+          <h1>Una propuesta educativa diseñada para elevar tu nivel clínico.</h1>
+          <p class="hero-text">En OdonTeck impulsamos la formación continua con cursos actualizados, acompañamiento profesional y contenidos especializados para odontólogos, estudiantes y equipos clínicos.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="pages/cursos.html">Ver cursos</a>
+            <a class="btn btn-secondary" href="https://wa.me/5212381479365" target="_blank" rel="noopener">Solicitar información</a>
+          </div>
+          <ul class="hero-points">
+            <li>Certificado con valor curricular</li>
+            <li>QR verificable y folio único de registro</li>
+            <li>Capacitación especializada 100% online</li>
+          </ul>
         </div>
-        <div class="hero-tags">
-          <span>En vivo</span>
-          <span>Reconocimiento institucional</span>
-          <span>Acceso desde cualquier lugar</span>
-        </div>
-      </div>
-      <div class="hero-visual reveal-up delay-1">
-        <div class="hero-visual-card glass-card">
-          <img src="assets/img/banner/hero-banner.png" alt="Elemento dental" class="hero-tooth" />
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <section class="spotlight-strip section">
-    <div class="container spotlight-grid">
-      <article class="spotlight-card reveal-up">
-        <p class="section-tag">FORMACIÓN</p>
-        <h3>Actualización clínica con enfoque real</h3>
-        <p>Contenido útil, claro y aplicable para fortalecer tu práctica profesional con una experiencia moderna y de alto nivel.</p>
-      </article>
-      <article class="spotlight-card reveal-up delay-1">
-        <p class="section-tag">EXPERIENCIA</p>
-        <h3>Ponentes expertos y modalidad en vivo</h3>
-        <p>Aprende con especialistas que enseñan desde la experiencia clínica, en sesiones pensadas para resolver dudas y llevarte valor inmediato.</p>
-      </article>
-      <article class="spotlight-card reveal-up delay-2">
-        <p class="section-tag">IMPULSO</p>
-        <h3>Una marca enfocada en crecimiento profesional</h3>
-        <p>OdonTeck combina formación, acompañamiento y una comunicación clara para que tu proceso de inscripción sea sencillo y confiable.</p>
-      </article>
-    </div>
-  </section>
-
-  <section class="stats section">
-    <div class="container stats-inner glass-card reveal-up">
-      <div class="stat-item">
-        <span class="stat-num" data-target="18">0</span>
-        <span class="stat-label">Cursos especializados</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-num" data-target="500">0</span>
-        <span class="stat-label">Profesionales capacitados</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-num" data-target="10">0</span>
-        <span class="stat-label">Áreas clínicas</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-num" data-target="100" data-suffix="%">0</span>
-        <span class="stat-label">Capacitación en vivo</span>
-      </div>
-    </div>
-  </section>
-
-  <section class="about-showcase section">
-    <div class="container split-showcase">
-      <div class="showcase-copy reveal-up">
-        <p class="section-tag">SOBRE ODONTECK</p>
-        <h2 class="section-title">Una propuesta educativa diseñada para elevar tu nivel clínico</h2>
-        <p class="section-sub">En OdonTeck impulsamos la formación continua con cursos, acompañamiento y contenidos especializados para profesionales que buscan una actualización moderna, confiable y con identidad premium.</p>
-        <div class="feature-list">
-          <div class="feature-row"><span>01</span><p>Formación odontológica especializada con enfoque práctico y actual.</p></div>
-          <div class="feature-row"><span>02</span><p>Experiencia digital pulida, clara y pensada para convertir visitas en inscripciones.</p></div>
-          <div class="feature-row"><span>03</span><p>Comunicación directa por WhatsApp, Facebook e Instagram desde el lado derecho del sitio.</p></div>
+        <div class="hero-visual">
+          <div class="hero-glow"></div>
+          <div class="hero-tooth-shell">
+            <img src="assets/img/banner/tooth-hero.png" alt="Diente digital OdonTeck" class="hero-tooth" />
+          </div>
         </div>
       </div>
-      <div class="showcase-panel reveal-up delay-1">
-        <div class="panel-stack">
-          <article class="panel-card panel-primary">
-            <p>Capacitación avanzada</p>
-            <h3>Aprende con una presentación más premium, limpia y profesional.</h3>
+    </section>
+
+    <section class="stats-section">
+      <div class="container stats-grid">
+        <article class="stat-card">
+          <span class="stat-number" data-target="18" data-suffix="+">0</span>
+          <p>Cursos especializados</p>
+        </article>
+        <article class="stat-card">
+          <span class="stat-number" data-target="500" data-suffix="+">0</span>
+          <p>Profesionales capacitados</p>
+        </article>
+        <article class="stat-card">
+          <span class="stat-number" data-target="8" data-suffix="+">0</span>
+          <p>Áreas formativas</p>
+        </article>
+        <article class="stat-card">
+          <span class="stat-number" data-target="100" data-suffix="%">0</span>
+          <p>Modalidad online enfocada en práctica clínica</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container intro-grid">
+        <div>
+          <p class="eyebrow dark">Presentación</p>
+          <h2 class="section-title large">Formación clara, actual y enfocada en odontología real.</h2>
+          <p class="section-text">Cada experiencia de aprendizaje en OdonTeck está diseñada para aportar valor inmediato a la práctica profesional. Nuestra propuesta prioriza contenido clínico útil, comunicación directa y una experiencia digital ordenada para que el visitante encuentre información clara desde el primer momento.</p>
+        </div>
+        <div class="intro-cards">
+          <article class="mini-feature">
+            <span>01</span>
+            <h3>Capacitación especializada</h3>
+            <p>Programas pensados para fortalecer habilidades clínicas con enfoque práctico y actual.</p>
           </article>
-          <article class="panel-card">
-            <p>Consultoría + cursos</p>
-            <h3>Tu web ahora comunica valor, orden y confianza desde el primer vistazo.</h3>
+          <article class="mini-feature alt">
+            <span>02</span>
+            <h3>Experiencia digital cuidada</h3>
+            <p>Navegación clara, información ordenada y acceso rápido a cursos e inscripciones.</p>
           </article>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="cursos-home section section-soft">
-    <div class="container">
-      <p class="section-tag">CURSOS DESTACADOS</p>
-      <h2 class="section-title center">Oferta formativa de OdonTeck</h2>
-      <p class="section-sub center">Explora una selección de cursos diseñados para fortalecer tus habilidades clínicas y mantenerte actualizado.</p>
-      <div class="cursos-slider reveal-up" id="cursosSlider">
-        <div class="cursos-track" id="cursosTrack"></div>
+    <section class="section soft-section">
+      <div class="container">
+        <p class="eyebrow dark">Fortalezas</p>
+        <h2 class="section-title centered">Por qué elegir OdonTeck</h2>
+        <div class="why-grid">
+          <article class="why-card">
+            <div class="why-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+            <h3>Reconocimiento institucional</h3>
+            <p>Cada curso suma valor a tu trayectoria con una presentación seria, profesional y orientada a tu crecimiento académico.</p>
+          </article>
+          <article class="why-card">
+            <div class="why-icon"><i class="fa-solid fa-laptop-medical"></i></div>
+            <h3>Experiencia digital cuidada</h3>
+            <p>Información clara, navegación ordenada y contacto directo para resolver dudas o inscribirte rápidamente.</p>
+          </article>
+          <article class="why-card">
+            <div class="why-icon"><i class="fa-solid fa-tooth"></i></div>
+            <h3>Especialización clínica</h3>
+            <p>Contenidos orientados a áreas odontológicas reales como cirugía, ortodoncia, endodoncia, prótesis y más.</p>
+          </article>
+        </div>
       </div>
-      <div class="slider-controls">
-        <button class="slider-btn" id="prevCurso" aria-label="Curso anterior"><i class="fa fa-chevron-left"></i></button>
-        <button class="slider-btn" id="nextCurso" aria-label="Siguiente curso"><i class="fa fa-chevron-right"></i></button>
-      </div>
-      <div class="cursos-cta">
-        <a href="pages/cursos.html" class="btn-primary">Ver todos los cursos</a>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="beneficios section">
-    <div class="container">
-      <p class="section-tag">FORTALEZAS</p>
-      <h2 class="section-title center">Por qué elegir OdonTeck</h2>
-      <div class="beneficios-grid three-up">
-        <div class="beneficio-card reveal-up"><span class="b-icon">🎓</span><h4>Reconocimiento institucional</h4><p>Cada curso suma valor a tu trayectoria con una imagen profesional y respaldo formativo.</p></div>
-        <div class="beneficio-card reveal-up delay-1"><span class="b-icon">💻</span><h4>Experiencia digital cuidada</h4><p>Navegación clara, comunicación directa y estructura ordenada para facilitar la conversión.</p></div>
-        <div class="beneficio-card reveal-up delay-2"><span class="b-icon">🦷</span><h4>Especialización clínica</h4><p>Contenidos orientados a áreas odontológicas reales como cirugía, ortodoncia, endodoncia y más.</p></div>
+    <section class="section" id="cursos-destacados">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow dark">Cursos</p>
+            <h2 class="section-title">Oferta formativa de OdonTeck</h2>
+            <p class="section-text narrow">Explora una selección de cursos diseñada para fortalecer tus habilidades clínicas y mantenerte actualizado.</p>
+          </div>
+          <div class="course-controls">
+            <button class="control-btn" type="button" data-track="homeCourses" data-dir="prev" aria-label="Anterior"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="control-btn" type="button" data-track="homeCourses" data-dir="next" aria-label="Siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+        </div>
+
+        <div class="course-scroller" id="homeCourses">
+          <div class="course-track" id="homeCoursesTrack"></div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="galeria-home section">
-    <div class="container">
-      <p class="section-tag">COMUNIDAD</p>
-      <h2 class="section-title center">Nuestra comunidad de alumnos</h2>
-    </div>
-    <div class="scroll-track-wrapper">
-      <div class="scroll-track left" id="galleryLeft"></div>
-    </div>
-    <div class="scroll-track-wrapper">
-      <div class="scroll-track right" id="galleryRight"></div>
-    </div>
-  </section>
-
-  <section class="resenas-home section section-soft">
-    <div class="container">
-      <p class="section-tag">RESEÑAS</p>
-      <h2 class="section-title center">Opiniones de nuestra comunidad</h2>
-    </div>
-    <div class="scroll-track-wrapper">
-      <div class="scroll-track left" id="resenasLeft"></div>
-    </div>
-  </section>
-
-  <section class="cta-final section">
-    <div class="container cta-shell reveal-up">
-      <h2>Impulsa tu desarrollo profesional en odontología</h2>
-      <p>Conecta con OdonTeck, conoce los cursos y solicita informes desde cualquiera de nuestros canales oficiales.</p>
-      <div class="cta-btns">
-        <a href="pages/cursos.html" class="btn-primary">Ver cursos</a>
-        <a href="https://wa.me/5212381479365" class="btn-secondary" target="_blank">Hablar por WhatsApp</a>
+    <section class="section soft-section">
+      <div class="container">
+        <p class="eyebrow dark">Comunidad</p>
+        <h2 class="section-title centered">Momentos que respaldan nuestra formación</h2>
+        <div class="gallery-strip" id="homeGallery"></div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <footer class="footer">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <img src="assets/img/logo/logo.jpg" alt="OdonTeck Logo" />
-        <p>Capacitación odontológica especializada para profesionales que buscan una imagen, formación y experiencia de mayor nivel.</p>
+    <section class="section">
+      <div class="container">
+        <p class="eyebrow dark">Reseñas</p>
+        <h2 class="section-title centered">Opiniones de nuestra comunidad</h2>
+        <div class="reviews-grid" id="homeReviews"></div>
       </div>
-      <div class="footer-links">
-        <h4>Secciones</h4>
+    </section>
+
+    <section class="cta-section">
+      <div class="container cta-box">
+        <div>
+          <p class="eyebrow">Impulsa tu desarrollo profesional</p>
+          <h2>Conoce nuestros cursos y da el siguiente paso en tu actualización clínica.</h2>
+          <p>Resolvemos tus dudas, te orientamos y te acompañamos en tu proceso de inscripción.</p>
+        </div>
+        <div class="cta-actions">
+          <a class="btn btn-primary" href="pages/cursos.html">Ver cursos</a>
+          <a class="btn btn-secondary white" href="pages/contacto.html">Contacto</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-brand">
+          <img src="assets/img/logo/logo.jpg" alt="Logo OdonTeck" />
+          <div>
+            <strong>OdonTeck</strong>
+            <span>Capacitación odontológica especializada</span>
+          </div>
+        </div>
+        <p class="footer-text">Formación odontológica con enfoque profesional, comunicación clara y una experiencia visual cuidada para inspirar confianza desde el primer contacto.</p>
+      </div>
+      <div>
+        <h3>Secciones</h3>
         <ul>
-          <li><a href="pages/servicios.html">Servicios</a></li>
           <li><a href="pages/cursos.html">Cursos</a></li>
+          <li><a href="pages/servicios.html">Servicios</a></li>
           <li><a href="pages/nosotros.html">Nosotros</a></li>
           <li><a href="pages/contacto.html">Contacto</a></li>
         </ul>
       </div>
-      <div class="footer-contact">
-        <h4>Contacto</h4>
+      <div>
+        <h3>Contacto</h3>
         <ul>
-          <li><a href="mailto:odontckconsul@gmail.com"><i class="fa fa-envelope"></i> odontckconsul@gmail.com</a></li>
-          <li><a href="https://wa.me/5212381479365" target="_blank"><i class="fab fa-whatsapp"></i> +52 238 147 9365</a></li>
-          <li><a href="https://www.facebook.com/profile.php?id=61575818279014" target="_blank"><i class="fab fa-facebook"></i> Facebook</a></li>
-          <li><a href="https://www.instagram.com/odonteckconsulting/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></li>
+          <li><a href="mailto:odontckconsul@gmail.com">odontckconsul@gmail.com</a></li>
+          <li><a href="https://wa.me/5212381479365" target="_blank" rel="noopener">+52 238 147 9365</a></li>
+          <li><a href="https://www.instagram.com/odonteckconsulting/" target="_blank" rel="noopener">Instagram</a></li>
         </ul>
       </div>
     </div>
-    <div class="footer-bottom">
-      <p>© 2026 OdonTeck. Todos los derechos reservados.</p>
-    </div>
+    <div class="footer-bottom">© 2025 OdonTeck. Todos los derechos reservados.</div>
   </footer>
 
-  <div class="social-float social-right">
-    <a href="https://www.facebook.com/profile.php?id=61575818279014" target="_blank" class="sf-item facebook" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-    <a href="https://www.instagram.com/odonteckconsulting/" target="_blank" class="sf-item instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-    <a href="https://wa.me/5212381479365" target="_blank" class="sf-item whatsapp" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+  <div class="floating-socials">
+    <a href="https://www.facebook.com/profile.php?id=61575818279014" target="_blank" rel="noopener" aria-label="Facebook" class="social facebook"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.instagram.com/odonteckconsulting/" target="_blank" rel="noopener" aria-label="Instagram" class="social instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://wa.me/5212381479365" target="_blank" rel="noopener" aria-label="WhatsApp" class="social whatsapp"><i class="fab fa-whatsapp"></i></a>
   </div>
 
-  <button class="scroll-top" id="scrollTop" aria-label="Ir arriba"><i class="fa fa-arrow-up"></i></button>
+  <button class="scroll-top" id="scrollTop" aria-label="Subir arriba"><i class="fa-solid fa-arrow-up"></i></button>
+
+  <div class="course-modal" id="courseModal" aria-hidden="true">
+    <div class="course-modal-backdrop" data-close-modal></div>
+    <div class="course-modal-dialog">
+      <button class="modal-close" id="modalClose" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+      <div class="course-modal-grid" id="courseModalContent"></div>
+    </div>
+  </div>
 
   <script src="data.js"></script>
   <script src="script.js"></script>

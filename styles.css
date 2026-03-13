@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cursos | OdonTeck Consulting Group</title>
+  <title>Galería | OdonTeck Consulting Group</title>
   <link rel="stylesheet" href="../styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -27,9 +27,9 @@
       <ul class="nav-links" id="navLinks">
         <li><a href="../index.html">Inicio</a></li>
         <li><a href="servicios.html">Servicios</a></li>
-        <li><a href="cursos.html" class="active">Cursos</a></li>
+        <li><a href="cursos.html">Cursos</a></li>
         <li><a href="nosotros.html">Nosotros</a></li>
-        <li><a href="galeria.html">Galería</a></li>
+        <li><a href="galeria.html" class="active">Galería</a></li>
         <li><a href="contacto.html">Contacto</a></li>
         <li><a href="https://wa.me/5212381479365" class="btn-whatsapp" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
       </ul>
@@ -37,27 +37,21 @@
   </nav>
 
   <section class="page-hero">
-    <p class="section-tag" style="color:var(--cyan)">FORMACIÓN ESPECIALIZADA</p>
-    <h1>Nuestros Cursos</h1>
-    <p>17 cursos especializados impartidos por expertos en odontología</p>
+    <p class="section-tag" style="color:var(--cyan)">NUESTRA COMUNIDAD</p>
+    <h1>Galería</h1>
+    <p>Momentos formativos y alumnos que han confiado en OdonTeck.</p>
   </section>
 
   <section class="section">
     <div class="container">
-      <div class="cursos-filters">
-        <button class="filter-btn active" data-filter="Todos">Todos</button>
-        <button class="filter-btn" data-filter="Cirugía">Cirugía</button>
-        <button class="filter-btn" data-filter="Ortodoncia">Ortodoncia</button>
-        <button class="filter-btn" data-filter="Endodoncia">Endodoncia</button>
-        <button class="filter-btn" data-filter="Prótesis">Prótesis</button>
-        <button class="filter-btn" data-filter="Estética">Estética</button>
-        <button class="filter-btn" data-filter="Odontopediatría">Odontopediatría</button>
-        <button class="filter-btn" data-filter="Implantología">Implantología</button>
-        <button class="filter-btn" data-filter="Rehabilitación">Rehabilitación</button>
-        <button class="filter-btn" data-filter="Periodoncia">Periodoncia</button>
-        <button class="filter-btn" data-filter="Medicina">Medicina</button>
-      </div>
-      <div class="cursos-page-grid" id="cursosPageGrid"></div>
+      <p class="section-tag">ALUMNOS</p>
+      <h2 class="section-title">Alumnos graduados</h2>
+      <div class="galeria-grid" id="galeriaPageGrid"></div>
+
+      <br/><br/>
+      <p class="section-tag">RESEÑAS</p>
+      <h2 class="section-title">Opiniones de nuestra comunidad</h2>
+      <div class="galeria-grid" id="resenasPageGrid"></div>
     </div>
   </section>
 
@@ -92,7 +86,6 @@
     <a href="https://www.facebook.com/profile.php?id=61575818279014" target="_blank" class="sf-item facebook"><i class="fab fa-facebook-f"></i></a>
     <a href="https://www.instagram.com/odonteckconsulting/" target="_blank" class="sf-item instagram"><i class="fab fa-instagram"></i></a>
   </div>
-
   <button class="scroll-top" id="scrollTop">↑</button>
   <script src="../data.js"></script>
   <script src="../script.js"></script>

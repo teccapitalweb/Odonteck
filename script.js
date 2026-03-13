@@ -4,17 +4,14 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // --- PARTÍCULAS CANVAS ---
+  // --- PARTÍCULAS CANVAS (sin espacio en blanco) ---
   const canvas = document.createElement('canvas');
   canvas.id = 'particles-canvas';
-  document.body.prepend(canvas);
+  canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0;transition:opacity 1s ease;';
+  document.body.appendChild(canvas);
   const ctx = canvas.getContext('2d');
 
-  let particles = [];
-  const resize = () => {
-    canvas.width  = window.innerWidth;
-    canvas.height = window.innerHeight;
-  };
+  const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
   resize();
   window.addEventListener('resize', resize);
 
@@ -29,8 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
       this.alpha = Math.random() * 0.5 + 0.1;
     }
     update() {
-      this.x += this.vx;
-      this.y += this.vy;
+      this.x += this.vx; this.y += this.vy;
       if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
     }
     draw() {
@@ -41,12 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  const particles = [];
   for (let i = 0; i < 80; i++) particles.push(new Particle());
 
   const animateParticles = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     particles.forEach(p => { p.update(); p.draw(); });
-    // Líneas entre partículas cercanas
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
         const dx = particles[i].x - particles[j].x;
@@ -54,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const dist = Math.sqrt(dx*dx + dy*dy);
         if (dist < 100) {
           ctx.beginPath();
-          ctx.strokeStyle = `rgba(0,212,255,${0.08 * (1 - dist/100)})`;
+          ctx.strokeStyle = `rgba(0,212,255,${0.08*(1-dist/100)})`;
           ctx.lineWidth = 0.5;
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
@@ -65,6 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
     requestAnimationFrame(animateParticles);
   };
   animateParticles();
+  // Fade in canvas después de que cargue la página
+  setTimeout(() => { canvas.style.opacity = '1'; }, 300);
 
   // --- HAMBURGER MENU ---
   const hamburger = document.getElementById('hamburger');
@@ -76,9 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- SCROLL TOP ---
   const scrollTopBtn = document.getElementById('scrollTop');
   if (scrollTopBtn) {
-    window.addEventListener('scroll', () => {
-      scrollTopBtn.classList.toggle('visible', window.scrollY > 400);
-    });
+    window.addEventListener('scroll', () => scrollTopBtn.classList.toggle('visible', window.scrollY > 400));
     scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
 
@@ -104,46 +100,100 @@ document.addEventListener('DOMContentLoaded', () => {
       const increment = target / 60;
       const timer = setInterval(() => {
         count += increment;
-        if (count >= target) {
-          el.textContent = target + '+';
-          clearInterval(timer);
-        } else {
-          el.textContent = Math.floor(count) + '+';
-        }
+        if (count >= target) { el.textContent = target + '+'; clearInterval(timer); }
+        else { el.textContent = Math.floor(count) + '+'; }
       }, 25);
     };
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          animateCount(entry.target);
-          observer.unobserve(entry.target);
-        }
-      });
+      entries.forEach(entry => { if (entry.isIntersecting) { animateCount(entry.target); observer.unobserve(entry.target); } });
     }, { threshold: 0.4 });
     statNums.forEach(num => observer.observe(num));
   }
 
-  // --- SLIDER DE CURSOS ---
+  // --- MODAL DETALLES CURSO ---
+  const modal = document.createElement('div');
+  modal.id = 'cursoModal';
+  modal.style.cssText = 'display:none;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;padding:20px;';
+  modal.innerHTML = `
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal-box" id="modalBox">
+      <button class="modal-close" id="modalClose">✕</button>
+      <img id="modalImg" src="" alt="" />
+      <div class="modal-body">
+        <span id="modalArea" class="curso-area"></span>
+        <h3 id="modalNombre"></h3>
+        <p id="modalPonente" class="curso-ponente"></p>
+        <div class="modal-temario">
+          <p class="temario-titulo">📋 Temario del curso</p>
+          <ul id="modalTemario"></ul>
+        </div>
+        <div class="modal-footer">
+          <span id="modalCosto" class="curso-costo"></span>
+          <a id="modalWA" href="#" target="_blank" class="btn-inscribete">Inscríbete →</a>
+        </div>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+
+  const openModal = (c, isPage) => {
+    const imgPrefix = isPage ? '../' : '';
+    document.getElementById('modalImg').src = imgPrefix + c.img;
+    document.getElementById('modalArea').textContent = c.area;
+    document.getElementById('modalNombre').textContent = c.nombre;
+    document.getElementById('modalPonente').textContent = '👩‍⚕️ ' + c.ponente;
+    document.getElementById('modalCosto').textContent = c.costo;
+    document.getElementById('modalWA').href = `https://wa.me/5212381479365?text=Hola,%20me%20interesa%20inscribirme%20al%20curso:%20${encodeURIComponent(c.nombre)}`;
+    const ul = document.getElementById('modalTemario');
+    ul.innerHTML = '';
+    (c.temario || []).forEach(t => {
+      const li = document.createElement('li');
+      li.innerHTML = `<span class="temario-check">✓</span>${t}`;
+      ul.appendChild(li);
+    });
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeModal = () => {
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  };
+
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  document.getElementById('modalOverlay').addEventListener('click', closeModal);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  // --- HELPER: crear card de curso ---
+  const crearCard = (c, isPage) => {
+    const imgPrefix = isPage ? '../' : '';
+    const card = document.createElement('div');
+    card.className = 'curso-card';
+    card.innerHTML = `
+      <div class="curso-card-img-wrap">
+        <img src="${imgPrefix}${c.img}" alt="${c.nombre}" class="curso-card-img" loading="lazy"
+             onerror="this.src='${imgPrefix}assets/img/banner/hero-doctors.png'"/>
+      </div>
+      <div class="curso-card-body">
+        <span class="curso-area">${c.area}</span>
+        <h3>${c.nombre}</h3>
+        <p class="curso-ponente">👩‍⚕️ ${c.ponente}</p>
+        <div class="curso-card-footer">
+          <span class="curso-costo">${c.costo}</span>
+          <div class="curso-btns">
+            <button class="btn-detalles" data-id="${c.id}">Detalles</button>
+            <a href="https://wa.me/5212381479365?text=Hola,%20me%20interesa%20inscribirme%20al%20curso:%20${encodeURIComponent(c.nombre)}"
+               class="btn-inscribete" target="_blank">Inscríbete</a>
+          </div>
+        </div>
+      </div>`;
+    card.querySelector('.btn-detalles').addEventListener('click', () => openModal(c, isPage));
+    return card;
+  };
+
+  // --- SLIDER DE CURSOS (index) ---
   const cursosTrack = document.getElementById('cursosTrack');
   if (cursosTrack && typeof cursos !== 'undefined') {
-    cursos.forEach(c => {
-      const card = document.createElement('div');
-      card.className = 'curso-card';
-      card.innerHTML = `
-        <img src="${c.img}" alt="${c.nombre}" class="curso-card-img" loading="lazy"
-             onerror="this.src='assets/img/banner/hero-doctors.png'"/>
-        <div class="curso-card-body">
-          <span class="curso-area">${c.area}</span>
-          <h3>${c.nombre}</h3>
-          <p class="curso-ponente">👩‍⚕️ ${c.ponente}</p>
-          <div class="curso-card-footer">
-            <span class="curso-costo">${c.costo}</span>
-            <a href="https://wa.me/5212381479365?text=Hola,%20me%20interesa%20el%20curso:%20${encodeURIComponent(c.nombre)}"
-               class="btn-informes" target="_blank">Informes</a>
-          </div>
-        </div>`;
-      cursosTrack.appendChild(card);
-    });
+    cursos.forEach(c => cursosTrack.appendChild(crearCard(c, false)));
 
     let currentSlide = 0;
     const cardWidth = 320;
@@ -159,9 +209,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- GALERÍA AUTO-SCROLL ---
-  const galleryLeft  = document.getElementById('galleryLeft');
-  const galleryRight = document.getElementById('galleryRight');
+  // --- GALERÍA AUTO-SCROLL (una sola fila) ---
+  const galleryLeft = document.getElementById('galleryLeft');
   if (galleryLeft && typeof alumnos !== 'undefined') {
     [...alumnos, ...alumnos].forEach(src => {
       const img = document.createElement('img');
@@ -169,15 +218,8 @@ document.addEventListener('DOMContentLoaded', () => {
       galleryLeft.appendChild(img);
     });
   }
-  if (galleryRight && typeof alumnos !== 'undefined') {
-    [...alumnos, ...alumnos].forEach(src => {
-      const img = document.createElement('img');
-      img.src = src; img.alt = 'Alumno OdonTeck'; img.loading = 'lazy';
-      galleryRight.appendChild(img);
-    });
-  }
 
-  // --- RESEÑAS AUTO-SCROLL ---
+  // --- RESEÑAS AUTO-SCROLL (una sola fila) ---
   const resenasLeft = document.getElementById('resenasLeft');
   if (resenasLeft && typeof resenas !== 'undefined') {
     [...resenas, ...resenas].forEach(src => {
@@ -193,24 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderCursos = (filter = 'Todos') => {
       cursosPageGrid.innerHTML = '';
       const filtered = filter === 'Todos' ? cursos : cursos.filter(c => c.area === filter);
-      filtered.forEach(c => {
-        const card = document.createElement('div');
-        card.className = 'curso-card';
-        card.innerHTML = `
-          <img src="../${c.img}" alt="${c.nombre}" class="curso-card-img" loading="lazy"
-               onerror="this.src='../assets/img/banner/hero-doctors.png'"/>
-          <div class="curso-card-body">
-            <span class="curso-area">${c.area}</span>
-            <h3>${c.nombre}</h3>
-            <p class="curso-ponente">👩‍⚕️ ${c.ponente}</p>
-            <div class="curso-card-footer">
-              <span class="curso-costo">${c.costo}</span>
-              <a href="https://wa.me/5212381479365?text=Hola,%20me%20interesa%20el%20curso:%20${encodeURIComponent(c.nombre)}"
-                 class="btn-informes" target="_blank">Informes</a>
-            </div>
-          </div>`;
-        cursosPageGrid.appendChild(card);
-      });
+      filtered.forEach(c => cursosPageGrid.appendChild(crearCard(c, true)));
     };
     renderCursos();
     document.querySelectorAll('.filter-btn').forEach(btn => {

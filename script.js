@@ -1,243 +1,117 @@
-// ===========================
-// ODONTECK — SCRIPT FUTURISTA
-// ===========================
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contacto | OdonTeck Consulting Group</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
 
-document.addEventListener('DOMContentLoaded', () => {
+  <div class="topbar">
+    <div class="topbar-inner">
+      <span><i class="fa fa-envelope"></i> odontckconsul@gmail.com</span>
+      <span><i class="fab fa-whatsapp"></i> +52 238 147 9365</span>
+    </div>
+  </div>
 
-  // --- PARTÍCULAS CANVAS ---
-  const canvas = document.createElement('canvas');
-  canvas.id = 'particles-canvas';
-  document.body.prepend(canvas);
-  const ctx = canvas.getContext('2d');
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo">
+        <img src="../assets/img/logo/logo.jpg" alt="OdonTeck Logo" />
+        <span>OdonTeck <small>Consulting Group</small></span>
+      </a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="../index.html">Inicio</a></li>
+        <li><a href="servicios.html">Servicios</a></li>
+        <li><a href="cursos.html">Cursos</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="galeria.html">Galería</a></li>
+        <li><a href="contacto.html" class="active">Contacto</a></li>
+        <li><a href="https://wa.me/5212381479365" class="btn-whatsapp" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
+      </ul>
+    </div>
+  </nav>
 
-  let particles = [];
-  const resize = () => {
-    canvas.width  = window.innerWidth;
-    canvas.height = window.innerHeight;
-  };
-  resize();
-  window.addEventListener('resize', resize);
+  <section class="page-hero">
+    <p class="section-tag" style="color:var(--cyan)">ESTAMOS PARA AYUDARTE</p>
+    <h1>Contacto</h1>
+    <p>Solicita información, resuelve tus dudas e inscríbete fácilmente.</p>
+  </section>
 
-  class Particle {
-    constructor() { this.reset(); }
-    reset() {
-      this.x = Math.random() * canvas.width;
-      this.y = Math.random() * canvas.height;
-      this.r = Math.random() * 2 + 0.5;
-      this.vx = (Math.random() - 0.5) * 0.4;
-      this.vy = (Math.random() - 0.5) * 0.4;
-      this.alpha = Math.random() * 0.5 + 0.1;
-    }
-    update() {
-      this.x += this.vx;
-      this.y += this.vy;
-      if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
-    }
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(0,212,255,${this.alpha})`;
-      ctx.fill();
-    }
-  }
+  <section class="section">
+    <div class="container">
+      <p class="section-tag">CANALES OFICIALES</p>
+      <h2 class="section-title">Conecta con OdonTeck</h2>
+      <div class="contacto-grid">
+        <div class="contacto-card">
+          <div class="c-icon"><i class="fab fa-whatsapp" style="color:#25d366"></i></div>
+          <h3>WhatsApp</h3>
+          <p>Escríbenos directamente para informes e inscripciones.</p>
+          <br/>
+          <a href="https://wa.me/5212381479365" target="_blank">+52 238 147 9365</a>
+        </div>
+        <div class="contacto-card">
+          <div class="c-icon"><i class="fa fa-envelope" style="color:var(--azul-medio)"></i></div>
+          <h3>Correo electrónico</h3>
+          <p>Envíanos un mensaje y te respondemos a la brevedad.</p>
+          <br/>
+          <a href="mailto:odontckconsul@gmail.com">odontckconsul@gmail.com</a>
+        </div>
+        <div class="contacto-card">
+          <div class="c-icon"><i class="fab fa-facebook" style="color:#1877f2"></i></div>
+          <h3>Facebook</h3>
+          <p>Síguenos y mantente al día con nuestros cursos y novedades.</p>
+          <br/>
+          <a href="https://www.facebook.com/profile.php?id=61575818279014" target="_blank">Ver perfil oficial</a>
+        </div>
+        <div class="contacto-card">
+          <div class="c-icon"><i class="fab fa-instagram" style="color:#e1306c"></i></div>
+          <h3>Instagram</h3>
+          <p>Descubre contenido, tips y actualizaciones de nuestros cursos.</p>
+          <br/>
+          <a href="https://www.instagram.com/odonteckconsulting/" target="_blank">@odonteckconsulting</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  for (let i = 0; i < 80; i++) particles.push(new Particle());
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="../assets/img/logo/logo.jpg" alt="OdonTeck Logo" />
+        <p>Capacitación odontológica especializada para profesionales que buscan crecer.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Secciones</h4>
+        <ul>
+          <li><a href="servicios.html">Servicios</a></li>
+          <li><a href="cursos.html">Cursos</a></li>
+          <li><a href="nosotros.html">Nosotros</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Contacto</h4>
+        <ul>
+          <li><a href="mailto:odontckconsul@gmail.com"><i class="fa fa-envelope"></i> odontckconsul@gmail.com</a></li>
+          <li><a href="https://wa.me/5212381479365" target="_blank"><i class="fab fa-whatsapp"></i> +52 238 147 9365</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 OdonTeck Consulting Group. Todos los derechos reservados.</p></div>
+  </footer>
 
-  const animateParticles = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => { p.update(); p.draw(); });
-    // Líneas entre partículas cercanas
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const dist = Math.sqrt(dx*dx + dy*dy);
-        if (dist < 100) {
-          ctx.beginPath();
-          ctx.strokeStyle = `rgba(0,212,255,${0.08 * (1 - dist/100)})`;
-          ctx.lineWidth = 0.5;
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.stroke();
-        }
-      }
-    }
-    requestAnimationFrame(animateParticles);
-  };
-  animateParticles();
-
-  // --- HAMBURGER MENU ---
-  const hamburger = document.getElementById('hamburger');
-  const navLinks  = document.getElementById('navLinks');
-  if (hamburger && navLinks) {
-    hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
-  }
-
-  // --- SCROLL TOP ---
-  const scrollTopBtn = document.getElementById('scrollTop');
-  if (scrollTopBtn) {
-    window.addEventListener('scroll', () => {
-      scrollTopBtn.classList.toggle('visible', window.scrollY > 400);
-    });
-    scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-  }
-
-  // --- REVEAL ON SCROLL ---
-  const reveals = document.querySelectorAll('.servicio-card, .beneficio-card, .razon-card, .curso-card, .mv-card, .valor-item, .contacto-card');
-  reveals.forEach(el => el.classList.add('reveal'));
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 80);
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  reveals.forEach(el => revealObserver.observe(el));
-
-  // --- CONTADORES ---
-  const statNums = document.querySelectorAll('.stat-num');
-  if (statNums.length) {
-    const animateCount = (el) => {
-      const target = +el.getAttribute('data-target');
-      let count = 0;
-      const increment = target / 60;
-      const timer = setInterval(() => {
-        count += increment;
-        if (count >= target) {
-          el.textContent = target + '+';
-          clearInterval(timer);
-        } else {
-          el.textContent = Math.floor(count) + '+';
-        }
-      }, 25);
-    };
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          animateCount(entry.target);
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.4 });
-    statNums.forEach(num => observer.observe(num));
-  }
-
-  // --- SLIDER DE CURSOS ---
-  const cursosTrack = document.getElementById('cursosTrack');
-  if (cursosTrack && typeof cursos !== 'undefined') {
-    cursos.forEach(c => {
-      const card = document.createElement('div');
-      card.className = 'curso-card';
-      card.innerHTML = `
-        <img src="${c.img}" alt="${c.nombre}" class="curso-card-img" loading="lazy"
-             onerror="this.src='assets/img/banner/hero-doctors.png'"/>
-        <div class="curso-card-body">
-          <span class="curso-area">${c.area}</span>
-          <h3>${c.nombre}</h3>
-          <p class="curso-ponente">👩‍⚕️ ${c.ponente}</p>
-          <div class="curso-card-footer">
-            <span class="curso-costo">${c.costo}</span>
-            <a href="https://wa.me/5212381479365?text=Hola,%20me%20interesa%20el%20curso:%20${encodeURIComponent(c.nombre)}"
-               class="btn-informes" target="_blank">Informes</a>
-          </div>
-        </div>`;
-      cursosTrack.appendChild(card);
-    });
-
-    let currentSlide = 0;
-    const cardWidth = 320;
-    const maxSlide = () => Math.max(0, cursos.length - Math.floor(cursosTrack.parentElement.offsetWidth / cardWidth));
-
-    document.getElementById('prevCurso')?.addEventListener('click', () => {
-      currentSlide = Math.max(0, currentSlide - 1);
-      cursosTrack.style.transform = `translateX(-${currentSlide * cardWidth}px)`;
-    });
-    document.getElementById('nextCurso')?.addEventListener('click', () => {
-      currentSlide = Math.min(maxSlide(), currentSlide + 1);
-      cursosTrack.style.transform = `translateX(-${currentSlide * cardWidth}px)`;
-    });
-  }
-
-  // --- GALERÍA AUTO-SCROLL ---
-  const galleryLeft  = document.getElementById('galleryLeft');
-  const galleryRight = document.getElementById('galleryRight');
-  if (galleryLeft && typeof alumnos !== 'undefined') {
-    [...alumnos, ...alumnos].forEach(src => {
-      const img = document.createElement('img');
-      img.src = src; img.alt = 'Alumno OdonTeck'; img.loading = 'lazy';
-      galleryLeft.appendChild(img);
-    });
-  }
-  if (galleryRight && typeof alumnos !== 'undefined') {
-    [...alumnos, ...alumnos].forEach(src => {
-      const img = document.createElement('img');
-      img.src = src; img.alt = 'Alumno OdonTeck'; img.loading = 'lazy';
-      galleryRight.appendChild(img);
-    });
-  }
-
-  // --- RESEÑAS AUTO-SCROLL ---
-  const resenasLeft = document.getElementById('resenasLeft');
-  if (resenasLeft && typeof resenas !== 'undefined') {
-    [...resenas, ...resenas].forEach(src => {
-      const img = document.createElement('img');
-      img.src = src; img.alt = 'Reseña OdonTeck'; img.loading = 'lazy';
-      resenasLeft.appendChild(img);
-    });
-  }
-
-  // --- CURSOS PAGE ---
-  const cursosPageGrid = document.getElementById('cursosPageGrid');
-  if (cursosPageGrid && typeof cursos !== 'undefined') {
-    const renderCursos = (filter = 'Todos') => {
-      cursosPageGrid.innerHTML = '';
-      const filtered = filter === 'Todos' ? cursos : cursos.filter(c => c.area === filter);
-      filtered.forEach(c => {
-        const card = document.createElement('div');
-        card.className = 'curso-card';
-        card.innerHTML = `
-          <img src="../${c.img}" alt="${c.nombre}" class="curso-card-img" loading="lazy"
-               onerror="this.src='../assets/img/banner/hero-doctors.png'"/>
-          <div class="curso-card-body">
-            <span class="curso-area">${c.area}</span>
-            <h3>${c.nombre}</h3>
-            <p class="curso-ponente">👩‍⚕️ ${c.ponente}</p>
-            <div class="curso-card-footer">
-              <span class="curso-costo">${c.costo}</span>
-              <a href="https://wa.me/5212381479365?text=Hola,%20me%20interesa%20el%20curso:%20${encodeURIComponent(c.nombre)}"
-                 class="btn-informes" target="_blank">Informes</a>
-            </div>
-          </div>`;
-        cursosPageGrid.appendChild(card);
-      });
-    };
-    renderCursos();
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        renderCursos(btn.dataset.filter);
-      });
-    });
-  }
-
-  // --- GALERÍA PAGE ---
-  const galeriaPageGrid = document.getElementById('galeriaPageGrid');
-  if (galeriaPageGrid && typeof alumnos !== 'undefined') {
-    alumnos.forEach(src => {
-      const img = document.createElement('img');
-      img.src = '../' + src; img.alt = 'Galería OdonTeck'; img.loading = 'lazy';
-      galeriaPageGrid.appendChild(img);
-    });
-  }
-  const resenasPageGrid = document.getElementById('resenasPageGrid');
-  if (resenasPageGrid && typeof resenas !== 'undefined') {
-    resenas.forEach(src => {
-      const img = document.createElement('img');
-      img.src = '../' + src; img.alt = 'Reseña OdonTeck'; img.loading = 'lazy';
-      resenasPageGrid.appendChild(img);
-    });
-  }
-
-});
+  <div class="social-float">
+    <a href="https://wa.me/5212381479365" target="_blank" class="sf-item whatsapp"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://www.facebook.com/profile.php?id=61575818279014" target="_blank" class="sf-item facebook"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.instagram.com/odonteckconsulting/" target="_blank" class="sf-item instagram"><i class="fab fa-instagram"></i></a>
+  </div>
+  <button class="scroll-top" id="scrollTop">↑</button>
+  <script src="../data.js"></script>
+  <script src="../script.js"></script>
+</body>
+</html>

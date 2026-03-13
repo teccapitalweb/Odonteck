@@ -1,27 +1,77 @@
 // ===========================
-// ODONTECK - SCRIPT.JS
+// ODONTECK — SCRIPT FUTURISTA
 // ===========================
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // --- HAMBURGER MENU ---
-  const hamburger = document.getElementById('hamburger');
-  const navLinks = document.getElementById('navLinks');
-  if (hamburger && navLinks) {
-    hamburger.addEventListener('click', () => {
-      navLinks.classList.toggle('open');
-    });
+  // --- PARTÍCULAS CANVAS ---
+  const canvas = document.createElement('canvas');
+  canvas.id = 'particles-canvas';
+  document.body.prepend(canvas);
+  const ctx = canvas.getContext('2d');
+
+  let particles = [];
+  const resize = () => {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  };
+  resize();
+  window.addEventListener('resize', resize);
+
+  class Particle {
+    constructor() { this.reset(); }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.r = Math.random() * 2 + 0.5;
+      this.vx = (Math.random() - 0.5) * 0.4;
+      this.vy = (Math.random() - 0.5) * 0.4;
+      this.alpha = Math.random() * 0.5 + 0.1;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0,212,255,${this.alpha})`;
+      ctx.fill();
+    }
   }
 
-  // --- NAVBAR SCROLL SHADOW ---
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    if (navbar) {
-      navbar.style.boxShadow = window.scrollY > 10
-        ? '0 4px 24px rgba(10,61,143,0.15)'
-        : '0 2px 12px rgba(10,61,143,0.1)';
+  for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+  const animateParticles = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+    // Líneas entre partículas cercanas
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 100) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(0,212,255,${0.08 * (1 - dist/100)})`;
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
     }
-  });
+    requestAnimationFrame(animateParticles);
+  };
+  animateParticles();
+
+  // --- HAMBURGER MENU ---
+  const hamburger = document.getElementById('hamburger');
+  const navLinks  = document.getElementById('navLinks');
+  if (hamburger && navLinks) {
+    hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  }
 
   // --- SCROLL TOP ---
   const scrollTopBtn = document.getElementById('scrollTop');
@@ -29,12 +79,23 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', () => {
       scrollTopBtn.classList.toggle('visible', window.scrollY > 400);
     });
-    scrollTopBtn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+    scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
 
-  // --- ANIMACIÓN CONTADORES ---
+  // --- REVEAL ON SCROLL ---
+  const reveals = document.querySelectorAll('.servicio-card, .beneficio-card, .razon-card, .curso-card, .mv-card, .valor-item, .contacto-card');
+  reveals.forEach(el => el.classList.add('reveal'));
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => revealObserver.observe(el));
+
+  // --- CONTADORES ---
   const statNums = document.querySelectorAll('.stat-num');
   if (statNums.length) {
     const animateCount = (el) => {
@@ -44,14 +105,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const timer = setInterval(() => {
         count += increment;
         if (count >= target) {
-          el.textContent = target + (el.dataset.suffix || '+');
+          el.textContent = target + '+';
           clearInterval(timer);
         } else {
-          el.textContent = Math.floor(count) + (el.dataset.suffix || '+');
+          el.textContent = Math.floor(count) + '+';
         }
       }, 25);
     };
-
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -60,7 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     }, { threshold: 0.4 });
-
     statNums.forEach(num => observer.observe(num));
   }
 
@@ -71,27 +130,24 @@ document.addEventListener('DOMContentLoaded', () => {
       const card = document.createElement('div');
       card.className = 'curso-card';
       card.innerHTML = `
-        <img src="${c.img}" alt="${c.nombre}" class="curso-card-img" loading="lazy" onerror="this.src='assets/img/banner/hero-banner.png'"/>
+        <img src="${c.img}" alt="${c.nombre}" class="curso-card-img" loading="lazy"
+             onerror="this.src='assets/img/banner/hero-doctors.png'"/>
         <div class="curso-card-body">
           <span class="curso-area">${c.area}</span>
           <h3>${c.nombre}</h3>
           <p class="curso-ponente">👩‍⚕️ ${c.ponente}</p>
           <div class="curso-card-footer">
             <span class="curso-costo">${c.costo}</span>
-            <div class="curso-btns">
-              <a href="https://wa.me/5212381479365?text=Hola, me interesa el curso: ${encodeURIComponent(c.nombre)}" 
-                 class="btn-informes" target="_blank">Informes</a>
-            </div>
+            <a href="https://wa.me/5212381479365?text=Hola,%20me%20interesa%20el%20curso:%20${encodeURIComponent(c.nombre)}"
+               class="btn-informes" target="_blank">Informes</a>
           </div>
-        </div>
-      `;
+        </div>`;
       cursosTrack.appendChild(card);
     });
 
     let currentSlide = 0;
-    const cardWidth = 324; // 300px + 24px gap
-    const visibleCards = () => Math.floor(cursosTrack.parentElement.offsetWidth / cardWidth);
-    const maxSlide = () => cursos.length - visibleCards();
+    const cardWidth = 320;
+    const maxSlide = () => Math.max(0, cursos.length - Math.floor(cursosTrack.parentElement.offsetWidth / cardWidth));
 
     document.getElementById('prevCurso')?.addEventListener('click', () => {
       currentSlide = Math.max(0, currentSlide - 1);
@@ -104,27 +160,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- GALERÍA AUTO-SCROLL ---
-  const galleryLeft = document.getElementById('galleryLeft');
+  const galleryLeft  = document.getElementById('galleryLeft');
   const galleryRight = document.getElementById('galleryRight');
-
   if (galleryLeft && typeof alumnos !== 'undefined') {
-    const imgs = [...alumnos, ...alumnos]; // duplicar para loop
-    imgs.forEach(src => {
+    [...alumnos, ...alumnos].forEach(src => {
       const img = document.createElement('img');
-      img.src = src;
-      img.alt = 'Alumno OdonTeck';
-      img.loading = 'lazy';
+      img.src = src; img.alt = 'Alumno OdonTeck'; img.loading = 'lazy';
       galleryLeft.appendChild(img);
     });
   }
-
   if (galleryRight && typeof alumnos !== 'undefined') {
-    const imgs = [...alumnos, ...alumnos];
-    imgs.forEach(src => {
+    [...alumnos, ...alumnos].forEach(src => {
       const img = document.createElement('img');
-      img.src = src;
-      img.alt = 'Alumno OdonTeck';
-      img.loading = 'lazy';
+      img.src = src; img.alt = 'Alumno OdonTeck'; img.loading = 'lazy';
       galleryRight.appendChild(img);
     });
   }
@@ -132,17 +180,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- RESEÑAS AUTO-SCROLL ---
   const resenasLeft = document.getElementById('resenasLeft');
   if (resenasLeft && typeof resenas !== 'undefined') {
-    const imgs = [...resenas, ...resenas];
-    imgs.forEach(src => {
+    [...resenas, ...resenas].forEach(src => {
       const img = document.createElement('img');
-      img.src = src;
-      img.alt = 'Reseña OdonTeck';
-      img.loading = 'lazy';
+      img.src = src; img.alt = 'Reseña OdonTeck'; img.loading = 'lazy';
       resenasLeft.appendChild(img);
     });
   }
 
-  // --- CURSOS PAGE - FILTROS Y GRID ---
+  // --- CURSOS PAGE ---
   const cursosPageGrid = document.getElementById('cursosPageGrid');
   if (cursosPageGrid && typeof cursos !== 'undefined') {
     const renderCursos = (filter = 'Todos') => {
@@ -152,26 +197,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const card = document.createElement('div');
         card.className = 'curso-card';
         card.innerHTML = `
-          <img src="../${c.img}" alt="${c.nombre}" class="curso-card-img" loading="lazy" onerror="this.src='../assets/img/banner/hero-banner.png'"/>
+          <img src="../${c.img}" alt="${c.nombre}" class="curso-card-img" loading="lazy"
+               onerror="this.src='../assets/img/banner/hero-doctors.png'"/>
           <div class="curso-card-body">
             <span class="curso-area">${c.area}</span>
             <h3>${c.nombre}</h3>
             <p class="curso-ponente">👩‍⚕️ ${c.ponente}</p>
             <div class="curso-card-footer">
               <span class="curso-costo">${c.costo}</span>
-              <div class="curso-btns">
-                <a href="https://wa.me/5212381479365?text=Hola, me interesa el curso: ${encodeURIComponent(c.nombre)}" 
-                   class="btn-informes" target="_blank">Informes</a>
-              </div>
+              <a href="https://wa.me/5212381479365?text=Hola,%20me%20interesa%20el%20curso:%20${encodeURIComponent(c.nombre)}"
+                 class="btn-informes" target="_blank">Informes</a>
             </div>
-          </div>
-        `;
+          </div>`;
         cursosPageGrid.appendChild(card);
       });
     };
-
     renderCursos();
-
     document.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -181,26 +222,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- GALERÍA PAGE GRID ---
+  // --- GALERÍA PAGE ---
   const galeriaPageGrid = document.getElementById('galeriaPageGrid');
   if (galeriaPageGrid && typeof alumnos !== 'undefined') {
     alumnos.forEach(src => {
       const img = document.createElement('img');
-      img.src = '../' + src;
-      img.alt = 'Galería OdonTeck';
-      img.loading = 'lazy';
+      img.src = '../' + src; img.alt = 'Galería OdonTeck'; img.loading = 'lazy';
       galeriaPageGrid.appendChild(img);
     });
   }
-
-  // Reseñas page
   const resenasPageGrid = document.getElementById('resenasPageGrid');
   if (resenasPageGrid && typeof resenas !== 'undefined') {
     resenas.forEach(src => {
       const img = document.createElement('img');
-      img.src = '../' + src;
-      img.alt = 'Reseña OdonTeck';
-      img.loading = 'lazy';
+      img.src = '../' + src; img.alt = 'Reseña OdonTeck'; img.loading = 'lazy';
       resenasPageGrid.appendChild(img);
     });
   }

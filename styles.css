@@ -5,15 +5,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap');
 
 :root {
-  --azul: #0a3d8f;
-  --azul-medio: #1a5cbf;
-  --azul-claro: #4a90d9;
-  --cyan: #00c9e4;
+  --azul: #1565c0;
+  --azul-medio: #1e88e5;
+  --azul-claro: #64b5f6;
+  --cyan: #00bcd4;
   --blanco: #ffffff;
-  --gris-claro: #f4f7fc;
+  --gris-claro: #f0f7ff;
   --gris: #6b7280;
-  --texto: #1a1a2e;
-  --sombra: 0 4px 24px rgba(10,61,143,0.13);
+  --texto: #1a2a3a;
+  --sombra: 0 4px 24px rgba(21,101,192,0.13);
   --radio: 14px;
   --font-titulo: 'Montserrat', sans-serif;
   --font-cuerpo: 'Open Sans', sans-serif;
@@ -165,7 +165,7 @@ img { max-width: 100%; display: block; }
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(110deg, rgba(10,61,143,0.88) 40%, rgba(10,61,143,0.4) 80%, transparent 100%);
+  background: linear-gradient(110deg, rgba(10,61,143,0.75) 35%, rgba(30,100,200,0.3) 65%, transparent 100%);
 }
 .hero-content {
   position: relative;
@@ -274,7 +274,7 @@ img { max-width: 100%; display: block; }
    STATS
    =========================== */
 .stats {
-  background: var(--azul);
+  background: linear-gradient(135deg, #1565c0 0%, #1e88e5 100%);
   padding: 40px 24px;
 }
 .stats-inner {
@@ -597,7 +597,7 @@ img { max-width: 100%; display: block; }
    FOOTER
    =========================== */
 .footer {
-  background: #0a1628;
+  background: #0d2a4a;
   color: rgba(255,255,255,0.8);
   padding: 60px 24px 0;
 }

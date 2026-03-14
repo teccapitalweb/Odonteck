@@ -246,19 +246,27 @@ button { font: inherit; }
   width: min(100%, 640px);
   animation: floatTooth 6s ease-in-out infinite;
 }
-.hero-tooth {
+.hero-tooth-video {
   width: 100%;
+  display: block;
   filter: drop-shadow(0 35px 70px rgba(0, 71, 120, 0.22));
-  transform-origin: center center;
-  animation: spinTooth 16s linear infinite;
+  border-radius: 24px;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  outline: none;
+  background: transparent;
 }
+/* Ocultar completamente cualquier control nativo */
+.hero-tooth-video::-webkit-media-controls { display: none !important; }
+.hero-tooth-video::-webkit-media-controls-enclosure { display: none !important; }
+.hero-tooth-video::-webkit-media-controls-panel { display: none !important; }
+.hero-tooth-video::--webkit-media-controls-play-button { display: none !important; }
+.hero-tooth-video::-moz-media-controls { display: none !important; }
+
 @keyframes floatTooth {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-16px); }
-}
-@keyframes spinTooth {
-  0% { transform: rotateY(0deg); }
-  100% { transform: rotateY(360deg); }
+  50%       { transform: translateY(-16px); }
 }
 
 .stats-section { padding: 0 0 30px; }
@@ -859,17 +867,23 @@ button { font: inherit; }
   }
   .gallery-track { gap: 12px; padding: 4px 0 8px; }
   .gallery-track img {
-    width: 180px;
-    height: 180px;
+    width: 180px !important;
+    height: 180px !important;
     border-radius: 16px;
     scroll-snap-align: unset;
+    object-fit: cover;
+    flex: 0 0 180px;
   }
   .reviews-track { gap: 12px; padding: 4px 0 8px; }
   .reviews-track img {
-    width: 200px;
-    height: 200px;
+    width: 200px !important;
+    height: 200px !important;
     border-radius: 16px;
     scroll-snap-align: unset;
+    object-fit: contain;
+    object-position: center;
+    background: #fff;
+    flex: 0 0 200px;
   }
 
   /* Botones de navegación más grandes para dedo */
@@ -899,8 +913,8 @@ button { font: inherit; }
 
   /* Carruseles en pantallas muy pequeñas */
   .course-card { width: calc(100vw - 52px); }
-  .gallery-track img { width: 170px; height: 170px; }
-  .reviews-track img { width: 190px; height: 190px; }
+  .gallery-track img { width: 150px !important; height: 150px !important; flex: 0 0 150px; }
+  .reviews-track img { width: 170px !important; height: 170px !important; flex: 0 0 170px; }
   .section-head { gap: 14px; }
   .course-controls { align-self: flex-end; }
 }

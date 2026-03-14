@@ -66,7 +66,17 @@
         <div class="hero-visual">
           <div class="hero-glow"></div>
           <div class="hero-tooth-shell">
-            <img src="assets/img/banner/tooth-hero.png" alt="Diente digital OdonTeck" class="hero-tooth" />
+            <video
+              class="hero-tooth-video"
+              src="assets/img/banner/animacion_3D.mp4"
+              autoplay
+              loop
+              muted
+              playsinline
+              disablepictureinpicture
+              disableremoteplayback
+              preload="auto"
+            ></video>
           </div>
         </div>
       </div>
@@ -261,5 +271,12 @@
 
   <script src="data.js"></script>
   <script src="script.js"></script>
+  <script>
+    // Forzar autoplay en iOS Safari
+    document.querySelectorAll('video').forEach(v => {
+      v.muted = true;
+      v.play().catch(() => {});
+    });
+  </script>
 </body>
 </html>

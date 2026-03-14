@@ -47,6 +47,19 @@
 
   <main>
     <section class="hero-section">
+      <!-- Video de fondo fusionado -->
+      <video
+        class="hero-bg-video"
+        src="assets/img/banner/animacion_3D.mp4"
+        autoplay
+        loop
+        muted
+        playsinline
+        disablepictureinpicture
+        disableremoteplayback
+        preload="auto"
+      ></video>
+
       <div class="container hero-grid">
         <div class="hero-copy">
           <p class="eyebrow">Capacitación odontológica especializada</p>
@@ -63,22 +76,8 @@
           </ul>
         </div>
 
-        <div class="hero-visual">
-          <div class="hero-glow"></div>
-          <div class="hero-tooth-shell">
-            <video
-              class="hero-tooth-video"
-              src="assets/img/banner/animacion_3D.mp4"
-              autoplay
-              loop
-              muted
-              playsinline
-              disablepictureinpicture
-              disableremoteplayback
-              preload="auto"
-            ></video>
-          </div>
-        </div>
+        <!-- Columna derecha vacía — el diente del video ocupa ese espacio -->
+        <div class="hero-visual-placeholder"></div>
       </div>
     </section>
 

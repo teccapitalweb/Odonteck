@@ -130,22 +130,56 @@ button { font: inherit; }
   position: relative;
   overflow: hidden;
   padding: 72px 0 46px;
+  /* Fondo que coincide con los bordes del video */
+  background: linear-gradient(135deg, #e8f4ff 0%, #f0f7ff 40%, #ddeefa 100%);
 }
-.hero-section::before {
-  content: "";
+
+/* Video de fondo — cubre todo el hero, fusionado */
+.hero-bg-video {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(circle at 20% 18%, rgba(127,211,255,0.55), transparent 24%),
-    radial-gradient(circle at 82% 18%, rgba(0,81,135,0.12), transparent 28%),
-    linear-gradient(135deg, #fbfdff 0%, #e8f1fb 55%, #f6faff 100%);
-  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  z-index: 0;
+  /* Ocultar barras negras laterales del video con escala ligera */
+  transform: scaleX(1.08);
 }
+.hero-bg-video::-webkit-media-controls,
+.hero-bg-video::-webkit-media-controls-enclosure,
+.hero-bg-video::-webkit-media-controls-panel { display: none !important; }
+
+/* El grid va sobre el video */
 .hero-grid {
+  position: relative;
+  z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
   align-items: center;
   gap: 46px;
+}
+
+/* Columna derecha — espacio vacío donde el diente del video se ve */
+.hero-visual-placeholder {
+  min-height: 480px;
+}
+
+/* Overlay sutil en la parte izquierda para que el texto sea legible */
+.hero-copy {
+  position: relative;
+}
+.hero-copy::before {
+  content: "";
+  position: absolute;
+  inset: -40px -60px -40px -80px;
+  background: radial-gradient(ellipse at 30% 50%, rgba(255,255,255,0.72) 0%, rgba(240,247,255,0.55) 55%, transparent 100%);
+  border-radius: 40px;
+  z-index: -1;
+  backdrop-filter: blur(2px);
 }
 .eyebrow {
   display: inline-block;
@@ -241,32 +275,6 @@ button { font: inherit; }
   border-radius: 50%;
   background: radial-gradient(circle, rgba(12,116,196,0.20) 0%, rgba(127,211,255,0.10) 36%, transparent 70%);
   filter: blur(8px);
-}
-.hero-tooth-shell {
-  width: min(100%, 640px);
-  animation: floatTooth 6s ease-in-out infinite;
-}
-.hero-tooth-video {
-  width: 100%;
-  display: block;
-  filter: drop-shadow(0 35px 70px rgba(0, 71, 120, 0.22));
-  border-radius: 24px;
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-select: none;
-  outline: none;
-  background: transparent;
-}
-/* Ocultar completamente cualquier control nativo */
-.hero-tooth-video::-webkit-media-controls { display: none !important; }
-.hero-tooth-video::-webkit-media-controls-enclosure { display: none !important; }
-.hero-tooth-video::-webkit-media-controls-panel { display: none !important; }
-.hero-tooth-video::--webkit-media-controls-play-button { display: none !important; }
-.hero-tooth-video::-moz-media-controls { display: none !important; }
-
-@keyframes floatTooth {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-16px); }
 }
 
 .stats-section { padding: 0 0 30px; }
@@ -809,11 +817,12 @@ button { font: inherit; }
   .nav-links.open { display: flex; }
   .nav-links a { display: block; text-align: center; }
   .hero-section { padding-top: 36px; }
-  .hero-grid { gap: 24px; }
+  .hero-grid { gap: 24px; grid-template-columns: 1fr; }
+  .hero-visual-placeholder { min-height: 260px; }
+  .hero-bg-video { object-position: 70% center; transform: scaleX(1.12); }
+  .hero-copy::before { inset: -24px -20px -24px -20px; }
   .hero-copy h1 { font-size: clamp(2.7rem, 12vw, 4rem); }
   .hero-text, .section-text { font-size: 17px; }
-  .hero-visual { min-height: unset; padding-top: 8px; }
-  .hero-tooth { width: min(100%, 420px); }
   .section { padding: 72px 0; }
   .section-head { align-items: flex-start; flex-direction: column; }
   .stats-grid, .why-grid, .course-grid, .contact-grid, .services-grid, .values-grid, .reviews-grid, .gallery-strip, .gallery-grid, .footer-grid, .split-grid { grid-template-columns: 1fr; }

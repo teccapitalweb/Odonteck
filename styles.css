@@ -137,8 +137,13 @@ button { font: inherit; }
 /* Video de fondo — cubre todo el hero, fusionado */
 .hero-bg-video {
   position: absolute;
-  inset: 0;
-  width: 100%;
+  top: 0;
+  bottom: 0;
+  /* Las barras negras son 150px de cada lado en 1920px total = 7.8% cada una */
+  /* Usamos left/right negativos para empujar el video y clip en el contenedor */
+  left: -8.5%;
+  right: -8.5%;
+  width: 117%;
   height: 100%;
   object-fit: cover;
   object-position: center center;
@@ -146,8 +151,6 @@ button { font: inherit; }
   user-select: none;
   -webkit-user-select: none;
   z-index: 0;
-  /* Escalar para ocultar completamente las barras negras laterales */
-  transform: scaleX(1.22) scaleY(1.05);
 }
 .hero-bg-video::-webkit-media-controls,
 .hero-bg-video::-webkit-media-controls-enclosure,
@@ -819,7 +822,7 @@ button { font: inherit; }
   .hero-section { padding-top: 36px; }
   .hero-grid { gap: 24px; grid-template-columns: 1fr; }
   .hero-visual-placeholder { min-height: 200px; }
-  .hero-bg-video { object-position: 72% center; transform: scaleX(1.28) scaleY(1.05); }
+  .hero-bg-video { left: -8.5%; right: -8.5%; width: 117%; object-position: 68% center; }
   .hero-copy::before { inset: -24px -20px -24px -20px; }
   .hero-copy h1 { font-size: clamp(2.7rem, 12vw, 4rem); }
   .hero-text, .section-text { font-size: 17px; }

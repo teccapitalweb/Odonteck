@@ -161,14 +161,14 @@ button { font: inherit; }
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(220px, 0.8fr);
+  grid-template-columns: minmax(0, 1.5fr) minmax(160px, 0.5fr);
   align-items: center;
   gap: 46px;
 }
 
-/* Columna derecha — espacio donde el diente del video se ve, más pequeño */
+/* Columna derecha — más pequeña para reducir el diente */
 .hero-visual-placeholder {
-  min-height: 360px;
+  min-height: 260px;
 }
 
 /* Overlay sutil en la parte izquierda para que el texto sea legible */

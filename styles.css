@@ -502,17 +502,23 @@ button { font: inherit; }
 }
 .reviews-grid img { aspect-ratio: 1.05/1; background: #fff; }
 
+/* CSS animation para carruseles automáticos */
+@keyframes carousel-slide {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 /* Gallery carousel */
 .gallery-scroller,
 .reviews-scroller {
-  overflow-x: auto;
+  overflow: hidden;
   padding-bottom: 12px;
-  scrollbar-width: none;
   cursor: grab;
   margin-top: 8px;
+  position: relative;
 }
-.gallery-scroller::-webkit-scrollbar,
-.reviews-scroller::-webkit-scrollbar { display: none; }
+.gallery-scroller:active,
+.reviews-scroller:active { cursor: grabbing; }
 
 .gallery-track {
   display: flex;
@@ -828,16 +834,15 @@ button { font: inherit; }
   .brand span { font-size: 13px; }
 
   /* ── Carruseles en móvil ── */
-  .gallery-scroller,
-  .reviews-scroller,
+
+  /* Cursos — scroll táctil nativo */
   .course-scroller {
-    /* Permite scroll táctil nativo suave */
     -webkit-overflow-scrolling: touch;
     scroll-snap-type: x mandatory;
-    padding-bottom: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
   }
-
-  /* Cursos */
+  .course-scroller::-webkit-scrollbar { display: none; }
   .course-track { gap: 16px; padding: 4px 4px 8px; }
   .course-card {
     width: min(280px, calc(100vw - 48px));
@@ -846,22 +851,25 @@ button { font: inherit; }
   }
   .course-card img { aspect-ratio: 4/3.6; }
 
-  /* Galería alumnos */
-  .gallery-track { gap: 12px; padding: 4px 4px 8px; }
+  /* Galería y reseñas — CSS animation, sin conflicto táctil */
+  .gallery-scroller,
+  .reviews-scroller {
+    overflow: hidden;
+    cursor: default;
+  }
+  .gallery-track { gap: 12px; padding: 4px 0 8px; }
   .gallery-track img {
+    width: 180px;
+    height: 180px;
+    border-radius: 16px;
+    scroll-snap-align: unset;
+  }
+  .reviews-track { gap: 12px; padding: 4px 0 8px; }
+  .reviews-track img {
     width: 200px;
     height: 200px;
-    border-radius: 18px;
-    scroll-snap-align: start;
-  }
-
-  /* Reseñas */
-  .reviews-track { gap: 12px; padding: 4px 4px 8px; }
-  .reviews-track img {
-    width: 220px;
-    height: 220px;
-    border-radius: 18px;
-    scroll-snap-align: start;
+    border-radius: 16px;
+    scroll-snap-align: unset;
   }
 
   /* Botones de navegación más grandes para dedo */

@@ -72,28 +72,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: true });
   };
 
-  // ── AUTO-SCROLL helper ────────────────────────────────────────
-  // Moves the scroller pixel by pixel; loops seamlessly because
-  // the images are duplicated (original + clone).
-  const initAutoScroll = (scroller, speed) => {
-    let paused = false;
-    let raf;
-    const tick = () => {
-      if (!paused) {
-        scroller.scrollLeft += speed;
-        // When we've scrolled past the first copy, jump back silently
-        const half = scroller.scrollWidth / 2;
-        if (scroller.scrollLeft >= half) {
-          scroller.scrollLeft -= half;
-        }
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    scroller.addEventListener('mouseenter', () => { paused = true; });
-    scroller.addEventListener('mouseleave', () => { paused = false; });
-    scroller.addEventListener('touchstart', () => { paused = true; }, { passive: true });
-    scroller.addEventListener('touchend',   () => { setTimeout(() => { paused = false; }, 1500); }, { passive: true });
+  // ── AUTO-SCROLL helper (CSS animation — funciona bien en móvil) ──
+  const initAutoScroll = (scroller, trackId, durationSecs) => {
+    const track = document.getElementById(trackId);
+    if (!track) return;
+    track.style.animation = `carousel-slide ${durationSecs}s linear infinite`;
+    // Pausa al hover o toque
+    scroller.addEventListener('mouseenter', () => { track.style.animationPlayState = 'paused'; });
+    scroller.addEventListener('mouseleave', () => { track.style.animationPlayState = 'running'; });
+    scroller.addEventListener('touchstart', () => { track.style.animationPlayState = 'paused'; }, { passive: true });
+    scroller.addEventListener('touchend',   () => { setTimeout(() => { track.style.animationPlayState = 'running'; }, 1200); }, { passive: true });
   };
 
   // ── Course carousel (manual nav buttons + drag) ───────────────
@@ -209,20 +197,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ── Gallery carousel (auto-scroll) ───────────────────────────
+  // ── Gallery carousel (auto-scroll CSS) ───────────────────────
   const homeGalleryTrack = document.getElementById('homeGalleryTrack');
   const homeGalleryScroller = document.getElementById('homeGallery');
   if (homeGalleryTrack && homeGalleryScroller && typeof alumnos !== 'undefined') {
-    // Duplicate for seamless infinite loop
     const doubled = [...alumnos, ...alumnos];
     homeGalleryTrack.innerHTML = doubled.map(src =>
       `<img src="${resolvePath(src)}" alt="Alumno OdonTeck" loading="lazy">`
     ).join('');
     initDrag(homeGalleryScroller);
-    initAutoScroll(homeGalleryScroller, 0.7);
+    initAutoScroll(homeGalleryScroller, 'homeGalleryTrack', 22);
   }
 
-  // ── Reviews carousel (auto-scroll) ───────────────────────────
+  // ── Reviews carousel (auto-scroll CSS) ───────────────────────
   const homeReviewsTrack = document.getElementById('homeReviewsTrack');
   const homeReviewsScroller = document.getElementById('homeReviews');
   if (homeReviewsTrack && homeReviewsScroller && typeof resenas !== 'undefined') {
@@ -231,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
       `<img src="${resolvePath(src)}" alt="Reseña OdonTeck" loading="lazy">`
     ).join('');
     initDrag(homeReviewsScroller);
-    initAutoScroll(homeReviewsScroller, 0.5);
+    initAutoScroll(homeReviewsScroller, 'homeReviewsTrack', 28);
   }
 
   // ── Gallery page (static grid) ────────────────────────────────

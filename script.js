@@ -49,42 +49,98 @@ document.addEventListener('DOMContentLoaded', () => {
     observer.observe(item);
   });
 
-  // Generic track controls and drag behavior
-  document.querySelectorAll('[data-track]').forEach((button) => {
-    button.addEventListener('click', () => {
-      const track = document.getElementById(button.dataset.track);
-      if (!track) return;
-      const amount = Math.min(380, track.clientWidth * 0.9);
-      const dir = button.dataset.dir === 'prev' ? -1 : 1;
-      track.scrollBy({ left: dir * amount, behavior: 'smooth' });
-    });
-  });
-
-  document.querySelectorAll('.course-scroller').forEach((scroller) => {
-    let isDown = false;
-    let startX = 0;
-    let startScroll = 0;
-
+  // ── DRAG helper ──────────────────────────────────────────────
+  const initDrag = (scroller) => {
+    let isDown = false, startX = 0, startScroll = 0;
     scroller.addEventListener('mousedown', (e) => {
-      isDown = true;
-      startX = e.pageX;
-      startScroll = scroller.scrollLeft;
+      isDown = true; startX = e.pageX; startScroll = scroller.scrollLeft;
       scroller.style.cursor = 'grabbing';
     });
-
     ['mouseleave', 'mouseup'].forEach(evt => scroller.addEventListener(evt, () => {
-      isDown = false;
-      scroller.style.cursor = 'grab';
+      isDown = false; scroller.style.cursor = 'grab';
     }));
-
     scroller.addEventListener('mousemove', (e) => {
       if (!isDown) return;
-      const walk = e.pageX - startX;
-      scroller.scrollLeft = startScroll - walk;
+      scroller.scrollLeft = startScroll - (e.pageX - startX);
+    });
+    let touchStartX = 0, touchScroll = 0;
+    scroller.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].pageX; touchScroll = scroller.scrollLeft;
+    }, { passive: true });
+    scroller.addEventListener('touchmove', (e) => {
+      scroller.scrollLeft = touchScroll - (e.touches[0].pageX - touchStartX);
+    }, { passive: true });
+  };
+
+  // ── AUTO-SCROLL helper ────────────────────────────────────────
+  // Moves the scroller pixel by pixel; loops seamlessly because
+  // the images are duplicated (original + clone).
+  const initAutoScroll = (scroller, speed) => {
+    let paused = false;
+    let raf;
+    const tick = () => {
+      if (!paused) {
+        scroller.scrollLeft += speed;
+        // When we've scrolled past the first copy, jump back silently
+        const half = scroller.scrollWidth / 2;
+        if (scroller.scrollLeft >= half) {
+          scroller.scrollLeft -= half;
+        }
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    scroller.addEventListener('mouseenter', () => { paused = true; });
+    scroller.addEventListener('mouseleave', () => { paused = false; });
+    scroller.addEventListener('touchstart', () => { paused = true; }, { passive: true });
+    scroller.addEventListener('touchend',   () => { setTimeout(() => { paused = false; }, 1500); }, { passive: true });
+  };
+
+  // ── Course carousel (manual nav buttons + drag) ───────────────
+  document.querySelectorAll('[data-track]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const scroller = document.getElementById(button.dataset.track);
+      if (!scroller) return;
+      const amount = Math.min(380, scroller.clientWidth * 0.85);
+      scroller.scrollBy({ left: button.dataset.dir === 'prev' ? -amount : amount, behavior: 'smooth' });
     });
   });
 
-  // Modal
+  document.querySelectorAll('.course-scroller').forEach(initDrag);
+
+  // ── Render course cards ───────────────────────────────────────
+  const renderCourseCard = (course) => `
+    <article class="course-card">
+      <img src="${resolvePath(course.img)}" alt="${course.nombre}">
+      <div class="course-card-body">
+        <span class="course-badge">${course.area}</span>
+        <h3>${course.nombre}</h3>
+        <p class="course-mentor">${course.ponente}</p>
+        <p class="course-price">${course.costo}</p>
+        <div class="course-actions">
+          <button class="small-btn" type="button" data-course-id="${course.id}">Ver temario</button>
+          <a class="small-btn primary" href="https://wa.me/5212381479365?text=${encodeURIComponent(`Hola, me interesa el curso: ${course.nombre}`)}" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+      </div>
+    </article>
+  `;
+
+  const attachCourseButtons = (scope = document) => {
+    scope.querySelectorAll('[data-course-id]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const course = cursos.find(c => String(c.id) === btn.dataset.courseId);
+        if (course) openModal(course);
+      });
+    });
+  };
+
+  const homeCoursesTrack = document.getElementById('homeCoursesTrack');
+  if (homeCoursesTrack && typeof cursos !== 'undefined') {
+    homeCoursesTrack.innerHTML = cursos.map(renderCourseCard).join('');
+    attachCourseButtons(homeCoursesTrack);
+  }
+
+  // ── Modal ─────────────────────────────────────────────────────
   const modal = document.getElementById('courseModal');
   const modalContent = document.getElementById('courseModalContent');
   const modalClose = document.getElementById('modalClose');
@@ -130,46 +186,16 @@ document.addEventListener('DOMContentLoaded', () => {
   modal?.querySelectorAll('[data-close-modal]').forEach(el => el.addEventListener('click', closeModal));
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 
-  // Course renderers
-  const renderCourseCard = (course) => `
-    <article class="course-card">
-      <img src="${resolvePath(course.img)}" alt="${course.nombre}">
-      <div class="course-card-body">
-        <span class="course-badge">${course.area}</span>
-        <h3>${course.nombre}</h3>
-        <p class="course-mentor">${course.ponente}</p>
-        <p class="course-price">${course.costo}</p>
-        <div class="course-actions">
-          <button class="small-btn" type="button" data-course-id="${course.id}">Ver temario</button>
-          <a class="small-btn primary" href="https://wa.me/5212381479365?text=${encodeURIComponent(`Hola, me interesa el curso: ${course.nombre}`)}" target="_blank" rel="noopener">WhatsApp</a>
-        </div>
-      </div>
-    </article>
-  `;
-
-  const attachCourseButtons = (scope = document) => {
-    scope.querySelectorAll('[data-course-id]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const course = cursos.find(c => String(c.id) === btn.dataset.courseId);
-        if (course) openModal(course);
-      });
-    });
-  };
-
-  const homeCoursesTrack = document.getElementById('homeCoursesTrack');
-  if (homeCoursesTrack && typeof cursos !== 'undefined') {
-    homeCoursesTrack.innerHTML = cursos.map(renderCourseCard).join('');
-    attachCourseButtons(homeCoursesTrack);
-  }
-
+  // ── Courses page grid + filters ───────────────────────────────
   const coursesPageGrid = document.getElementById('coursesPageGrid');
   const courseFilters = document.getElementById('courseFilters');
   if (coursesPageGrid && courseFilters && typeof cursos !== 'undefined') {
-    const areas = ['Todos', ...new Set(cursos.map(course => course.area))];
-    courseFilters.innerHTML = areas.map(area => `<button class="filter-btn ${area === 'Todos' ? 'active' : ''}" data-area="${area}">${area}</button>`).join('');
-
+    const areas = ['Todos', ...new Set(cursos.map(c => c.area))];
+    courseFilters.innerHTML = areas.map(area =>
+      `<button class="filter-btn ${area === 'Todos' ? 'active' : ''}" data-area="${area}">${area}</button>`
+    ).join('');
     const paint = (area = 'Todos') => {
-      const list = area === 'Todos' ? cursos : cursos.filter(course => course.area === area);
+      const list = area === 'Todos' ? cursos : cursos.filter(c => c.area === area);
       coursesPageGrid.innerHTML = list.map(renderCourseCard).join('');
       attachCourseButtons(coursesPageGrid);
     };
@@ -183,23 +209,44 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Images
-  const homeGallery = document.getElementById('homeGallery');
-  if (homeGallery && typeof alumnos !== 'undefined') {
-    homeGallery.innerHTML = alumnos.slice(0, 8).map(src => `<img src="${resolvePath(src)}" alt="Alumno OdonTeck">`).join('');
+  // ── Gallery carousel (auto-scroll) ───────────────────────────
+  const homeGalleryTrack = document.getElementById('homeGalleryTrack');
+  const homeGalleryScroller = document.getElementById('homeGallery');
+  if (homeGalleryTrack && homeGalleryScroller && typeof alumnos !== 'undefined') {
+    // Duplicate for seamless infinite loop
+    const doubled = [...alumnos, ...alumnos];
+    homeGalleryTrack.innerHTML = doubled.map(src =>
+      `<img src="${resolvePath(src)}" alt="Alumno OdonTeck" loading="lazy">`
+    ).join('');
+    initDrag(homeGalleryScroller);
+    initAutoScroll(homeGalleryScroller, 0.7);
   }
 
+  // ── Reviews carousel (auto-scroll) ───────────────────────────
+  const homeReviewsTrack = document.getElementById('homeReviewsTrack');
+  const homeReviewsScroller = document.getElementById('homeReviews');
+  if (homeReviewsTrack && homeReviewsScroller && typeof resenas !== 'undefined') {
+    const doubled = [...resenas, ...resenas];
+    homeReviewsTrack.innerHTML = doubled.map(src =>
+      `<img src="${resolvePath(src)}" alt="Reseña OdonTeck" loading="lazy">`
+    ).join('');
+    initDrag(homeReviewsScroller);
+    initAutoScroll(homeReviewsScroller, 0.5);
+  }
+
+  // ── Gallery page (static grid) ────────────────────────────────
   const galleryPageGrid = document.getElementById('galleryPageGrid');
   if (galleryPageGrid && typeof alumnos !== 'undefined') {
-    galleryPageGrid.innerHTML = alumnos.map(src => `<img src="${resolvePath(src)}" alt="Alumno OdonTeck">`).join('');
+    galleryPageGrid.innerHTML = alumnos.map(src =>
+      `<img src="${resolvePath(src)}" alt="Alumno OdonTeck">`
+    ).join('');
   }
 
-  const renderReviews = (targetId) => {
-    const el = document.getElementById(targetId);
-    if (el && typeof resenas !== 'undefined') {
-      el.innerHTML = resenas.map(src => `<img src="${resolvePath(src)}" alt="Reseña OdonTeck">`).join('');
-    }
-  };
-  renderReviews('homeReviews');
-  renderReviews('reviewsPageGrid');
+  // ── Reviews page (static grid) ────────────────────────────────
+  const reviewsPageGrid = document.getElementById('reviewsPageGrid');
+  if (reviewsPageGrid && typeof resenas !== 'undefined') {
+    reviewsPageGrid.innerHTML = resenas.map(src =>
+      `<img src="${resolvePath(src)}" alt="Reseña OdonTeck">`
+    ).join('');
+  }
 });

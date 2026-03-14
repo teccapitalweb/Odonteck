@@ -161,17 +161,37 @@
 
     <section class="section soft-section">
       <div class="container">
-        <p class="eyebrow dark">Comunidad</p>
-        <h2 class="section-title centered">Momentos que respaldan nuestra formación</h2>
-        <div class="gallery-strip" id="homeGallery"></div>
+        <div class="section-head">
+          <div>
+            <p class="eyebrow dark">Comunidad</p>
+            <h2 class="section-title">Momentos que respaldan nuestra formación</h2>
+          </div>
+          <div class="course-controls">
+            <button class="control-btn" type="button" data-track="homeGallery" data-dir="prev" aria-label="Anterior"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="control-btn" type="button" data-track="homeGallery" data-dir="next" aria-label="Siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+        </div>
+        <div class="course-scroller gallery-scroller" id="homeGallery">
+          <div class="gallery-track" id="homeGalleryTrack"></div>
+        </div>
       </div>
     </section>
 
     <section class="section">
       <div class="container">
-        <p class="eyebrow dark">Reseñas</p>
-        <h2 class="section-title centered">Opiniones de nuestra comunidad</h2>
-        <div class="reviews-grid" id="homeReviews"></div>
+        <div class="section-head">
+          <div>
+            <p class="eyebrow dark">Reseñas</p>
+            <h2 class="section-title">Opiniones de nuestra comunidad</h2>
+          </div>
+          <div class="course-controls">
+            <button class="control-btn" type="button" data-track="homeReviews" data-dir="prev" aria-label="Anterior"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="control-btn" type="button" data-track="homeReviews" data-dir="next" aria-label="Siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+        </div>
+        <div class="course-scroller reviews-scroller" id="homeReviews">
+          <div class="reviews-track" id="homeReviewsTrack"></div>
+        </div>
       </div>
     </section>
 

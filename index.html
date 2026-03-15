@@ -47,19 +47,6 @@
 
   <main>
     <section class="hero-section">
-      <!-- Video de fondo fusionado -->
-      <video
-        class="hero-bg-video"
-        src="assets/img/banner/animacion_3D.mp4"
-        autoplay
-        loop
-        muted
-        playsinline
-        disablepictureinpicture
-        disableremoteplayback
-        preload="auto"
-      ></video>
-
       <div class="container hero-grid">
         <div class="hero-copy">
           <p class="eyebrow">Capacitación odontológica especializada</p>
@@ -75,9 +62,6 @@
             <li>Capacitación especializada 100% online</li>
           </ul>
         </div>
-
-        <!-- Columna derecha vacía — el diente del video ocupa ese espacio -->
-        <div class="hero-visual-placeholder"></div>
       </div>
     </section>
 
@@ -270,12 +254,5 @@
 
   <script src="data.js"></script>
   <script src="script.js"></script>
-  <script>
-    // Forzar autoplay en iOS Safari
-    document.querySelectorAll('video').forEach(v => {
-      v.muted = true;
-      v.play().catch(() => {});
-    });
-  </script>
 </body>
 </html>

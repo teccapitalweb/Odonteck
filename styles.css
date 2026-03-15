@@ -130,59 +130,22 @@ button { font: inherit; }
   position: relative;
   overflow: hidden;
   padding: 72px 0 46px;
-  /* Fondo que coincide con los bordes del video */
-  background: linear-gradient(135deg, #e8f4ff 0%, #f0f7ff 40%, #ddeefa 100%);
 }
-
-/* Video de fondo — cubre todo el hero, fusionado */
-.hero-bg-video {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  /* Las barras negras son 150px de cada lado en 1920px total = 7.8% cada una */
-  /* Usamos left/right negativos para empujar el video y clip en el contenedor */
-  left: -8.5%;
-  right: -8.5%;
-  width: 117%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center center;
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-select: none;
-  z-index: 0;
-}
-.hero-bg-video::-webkit-media-controls,
-.hero-bg-video::-webkit-media-controls-enclosure,
-.hero-bg-video::-webkit-media-controls-panel { display: none !important; }
-
-/* El grid va sobre el video */
-.hero-grid {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(160px, 0.5fr);
-  align-items: center;
-  gap: 46px;
-}
-
-/* Columna derecha — más pequeña para reducir el diente */
-.hero-visual-placeholder {
-  min-height: 260px;
-}
-
-/* Overlay sutil en la parte izquierda para que el texto sea legible */
-.hero-copy {
-  position: relative;
-}
-.hero-copy::before {
+.hero-section::before {
   content: "";
   position: absolute;
-  inset: -40px -60px -40px -80px;
-  background: radial-gradient(ellipse at 30% 50%, rgba(255,255,255,0.72) 0%, rgba(240,247,255,0.55) 55%, transparent 100%);
-  border-radius: 40px;
-  z-index: -1;
-  backdrop-filter: blur(2px);
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 18%, rgba(127,211,255,0.55), transparent 24%),
+    radial-gradient(circle at 82% 18%, rgba(0,81,135,0.12), transparent 28%),
+    linear-gradient(135deg, #fbfdff 0%, #e8f1fb 55%, #f6faff 100%);
+  z-index: -2;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 46px;
 }
 .eyebrow {
   display: inline-block;

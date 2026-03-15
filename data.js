@@ -193,10 +193,40 @@ const alumnos = [
 ];
 
 const resenas = [
-  "assets/img/resenas/resena-01.jpg",
-  "assets/img/resenas/resena-02.jpg",
-  "assets/img/resenas/resena-03.jpg",
-  "assets/img/resenas/resena-04.jpg",
-  "assets/img/resenas/resena-05.jpg",
-  "assets/img/resenas/resena-06.jpg"
+  {
+    nombre: "Judith Galindo",
+    fecha: "7 de octubre de 2025",
+    estrellas: 5,
+    texto: "Recomiendo los cursos de Odontoteck ya que te ayudan a desarrollar nuevas habilidades profesionales, adquirir nuevos conocimientos además de que nos dan información actualizada, obteniendo una mejor preparación."
+  },
+  {
+    nombre: "Norma Idalia Orozco Orozco",
+    fecha: "7 de octubre de 2025",
+    estrellas: 5,
+    texto: "Excelente plataforma, destaco la flexibilidad de horarios, el ritmo de estudios, la diversidad de recursos y herramientas de interacción, lo que facilita el aprendizaje y la actualización."
+  },
+  {
+    nombre: "Katia Ballesteros",
+    fecha: "7 de octubre de 2025",
+    estrellas: 5,
+    texto: "Excelente curso, siempre están actualizando el contenido y brindan acompañamiento personalizado. Lo mejor es la oportunidad de resolver dudas y analizar casos junto con los docentes. Muy completo y actualizado. ¡Súper recomendado! ✨"
+  },
+  {
+    nombre: "BereQui Ramírez",
+    fecha: "4 de septiembre de 2025",
+    estrellas: 5,
+    texto: "De los mejores cursos y accesibles ya que los podemos ver después si tenemos dudas. Son muy atentos y los cursos muy completos y profesionales, aprendemos muchos. 100% recomendables."
+  },
+  {
+    nombre: "Kari AreRui",
+    fecha: "4 de septiembre de 2025",
+    estrellas: 5,
+    texto: "Excelentes cursos que ofrecen, amplían sin duda conocimientos para poder dar consultas integrales y actualizadas a los pacientes 🌟"
+  },
+  {
+    nombre: "Jorge Chavez",
+    fecha: "8 de octubre de 2025",
+    estrellas: 5,
+    texto: "Información y conocimiento amplio y suficiente para reforzar lo aprendido en la carrera de cirujano dentista e implementar una mejor, actualizada y profesional praxis en nuestros consultorios."
+  }
 ];

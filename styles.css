@@ -479,10 +479,20 @@ button { font: inherit; }
 .reviews-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
+  gap: 20px;
   margin-top: 30px;
 }
-.reviews-grid img { aspect-ratio: 1.05/1; background: #fff; }
+.reviews-grid .review-img-card {
+  width: 100%;
+  flex: none;
+}
+.reviews-grid .review-img-card img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 0;
+}
 
 /* CSS animation para carruseles automáticos */
 @keyframes carousel-slide {
@@ -528,71 +538,28 @@ button { font: inherit; }
   display: flex;
   gap: 20px;
   width: max-content;
-  align-items: stretch;
+  align-items: center;
   padding: 8px 4px 16px;
 }
-
-.review-card {
+.review-img-card {
   width: 320px;
   flex: 0 0 320px;
   background: #fff;
   border: 1px solid var(--line);
-  border-radius: 24px;
-  padding: 26px;
+  border-radius: 20px;
+  overflow: hidden;
   box-shadow: var(--shadow);
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.review-card:hover {
+.review-img-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 24px 54px rgba(0,36,81,0.13);
 }
-.review-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.review-avatar {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary), var(--primary-2));
-  color: #fff;
-  display: grid;
-  place-items: center;
-  font-size: 15px;
-  font-weight: 700;
-  flex-shrink: 0;
-}
-.review-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-.review-info strong {
-  font-size: 15px;
-  color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.review-info span {
-  font-size: 12px;
-  color: var(--muted);
-}
-.review-stars {
-  color: #f5a623;
-  font-size: 18px;
-  letter-spacing: 2px;
-}
-.review-text {
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.75;
-  flex: 1;
+.review-img-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
 }
 
 .cta-section { padding: 0 0 92px; }
@@ -840,6 +807,7 @@ button { font: inherit; }
   .section { padding: 72px 0; }
   .section-head { align-items: flex-start; flex-direction: column; }
   .stats-grid, .why-grid, .course-grid, .contact-grid, .services-grid, .values-grid, .reviews-grid, .gallery-strip, .gallery-grid, .footer-grid, .split-grid { grid-template-columns: 1fr; }
+  .reviews-grid { grid-template-columns: 1fr; }
   .intro-cards { order: 2; }
   .course-card { width: min(300px, calc(100vw - 48px)); }
   .course-modal-dialog { padding: 18px; width: calc(100% - 16px); margin: 8px auto; }
@@ -898,11 +866,7 @@ button { font: inherit; }
     flex: 0 0 180px;
   }
   .reviews-track { gap: 14px; padding: 4px 0 8px; }
-  .review-card {
-    width: 270px !important;
-    flex: 0 0 270px !important;
-    padding: 20px;
-  }
+  .review-img-card { width: 260px !important; flex: 0 0 260px !important; }
 
   /* Botones de navegación más grandes para dedo */
   .control-btn {
@@ -932,7 +896,7 @@ button { font: inherit; }
   /* Carruseles en pantallas muy pequeñas */
   .course-card { width: calc(100vw - 52px); }
   .gallery-track img { width: 150px !important; height: 150px !important; flex: 0 0 150px; }
-  .review-card { width: 250px !important; flex: 0 0 250px !important; }
+  .review-img-card { width: 230px !important; flex: 0 0 230px !important; }
   .section-head { gap: 14px; }
   .course-controls { align-self: flex-end; }
 }

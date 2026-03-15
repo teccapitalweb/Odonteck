@@ -213,24 +213,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const homeReviewsTrack = document.getElementById('homeReviewsTrack');
   const homeReviewsScroller = document.getElementById('homeReviews');
   if (homeReviewsTrack && homeReviewsScroller && typeof resenas !== 'undefined') {
-    const renderReviewCard = (r) => {
-      const initials = r.nombre.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
-      const stars = '★'.repeat(r.estrellas) + '☆'.repeat(5 - r.estrellas);
-      return `
-        <article class="review-card">
-          <div class="review-header">
-            <div class="review-avatar">${initials}</div>
-            <div class="review-info">
-              <strong>${r.nombre}</strong>
-              <span>${r.fecha}</span>
-            </div>
-          </div>
-          <div class="review-stars">${stars}</div>
-          <p class="review-text">${r.texto}</p>
-        </article>`;
-    };
     const doubled = [...resenas, ...resenas];
-    homeReviewsTrack.innerHTML = doubled.map(renderReviewCard).join('');
+    homeReviewsTrack.innerHTML = doubled.map(src =>
+      `<div class="review-img-card"><img src="${resolvePath(src)}" alt="Reseña OdonTeck" loading="lazy"></div>`
+    ).join('');
     initDrag(homeReviewsScroller);
     initAutoScroll(homeReviewsScroller, 'homeReviewsTrack', 32);
   }
@@ -246,22 +232,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── Reviews page (static grid) ────────────────────────────────
   const reviewsPageGrid = document.getElementById('reviewsPageGrid');
   if (reviewsPageGrid && typeof resenas !== 'undefined') {
-    const renderReviewCard = (r) => {
-      const initials = r.nombre.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
-      const stars = '★'.repeat(r.estrellas) + '☆'.repeat(5 - r.estrellas);
-      return `
-        <article class="review-card">
-          <div class="review-header">
-            <div class="review-avatar">${initials}</div>
-            <div class="review-info">
-              <strong>${r.nombre}</strong>
-              <span>${r.fecha}</span>
-            </div>
-          </div>
-          <div class="review-stars">${stars}</div>
-          <p class="review-text">${r.texto}</p>
-        </article>`;
-    };
-    reviewsPageGrid.innerHTML = resenas.map(renderReviewCard).join('');
+    reviewsPageGrid.innerHTML = resenas.map(src =>
+      `<div class="review-img-card"><img src="${resolvePath(src)}" alt="Reseña OdonTeck"></div>`
+    ).join('');
   }
 });

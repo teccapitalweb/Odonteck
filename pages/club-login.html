@@ -137,6 +137,12 @@
           <div class="fg"><label>WhatsApp</label><input type="tel" id="reg-phone" placeholder="+52 238 000 0000" /></div>
           <div class="fg"><label>Especialidad</label><input type="text" id="reg-spec" placeholder="Odontología general, Ortodoncia..." /></div>
           <div class="fg"><label>Contraseña</label><input type="password" id="reg-pass" placeholder="Mínimo 8 caracteres" /></div>
+          <div class="fg" style="margin-bottom:12px">
+            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;text-transform:none;font-size:13px;font-weight:400;color:var(--muted);letter-spacing:0">
+              <input type="checkbox" id="terms-check" style="width:16px;height:16px;margin-top:2px;accent-color:var(--primary);flex-shrink:0">
+              Acepto los <a href="../pages/contacto.html" style="color:var(--primary);font-weight:700;text-decoration:none">Términos y Condiciones</a> y la <a href="../pages/contacto.html" style="color:var(--primary);font-weight:700;text-decoration:none">Política de Privacidad</a> del Club Dental OdonTeck
+            </label>
+          </div>
           <button class="login-btn primary" id="regBtn" onclick="doRegister()"><i class="fa-solid fa-user-plus"></i> Crear cuenta y elegir plan</button>
           <div class="login-divider">o continúa con</div>
           <button class="login-btn google" onclick="doRegisterGoogle()">
@@ -254,7 +260,9 @@
       var name=document.getElementById('reg-name').value;
       var email=document.getElementById('reg-email').value;
       var phone=document.getElementById('reg-phone').value;
+      var terms=document.getElementById('terms-check').checked;
       if(!name||!email){showMsg('error','Completa al menos nombre y correo');return;}
+      if(!terms){showMsg('error','Debes aceptar los Términos y Condiciones del Club Dental OdonTeck');return;}
       showMsg('success','✓ ¡Cuenta creada! Redirigiendo al pago...');
       setTimeout(function(){goToCheckout(email)},1500);
     }

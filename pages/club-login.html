@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar sesión | Club Dental OdonTeck</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    .login-page{min-height:calc(100vh - 200px);display:flex;align-items:center;justify-content:center;padding:50px 20px;position:relative}
+    .login-page::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,rgba(127,211,255,.35),transparent 30%),radial-gradient(circle at 80% 80%,rgba(0,81,135,.06),transparent 30%),linear-gradient(180deg,#f7f9fc,#eef3f9);z-index:-1}
+    .login-card{width:100%;max-width:440px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:40px 32px;box-shadow:var(--shadow)}
+    .login-logo{text-align:center;margin-bottom:28px}
+    .login-logo img{width:72px;height:72px;border-radius:20px;margin:0 auto 14px;display:block;box-shadow:0 10px 26px rgba(0,0,0,.08)}
+    .login-logo h2{font-size:24px;font-weight:800}
+    .login-logo p{font-size:14px;color:var(--muted);margin-top:4px}
+    .plan-selected{background:var(--surface-soft);border:1px solid var(--line);border-radius:var(--radius-sm);padding:14px 18px;margin-bottom:24px;display:flex;align-items:center;gap:12px}
+    .plan-selected .plan-icon{width:42px;height:42px;border-radius:12px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+    .plan-selected .plan-info h4{font-size:14px;font-weight:700;color:var(--text)}.plan-selected .plan-info p{font-size:12px;color:var(--muted)}
+    .plan-selected .plan-price{margin-left:auto;font-size:18px;font-weight:800;color:var(--primary)}
+    .login-tabs{display:flex;gap:4px;background:var(--surface-soft);border-radius:999px;padding:4px;margin-bottom:24px}
+    .login-tab{flex:1;padding:11px;text-align:center;border-radius:999px;font-size:14px;font-weight:700;cursor:pointer;transition:.2s;color:var(--muted);border:none;background:none;font-family:'Inter',sans-serif}
+    .login-tab.active{background:#fff;color:var(--primary);box-shadow:0 2px 10px rgba(0,0,0,.06)}
+    .fg{margin-bottom:16px}
+    .fg label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
+    .fg input{width:100%;padding:13px 16px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--bg);font-size:15px;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border .2s}
+    .fg input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,81,135,.08)}
+    .fg input::placeholder{color:#b0bac8}
+    .login-btn{width:100%;min-height:52px;border-radius:999px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:.25s;border:none;display:flex;align-items:center;justify-content:center;gap:10px}
+    .login-btn.primary{background:var(--primary);color:#fff;box-shadow:0 16px 32px rgba(0,81,135,.18)}
+    .login-btn.primary:hover{background:var(--primary-2);transform:translateY(-2px)}
+    .login-btn.google{background:#fff;color:var(--text);border:1px solid var(--line);margin-top:12px}
+    .login-btn.google:hover{border-color:var(--primary);background:var(--surface-soft)}
+    .login-divider{text-align:center;color:var(--muted);font-size:12px;margin:18px 0;position:relative}
+    .login-divider::before,.login-divider::after{content:'';position:absolute;top:50%;width:38%;height:1px;background:var(--line)}
+    .login-divider::before{left:0}.login-divider::after{right:0}
+    .login-footer{text-align:center;margin-top:20px;font-size:14px;color:var(--muted)}
+    .login-footer a{color:var(--primary);font-weight:700;cursor:pointer;text-decoration:none}
+    .login-forgot{text-align:right;margin-top:-8px;margin-bottom:16px}
+    .login-forgot a{font-size:12px;color:var(--primary);font-weight:600;cursor:pointer;text-decoration:none}
+    .login-msg{padding:12px 16px;border-radius:var(--radius-sm);font-size:14px;font-weight:600;margin-bottom:16px;display:none;text-align:center}
+    .login-msg.error{background:#fef2f2;color:#dc2626}
+    .login-msg.success{background:#ecfdf5;color:#059669}
+    .form-section{display:none}.form-section.active{display:block}
+    .login-member{text-align:center;margin-top:20px;padding-top:20px;border-top:1px solid var(--line)}
+    .login-member p{font-size:13px;color:var(--muted);margin-bottom:10px}
+    .login-member a{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-weight:700;font-size:14px;text-decoration:none}
+
+    /* CHECKOUT SECTION */
+    .checkout-section{display:none;width:100%;max-width:900px}
+    .checkout-section.active{display:block}
+    .checkout-header{text-align:center;margin-bottom:24px}
+    .checkout-header h2{font-size:22px;font-weight:800}
+    .checkout-header p{font-size:14px;color:var(--muted);margin-top:4px}
+    .checkout-steps{display:flex;gap:8px;justify-content:center;margin-bottom:28px}
+    .checkout-step{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--muted)}
+    .checkout-step.done{color:var(--primary)}.checkout-step.done .step-num{background:var(--primary);color:#fff}
+    .checkout-step.current{color:var(--text)}.checkout-step.current .step-num{background:var(--primary);color:#fff}
+    .step-num{width:26px;height:26px;border-radius:50%;background:var(--surface-soft);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+    .step-arrow{color:var(--line);font-size:12px}
+    .checkout-frame{width:100%;height:700px;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);background:#fff}
+    .checkout-frame iframe{width:100%;height:100%;border:none}
+
+    @media(max-width:560px){.login-card{padding:28px 20px}.plan-selected{flex-wrap:wrap}.plan-selected .plan-price{margin-left:0;width:100%;text-align:center;margin-top:6px}.checkout-frame{height:500px}}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <a href="mailto:odontckconsul@gmail.com"><i class="fa fa-envelope"></i> odontckconsul@gmail.com</a>
+      <a href="https://wa.me/5212381479365" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> +52 238 147 9365</a>
+    </div>
+  </div>
+  <header class="site-header">
+    <nav class="navbar container">
+      <a href="../index.html" class="brand">
+        <img src="../assets/img/logo/logo.jpg" alt="Logo OdonTeck" />
+        <div><strong>OdonTeck</strong><span>Capacitación odontológica especializada</span></div>
+      </a>
+      <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="../index.html">Inicio</a></li>
+        <li><a href="cursos.html">Cursos</a></li>
+        <li><a href="club.html">⭐ Club Dental</a></li>
+        <li><a class="active" href="club-login.html">Iniciar sesión</a></li>
+        <li><a class="nav-cta" href="https://wa.me/5212381479365" target="_blank" rel="noopener">WhatsApp</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- STEP 1: LOGIN / REGISTER -->
+    <div class="login-page" id="step-auth">
+      <div class="login-card">
+        <div class="login-logo">
+          <img src="../assets/img/logo/logo.jpg" alt="OdonTeck" />
+          <h2>Club Dental</h2>
+          <p id="login-subtitle">Accede a tu contenido exclusivo</p>
+        </div>
+
+        <!-- PLAN BADGE (shows if coming from pricing) -->
+        <div class="plan-selected" id="planBadge" style="display:none">
+          <div class="plan-icon"><i class="fa-solid fa-crown"></i></div>
+          <div class="plan-info"><h4 id="planName">Plan Mensual</h4><p id="planDesc">Precio de fundador</p></div>
+          <div class="plan-price" id="planPrice">$199/mes</div>
+        </div>
+
+        <div class="login-tabs">
+          <button class="login-tab" id="tab-login" onclick="showForm('login')">Iniciar sesión</button>
+          <button class="login-tab active" id="tab-register" onclick="showForm('register')">Registrarse</button>
+        </div>
+
+        <div class="login-msg error" id="msgError"></div>
+        <div class="login-msg success" id="msgSuccess"></div>
+
+        <!-- LOGIN -->
+        <div class="form-section" id="form-login">
+          <div class="fg"><label>Correo electrónico</label><input type="email" id="login-email" placeholder="tu@email.com" /></div>
+          <div class="fg"><label>Contraseña</label><input type="password" id="login-pass" placeholder="••••••••" /></div>
+          <div class="login-forgot"><a onclick="showMsg('success','📧 Enlace de recuperación enviado a tu correo')">¿Olvidaste tu contraseña?</a></div>
+          <button class="login-btn primary" onclick="doLogin()"><i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión</button>
+          <div class="login-divider">o continúa con</div>
+          <button class="login-btn google" onclick="doLogin()">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.63-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 01-1.8 2.71v2.26h2.92a8.78 8.78 0 002.68-6.61z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.91-2.26c-.81.54-1.85.86-3.05.86-2.34 0-4.33-1.58-5.04-3.71H.96v2.33A8.99 8.99 0 009 18z"/><path fill="#FBBC05" d="M3.96 10.71A5.41 5.41 0 013.68 9c0-.59.1-1.17.28-1.71V4.96H.96A8.99 8.99 0 000 9c0 1.45.35 2.82.96 4.04l3-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.59C13.46.89 11.43 0 9 0A8.99 8.99 0 00.96 4.96l3 2.33C4.67 5.16 6.66 3.58 9 3.58z"/></svg>
+            Continuar con Google
+          </button>
+          <p class="login-footer">¿No tienes cuenta? <a onclick="showForm('register')">Regístrate aquí</a></p>
+        </div>
+
+        <!-- REGISTER -->
+        <div class="form-section active" id="form-register">
+          <div class="fg"><label>Nombre completo</label><input type="text" id="reg-name" placeholder="Dr. Juan Pérez" /></div>
+          <div class="fg"><label>Correo electrónico</label><input type="email" id="reg-email" placeholder="tu@email.com" /></div>
+          <div class="fg"><label>WhatsApp</label><input type="tel" id="reg-phone" placeholder="+52 238 000 0000" /></div>
+          <div class="fg"><label>Especialidad</label><input type="text" id="reg-spec" placeholder="Odontología general, Ortodoncia..." /></div>
+          <div class="fg"><label>Contraseña</label><input type="password" id="reg-pass" placeholder="Mínimo 8 caracteres" /></div>
+          <button class="login-btn primary" id="regBtn" onclick="doRegister()"><i class="fa-solid fa-user-plus"></i> Crear cuenta y elegir plan</button>
+          <div class="login-divider">o continúa con</div>
+          <button class="login-btn google" onclick="doRegisterGoogle()">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.63-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 01-1.8 2.71v2.26h2.92a8.78 8.78 0 002.68-6.61z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.91-2.26c-.81.54-1.85.86-3.05.86-2.34 0-4.33-1.58-5.04-3.71H.96v2.33A8.99 8.99 0 009 18z"/><path fill="#FBBC05" d="M3.96 10.71A5.41 5.41 0 013.68 9c0-.59.1-1.17.28-1.71V4.96H.96A8.99 8.99 0 000 9c0 1.45.35 2.82.96 4.04l3-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.59C13.46.89 11.43 0 9 0A8.99 8.99 0 00.96 4.96l3 2.33C4.67 5.16 6.66 3.58 9 3.58z"/></svg>
+            Registrarme con Google
+          </button>
+          <p class="login-footer">¿Ya tienes cuenta? <a onclick="showForm('login')">Inicia sesión</a></p>
+        </div>
+
+        <div class="login-member">
+          <p>¿Aún no conoces el Club?</p>
+          <a href="club.html"><i class="fa-solid fa-arrow-left"></i> Ver planes y beneficios</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: CHECKOUT (embedded) -->
+    <div class="login-page" id="step-checkout" style="display:none">
+      <div class="checkout-section active">
+        <div class="checkout-header">
+          <div class="checkout-steps">
+            <div class="checkout-step done"><span class="step-num"><i class="fa-solid fa-check" style="font-size:10px"></i></span> Registro</div>
+            <span class="step-arrow">→</span>
+            <div class="checkout-step current"><span class="step-num">2</span> Pago</div>
+            <span class="step-arrow">→</span>
+            <div class="checkout-step"><span class="step-num">3</span> Acceso</div>
+          </div>
+          <h2>Completa tu pago</h2>
+          <p>Pago seguro procesado por Shopify. Después del pago tendrás acceso inmediato al Club.</p>
+        </div>
+        <div class="checkout-frame">
+          <iframe id="checkoutFrame" src=""></iframe>
+        </div>
+        <p style="text-align:center;margin-top:16px;font-size:13px;color:var(--muted)">
+          ¿Ya pagaste? <a href="club-miembro.html" style="color:var(--primary);font-weight:700;text-decoration:none">Ir al Club Dental →</a>
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div><div class="brand footer-brand"><img src="../assets/img/logo/logo.jpg" alt="Logo OdonTeck" /><div><strong>OdonTeck</strong><span>Capacitación odontológica especializada</span></div></div></div>
+      <div><h3>Secciones</h3><ul><li><a href="cursos.html">Cursos</a></li><li><a href="club.html">Club Dental</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
+      <div><h3>Contacto</h3><ul><li><a href="mailto:odontckconsul@gmail.com">odontckconsul@gmail.com</a></li><li><a href="https://wa.me/5212381479365" target="_blank">+52 238 147 9365</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">© 2025 OdonTeck. Todos los derechos reservados.</div>
+  </footer>
+
+  <script>
+    // Hamburger
+    var hamburger=document.getElementById('hamburger'),navLinks=document.getElementById('navLinks');
+    if(hamburger)hamburger.addEventListener('click',function(){navLinks.classList.toggle('open')});
+
+    // Shopify checkout URLs
+    var checkoutURLs = {
+      mensual: 'https://pfueck-wm.myshopify.com/products/membresia-mensual-club-dental-odonteck',
+      anual: 'https://pfueck-wm.myshopify.com/products/membresia-anual-club-dental-odonteck'
+    };
+
+    // Detect plan from URL
+    var params = new URLSearchParams(window.location.search);
+    var selectedPlan = params.get('plan') || '';
+
+    // Show plan badge if coming from pricing
+    if(selectedPlan){
+      document.getElementById('planBadge').style.display='flex';
+      document.getElementById('login-subtitle').textContent='Regístrate para activar tu membresía';
+      if(selectedPlan==='anual'){
+        document.getElementById('planName').textContent='Plan Anual';
+        document.getElementById('planDesc').textContent='Ahorras $1,200 al año (40% OFF)';
+        document.getElementById('planPrice').textContent='$1,788/año';
+      } else {
+        document.getElementById('planName').textContent='Plan Mensual';
+        document.getElementById('planDesc').textContent='Precio de fundador';
+        document.getElementById('planPrice').textContent='$199/mes';
+      }
+      // Default to register tab
+      showForm('register');
+    } else {
+      // No plan = returning member, show login
+      showForm('login');
+    }
+
+    // Form tabs
+    function showForm(form){
+      document.querySelectorAll('.form-section').forEach(function(f){f.classList.remove('active')});
+      document.getElementById('form-'+form).classList.add('active');
+      document.getElementById('tab-login').classList.toggle('active', form==='login');
+      document.getElementById('tab-register').classList.toggle('active', form==='register');
+      hideMsg();
+    }
+
+    function showMsg(type,text){
+      hideMsg();
+      var el=document.getElementById(type==='error'?'msgError':'msgSuccess');
+      el.textContent=text;
+      el.style.display='block';
+    }
+    function hideMsg(){
+      document.getElementById('msgError').style.display='none';
+      document.getElementById('msgSuccess').style.display='none';
+    }
+
+    // Login - returning member goes to dashboard
+    function doLogin(){
+      var email=document.getElementById('login-email').value;
+      if(!email){showMsg('error','Ingresa tu correo electrónico');return;}
+      showMsg('success','✓ Iniciando sesión...');
+      setTimeout(function(){window.location.href='club-miembro.html'},1200);
+    }
+
+    // Register - new member goes to checkout
+    function doRegister(){
+      var name=document.getElementById('reg-name').value;
+      var email=document.getElementById('reg-email').value;
+      var phone=document.getElementById('reg-phone').value;
+      if(!name||!email){showMsg('error','Completa al menos nombre y correo');return;}
+      showMsg('success','✓ ¡Cuenta creada! Redirigiendo al pago...');
+      setTimeout(function(){goToCheckout(email)},1500);
+    }
+
+    function doRegisterGoogle(){
+      showMsg('success','✓ Cuenta con Google creada. Redirigiendo al pago...');
+      setTimeout(function(){goToCheckout('')},1500);
+    }
+
+    function goToCheckout(email){
+      var plan = selectedPlan || 'mensual';
+      var url = checkoutURLs[plan] || checkoutURLs.mensual;
+      // Redirect to Shopify product page (full page, not popup)
+      if(email) url += '?checkout[email]=' + encodeURIComponent(email);
+      window.location.href = url;
+    }
+
+    // Enter key
+    document.addEventListener('keydown',function(e){
+      if(e.key==='Enter'){
+        if(document.getElementById('form-login').classList.contains('active'))doLogin();
+        else doRegister();
+      }
+    });
+  </script>
+</body>
+</html>

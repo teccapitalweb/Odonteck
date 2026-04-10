@@ -107,6 +107,7 @@
         <li><a href="galeria.html">Galería</a></li>
         <li><a href="contacto.html">Contacto</a></li>
         <li><a class="active" href="club.html">⭐ Club Dental</a></li>
+        <li><a href="club-login.html" style="font-weight:700">Iniciar sesión</a></li>
         <li><a class="nav-cta" href="https://wa.me/5212381479365?text=Hola%2C%20quiero%20info%20del%20Club%20Dental" target="_blank" rel="noopener">WhatsApp</a></li>
       </ul>
     </nav>
@@ -203,7 +204,7 @@
             <li><i class="fa-solid fa-check"></i>Certificado mensual</li>
             <li><i class="fa-solid fa-check"></i>Biblioteca completa</li>
           </ul>
-          <div id="shopify-btn-mensual"></div>
+          <a href="club-login.html?plan=mensual" class="price-btn outline" style="display:block;width:100%;text-align:center;text-decoration:none">Elegir plan mensual — $199/mes</a>
           <p class="price-detail">3 meses mínimo · Después cancela cuando quieras</p>
         </div>
         <div class="price-card featured">
@@ -223,7 +224,7 @@
             <li><i class="fa-solid fa-star" style="color:#d97706"></i><strong>Acceso anticipado</strong> a contenido</li>
             <li><i class="fa-solid fa-star" style="color:#d97706"></i><strong>1 mentoría grupal extra</strong> al mes</li>
           </ul>
-          <div id="shopify-btn-anual"></div>
+          <a href="club-login.html?plan=anual" class="price-btn primary" style="display:block;width:100%;text-align:center;text-decoration:none;color:#fff">Elegir plan anual — Ahorra $1,200</a>
           <p class="price-detail">Pago único de $1,788 · Renueva cada año</p>
         </div>
       </div>
@@ -278,89 +279,5 @@
     scrollTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
   </script>
 
-  <!-- SHOPIFY BUY BUTTONS -->
-  <script type="text/javascript">
-  (function () {
-    var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
-    if (window.ShopifyBuy) {
-      if (window.ShopifyBuy.UI) { ShopifyBuyInit(); } else { loadScript(); }
-    } else { loadScript(); }
-    function loadScript() {
-      var script = document.createElement('script');
-      script.async = true;
-      script.src = scriptURL;
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
-      script.onload = ShopifyBuyInit;
-    }
-    function ShopifyBuyInit() {
-      var client = ShopifyBuy.buildClient({
-        domain: 'pfueck-wm.myshopify.com',
-        storefrontAccessToken: '4c5d8f6909eccf2964cbb97e0ee2187e',
-      });
-      ShopifyBuy.UI.onReady(client).then(function (ui) {
-        /* === PLAN MENSUAL $199 === */
-        ui.createComponent('product', {
-          id: '8462765260854',
-          node: document.getElementById('shopify-btn-mensual'),
-          moneyFormat: '%24%20%7B%7Bamount%7D%7D',
-          options: {
-            "product": {
-              "styles": {
-                "product": {"@media (min-width: 601px)": {"max-width": "100%","margin-left": "0","margin-bottom": "0"}},
-                "button": {
-                  "font-family": "Inter, sans-serif","font-weight": "700","font-size": "15px",
-                  "padding-top": "14px","padding-bottom": "14px",
-                  "background-color": "#005187",
-                  ":hover": {"background-color": "#0c74c4"},
-                  ":focus": {"background-color": "#0c74c4"},
-                  "border-radius": "999px","width": "100%"
-                }
-              },
-              "contents": {"img": false,"title": false,"price": false,"description": false,"options": false},
-              "buttonDestination": "checkout",
-              "text": {"button": "Elegir plan mensual — $199/mes"}
-            },
-            "cart": {
-              "styles": {"button": {"background-color": "#005187",":hover": {"background-color": "#0c74c4"},":focus": {"background-color": "#0c74c4"},"border-radius": "999px","font-family": "Inter, sans-serif","font-weight": "700"}},
-              "text": {"total": "Subtotal","button": "Pagar"}
-            },
-            "toggle": {"styles": {"toggle": {"background-color": "#005187",":hover": {"background-color": "#0c74c4"},":focus": {"background-color": "#0c74c4"}}}}
-          }
-        });
-        /* === PLAN ANUAL $1,788 — REEMPLAZA EL ID CUANDO CREES EL PRODUCTO === */
-        /* 
-        ui.createComponent('product', {
-          id: 'AQUI_VA_EL_ID_DEL_PRODUCTO_ANUAL',
-          node: document.getElementById('shopify-btn-anual'),
-          moneyFormat: '%24%20%7B%7Bamount%7D%7D',
-          options: {
-            "product": {
-              "styles": {
-                "product": {"@media (min-width: 601px)": {"max-width": "100%","margin-left": "0","margin-bottom": "0"}},
-                "button": {
-                  "font-family": "Inter, sans-serif","font-weight": "700","font-size": "15px",
-                  "padding-top": "14px","padding-bottom": "14px",
-                  "background-color": "#005187",
-                  ":hover": {"background-color": "#0c74c4"},
-                  ":focus": {"background-color": "#0c74c4"},
-                  "border-radius": "999px","width": "100%"
-                }
-              },
-              "contents": {"img": false,"title": false,"price": false,"description": false,"options": false},
-              "buttonDestination": "checkout",
-              "text": {"button": "Elegir plan anual — Ahorra $1,200"}
-            },
-            "cart": {
-              "styles": {"button": {"background-color": "#005187",":hover": {"background-color": "#0c74c4"},":focus": {"background-color": "#0c74c4"},"border-radius": "999px","font-family": "Inter, sans-serif","font-weight": "700"}},
-              "text": {"total": "Subtotal","button": "Pagar"}
-            },
-            "toggle": {"styles": {"toggle": {"background-color": "#005187",":hover": {"background-color": "#0c74c4"},":focus": {"background-color": "#0c74c4"}}}}
-          }
-        });
-        */
-      });
-    }
-  })();
-  </script>
 </body>
 </html>

@@ -1,394 +1,281 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Club Dental OdonTeck</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root{--blue:#1A56DB;--blue-dark:#1344B0;--blue-light:#EBF0FF;--blue-50:#F5F8FF;--navy:#111827;--dark:#1F2937;--text:#374151;--muted:#6B7280;--light:#9CA3AF;--white:#FFFFFF;--bg:#F3F4F6;--border:#E5E7EB;--green:#059669;--green-bg:#ECFDF5;--green-light:#D1FAE5;--red:#DC2626;--red-bg:#FEF2F2;--amber:#D97706;--amber-bg:#FFFBEB;--purple:#7C3AED;--purple-bg:#F5F3FF;--sans:'Plus Jakarta Sans',system-ui,sans-serif}
-*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:var(--sans);background:var(--white);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-.page{display:none}.page.active{display:block}
-.reveal{opacity:0;transform:translateY(20px);transition:all .5s cubic-bezier(.16,1,.3,1)}.reveal.visible{opacity:1;transform:none}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 22px;border-radius:10px;font-size:14px;font-weight:600;text-decoration:none;transition:all .25s;border:none;cursor:pointer;font-family:var(--sans)}.btn-blue{background:var(--blue);color:var(--white)}.btn-blue:hover{background:var(--blue-dark);transform:translateY(-1px);box-shadow:0 6px 20px rgba(26,86,219,.25)}.btn-lg{padding:14px 32px;font-size:15px;border-radius:12px}.btn-outline{border:1.5px solid var(--border);color:var(--navy);background:var(--white)}.btn-outline:hover{border-color:var(--blue);color:var(--blue)}
-.btn-red{background:var(--red);color:white}.btn-red:hover{background:#B91C1C}
-.btn-green{background:var(--green);color:white}.btn-green:hover{background:#047857}
-
-/* NAV LANDING */
-.nav-l{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between}
-.nl-logo{display:flex;align-items:center;gap:8px;text-decoration:none;cursor:pointer}.nl-icon{width:30px;height:30px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:13px}.nl-logo span{font-size:14px;font-weight:700;color:var(--navy)}
-.nl-r{display:flex;align-items:center;gap:16px}.nl-r a{font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;cursor:pointer}.nl-r a:hover{color:var(--navy)}
-.ubar{background:var(--navy);color:var(--white);text-align:center;padding:8px 16px;font-size:12px;font-weight:500;position:fixed;top:60px;left:0;right:0;z-index:99}.ubar strong{color:#FBBF24}
-
-/* HERO */
-.l-hero{padding:136px 28px 64px;max-width:1000px;margin:0 auto;text-align:center}
-.l-pain-badge{display:inline-block;padding:6px 16px;background:var(--red-bg);color:var(--red);font-size:12px;font-weight:600;border-radius:16px;margin-bottom:20px}
-.l-hero h1{font-size:clamp(30px,4.5vw,46px);font-weight:800;line-height:1.15;letter-spacing:-.4px;color:var(--navy);max-width:750px;margin:0 auto 16px}.l-hero h1 span{color:var(--blue)}
-.l-hero>p{font-size:16px;color:var(--muted);max-width:580px;margin:0 auto 28px;line-height:1.65}
-.l-acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
-.l-micro{display:flex;justify-content:center;gap:20px;font-size:12px;color:var(--light);flex-wrap:wrap}.l-micro span{display:flex;align-items:center;gap:4px}
-.ck{width:14px;height:14px;color:var(--green)}
-
-/* SECTIONS */
-.l-sec{padding:56px 28px;max-width:1000px;margin:0 auto}
-.l-sec-bg{padding:56px 28px;background:var(--bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.l-sh{text-align:center;margin-bottom:36px}.l-sh h2{font-size:clamp(24px,3vw,32px);font-weight:800;color:var(--navy);margin-bottom:6px}.l-sh p{font-size:14px;color:var(--muted)}
-.l-pgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:1000px;margin:0 auto}
-.l-pc{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:22px;display:flex;gap:14px;transition:all .3s}.l-pc:hover{box-shadow:0 4px 16px rgba(0,0,0,.04)}
-.l-pe{font-size:24px;width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.l-pc h3{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:3px}.l-pc p{font-size:12px;color:var(--muted);line-height:1.55}.l-pc .sol{font-size:11px;color:var(--blue);font-weight:600;margin-top:6px}
-.ba-g{display:grid;grid-template-columns:1fr 48px 1fr;gap:0;align-items:stretch;max-width:1000px;margin:0 auto}.ba-c{border-radius:14px;padding:24px 22px}.ba-n{background:var(--red-bg)}.ba-y{background:var(--green-bg)}.ba-c h3{font-size:14px;font-weight:700;margin-bottom:14px}.ba-n h3{color:var(--red)}.ba-y h3{color:var(--green)}.ba-i{font-size:13px;padding:6px 0;line-height:1.5}.ba-n .ba-i{color:#7F1D1D}.ba-y .ba-i{color:#14532D}.ba-arr{display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--blue);font-weight:700}
-.l-gg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:1000px;margin:0 auto}.l-gc{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all .3s}.l-gc:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.05);border-color:var(--blue)}
-.l-gi{height:140px;overflow:hidden}.l-gi img{width:100%;height:100%;object-fit:cover;transition:transform .4s}.l-gc:hover .l-gi img{transform:scale(1.04)}
-.l-gb{padding:18px}.l-gt{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;margin-bottom:8px}.gt-w{background:var(--blue-light);color:var(--blue)}.gt-m{background:var(--amber-bg);color:var(--amber)}.gt-a{background:var(--green-bg);color:var(--green)}
-.l-gb h3{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px}.l-gb p{font-size:12px;color:var(--muted);line-height:1.55}.l-gb .why{font-size:11px;color:var(--blue);font-weight:600;margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
-.l-test{padding:56px 28px;background:var(--navy);text-align:center}.l-test .lbl{font-size:11px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px}.l-test blockquote{font-size:clamp(18px,2.5vw,24px);color:var(--white);font-weight:500;line-height:1.5;max-width:650px;margin:0 auto 20px;font-style:italic}.l-test .au{font-size:13px;color:rgba(255,255,255,.6);font-weight:600}.l-test .ro{font-size:11px;color:rgba(255,255,255,.3);margin-top:3px}
-.l-scar{padding:36px 28px;background:var(--amber-bg);text-align:center}.l-scar h3{font-size:20px;font-weight:800;color:#92400E;margin-bottom:6px}.l-scar p{font-size:14px;color:#78350F}.sn{display:flex;justify-content:center;gap:12px;margin:16px 0}.sn-b{background:var(--white);padding:10px 16px;border-radius:10px;text-align:center;min-width:72px;box-shadow:0 2px 8px rgba(0,0,0,.04)}.sn-b .n{font-size:24px;font-weight:800;color:var(--red)}.sn-b .l{font-size:10px;color:var(--muted)}
-.l-pr{padding:56px 28px}.l-pr-in{max-width:480px;margin:0 auto}.l-prc{background:var(--white);border:2px solid var(--blue);border-radius:18px;padding:32px 28px;position:relative;overflow:hidden}.l-prc-rib{position:absolute;top:14px;right:-30px;background:var(--blue);color:white;padding:3px 36px;font-size:10px;font-weight:700;transform:rotate(45deg)}.l-prc-top{text-align:center;padding-bottom:20px;border-bottom:1px solid var(--border);margin-bottom:20px}.l-prc-old{font-size:15px;color:var(--light);text-decoration:line-through}.l-prc-amt{font-size:48px;font-weight:800;color:var(--navy)}.l-prc-amt span{font-size:16px;font-weight:500;color:var(--muted)}.l-prc-lbl{font-size:12px;color:var(--blue);font-weight:600;margin-top:4px}.l-prc ul{list-style:none;margin-bottom:24px}.l-prc li{display:flex;align-items:center;gap:8px;padding:8px 0;font-size:13px;border-bottom:1px solid var(--bg)}.l-prc li svg{width:16px;height:16px;color:var(--blue);flex-shrink:0}.l-prc-btn{display:block;width:100%;padding:14px;background:var(--blue);color:white;font-size:15px;font-weight:700;border-radius:10px;border:none;cursor:pointer;font-family:var(--sans);transition:all .25s}.l-prc-btn:hover{background:var(--blue-dark)}.l-prc-note{text-align:center;font-size:11px;color:var(--light);margin-top:10px}
-.faq-i{border-bottom:1px solid var(--border);padding:14px 0;cursor:pointer;max-width:700px}.faq-q{display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:600;color:var(--navy);gap:12px}.faq-q svg{width:16px;height:16px;color:var(--blue);transition:transform .3s;flex-shrink:0}.faq-i.open .faq-q svg{transform:rotate(45deg)}.faq-a{font-size:13px;color:var(--muted);line-height:1.65;max-height:0;overflow:hidden;transition:all .3s}.faq-i.open .faq-a{max-height:200px;padding-top:8px}
-.l-fin{padding:64px 28px;text-align:center;background:var(--blue-50)}.l-fin h2{font-size:clamp(22px,3.5vw,34px);font-weight:800;color:var(--navy);margin-bottom:10px}.l-fin p{font-size:15px;color:var(--muted);margin-bottom:24px}
-.l-foot{padding:20px 28px;text-align:center;font-size:11px;color:var(--light);border-top:1px solid var(--border)}
-
-/* LOGIN */
-.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:80px 20px 40px}.login-box{width:100%;max-width:380px;background:var(--white);border:1px solid var(--border);border-radius:18px;padding:36px 28px}
-.lb-logo{text-align:center;margin-bottom:20px}.lb-logo div{width:44px;height:44px;background:var(--blue);border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:18px;margin:0 auto 10px}
-.login-box h2{font-size:22px;font-weight:800;color:var(--navy);text-align:center;margin-bottom:4px}.login-box .sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:24px}
-.fg{margin-bottom:14px}.fg label{font-size:11px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.3px}.fg input,.fg select,.fg textarea{width:100%;padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:var(--bg);font-size:14px;font-family:var(--sans);color:var(--navy);outline:none;transition:border .2s}.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue)}.fg textarea{resize:vertical;min-height:60px}
-.lb-btn{width:100%;padding:12px;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);transition:all .2s;margin-top:4px}.lb-btn.blue{background:var(--blue);color:white}.lb-btn.blue:hover{background:var(--blue-dark)}.lb-btn.wh{background:var(--white);color:var(--navy);border:1px solid var(--border);margin-top:10px}.lb-btn.wh:hover{border-color:var(--blue)}
-.lb-div{text-align:center;color:var(--light);font-size:11px;margin:14px 0;position:relative}.lb-div::before,.lb-div::after{content:'';position:absolute;top:50%;width:38%;height:1px;background:var(--border)}.lb-div::before{left:0}.lb-div::after{right:0}
-.lb-foot{text-align:center;margin-top:16px;font-size:12px;color:var(--muted)}.lb-foot a{color:var(--blue);cursor:pointer;text-decoration:none;font-weight:600}
-
-/* DASHBOARD */
-.d-top{position:fixed;top:0;left:0;right:0;z-index:100;height:56px;background:var(--white);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px}
-.dt-l{display:flex;align-items:center;gap:10px}.dt-logo{width:28px;height:28px;background:var(--blue);border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:12px}.dt-l>span{font-size:14px;font-weight:700;color:var(--navy)}.dt-badge{padding:2px 8px;background:var(--green-bg);color:var(--green);font-size:10px;font-weight:600;border-radius:10px}
-.dt-r{display:flex;align-items:center;gap:12px}.dt-bell{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;font-size:14px;background:var(--white)}.dt-bell .dot{position:absolute;top:4px;right:4px;width:7px;height:7px;background:var(--red);border-radius:50%;border:2px solid white}
-.dt-u{display:flex;align-items:center;gap:6px;cursor:pointer;padding:3px 6px;border-radius:8px}.dt-u:hover{background:var(--bg)}.dt-av{width:28px;height:28px;background:var(--blue-light);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--blue)}.dt-nm{font-size:12px;font-weight:600;color:var(--navy)}.dt-pl{font-size:10px;color:var(--muted)}
-.dt-out{font-size:11px;color:var(--red);cursor:pointer;font-weight:600;padding:4px 8px;border-radius:6px}.dt-out:hover{background:var(--red-bg)}
-
-.d-lay{display:grid;grid-template-columns:210px 1fr 270px;gap:0;min-height:100vh;padding-top:56px}
-.d-side{background:var(--white);border-right:1px solid var(--border);padding:14px 10px;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
-.ds-lb{font-size:10px;font-weight:600;color:var(--light);text-transform:uppercase;letter-spacing:.5px;padding:0 10px;margin:12px 0 5px}
-.ds-lk{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .12s;text-decoration:none}.ds-lk:hover{background:var(--bg);color:var(--navy)}.ds-lk.act{background:var(--blue-light);color:var(--blue);font-weight:600}
-.ds-bd{margin-left:auto;padding:1px 6px;border-radius:7px;font-size:9px;font-weight:700}.sb-n{background:var(--red);color:white}.sb-c{background:var(--bg);color:var(--muted)}
-
-.d-main{padding:18px;overflow-y:auto;background:var(--bg)}
-.d-wel{background:linear-gradient(135deg,#1A56DB,#3B82F6);border-radius:14px;padding:20px 22px;color:white;margin-bottom:14px;position:relative;overflow:hidden}
-.d-wel::after{content:'';position:absolute;top:-30px;right:-30px;width:140px;height:140px;background:rgba(255,255,255,.05);border-radius:50%}.d-wel h1{font-size:18px;font-weight:700;margin-bottom:3px}.d-wel p{font-size:12px;opacity:.75;margin-bottom:12px}
-.d-ws{display:flex;gap:10px;flex-wrap:wrap}.d-w{background:rgba(255,255,255,.12);padding:7px 12px;border-radius:8px}.d-w .n{font-size:16px;font-weight:800}.d-w .l{font-size:9px;opacity:.6}
-
-.dc{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px}
-.dc-h{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}.dc-h h2{font-size:13px;font-weight:700;color:var(--navy)}.dc-h .ht{padding:2px 7px;border-radius:5px;font-size:9px;font-weight:600}.ht-n{background:var(--green-bg);color:var(--green)}
-.dc-b{padding:10px 14px}
-
-.ci{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--bg);align-items:center;cursor:pointer;transition:all .12s}.ci:last-child{border-bottom:none}.ci:hover{opacity:.8}
-.ct{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}.ct.vid{background:#FEE2E2}.ct.pdf{background:#FEF3C7}.ct.live{background:var(--blue-light)}.ct.cert{background:var(--purple-bg)}
-.ci-i{flex:1;min-width:0}.ci-i h4{font-size:12px;font-weight:600;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ci-i p{font-size:10px;color:var(--muted)}
-.ci-m{display:flex;align-items:center;gap:4px;flex-shrink:0}.cb{padding:2px 7px;border-radius:5px;font-size:8px;font-weight:600}.cb-nw{background:var(--green-bg);color:var(--green)}.cb-sn{background:var(--bg);color:var(--light)}.cb-dl{background:var(--blue-light);color:var(--blue)}.ci-dr{font-size:9px;color:var(--light)}
-
-.d-mt{display:flex;gap:3px;padding:8px 14px;border-bottom:1px solid var(--border)}.mt{padding:4px 12px;border-radius:5px;font-size:10px;font-weight:600;cursor:pointer;color:var(--muted);transition:all .15s}.mt:hover{background:var(--bg)}.mt.act{background:var(--blue-light);color:var(--blue)}
-
-.d-right{background:var(--white);border-left:1px solid var(--border);padding:14px 10px;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
-.dr-live{background:linear-gradient(135deg,var(--navy),var(--dark));border-radius:10px;padding:14px;margin-bottom:8px;color:white}.dr-live h3{font-size:11px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:4px}
-.dr-pulse{width:6px;height:6px;background:var(--red);border-radius:50%;animation:pulse 1.5s infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.dr-live .ti{font-size:13px;font-weight:700;margin-bottom:2px}.dr-live .me{font-size:10px;opacity:.5;margin-bottom:10px}
-.dr-cd{display:flex;gap:5px;margin-bottom:10px}.lcd{background:rgba(255,255,255,.1);padding:5px 8px;border-radius:5px;text-align:center;flex:1}.lcd .n{font-size:16px;font-weight:800}.lcd .l{font-size:7px;opacity:.4;text-transform:uppercase}
-.dr-btn{display:block;width:100%;padding:7px;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--sans);text-align:center;transition:all .2s;margin-bottom:4px}
-.dr-wa{background:var(--green-bg);border:1px solid var(--green-light);border-radius:10px;padding:12px;margin-bottom:8px}.dr-wa h3{font-size:11px;font-weight:700;color:var(--green);margin-bottom:3px}.dr-wa p{font-size:10px;color:#14532D;margin-bottom:6px}
-.dr-disc{background:var(--amber-bg);border:1px solid rgba(217,119,6,.12);border-radius:10px;padding:12px;margin-bottom:8px}.dr-disc h3{font-size:11px;font-weight:700;color:#92400E;margin-bottom:3px}.dr-disc p{font-size:10px;color:#78350F;margin-bottom:6px}
-.dr-prog{margin-bottom:6px;display:flex;align-items:center;gap:6px}.dr-prog .lb{font-size:10px;color:var(--muted);flex:1}.dr-prog .bar{width:70px;height:4px;background:var(--border);border-radius:2px;overflow:hidden}.dr-prog .fill{height:100%;border-radius:2px}.dr-prog .vl{font-size:10px;font-weight:700;color:var(--navy);min-width:24px;text-align:right}
-.dr-cert{background:var(--purple-bg);border:1px solid rgba(124,58,237,.1);border-radius:10px;padding:12px;margin-bottom:8px}.dr-cert h3{font-size:11px;font-weight:700;color:var(--purple);margin-bottom:3px}.dr-cert p{font-size:10px;color:#5B21B6;margin-bottom:6px}
-.dr-acc{background:var(--bg);border-radius:10px;padding:12px;margin-bottom:8px}.dr-acc h3{font-size:11px;font-weight:700;color:var(--navy);margin-bottom:6px}.dr-row{display:flex;justify-content:space-between;padding:3px 0;font-size:10px}.dr-row .rl{color:var(--muted)}.dr-row .rv{font-weight:600;color:var(--navy)}.dr-row .rv.g{color:var(--green)}
-
-/* VIDEO MODAL */
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}
-.modal-box{background:var(--white);border-radius:16px;max-width:720px;width:100%;overflow:hidden;animation:mIn .3s ease}@keyframes mIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
-.modal-video{position:relative;aspect-ratio:16/9;background:black}
-.modal-video iframe{width:100%;height:100%;border:none}
-.modal-close{position:absolute;top:8px;right:8px;width:32px;height:32px;background:rgba(0,0,0,.6);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:16px;cursor:pointer;border:none;z-index:10}
-.modal-info{padding:16px 20px}.modal-info h3{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:4px}.modal-info p{font-size:13px;color:var(--muted);margin-bottom:10px}
-
-/* ACCOUNT SECTIONS */
-.acc-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:14px}
-.acc-card h2{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.acc-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--bg);font-size:13px}
-.acc-row:last-child{border-bottom:none}
-.acc-row .al{color:var(--muted)}.acc-row .av{font-weight:600;color:var(--navy)}.acc-row .av.green{color:var(--green)}.acc-row .av.red{color:var(--red)}
-.acc-row .edit-btn{font-size:11px;color:var(--blue);cursor:pointer;font-weight:600;padding:4px 10px;border-radius:6px;border:1px solid var(--blue-light);background:var(--blue-50)}
-.acc-row .edit-btn:hover{background:var(--blue-light)}
-
-.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--bg)}
-.toggle-row span{font-size:13px;color:var(--text)}
-.toggle{width:40px;height:22px;border-radius:11px;background:var(--border);cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
-.toggle.on{background:var(--blue)}
-.toggle::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:white;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.1)}
-.toggle.on::after{left:21px}
-
-/* TOAST */
-.toast{position:fixed;bottom:24px;right:24px;background:var(--navy);color:white;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:500;z-index:300;transform:translateY(80px);opacity:0;transition:all .3s}.toast.show{transform:translateY(0);opacity:1}
-
-@media(max-width:1100px){.d-lay{grid-template-columns:1fr}.d-side,.d-right{display:none}}
-@media(max-width:900px){.l-pgrid,.l-gg{grid-template-columns:1fr}.ba-g{grid-template-columns:1fr;gap:12px}.ba-arr{transform:rotate(90deg)}.nl-r a:not(.btn){display:none}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Club Dental OdonTeck | Membresía exclusiva para dentistas</title>
+  <meta name="description" content="Únete al Club Dental OdonTeck: casos clínicos semanales, sesiones en vivo, comunidad privada y descuentos exclusivos." />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    .club-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+    .club-badge.red{background:#fef2f2;color:#dc2626}
+    .club-hero{padding:74px 0 50px;position:relative;overflow:hidden}
+    .club-hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 18%,rgba(127,211,255,.55),transparent 24%),radial-gradient(circle at 82% 18%,rgba(0,81,135,.12),transparent 28%),linear-gradient(135deg,#fbfdff 0%,#e8f1fb 55%,#f6faff 100%);z-index:-2}
+    .club-hero h1{font-size:clamp(2.4rem,5vw,4.2rem);line-height:1.02;letter-spacing:-.05em;max-width:18ch}
+    .club-hero h1 span{color:var(--primary)}
+    .pain-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .pain-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);padding:24px;display:flex;gap:16px;transition:.3s}
+    .pain-card:hover{box-shadow:var(--shadow);transform:translateY(-3px)}
+    .pain-emoji{font-size:24px;width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .pain-card h3{font-size:15px;font-weight:700;margin-bottom:4px}
+    .pain-card p{font-size:13px;color:var(--muted);line-height:1.6}
+    .pain-card .sol{font-size:12px;color:var(--primary);font-weight:700;margin-top:8px}
+    .ba-grid{display:grid;grid-template-columns:1fr 50px 1fr;gap:0;align-items:stretch}
+    .ba-col{border-radius:var(--radius-sm);padding:28px 24px}
+    .ba-no{background:#fef2f2;border:1px solid rgba(220,38,38,.08)}.ba-yes{background:#ecfdf5;border:1px solid rgba(5,150,105,.08)}
+    .ba-col h3{font-size:15px;font-weight:800;margin-bottom:16px}.ba-no h3{color:#dc2626}.ba-yes h3{color:#059669}
+    .ba-item{font-size:14px;padding:7px 0;line-height:1.55}.ba-no .ba-item{color:#7f1d1d}.ba-yes .ba-item{color:#14532d}
+    .ba-arrow{display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--primary);font-weight:800}
+    .get-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .get-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:.3s}
+    .get-card:hover{box-shadow:var(--shadow);transform:translateY(-4px)}
+    .get-img{height:180px;overflow:hidden}.get-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+    .get-card:hover .get-img img{transform:scale(1.04)}
+    .get-body{padding:22px}
+    .get-tag{display:inline-block;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;margin-bottom:10px}
+    .gt-w{background:#edf5fd;color:var(--primary)}.gt-m{background:#fffbeb;color:#d97706}.gt-a{background:#ecfdf5;color:#059669}
+    .get-body h3{font-size:17px;font-weight:800;margin-bottom:6px}.get-body p{font-size:13px;color:var(--muted);line-height:1.6}
+    .get-body .why{font-size:12px;color:var(--primary);font-weight:700;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+    .cal-item{display:grid;grid-template-columns:80px 1fr auto;gap:16px;padding:18px 0;border-bottom:1px solid var(--line);align-items:center;transition:.2s}
+    .cal-item:hover{padding-left:8px;background:rgba(0,81,135,.03);border-radius:14px;margin:0 -8px;padding-right:8px}
+    .cal-item:last-child{border-bottom:none}
+    .cal-day{font-size:11px;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:.04em}
+    .cal-title{font-size:15px;font-weight:700}.cal-desc{font-size:12px;color:var(--muted);margin-top:2px}
+    .cal-badge{padding:5px 14px;border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap}
+    .cb-v{background:#fef2f2;color:#dc2626}.cb-l{background:#edf5fd;color:var(--primary)}.cb-p{background:#fffbeb;color:#92400e}.cb-n{background:#ecfdf5;color:#059669}
+    .pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:820px;margin:0 auto}
+    .price-card{background:#fff;border:2px solid var(--line);border-radius:var(--radius);padding:36px 28px;text-align:center;position:relative;transition:.3s}
+    .price-card:hover{box-shadow:var(--shadow);transform:translateY(-4px)}
+    .price-card.featured{border-color:var(--primary);box-shadow:0 20px 50px rgba(0,81,135,.12)}
+    .price-card.featured::before{content:"MEJOR PRECIO";position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;padding:5px 18px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.08em}
+    .price-label{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+    .price-old{font-size:15px;color:#9ca3af;text-decoration:line-through}
+    .price-amount{font-size:48px;font-weight:900;color:var(--text);line-height:1}.price-amount span{font-size:16px;font-weight:500;color:var(--muted)}
+    .price-save{display:inline-block;margin-top:8px;padding:4px 12px;background:#ecfdf5;color:#059669;border-radius:999px;font-size:12px;font-weight:700}
+    .price-note{font-size:12px;color:var(--muted);margin-top:6px}
+    .price-features{list-style:none;text-align:left;margin:24px 0;display:grid;gap:2px}
+    .price-features li{display:flex;align-items:center;gap:10px;padding:10px 0;font-size:14px;border-bottom:1px solid #f3f4f6}
+    .price-features li i{color:var(--primary);font-size:14px;width:20px;text-align:center}
+    .price-btn{display:block;width:100%;padding:14px;border-radius:999px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:.25s}
+    .price-btn.primary{background:var(--primary);color:#fff;box-shadow:0 12px 28px rgba(0,81,135,.2)}
+    .price-btn.primary:hover{background:var(--primary-2);transform:translateY(-2px)}
+    .price-btn.outline{background:#fff;color:var(--primary);border:2px solid var(--primary)}
+    .price-btn.outline:hover{background:var(--primary);color:#fff}
+    .price-detail{font-size:11px;color:var(--muted);margin-top:10px}
+    .scar-bar{background:linear-gradient(135deg,#071a33,#005187);padding:36px 0;text-align:center;color:#fff}
+    .scar-bar h3{font-size:22px;font-weight:800;margin-bottom:6px}.scar-bar p{color:rgba(255,255,255,.7);font-size:15px}
+    .scar-nums{display:flex;justify-content:center;gap:14px;margin-top:18px}
+    .scar-n{background:rgba(255,255,255,.08);padding:12px 20px;border-radius:14px;min-width:80px}
+    .scar-n .num{font-size:26px;font-weight:900}.scar-n .lbl{font-size:10px;color:rgba(255,255,255,.5);margin-top:2px}
+    .test-section{background:var(--surface-soft);padding:72px 0}
+    .test-quote{font-size:clamp(18px,2.8vw,24px);font-weight:600;line-height:1.55;max-width:680px;margin:24px auto;text-align:center;font-style:italic;color:var(--text)}
+    .test-author{text-align:center;font-size:14px;font-weight:700;color:var(--primary)}
+    .test-role{text-align:center;font-size:12px;color:var(--muted);margin-top:2px}
+    .faq-list{max-width:760px;margin:0 auto}
+    .faq-item{border-bottom:1px solid var(--line);padding:18px 0;cursor:pointer}
+    .faq-q{display:flex;justify-content:space-between;align-items:center;font-size:15px;font-weight:700;gap:14px}
+    .faq-q i{color:var(--primary);transition:transform .3s;font-size:14px}
+    .faq-item.open .faq-q i{transform:rotate(45deg)}
+    .faq-a{font-size:14px;color:var(--muted);line-height:1.7;max-height:0;overflow:hidden;transition:all .3s}
+    .faq-item.open .faq-a{max-height:200px;padding-top:10px}
+    @media(max-width:820px){.pain-grid,.get-grid,.pricing-grid{grid-template-columns:1fr}.ba-grid{grid-template-columns:1fr;gap:14px}.ba-arrow{transform:rotate(90deg)}.cal-item{grid-template-columns:60px 1fr}.cal-badge{display:none}}
+  </style>
 </head>
 <body>
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <a href="mailto:odontckconsul@gmail.com"><i class="fa fa-envelope"></i> odontckconsul@gmail.com</a>
+      <a href="https://wa.me/5212381479365" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> +52 238 147 9365</a>
+    </div>
+  </div>
+  <header class="site-header">
+    <nav class="navbar container">
+      <a href="../index.html" class="brand">
+        <img src="../assets/img/logo/logo.jpg" alt="Logo OdonTeck" />
+        <div><strong>OdonTeck</strong><span>Capacitación odontológica especializada</span></div>
+      </a>
+      <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="../index.html">Inicio</a></li>
+        <li><a href="cursos.html">Cursos</a></li>
+        <li><a href="servicios.html">Servicios</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="galeria.html">Galería</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+        <li><a class="active" href="club.html">⭐ Club Dental</a></li>
+        <li><a class="nav-cta" href="https://wa.me/5212381479365?text=Hola%2C%20quiero%20info%20del%20Club%20Dental" target="_blank" rel="noopener">WhatsApp</a></li>
+      </ul>
+    </nav>
+  </header>
 
-<div class="toast" id="toast"></div>
+  <main>
+    <section class="club-hero">
+      <div class="container hero-grid"><div class="hero-copy">
+        <span class="club-badge red"><i class="fa-solid fa-circle" style="font-size:6px"></i> El 80% de los dentistas dejan de actualizarse</span>
+        <h1>Tus pacientes merecen un dentista que <span>nunca deja de aprender</span></h1>
+        <p class="hero-text">Cada semana un caso clínico real que puedes aplicar el lunes en tu consultorio. Sin diplomados de 6 meses.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#precio">Quiero unirme — $199/mes</a>
+          <a class="btn btn-secondary" href="#problemas">¿Por qué lo necesito?</a>
+        </div>
+        <ul class="hero-points"><li>Sin compromiso largo</li><li>Acceso inmediato al contenido</li><li>47 dentistas ya son miembros</li></ul>
+      </div></div>
+    </section>
 
-<!-- VIDEO MODAL -->
-<div class="modal" id="vModal" onclick="if(event.target===this)closeV()">
-<div class="modal-box">
-<div class="modal-video"><button class="modal-close" onclick="closeV()">✕</button><iframe id="vFrame" src="" allow="autoplay;encrypted-media" allowfullscreen></iframe></div>
-<div class="modal-info"><h3 id="vTitle"></h3><p id="vDesc"></p><button class="btn btn-blue" onclick="showToast('Video marcado como visto ✓');closeV()">Marcar como visto</button></div>
-</div></div>
-
-<!-- ===== LANDING ===== -->
-<div id="pg-land" class="page active">
-<nav class="nav-l"><div class="nl-logo" onclick="showPage('pg-land')"><div class="nl-icon">O</div><span>Club Dental OdonTeck</span></div><div class="nl-r"><a href="#prob">Problemas</a><a href="#que-obt">Beneficios</a><a href="#precio">Precio</a><a onclick="showPage('pg-login')" class="btn btn-outline" style="padding:7px 14px;font-size:12px">Iniciar sesión</a><a href="#precio" class="btn btn-blue" style="padding:7px 14px;font-size:12px">Únete</a></div></nav>
-<div class="ubar">Solo quedan <strong>12 lugares de fundador</strong> — después sube a $249/mes</div>
-<section class="l-hero"><div class="l-pain-badge reveal">El 80% de los dentistas dejan de actualizarse después de la facultad</div><h1 class="reveal">Tus pacientes merecen un dentista que <span>nunca deja de aprender</span></h1><p class="reveal">Cada semana un caso clínico real que puedes aplicar el lunes en tu consultorio.</p><div class="l-acts reveal"><a href="#precio" class="btn btn-blue btn-lg">Quiero unirme — $199/mes</a><a href="#prob" class="btn btn-outline btn-lg">¿Por qué lo necesito?</a></div><div class="l-micro reveal"><span><svg class="ck" viewBox="0 0 14 14" fill="currentColor"><path d="M7 0a7 7 0 110 14A7 7 0 017 0zm3.15 4.85a.5.5 0 00-.7 0L6 8.29 4.55 6.85a.5.5 0 00-.7.7l1.8 1.8a.5.5 0 00.7 0l4-4a.5.5 0 000-.7z"/></svg>Sin compromiso largo</span><span><svg class="ck" viewBox="0 0 14 14" fill="currentColor"><path d="M7 0a7 7 0 110 14A7 7 0 017 0zm3.15 4.85a.5.5 0 00-.7 0L6 8.29 4.55 6.85a.5.5 0 00-.7.7l1.8 1.8a.5.5 0 00.7 0l4-4a.5.5 0 000-.7z"/></svg>Acceso inmediato</span><span><svg class="ck" viewBox="0 0 14 14" fill="currentColor"><path d="M7 0a7 7 0 110 14A7 7 0 017 0zm3.15 4.85a.5.5 0 00-.7 0L6 8.29 4.55 6.85a.5.5 0 00-.7.7l1.8 1.8a.5.5 0 00.7 0l4-4a.5.5 0 000-.7z"/></svg>47 dentistas adentro</span></div></section>
-<section class="l-sec-bg" id="prob"><div style="max-width:1000px;margin:0 auto"><div class="l-sh"><h2 class="reveal">¿Te identificas con alguno?</h2></div><div class="l-pgrid"><div class="l-pc reveal"><div class="l-pe" style="background:#FEE2E2">😰</div><div><h3>Te llega un caso complejo y no sabes resolverlo</h3><p>Buscas en YouTube videos viejos, o refieres y pierdes ingreso.</p><div class="sol">En el Club: ves cómo los especialistas resuelven esos casos →</div></div></div><div class="l-pc reveal"><div class="l-pe" style="background:var(--blue-light)">🏫</div><div><h3>Los diplomados cuestan $15,000+ y duran meses</h3><p>Horarios imposibles y la mitad es teoría.</p><div class="sol">En el Club: contenido práctico semanal por $199/mes →</div></div></div><div class="l-pc reveal"><div class="l-pe" style="background:#ECFDF5">🤷</div><div><h3>No tienes colegas para consultar</h3><p>Trabajas solo y no hay a quién preguntar.</p><div class="sol">En el Club: 47 dentistas en WhatsApp →</div></div></div><div class="l-pc reveal"><div class="l-pe" style="background:#FEF3C7">📉</div><div><h3>Tus pacientes se van con quien ofrece más</h3><p>No ofreces alineadores ni carillas.</p><div class="sol">En el Club: aprendes técnicas que amplían tus servicios →</div></div></div></div></div></section>
-<section class="l-sec"><div class="l-sh"><h2 class="reveal">Sin el Club vs Con el Club</h2></div><div class="ba-g reveal"><div class="ba-c ba-n"><h3>✕ Sin el Club</h3><div class="ba-i">✕ Resuelves por intuición y YouTube</div><div class="ba-i">✕ Refieres pacientes y pierdes ingreso</div><div class="ba-i">✕ Te actualizas 1-2 veces al año</div><div class="ba-i">✕ Trabajas aislado</div></div><div class="ba-arr">→</div><div class="ba-c ba-y"><h3>✓ Con el Club</h3><div class="ba-i">✓ Ves cómo especialistas resuelven casos</div><div class="ba-i">✓ Tratas más casos = más ingresos</div><div class="ba-i">✓ Te actualizas cada semana</div><div class="ba-i">✓ 47 dentistas en WhatsApp</div></div></div></section>
-<section class="l-sec-bg" id="que-obt"><div style="max-width:1000px;margin:0 auto"><div class="l-sh"><h2 class="reveal">Lo que recibes cada mes</h2></div><div class="l-gg"><div class="l-gc reveal"><div class="l-gi"><img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=600&h=280&fit=crop&q=80" alt="Caso dental"></div><div class="l-gb"><span class="l-gt gt-w">Cada semana</span><h3>Caso clínico en video</h3><p>Especialista resuelve caso real en 10-15 min.</p><div class="why">Como estar al lado del especialista</div></div></div><div class="l-gc reveal"><div class="l-gi"><img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&h=280&fit=crop&q=80" alt="Live"></div><div class="l-gb"><span class="l-gt gt-m">Cada mes</span><h3>Sesión en vivo</h3><p>Trae TU caso y obtén respuesta directa.</p><div class="why">Un especialista de guardia para ti</div></div></div><div class="l-gc reveal"><div class="l-gi"><img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=600&h=280&fit=crop&q=80" alt="Comunidad"></div><div class="l-gb"><span class="l-gt gt-a">Siempre</span><h3>Comunidad + recursos</h3><p>WhatsApp, PDFs, 20% descuento, certificado.</p><div class="why">Nunca más solo con un caso difícil</div></div></div></div></div></section>
-<section class="l-test"><p class="lbl reveal">Lo que dicen nuestros miembros</p><blockquote class="reveal">"Vi el caso de carillas el martes. El jueves me llegó una paciente con el mismo problema. Sabía exactamente qué hacer."</blockquote><p class="au reveal">Dr. Arturo García</p><p class="ro reveal">Miembro fundador · Puebla</p></section>
-<section class="l-scar"><div class="reveal"><h3>Los lugares se están acabando</h3><p>30 lugares a $199/mes. Después $249.</p><div class="sn"><div class="sn-b"><div class="n">12</div><div class="l">Lugares</div></div><div class="sn-b"><div class="n">$199</div><div class="l">Ahora</div></div><div class="sn-b"><div class="n">$249</div><div class="l">Después</div></div></div></div></section>
-<section class="l-pr" id="precio"><div class="l-pr-in"><div class="l-sh"><h2 class="reveal">Invierte en tu carrera</h2></div><div class="l-prc reveal"><div class="l-prc-rib">FUNDADOR</div><div class="l-prc-top"><div class="l-prc-old">$249/mes</div><div class="l-prc-amt">$199 <span>/mes</span></div><div class="l-prc-lbl">Solo 30 lugares</div></div><ul><li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M3.5 8l3 3L12.5 5"/></svg>4 casos clínicos en video</li><li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M3.5 8l3 3L12.5 5"/></svg>1 sesión en vivo mensual</li><li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M3.5 8l3 3L12.5 5"/></svg>Grupo WhatsApp privado</li><li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M3.5 8l3 3L12.5 5"/></svg>Plantillas y protocolos</li><li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M3.5 8l3 3L12.5 5"/></svg>20% en cursos</li><li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M3.5 8l3 3L12.5 5"/></svg>Certificado mensual</li></ul><button class="l-prc-btn" onclick="showPage('pg-login')">Unirme — $199/mes</button><p class="l-prc-note">3 meses mínimo · Cancela cuando quieras</p></div></div></section>
-<section class="l-sec" id="faq"><div class="l-sh" style="text-align:left"><h2 class="reveal">Preguntas frecuentes</h2></div><div class="faq-i reveal" onclick="this.classList.toggle('open')"><div class="faq-q">¿Es lo mismo que los cursos?<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg></div><div class="faq-a">No. Los cursos son programas a $650. La membresía es contenido semanal diferente con 20% descuento en cursos.</div></div><div class="faq-i reveal" onclick="this.classList.toggle('open')"><div class="faq-q">No tengo tiempo<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg></div><div class="faq-a">Cada video dura 10-15 min. Todo queda en tu biblioteca.</div></div><div class="faq-i reveal" onclick="this.classList.toggle('open')"><div class="faq-q">¿Puedo cancelar?<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg></div><div class="faq-a">Después de 3 meses cancelas con un clic.</div></div></section>
-<section class="l-fin"><h2 class="reveal">Mientras lees esto, los miembros ya están aprendiendo</h2><p class="reveal">12 lugares a $199/mes.</p><a href="#precio" class="btn btn-blue btn-lg reveal">Unirme ahora</a></section>
-<footer class="l-foot">Club Dental OdonTeck · TEC CAPITAL / IPCI © 2026</footer>
-</div>
-
-<!-- ===== LOGIN ===== -->
-<div id="pg-login" class="page">
-<nav class="nav-l"><div class="nl-logo" onclick="showPage('pg-land')"><div class="nl-icon">O</div><span>Club Dental OdonTeck</span></div><div class="nl-r"><a onclick="showPage('pg-land')">Volver</a></div></nav>
-<div class="login-wrap"><div class="login-box"><div class="lb-logo"><div>O</div></div><h2 id="lt">Iniciar sesión</h2><p class="sub" id="ls">Accede al Club Dental</p>
-<div id="frm-login"><div class="fg"><label>Email</label><input type="email" placeholder="tu@email.com"></div><div class="fg"><label>Contraseña</label><input type="password" placeholder="••••••••"></div><button class="lb-btn blue" onclick="doLogin()">Iniciar sesión</button><div class="lb-div">o</div><button class="lb-btn wh" onclick="doLogin()">Continuar con Google</button><p class="lb-foot">¿No tienes cuenta? <a onclick="togReg()">Regístrate</a></p></div>
-<div id="frm-reg" style="display:none"><div class="fg"><label>Nombre</label><input type="text" placeholder="Dr. Juan Pérez"></div><div class="fg"><label>Email</label><input type="email" placeholder="tu@email.com"></div><div class="fg"><label>WhatsApp</label><input type="tel" placeholder="+52 221 123 4567"></div><div class="fg"><label>Contraseña</label><input type="password" placeholder="Mínimo 8 caracteres"></div><button class="lb-btn blue" onclick="doLogin()">Crear cuenta</button><div class="lb-div">o</div><button class="lb-btn wh" onclick="doLogin()">Registrarme con Google</button><p class="lb-foot">¿Ya tienes cuenta? <a onclick="togReg()">Inicia sesión</a></p></div>
-</div></div></div>
-
-<!-- ===== DASHBOARD ===== -->
-<div id="pg-dash" class="page">
-<div class="d-top"><div class="dt-l"><div class="dt-logo">O</div><span>Club Dental</span><span class="dt-badge">Fundador</span></div><div class="dt-r"><div class="dt-bell" onclick="showToast('🔔 Nuevo video: Carillas fracturadas')">🔔<div class="dot"></div></div><div class="dt-u" onclick="showDashView('profile')"><div class="dt-av">AG</div><div><div class="dt-nm">Dr. García</div><div class="dt-pl">Fundador</div></div></div><div class="dt-out" onclick="doLogout()">Salir</div></div></div>
-
-<div class="d-lay">
-<div class="d-side">
-  <div class="ds-lb">Principal</div>
-  <a class="ds-lk act" onclick="showDashView('home',this)">📊 Inicio</a>
-  <a class="ds-lk" onclick="showDashView('videos',this)">🎬 Videos<span class="ds-bd sb-n">2</span></a>
-  <a class="ds-lk" onclick="showDashView('lives',this)">🔴 Sesiones en vivo</a>
-  <a class="ds-lk" onclick="showDashView('pdfs',this)">📋 PDFs<span class="ds-bd sb-n">1</span></a>
-  <div class="ds-lb">Biblioteca</div>
-  <a class="ds-lk" onclick="showDashView('mes-abril',this)">Abril 2026<span class="ds-bd sb-c">7</span></a>
-  <a class="ds-lk" onclick="showDashView('mes-marzo',this)">Marzo 2026<span class="ds-bd sb-c">5</span></a>
-  <div class="ds-lb">Mi cuenta</div>
-  <a class="ds-lk" onclick="showDashView('profile',this)">👤 Mi perfil</a>
-  <a class="ds-lk" onclick="showDashView('subscription',this)">💳 Suscripción</a>
-  <a class="ds-lk" onclick="showDashView('settings',this)">⚙️ Configuración</a>
-</div>
-
-<div class="d-main" id="dashMain">
-  <!-- Content injected by JS -->
-</div>
-
-<div class="d-right">
-  <div class="dr-live"><h3><div class="dr-pulse"></div>Próxima sesión</h3><div class="ti">Q&A Endodoncia</div><div class="me">Dr. Juárez · Jue 24 · 8PM</div><div class="dr-cd"><div class="lcd"><div class="n" id="cd-d">02</div><div class="l">Días</div></div><div class="lcd"><div class="n" id="cd-h">14</div><div class="l">Hrs</div></div><div class="lcd"><div class="n" id="cd-m">33</div><div class="l">Min</div></div></div><button class="dr-btn" style="background:var(--blue);color:white" onclick="showToast('📅 Evento agregado a tu calendario')">Agregar a calendario</button></div>
-  <div class="dr-wa"><h3>💬 Grupo WhatsApp</h3><p>47 dentistas activos</p><button class="dr-btn" style="background:#25D366;color:white" onclick="showToast('Abriendo WhatsApp...')">Abrir grupo</button></div>
-  <div class="dr-disc"><h3>🏷️ Tu descuento 20%</h3><p>En cursos de OdonTeck</p><button class="dr-btn" style="background:var(--amber);color:white" onclick="showToast('Redirigiendo a cursos...')">Ver cursos</button></div>
-  <div class="dr-acc" style="background:var(--bg)"><h3>📊 Actividad</h3><div class="dr-prog"><span class="lb">Videos</span><div class="bar"><div class="fill" style="width:50%;background:var(--blue)"></div></div><span class="vl">2/4</span></div><div class="dr-prog"><span class="lb">PDFs</span><div class="bar"><div class="fill" style="width:66%;background:var(--amber)"></div></div><span class="vl">2/3</span></div><div class="dr-prog"><span class="lb">Lives</span><div class="bar"><div class="fill" style="width:0%"></div></div><span class="vl">0/1</span></div></div>
-  <div class="dr-cert"><h3>📜 Certificado abril</h3><p>Completa 3/4 videos + live</p><button class="dr-btn" style="background:var(--purple);color:white" onclick="showToast('Progreso: 2/4 videos, 0/1 live')">Ver progreso</button></div>
-</div>
-</div>
-</div>
-
-<script>
-// DATA
-const videos = [
-  {id:'dQw4w9WgXcQ',title:'Mordida cruzada posterior: tratamiento con ortopedia',desc:'Dr. Ramírez · Ortopedia · 12 min',type:'video',month:'abril',badge:'sn',yt:'yKIiSGsGGTc'},
-  {id:'v2',title:'Carillas fracturadas a los 6 meses: análisis del error',desc:'Dra. Méndez · Estética · 15 min',type:'video',month:'abril',badge:'nw',yt:'C35Hwk05cBs'},
-  {id:'v3',title:'Q&A Endodoncia con Dr. Juárez',desc:'Jueves 24 · 8:00 PM · En vivo',type:'live',month:'abril',badge:'nx'},
-  {id:'v4',title:'Los 5 errores de cementación más comunes',desc:'PDF descargable · 4 páginas',type:'pdf',month:'abril',badge:'nw',pdfKey:'errores-cementacion'},
-  {id:'v5',title:'Checklist diagnóstico MIH',desc:'PDF · 2 páginas',type:'pdf',month:'abril',badge:'dl',pdfKey:'checklist-mih'},
-  {id:'v6',title:'MIH grado 2 en niño de 7 años: protocolo completo',desc:'Dra. Torres · Odontopediatría · 10 min',type:'video',month:'abril',badge:'nw',yt:'LZJzGYDnJco'},
-  {id:'v7',title:'Grabación: Q&A Ortopedia — Dra. Sánchez',desc:'Sesión grabada · Marzo · 58 min',type:'live',month:'marzo',badge:'sn',yt:'sqgxcCjD04s'},
-  {id:'v8',title:'Alineadores en paciente clase II: caso completo',desc:'Dr. López · Ortodoncia · 14 min',type:'video',month:'marzo',badge:'sn',yt:'lTxn2BuqyzU'},
-  {id:'v9',title:'Protocolo carillas de porcelana paso a paso',desc:'PDF · 6 páginas',type:'pdf',month:'marzo',badge:'dl',pdfKey:'protocolo-carillas'},
-  {id:'v10',title:'Restauración directa con resina en sector anterior',desc:'Dr. Ruiz · Estética · 18 min',type:'video',month:'marzo',badge:'sn',yt:'S8aGafeKp-o'},
-  {id:'v11',title:'Certificado educación continua — Marzo 2026',desc:'8 horas de actualización',type:'cert',month:'marzo',badge:'dl'},
-];
-
-const icons = {video:'🎬',live:'🔴',pdf:'📋',cert:'📜'};
-const classes = {video:'vid',live:'live',pdf:'pdf',cert:'cert'};
-const badges = {nw:'Nuevo',sn:'Visto',dl:'Descargado',nx:'Próximo'};
-
-function renderItems(items){
-  return items.map(v=>{
-    const isClickable = v.yt ? `onclick="openV('${v.yt}','${v.title.replace(/'/g,"\\'")}','${v.desc.replace(/'/g,"\\'")}')"` : 
-                        v.pdfKey ? `onclick="openPDF('${v.pdfKey}','${v.title.replace(/'/g,"\\'")}')"` :
-                        v.type==='pdf' ? `onclick="showToast('📥 Descargando: ${v.title.replace(/'/g,"\\'")}')"` :
-                        v.type==='cert' ? `onclick="showToast('📜 Descargando certificado...')"` :
-                        v.type==='live'&&v.badge==='nx' ? `onclick="showToast('🔴 La sesión es el Jueves 24 a las 8PM')"` :
-                        v.yt ? `onclick="openV('${v.yt}','${v.title}','${v.desc}')"` : '';
-    const actionIcon = v.yt ? '<span class="ci-dr">▶ Ver</span>' : v.pdfKey ? '<span class="ci-dr" style="color:var(--blue)">📄 Abrir</span>' : '';
-    return `<div class="ci" ${isClickable}><div class="ct ${classes[v.type]}">${icons[v.type]}</div><div class="ci-i"><h4>${v.title}</h4><p>${v.desc}</p></div><div class="ci-m">${actionIcon}<span class="cb cb-${v.badge}">${badges[v.badge]}</span></div></div>`;
-  }).join('');
-}
-
-// DASHBOARD VIEWS
-function showDashView(view, el){
-  // Update sidebar active
-  if(el){document.querySelectorAll('.ds-lk').forEach(l=>l.classList.remove('act'));el.classList.add('act');}
-  const main = document.getElementById('dashMain');
-  
-  if(view==='home'){
-    const newItems = videos.filter(v=>v.badge==='nw');
-    main.innerHTML = `
-      <div class="d-wel"><h1>Hola, Dr. García 👋</h1><p>Tienes ${newItems.length} contenidos nuevos esta semana</p><div class="d-ws"><div class="d-w"><div class="n">14</div><div class="l">Videos</div></div><div class="d-w"><div class="n">6</div><div class="l">PDFs</div></div><div class="d-w"><div class="n">3</div><div class="l">Lives</div></div><div class="d-w"><div class="n">2°</div><div class="l">Mes</div></div></div></div>
-      <div class="dc"><div class="dc-h"><h2>📌 Nuevo esta semana</h2><span class="ht ht-n">${newItems.length} nuevos</span></div><div class="dc-b">${renderItems(newItems)}</div></div>
-      <div class="dc"><div class="dc-h"><h2>📚 Biblioteca completa</h2></div><div class="dc-b">${renderItems(videos)}</div></div>`;
-  }
-  else if(view==='videos'){
-    main.innerHTML = `<div class="dc"><div class="dc-h"><h2>🎬 Videos de casos clínicos</h2></div><div class="dc-b">${renderItems(videos.filter(v=>v.type==='video'))}</div></div>`;
-  }
-  else if(view==='lives'){
-    main.innerHTML = `<div class="dc"><div class="dc-h"><h2>🔴 Sesiones en vivo</h2></div><div class="dc-b">${renderItems(videos.filter(v=>v.type==='live'))}</div></div>`;
-  }
-  else if(view==='pdfs'){
-    main.innerHTML = `<div class="dc"><div class="dc-h"><h2>📋 PDFs y plantillas</h2></div><div class="dc-b">${renderItems(videos.filter(v=>v.type==='pdf'||v.type==='cert'))}</div></div>`;
-  }
-  else if(view==='mes-abril'){
-    main.innerHTML = `<div class="dc"><div class="dc-h"><h2>📅 Abril 2026</h2></div><div class="dc-b">${renderItems(videos.filter(v=>v.month==='abril'))}</div></div>`;
-  }
-  else if(view==='mes-marzo'){
-    main.innerHTML = `<div class="dc"><div class="dc-h"><h2>📅 Marzo 2026</h2></div><div class="dc-b">${renderItems(videos.filter(v=>v.month==='marzo'))}</div></div>`;
-  }
-  else if(view==='profile'){
-    main.innerHTML = `
-      <div class="acc-card"><h2>👤 Mi perfil</h2>
-        <div class="acc-row"><span class="al">Nombre</span><span class="av">Dr. Arturo García López</span><span class="edit-btn" onclick="editField('name')">Editar</span></div>
-        <div class="acc-row"><span class="al">Email</span><span class="av">arturo.garcia@email.com</span><span class="edit-btn" onclick="editField('email')">Editar</span></div>
-        <div class="acc-row"><span class="al">WhatsApp</span><span class="av">+52 222 456 7890</span><span class="edit-btn" onclick="editField('phone')">Editar</span></div>
-        <div class="acc-row"><span class="al">Especialidad</span><span class="av">Odontología general</span><span class="edit-btn" onclick="editField('spec')">Editar</span></div>
-        <div class="acc-row"><span class="al">Ciudad</span><span class="av">Puebla, México</span><span class="edit-btn" onclick="editField('city')">Editar</span></div>
-        <div class="acc-row"><span class="al">Cédula profesional</span><span class="av">12345678</span><span class="edit-btn" onclick="editField('ced')">Editar</span></div>
-        <div class="acc-row"><span class="al">Miembro desde</span><span class="av">1 de abril, 2026</span></div>
+    <section class="section soft-section" id="problemas"><div class="container">
+      <p class="eyebrow dark">El problema</p>
+      <h2 class="section-title centered">¿Te identificas con alguno?</h2>
+      <p class="section-text narrow" style="text-align:center;margin:0 auto 36px">Si respondiste "sí" a al menos uno, el Club es para ti.</p>
+      <div class="pain-grid">
+        <div class="pain-card"><div class="pain-emoji" style="background:#fef2f2">😰</div><div><h3>Te llega un caso complejo y no sabes resolverlo</h3><p>Buscas en YouTube videos viejos, o refieres y pierdes ingreso.</p><div class="sol">En el Club: ves cómo especialistas resuelven esos casos →</div></div></div>
+        <div class="pain-card"><div class="pain-emoji" style="background:#edf5fd">🏫</div><div><h3>Los diplomados cuestan $15,000+ y duran meses</h3><p>Horarios imposibles y la mitad es teoría.</p><div class="sol">En el Club: contenido práctico semanal por $199/mes →</div></div></div>
+        <div class="pain-card"><div class="pain-emoji" style="background:#ecfdf5">🤷</div><div><h3>No tienes colegas para consultar un caso difícil</h3><p>Trabajas solo y no hay a quién preguntar.</p><div class="sol">En el Club: 47 dentistas en WhatsApp →</div></div></div>
+        <div class="pain-card"><div class="pain-emoji" style="background:#fffbeb">📉</div><div><h3>Tus pacientes se van con quien ofrece más</h3><p>No ofreces alineadores ni carillas.</p><div class="sol">En el Club: aprendes técnicas que amplían tus servicios →</div></div></div>
       </div>
-      <div class="acc-card"><h2>📊 Mi actividad total</h2>
-        <div class="acc-row"><span class="al">Videos vistos</span><span class="av">14 de 19</span></div>
-        <div class="acc-row"><span class="al">PDFs descargados</span><span class="av">6 de 8</span></div>
-        <div class="acc-row"><span class="al">Lives asistidos</span><span class="av">3 de 4</span></div>
-        <div class="acc-row"><span class="al">Certificados obtenidos</span><span class="av">1 (Marzo 2026)</span></div>
-        <div class="acc-row"><span class="al">Meses como miembro</span><span class="av">2</span></div>
+    </div></section>
+
+    <section class="section"><div class="container">
+      <p class="eyebrow dark">La diferencia</p>
+      <h2 class="section-title centered">Tu práctica sin el Club vs con el Club</h2>
+      <div class="ba-grid" style="margin-top:36px">
+        <div class="ba-col ba-no"><h3>✕ Sin el Club</h3><div class="ba-item">✕ Resuelves por intuición y YouTube</div><div class="ba-item">✕ Refieres pacientes y pierdes ingreso</div><div class="ba-item">✕ Te actualizas 1-2 veces al año</div><div class="ba-item">✕ Trabajas aislado sin colegas</div><div class="ba-item">✕ Mismos servicios desde la facultad</div></div>
+        <div class="ba-arrow">→</div>
+        <div class="ba-col ba-yes"><h3>✓ Con el Club</h3><div class="ba-item">✓ Ves cómo especialistas resuelven casos</div><div class="ba-item">✓ Tratas más casos = más ingresos</div><div class="ba-item">✓ Te actualizas cada semana en 15 min</div><div class="ba-item">✓ 47 dentistas en WhatsApp</div><div class="ba-item">✓ Aprendes técnicas nuevas cada mes</div></div>
       </div>
-      <div class="acc-card"><h2>🔒 Seguridad</h2>
-        <div class="acc-row"><span class="al">Contraseña</span><span class="av">••••••••</span><span class="edit-btn" onclick="showToast('📧 Email enviado para cambiar contraseña')">Cambiar</span></div>
-        <div class="acc-row"><span class="al">Último login</span><span class="av">Hoy, 1:30 AM</span></div>
-      </div>`;
-  }
-  else if(view==='subscription'){
-    main.innerHTML = `
-      <div class="acc-card"><h2>💳 Mi suscripción</h2>
-        <div class="acc-row"><span class="al">Plan</span><span class="av" style="background:var(--green-bg);color:var(--green);padding:2px 10px;border-radius:6px">Fundador</span></div>
-        <div class="acc-row"><span class="al">Precio mensual</span><span class="av">$199 MXN/mes</span></div>
-        <div class="acc-row"><span class="al">Precio regular</span><span class="av" style="text-decoration:line-through;color:var(--light)">$249 MXN/mes</span></div>
-        <div class="acc-row"><span class="al">Estado</span><span class="av green">✓ Activa</span></div>
-        <div class="acc-row"><span class="al">Próximo cobro</span><span class="av">1 de mayo, 2026</span></div>
-        <div class="acc-row"><span class="al">Método de pago</span><span class="av">Visa terminada en 4829</span><span class="edit-btn" onclick="showToast('Redirigiendo a Shopify para actualizar método...')">Cambiar</span></div>
-        <div class="acc-row"><span class="al">Miembro desde</span><span class="av">1 de abril, 2026</span></div>
-        <div class="acc-row"><span class="al">Meses pagados</span><span class="av">2</span></div>
+    </div></section>
+
+    <section class="section soft-section" id="beneficios"><div class="container">
+      <p class="eyebrow dark">Tu membresía incluye</p>
+      <h2 class="section-title centered">Lo que recibes cada mes</h2>
+      <p class="section-text narrow" style="text-align:center;margin:0 auto 36px">Contenido que complementa tus cursos — no los reemplaza.</p>
+      <div class="get-grid">
+        <div class="get-card"><div class="get-img"><img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=600&h=360&fit=crop&q=80" alt="Caso clínico"></div><div class="get-body"><span class="get-tag gt-w">Cada semana</span><h3>Caso clínico en video</h3><p>Especialista resuelve caso real en 10-15 min.</p><div class="why">Como estar al lado del especialista</div></div></div>
+        <div class="get-card"><div class="get-img"><img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&h=360&fit=crop&q=80" alt="Sesión en vivo"></div><div class="get-body"><span class="get-tag gt-m">Cada mes</span><h3>Sesión en vivo con especialista</h3><p>Trae TU caso, obtén respuesta directa.</p><div class="why">Un especialista de guardia para ti</div></div></div>
+        <div class="get-card"><div class="get-img"><img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=600&h=360&fit=crop&q=80" alt="Comunidad"></div><div class="get-body"><span class="get-tag gt-a">Siempre</span><h3>Comunidad + recursos + descuentos</h3><p>WhatsApp privado, PDFs, 20% en cursos, certificado.</p><div class="why">Nunca más solo con un caso difícil</div></div></div>
       </div>
-      <div class="acc-card"><h2>📜 Historial de pagos</h2>
-        <div class="acc-row"><span class="al">Abril 2026</span><span class="av green">$199 · Pagado</span></div>
-        <div class="acc-row"><span class="al">Marzo 2026</span><span class="av green">$199 · Pagado</span></div>
+    </div></section>
+
+    <section class="section"><div class="container">
+      <p class="eyebrow dark">Contenido real</p>
+      <h2 class="section-title centered">Esto se publicó esta semana</h2>
+      <p class="section-text narrow" style="text-align:center;margin:0 auto 36px">Si no eres miembro, te lo estás perdiendo.</p>
+      <div style="max-width:760px;margin:0 auto">
+        <div class="cal-item"><span class="cal-day">Lunes</span><div><div class="cal-title">Mordida cruzada posterior: tratamiento con ortopedia</div><div class="cal-desc">Dr. Ramírez · 12 min · Caso real</div></div><span class="cal-badge cb-v"><i class="fa-solid fa-play" style="font-size:9px;margin-right:4px"></i>Video</span></div>
+        <div class="cal-item"><span class="cal-day">Miércoles</span><div><div class="cal-title">Los 5 errores de cementación más comunes</div><div class="cal-desc">PDF · 4 páginas</div></div><span class="cal-badge cb-p"><i class="fa-solid fa-file-pdf" style="font-size:9px;margin-right:4px"></i>PDF</span></div>
+        <div class="cal-item"><span class="cal-day">Jueves</span><div><div class="cal-title">Q&A endodoncia — traigan sus casos</div><div class="cal-desc">Dr. Juárez · 8:00 PM</div></div><span class="cal-badge cb-l"><i class="fa-solid fa-circle" style="font-size:7px;margin-right:4px;color:#dc2626"></i>En vivo</span></div>
+        <div class="cal-item" style="background:#ecfdf5;border-radius:14px;padding:18px 16px;border:1px solid rgba(5,150,105,.1);margin:6px 0"><span class="cal-day" style="color:#059669">Nuevo hoy</span><div><div class="cal-title">Carillas fracturadas a los 6 meses: qué salió mal</div><div class="cal-desc">Dra. Méndez · 15 min · Hoy</div></div><span class="cal-badge cb-n">Nuevo</span></div>
       </div>
-      <div class="acc-card" style="border-color:rgba(220,38,38,.2)"><h2 style="color:var(--red)">⚠️ Cancelar membresía</h2>
-        <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Si cancelas, perderás acceso al contenido, la comunidad de WhatsApp y tu precio de fundador ($199/mes). Si regresas después, pagarás el precio vigente ($249/mes).</p>
-        <button class="btn btn-red" style="font-size:13px;padding:10px 20px" onclick="if(confirm('¿Estás seguro? Perderás tu precio de fundador de $199/mes y no podrás recuperarlo.')){showToast('Membresía cancelada. Tienes acceso hasta el 1 de mayo.')}">Cancelar mi membresía</button>
-      </div>`;
-  }
-  else if(view==='settings'){
-    main.innerHTML = `
-      <div class="acc-card"><h2>🔔 Notificaciones</h2>
-        <div class="toggle-row"><span>Notificarme por WhatsApp cuando hay contenido nuevo</span><div class="toggle on" onclick="this.classList.toggle('on');showToast(this.classList.contains('on')?'Notificaciones WhatsApp activadas':'Notificaciones WhatsApp desactivadas')"></div></div>
-        <div class="toggle-row"><span>Recordatorio de sesión en vivo (24h antes)</span><div class="toggle on" onclick="this.classList.toggle('on');showToast(this.classList.contains('on')?'Recordatorio 24h activado':'Recordatorio 24h desactivado')"></div></div>
-        <div class="toggle-row"><span>Recordatorio de sesión en vivo (1h antes)</span><div class="toggle on" onclick="this.classList.toggle('on');showToast(this.classList.contains('on')?'Recordatorio 1h activado':'Recordatorio 1h desactivado')"></div></div>
-        <div class="toggle-row"><span>Email con resumen semanal de contenido</span><div class="toggle on" onclick="this.classList.toggle('on');showToast(this.classList.contains('on')?'Resumen semanal activado':'Resumen semanal desactivado')"></div></div>
-        <div class="toggle-row"><span>Notificaciones de ofertas y descuentos</span><div class="toggle" onclick="this.classList.toggle('on');showToast(this.classList.contains('on')?'Ofertas activadas':'Ofertas desactivadas')"></div></div>
+    </div></section>
+
+    <section class="test-section"><div class="container">
+      <p class="eyebrow dark" style="text-align:center">Lo que dicen nuestros miembros</p>
+      <p class="test-quote">"Vi el caso de carillas el martes. El jueves me llegó una paciente con el mismo problema. Sabía exactamente qué hacer. Eso vale más que cualquier diplomado."</p>
+      <p class="test-author">Dr. Arturo García</p>
+      <p class="test-role">Miembro fundador · Odontólogo general, Puebla</p>
+    </div></section>
+
+    <div class="scar-bar"><div class="container">
+      <h3>Los lugares de fundador se están acabando</h3>
+      <p>Empezamos con 30. Cuando se llenen, el precio sube y no regresa.</p>
+      <div class="scar-nums"><div class="scar-n"><div class="num" style="color:#f87171">12</div><div class="lbl">Lugares</div></div><div class="scar-n"><div class="num">$199</div><div class="lbl">Ahora</div></div><div class="scar-n"><div class="num" style="color:rgba(255,255,255,.4);text-decoration:line-through">$249</div><div class="lbl">Después</div></div></div>
+    </div></div>
+
+    <section class="section" id="precio"><div class="container">
+      <p class="eyebrow dark" style="text-align:center">Membresía</p>
+      <h2 class="section-title centered">Invierte en tu carrera</h2>
+      <p class="section-text narrow" style="text-align:center;margin:0 auto 40px">Menos de lo que cobras por una limpieza. Elige tu plan:</p>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="price-label">Mensual</div>
+          <div class="price-old">$249/mes</div>
+          <div class="price-amount">$199 <span>/mes</span></div>
+          <div class="price-note">Precio de fundador</div>
+          <ul class="price-features">
+            <li><i class="fa-solid fa-check"></i>4 casos clínicos en video</li>
+            <li><i class="fa-solid fa-check"></i>1 sesión en vivo mensual</li>
+            <li><i class="fa-solid fa-check"></i>Grupo WhatsApp privado</li>
+            <li><i class="fa-solid fa-check"></i>Plantillas y protocolos</li>
+            <li><i class="fa-solid fa-check"></i>20% en cursos y diplomados</li>
+            <li><i class="fa-solid fa-check"></i>Certificado mensual</li>
+            <li><i class="fa-solid fa-check"></i>Biblioteca completa</li>
+          </ul>
+          <button class="price-btn outline" onclick="window.open('https://wa.me/5212381479365?text=Hola%2C%20quiero%20unirme%20al%20Club%20Dental%20plan%20MENSUAL%20%24199','_blank')">Elegir plan mensual</button>
+          <p class="price-detail">3 meses mínimo · Después cancela cuando quieras</p>
+        </div>
+        <div class="price-card featured">
+          <div class="price-label">Anual</div>
+          <div class="price-old">$2,988/año ($249×12)</div>
+          <div class="price-amount">$1,788 <span>/año</span></div>
+          <div class="price-save"><i class="fa-solid fa-tag" style="font-size:10px"></i> Ahorras $1,200 al año (40% OFF)</div>
+          <div class="price-note">Equivale a $149/mes</div>
+          <ul class="price-features">
+            <li><i class="fa-solid fa-check"></i><strong>Todo lo del plan mensual</strong></li>
+            <li><i class="fa-solid fa-check"></i>4 casos clínicos en video</li>
+            <li><i class="fa-solid fa-check"></i>1 sesión en vivo mensual</li>
+            <li><i class="fa-solid fa-check"></i>Grupo WhatsApp privado</li>
+            <li><i class="fa-solid fa-check"></i>Plantillas y protocolos</li>
+            <li><i class="fa-solid fa-check"></i>20% en cursos y diplomados</li>
+            <li><i class="fa-solid fa-check"></i>Certificado mensual</li>
+            <li><i class="fa-solid fa-star" style="color:#d97706"></i><strong>Acceso anticipado</strong> a contenido</li>
+            <li><i class="fa-solid fa-star" style="color:#d97706"></i><strong>1 mentoría grupal extra</strong> al mes</li>
+          </ul>
+          <button class="price-btn primary" onclick="window.open('https://wa.me/5212381479365?text=Hola%2C%20quiero%20unirme%20al%20Club%20Dental%20plan%20ANUAL%20%241%2C788%20(ahorro%20%241%2C200)','_blank')">Elegir plan anual — Ahorra $1,200</button>
+          <p class="price-detail">Pago único de $1,788 · Renueva cada año</p>
+        </div>
       </div>
-      <div class="acc-card"><h2>🌐 Preferencias</h2>
-        <div class="fg"><label>Zona horaria</label><select><option>América/México_City (GMT-6)</option><option>América/Bogotá (GMT-5)</option><option>América/Buenos_Aires (GMT-3)</option><option>Europa/Madrid (GMT+1)</option></select></div>
-        <div class="fg"><label>Idioma</label><select><option>Español</option><option>English</option></select></div>
-        <button class="btn btn-blue" style="margin-top:8px;font-size:13px" onclick="showToast('✓ Preferencias guardadas')">Guardar cambios</button>
+    </div></section>
+
+    <section class="section soft-section" id="faq"><div class="container">
+      <p class="eyebrow dark" style="text-align:center">Preguntas frecuentes</p>
+      <h2 class="section-title centered">Antes de decidir</h2>
+      <div class="faq-list" style="margin-top:36px">
+        <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q">¿Es lo mismo que los cursos de OdonTeck?<i class="fa-solid fa-plus"></i></div><div class="faq-a">No. Los cursos son programas completos a $650. La membresía es contenido semanal diferente. Como miembro tienes 20% en todos los cursos.</div></div>
+        <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q">No tengo tiempo para ver contenido cada semana<i class="fa-solid fa-plus"></i></div><div class="faq-a">Cada video dura 10-15 min. Todo queda grabado en tu biblioteca.</div></div>
+        <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q">¿Puedo cancelar cuando quiera?<i class="fa-solid fa-plus"></i></div><div class="faq-a">Plan mensual: después de 3 meses cancelas con un clic. Plan anual: acceso los 12 meses completos.</div></div>
+        <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q">¿El precio de fundador es para siempre?<i class="fa-solid fa-plus"></i></div><div class="faq-a">Sí. Mantienes tu precio mientras estés activo. Si cancelas y regresas, pagas precio vigente.</div></div>
+        <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q">¿Diferencia entre plan mensual y anual?<i class="fa-solid fa-plus"></i></div><div class="faq-a">El anual incluye acceso anticipado a contenido + 1 mentoría grupal extra al mes. Además ahorras $1,200 al año ($149/mes vs $199/mes).</div></div>
       </div>
-      <div class="acc-card"><h2>🔒 Privacidad</h2>
-        <div class="toggle-row"><span>Mostrar mi nombre en el grupo de WhatsApp</span><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
-        <div class="toggle-row"><span>Permitir que otros miembros me contacten</span><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+    </div></section>
+
+    <section class="cta-section" style="padding-top:40px"><div class="container cta-box">
+      <div>
+        <p class="eyebrow">No te quedes fuera</p>
+        <h2>Mientras lees esto, los miembros ya están aprendiendo algo nuevo.</h2>
+        <p>12 lugares de fundador. Cuando se llenen, el precio sube a $249/mes.</p>
       </div>
-      <div class="acc-card" style="border-color:rgba(220,38,38,.2)"><h2 style="color:var(--red)">🗑️ Eliminar cuenta</h2>
-        <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Esto eliminará tu cuenta permanentemente, incluyendo todo tu progreso y certificados.</p>
-        <button class="btn btn-red" style="font-size:13px;padding:10px 20px" onclick="if(confirm('¿Estás seguro? Esta acción es irreversible.')){showToast('Solicitud enviada. Te contactaremos por email.')}">Eliminar mi cuenta</button>
-      </div>`;
-  }
-}
+      <div class="cta-actions">
+        <a class="btn btn-primary" href="#precio">Unirme al Club</a>
+        <a class="btn btn-secondary white" href="https://wa.me/5212381479365?text=Hola%2C%20quiero%20info%20del%20Club%20Dental%20OdonTeck" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      </div>
+    </div></section>
+  </main>
 
-// FIELD EDIT
-function editField(field){
-  const names={name:'nombre',email:'email',phone:'WhatsApp',spec:'especialidad',city:'ciudad',ced:'cédula'};
-  const val=prompt('Nuevo '+names[field]+':');
-  if(val){showToast('✓ '+names[field]+' actualizado a: '+val);}
-}
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div><div class="brand footer-brand"><img src="../assets/img/logo/logo.jpg" alt="Logo OdonTeck" /><div><strong>OdonTeck</strong><span>Capacitación odontológica especializada</span></div></div><p class="footer-text">Formación odontológica con enfoque profesional, comunicación clara y experiencia visual cuidada.</p></div>
+      <div><h3>Secciones</h3><ul><li><a href="cursos.html">Cursos</a></li><li><a href="servicios.html">Servicios</a></li><li><a href="nosotros.html">Nosotros</a></li><li><a href="contacto.html">Contacto</a></li><li><a href="club.html">Club Dental</a></li></ul></div>
+      <div><h3>Contacto</h3><ul><li><a href="mailto:odontckconsul@gmail.com">odontckconsul@gmail.com</a></li><li><a href="https://wa.me/5212381479365" target="_blank" rel="noopener">+52 238 147 9365</a></li><li><a href="https://www.instagram.com/odonteckconsulting/" target="_blank" rel="noopener">Instagram</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">© 2025 OdonTeck. Todos los derechos reservados.</div>
+  </footer>
 
-// PAGES
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo(0,0);
-  if(id==='pg-land')initReveal();
-  if(id==='pg-dash'){showDashView('home',document.querySelector('.ds-lk'));updateCD();}
-}
+  <div class="floating-socials">
+    <a href="https://www.facebook.com/profile.php?id=61575818279014" target="_blank" rel="noopener" aria-label="Facebook" class="social facebook"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.instagram.com/odonteckconsulting/" target="_blank" rel="noopener" aria-label="Instagram" class="social instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://wa.me/5212381479365" target="_blank" rel="noopener" aria-label="WhatsApp" class="social whatsapp"><i class="fab fa-whatsapp"></i></a>
+  </div>
+  <button class="scroll-top" id="scrollTop" aria-label="Subir arriba"><i class="fa-solid fa-arrow-up"></i></button>
 
-// LOGIN
-let isReg=false;
-function togReg(){isReg=!isReg;document.getElementById('frm-login').style.display=isReg?'none':'block';document.getElementById('frm-reg').style.display=isReg?'block':'none';document.getElementById('lt').textContent=isReg?'Crear cuenta':'Iniciar sesión';document.getElementById('ls').textContent=isReg?'Únete al Club':'Accede al Club';}
-function doLogin(){showPage('pg-dash');showToast('👋 Bienvenido al Club, Dr. García')}
-function doLogout(){showPage('pg-land');showToast('Sesión cerrada')}
-
-// VIDEO MODAL WITH YOUTUBE
-function openV(ytId,title,desc){
-  document.getElementById('vFrame').src='https://www.youtube.com/embed/'+ytId+'?autoplay=1&rel=0';
-  document.getElementById('vTitle').textContent=title;
-  document.getElementById('vDesc').textContent=desc;
-  document.getElementById('vModal').classList.add('show');
-}
-function closeV(){document.getElementById('vModal').classList.remove('show');document.getElementById('vFrame').src='';}
-
-// TOAST
-let tT;function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('show'),3000);}
-
-// REVEAL
-function initReveal(){const o=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.08});document.querySelectorAll('.reveal').forEach(el=>{el.classList.remove('visible');o.observe(el)});}
-initReveal();
-
-// COUNTDOWN
-function updateCD(){const now=new Date(),live=new Date(now);live.setDate(live.getDate()+2);live.setHours(20,0,0,0);const diff=live-now;if(diff>0){const d=Math.floor(diff/864e5),h=Math.floor((diff%864e5)/36e5),m=Math.floor((diff%36e5)/6e4);const de=document.getElementById('cd-d'),he=document.getElementById('cd-h'),me=document.getElementById('cd-m');if(de)de.textContent=String(d).padStart(2,'0');if(he)he.textContent=String(h).padStart(2,'0');if(me)me.textContent=String(m).padStart(2,'0');}}
-setInterval(updateCD,60000);
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeV()});
-
-// PDF DATA (embedded base64)
-const pdfData = {
-  'checklist-mih': 'data:application/pdf;base64,JVBERi0xLjQKJZOMi54gUmVwb3J0TGFiIEdlbmVyYXRlZCBQREYgZG9jdW1lbnQgKG9wZW5zb3VyY2UpCjEgMCBvYmoKPDwKL0YxIDIgMCBSIC9GMiAzIDAgUiAvRjMgNCAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EgL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcgL05hbWUgL0YxIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udAo+PgplbmRvYmoKMyAwIG9iago8PAovQmFzZUZvbnQgL0hlbHZldGljYS1Cb2xkIC9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIC9OYW1lIC9GMiAvU3VidHlwZSAvVHlwZTEgL1R5cGUgL0ZvbnQKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0Jhc2VGb250IC9aYXBmRGluZ2JhdHMgL05hbWUgL0YzIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udAo+PgplbmRvYmoKNSAwIG9iago8PAovQ29udGVudHMgMTAgMCBSIC9NZWRpYUJveCBbIDAgMCA2MTIgNzkyIF0gL1BhcmVudCA5IDAgUiAvUmVzb3VyY2VzIDw8Ci9Gb250IDEgMCBSIC9Qcm9jU2V0IFsgL1BERiAvVGV4dCAvSW1hZ2VCIC9JbWFnZUMgL0ltYWdlSSBdCj4+IC9Sb3RhdGUgMCAvVHJhbnMgPDwKCj4+IAogIC9UeXBlIC9QYWdlCj4+CmVuZG9iago2IDAgb2JqCjw8Ci9Db250ZW50cyAxMSAwIFIgL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSAvUGFyZW50IDkgMCBSIC9SZXNvdXJjZXMgPDwKL0ZvbnQgMSAwIFIgL1Byb2NTZXQgWyAvUERGIC9UZXh0IC9JbWFnZUIgL0ltYWdlQyAvSW1hZ2VJIF0KPj4gL1JvdGF0ZSAwIC9UcmFucyA8PAoKPj4gCiAgL1R5cGUgL1BhZ2UKPj4KZW5kb2JqCjcgMCBvYmoKPDwKL1BhZ2VNb2RlIC9Vc2VOb25lIC9QYWdlcyA5IDAgUiAvVHlwZSAvQ2F0YWxvZwo+PgplbmRvYmoKOCAwIG9iago8PAovQXV0aG9yIChcKGFub255bW91c1wpKSAvQ3JlYXRpb25EYXRlIChEOjIwMjYwNDA5MDc1ODQxKzAwJzAwJykgL0NyZWF0b3IgKFwodW5zcGVjaWZpZWRcKSkgL0tleXdvcmRzICgpIC9Nb2REYXRlIChEOjIwMjYwNDA5MDc1ODQxKzAwJzAwJykgL1Byb2R1Y2VyIChSZXBvcnRMYWIgUERGIExpYnJhcnkgLSBcKG9wZW5zb3VyY2VcKSkgCiAgL1N1YmplY3QgKFwodW5zcGVjaWZpZWRcKSkgL1RpdGxlIChcKGFub255bW91c1wpKSAvVHJhcHBlZCAvRmFsc2UKPj4KZW5kb2JqCjkgMCBvYmoKPDwKL0NvdW50IDIgL0tpZHMgWyA1IDAgUiA2IDAgUiBdIC9UeXBlIC9QYWdlcwo+PgplbmRvYmoKMTAgMCBvYmoKPDwKL0ZpbHRlciBbIC9BU0NJSTg1RGVjb2RlIC9GbGF0ZURlY29kZSBdIC9MZW5ndGggMTg3NQo+PgpzdHJlYW0KR2F1YFQ5NWlRUyZBSUkzYmJdaVJgWEoxZU9oTU80bTNGOyhgLzAyPkZCTU5tQjJhdTpuPWRlcnAmL0pvYiMwSz4uMWlGOSxWR0I9WmVyRS4tLTQnP1locy5pb11NMD5eKE1cUlJPcSk2Oi1jLSlcc2M+VzpJSXU9TkBASV4mN2ElKyxRKDlYRUtgWURRbEhdYT1BZWBGSktWM0BIXjclJTgiUSFoaGAhQ2JTSFFUTVwiSnFDTyIxKVVkcmUiYzdALjFBJ1FaTTBsVUllLGhIbXNCN15HbElIVlVLLjlSdWRXczRibnQ7JUc1aThgVHFOJjU6bjYrWF9COlltWDlKZCVJXEsuVS1TK2tlcUolbSM8VmxYcFw3TzlSaTgqQW0+TEYoVEZTMWIrLTEnUkIxKWkhUnNRaGhVQTtOKU9dIWJLZGdWMUJhb0dXakJnVk1mXG1WPCJlV09WTnAsc25eLUQ7W2RZWWskcCZiKltIO1trUlM6V0gzMVNfUUZpV0FHPm1ycjMkYzhaJl5JckNpYm49J11iRUZMaU9ha1dAXGhtW1lrJ1ZvS2QsV2s0TjYuKCwnS245LVlpWyZddT8/LEFLVGZyMD9kYSo0ISJHbDNkKGdVPmdUVSUnRSUmR1AjKVZLV05IUHRdJjEyQFNQREE+X2lPVzheYkA3VW1OUzpJTjolJGQrJzxGb3BmPVsnY2lXbGVsUj0wKTAkL00hKnBdWyQ+MkE4UDNyKEhCYlVeIy9vPWpRZGslbUVnLSZXNkVpNU07VT1pYWAoLm8vLTYzOWpVLHR1W1RJMzJlbWtWRCJlM1cmOktjbVxSZl9AP2deY2VJRmFMbV0nSmMxQ0VXSUBhWE5yU1ZiZjVrUydNU2BZTD0tdDRTSyVOYlIoN29OOD1cKVg4blJKRSpcMU82LkJqKm1HVlswIyhkW0whK1osL1xUNCl0UUpAJCpALiUnRlpUUj9rNW5zLXMxOm46VTBpZiVicz8+OVZrLExuOV8nLzxoJm5HKlxWJ2IjIlo+ZEYrVyRkLmE2TlBeYS4sSnE0bC5aa3M3KXRFTTUrY00nZGQwb083bmFRcFtxNk5xMEsoL2U8YGhYXiQ7W1JDLDBGSEhqTlg1RUtqJFAlakpEJDBDb24/Wic1Zm1TS1pnaiJCMUtnTGRWKmVdZkI6UXRyWWNLZ0I3bD46YTgoP1U8PFY6W2ZSUWVrYTwnJEYqRCRARXFDPE5UVmcoTkxIZXNsPlMlKSpoKDd0Z24uNF5hcV1UJjpqWylbWjpmWz9NLGVeQ2dsP1QxWjVtKjQ8SSUjL0A1UEg9clRcQThTSFxkMlpvL0sjblRYTE4sUl9pcjBKb05zR2dJNW5NIldiJDBhaGNSMDNIPm1zOCFQJ0EwPSljIjZ1TnIxYmVtcl0lZmUyJ0A1X0w7al0iQG5bYlVlKjQjTHRBQFVEOEFiJiwmdDxUZDhMOz9HTFoqciVHa1whLHU6OVAxdTlvcSUsOUdBbUdyRERRRl5MaiVBSk5yZTpJJGNlUzFsJ2hQZztoNE1XJyZjZFEvdGY/dCx0YCRkYXFNN0ozI2BtQlJBLSUhLCkqWyFRVSE6PiM6UmcoNi1uaTpmaSRcVixMbFssMi0xaFQ1JHJub2tsLllGL01HP1NVIktTdWhuPzwyZFoyVCIxP2I4QUAhPmgqJmRDIS1wQCRtcEM8KD91LVJNRT8wdWxCVSRULGFATzUsTUdKRSNqQD40LFlsJTRZKUlZa0RTbV9FIWxFNSwjJjAsWitMO1tHb2pDImNsVUk1PyhxQy5Kb185UHRNN01laUIhOmokZEtmLVU+UVpDVzs8VzBfK3RtLmFwNW02VmRKRlhuQSdFZkReTVJvXls9T2IsOktza2EjQTEsOTlZJl1WI00zTmtOMkUkKW4jVlhFNCxQcW5kVzM6XzRrTC1wN1ZFJDNSMydrPGwkSUIoWz1YIV9JbkkoTD4/Vk9AJyheOl5HWGFWbF9hPy81TUNpbiFbZURJQVQtZD0nYDMsLlpRKzEoLWY+UztGMGRqbmZENWFuUi9UXFNhOUEwMDEoPC01MEQ6aWhlQlkoW2JTNlYkTT8qJmU6QTJraVtVLXIjS3A5PGNTaVd0OU9UbSNyT2VWaCZHcGM3XVRoZWRLNWw7b2kocyw6alNOTlRmVFpxLCtnTztWaT9fRVsxWUlwOD1yTVBpLidDPFhkO0QzZDc1QVMmJ1NQXG8lSD8uQGwkIjkqUzZmczBvJ3BAZS5WaVlNLElNT0VJPCMmMUQjcCFUKFA0XCY0UCh1MGJHKDchVWEyaWZEUCotOS03anNyIlQuOF9HUUU1MUReJ0xDcVw9bHBcZzZmVChQNFslciNKJGhWSDY2QjUlUl8oUTpdaTJQS15GMTUrPFg9KWUzcHMyWV0zIkIwY00hU09EPkVwYDAoS1QyJTRCJEByWkcldE1NNkBrJjFpXWc0NlVcZFFaXXVBK0JcYDZyIVdNNiZbMn4+ZW5kc3RyZWFtCmVuZG9iagoxMSAwIG9iago8PAovRmlsdGVyIFsgL0FTQ0lJODVEZWNvZGUgL0ZsYXRlRGVjb2RlIF0gL0xlbmd0aCA0ODYKPj4Kc3RyZWFtCkdhdG03YVxLYC0nWU5UWmsjZF1OWiIlRyojJjAhUU9GWj4jLSJJWHQiTDo5KlFJImE1WyJxVicmUEovVDQ7bEooVCxCYTBiZydvLyolOjA2KSZTLXRLKmJVRSpGa244NCw1RE1APiNiYCN1ITUuJFI9VWRcMz82J0w8SUchS0ZILEIrV2c+TC9ZVTwnPjBrWD5Tb2YyQ1lDLXFdL1pAdEVmRG5pKzJiaS1vVVgmLylYKUNedWxgUVpPO0pOUiEkQ10zQTVyLCJJWm1iN2ExY2opSVtdMXBbZz9xXCpkOSY9P2IyMTU6Qzs/MjAiSCpAOEpoJzdROGIrNWwuVyJxcC50PWhTbTlBQzZoOjQpNDtyQ11TXFolV3JMUHRVQk4oblZwZjc3NW4oXC9aNFQoSzs1cjRqdU43SyE9Ti8jZGVtcl4mKzcwUF4kZi5nbHVOWnVrcj5RZygyQmZmcis4KTo2IjJxJDZkTmNpJVctT1VbJD1UaCtFOyZaciNASzs/I2xgL21faihbLzInLUdANlMjOWNRUkIySWxSUlpIJHVwV1FRPmdwZClIOW8lUz1QZHI0cillb0o1U29NbEY3TD43VmR0dWVWLnRHYFUxJy4sb1lfbT5dYyxScERpQi4zIl8hIi9+PmVuZHN0cmVhbQplbmRvYmoKeHJlZgowIDEyCjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDA2MSAwMDAwMCBuIAowMDAwMDAwMTEyIDAwMDAwIG4gCjAwMDAwMDAyMTkgMDAwMDAgbiAKMDAwMDAwMDMzMSAwMDAwMCBuIAowMDAwMDAwNDE0IDAwMDAwIG4gCjAwMDAwMDA2MDggMDAwMDAgbiAKMDAwMDAwMDgwMiAwMDAwMCBuIAowMDAwMDAwODcwIDAwMDAwIG4gCjAwMDAwMDExNTAgMDAwMDAgbiAKMDAwMDAwMTIxNSAwMDAwMCBuIAowMDAwMDAzMTgyIDAwMDAwIG4gCnRyYWlsZXIKPDwKL0lEIApbPDIzMjE5MzgzMjQzYzAyYzE5NTExMzc0OTAyOTUwNTc1PjwyMzIxOTM4MzI0M2MwMmMxOTUxMTM3NDkwMjk1MDU3NT5dCiUgUmVwb3J0TGFiIGdlbmVyYXRlZCBQREYgZG9jdW1lbnQgLS0gZGlnZXN0IChvcGVuc291cmNlKQoKL0luZm8gOCAwIFIKL1Jvb3QgNyAwIFIKL1NpemUgMTIKPj4Kc3RhcnR4cmVmCjM3NTkKJSVFT0YK',
-  'errores-cementacion': 'data:application/pdf;base64,JVBERi0xLjQKJZOMi54gUmVwb3J0TGFiIEdlbmVyYXRlZCBQREYgZG9jdW1lbnQgKG9wZW5zb3VyY2UpCjEgMCBvYmoKPDwKL0YxIDIgMCBSIC9GMiAzIDAgUgo+PgplbmRvYmoKMiAwIG9iago8PAovQmFzZUZvbnQgL0hlbHZldGljYSAvRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZyAvTmFtZSAvRjEgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iagozIDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhLUJvbGQgL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcgL05hbWUgL0YyIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udAo+PgplbmRvYmoKNCAwIG9iago8PAovQ29udGVudHMgOSAwIFIgL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSAvUGFyZW50IDggMCBSIC9SZXNvdXJjZXMgPDwKL0ZvbnQgMSAwIFIgL1Byb2NTZXQgWyAvUERGIC9UZXh0IC9JbWFnZUIgL0ltYWdlQyAvSW1hZ2VJIF0KPj4gL1JvdGF0ZSAwIC9UcmFucyA8PAoKPj4gCiAgL1R5cGUgL1BhZ2UKPj4KZW5kb2JqCjUgMCBvYmoKPDwKL0NvbnRlbnRzIDEwIDAgUiAvTWVkaWFCb3ggWyAwIDAgNjEyIDc5MiBdIC9QYXJlbnQgOCAwIFIgL1Jlc291cmNlcyA8PAovRm9udCAxIDAgUiAvUHJvY1NldCBbIC9QREYgL1RleHQgL0ltYWdlQiAvSW1hZ2VDIC9JbWFnZUkgXQo+PiAvUm90YXRlIDAgL1RyYW5zIDw8Cgo+PiAKICAvVHlwZSAvUGFnZQo+PgplbmRvYmoKNiAwIG9iago8PAovUGFnZU1vZGUgL1VzZU5vbmUgL1BhZ2VzIDggMCBSIC9UeXBlIC9DYXRhbG9nCj4+CmVuZG9iago3IDAgb2JqCjw8Ci9BdXRob3IgKFwoYW5vbnltb3VzXCkpIC9DcmVhdGlvbkRhdGUgKEQ6MjAyNjA0MDkwNzU4NDIrMDAnMDAnKSAvQ3JlYXRvciAoXCh1bnNwZWNpZmllZFwpKSAvS2V5d29yZHMgKCkgL01vZERhdGUgKEQ6MjAyNjA0MDkwNzU4NDIrMDAnMDAnKSAvUHJvZHVjZXIgKFJlcG9ydExhYiBQREYgTGlicmFyeSAtIFwob3BlbnNvdXJjZVwpKSAKICAvU3ViamVjdCAoXCh1bnNwZWNpZmllZFwpKSAvVGl0bGUgKFwoYW5vbnltb3VzXCkpIC9UcmFwcGVkIC9GYWxzZQo+PgplbmRvYmoKOCAwIG9iago8PAovQ291bnQgMiAvS2lkcyBbIDQgMCBSIDUgMCBSIF0gL1R5cGUgL1BhZ2VzCj4+CmVuZG9iago5IDAgb2JqCjw8Ci9GaWx0ZXIgWyAvQVNDSUk4NURlY29kZSAvRmxhdGVEZWNvZGUgXSAvTGVuZ3RoIDE4MDUKPj4Kc3RyZWFtCkdhdTBDYkF1VyQmQTdsamszL1ZKJSVlMG9AaVREOi5IZSs+VWFmQlk1VTdVYiF0bmpob0tLdVE0V207PVtUNUNWQ1I4VE4rOWpWYmgpIilFQFhLUiZaWUc8MWhwP1NOJzF1MFZsbVR1TlMyUml1WmFrPTFPYj5ZcCxxVzNyMT1pMUVNNkBYX25OJ0kvUCtuYUNuTy5QTSFDT3RGNCwoM0xML1wsWm86TkxWa0t1JTtaK1suJG8lI2NNa2YtZTlWNSU1Qls7OUMuTWI7ZjpiSC5PSW1dbnJwaHBDTCtEOClobGJHJypkJHRsYjwxVU0yWkkkTGQ2Oy1FJkEvdERxRGhiTz4mbmRuJ1hYUCZAV2NXPitrVlBvPFVuMW9OKW9IMWpvKlo0P3E9W1p1PC5ZOD1gO29QPWRMPyshUEwiLUgiW2FZZ2VSRlZoWTJjXmctOSoqWVAqayhcQzgjUFVcZzlfZiVyQS1QOGA5TDRfWllYX0lUYiRxb3EnJkYjVmtZZUlWKyFbST1kM0tkZSFoRjQ+KDxXSV1PN2Z0XWZmZ1dvdVZUaT4qUjNcY2toWCo3anN1YlNFKGBiT3FHOnRxNSEpL0lQaUM4ZSV1LnFDTHUkKGNFOEZsVz1ocDxhRTVpO08zclghWi5Pc2BwKlkmcyJeZGk4SSYyJDFBZiYwVDpBQ1piWlkkN0wsSGdybTUuQ09ELS9BbycpKkNtYzlLdChpJzNbTykhXi9FdCY7KFlHaD5ybTI+IWtZbVInZiIrLmNDZUtTbVFmXGlAMiEoOztZIk87XEF1WDxkSl80PiM2VSglaF5OQkNxVC44L1NfXz01O1xORi8oOztxN0tQREsqbm9OaG0rVytBSiFaailmVWQjRVkuJGRLJXAkSVtvLjwiV0RJMDJRNW8wTV5VUEJFUzk3WyVhaS43ZG5VVitvXmJPPUpCQEJMPmFpNWtZaUpLWjxPW2o1OiQmaCJXcU9MTCYmLktcWyVgX0tKcjAubD1iTEwrXWZxOlFjaEM9MCk7bklCPWtsUCNUal1mNVRpalg2NGBeZT46VGxYUjQ6LGIzV2xeOiNxTlcocEM3MWJcTkJeOUtXTFFfJTBBWE9WUldCcmtBaEE9ImshOytnWWlOKWk1a2ZxZStYPyxkYylkbE0rNmlITF8pYk9xUkdkb0AwMzs8KXFmY1NqK0JrT2FZZzhoSSk5UjIuMW1PQUU4TWhNKyZsZFdwLE1QRU81QmJLNzVrNFgzLmtXJzA7ajJbLV0sNyM4Mls1LmFSQSw0PmFfNisxY09BLUVAVCZcPTs6SmtjaVllO3NEcWNVK2w6L1BzaUk0YyRJRG5oXVVjMkA/Sj9SR0xwJCU1UztvZiE3NEI+ZmoqNkU0cks7RyEiNG4yZi87YGxXIzApbmdNXD5VW1g4Q0kyLDdsUmNOXyUyQlUzb2lTUVotUSo8a3JpTGgvNFdxNHBPRSdfT0kxRygtS2wyXCtXKHFSUFAuJHViKj5hZWxBYmwxb1FRc2VPNi9eaSZVPlRPPlhySUlDbHIrU1dROFE6UnIqJG9jQ0NXM1YpbkZVdWhwP3E9TWZXb0cvcTYrUCRAMFRqVGY1UiVQOzE8KmRWc0FCM0dtNF5qXipjLTlYKjFLXTc+dC4tXTpLN0FVKnNMUS5ZRlk0NWg7TzdaPUNEP2JCUygiV3NaRmRpS1w8b0JGO1VyJHQ+KTtOI0sqT2EqZVghbHU5YTosTz9KR2VjKGYzTDFXRFlTNktRSjhpTVs1Y10/VzYuYVNMYElxV1VbJGE+KkZwNENZZFEsKHFAKDgiQT1yXFJxJ0wkL0FORyhdZC4jdGUsI1hQVmNFN0goOzAmZmptPC0jYi07PmAtJjU6NEk7Vm8tdCpiTjFEXSdqXEUyajRgcGxlVTsoOnVGW0shOysvR3BgZyRiMWFkaTkic0c9XjchXVFkOGVcOnQocV1xaCInMjAyTCVBLnUuSDpZNT8uUV9jaiVFakIjMi4pLUhEVV8+JWUoMidwSEI6RU5GQjc8OS4rIlFVIixPVSNWS0xqcCwwbjRfYEhmMiYmNkJMPm46TEAlVXIvVmRxYUxGVE1kRCUiTUs3bz80KkpVaT5NOyVnYFRaW0RTPGtJT1RZYjJJVzlsLGdKUVpzR19oamYuLVkoRTtNUEwuSmBMcDZlWlBVTCheL2EyKzUmLy0mIzBTNkVIQTM6IzJQJ1tWPG84RTEhQ15gRU1sMTwoTHBTREBMO1NJXjJtJ0wxXC83Tl08cmUiZnAuO0NJdHFaMVYnRk9NOUArW08zKSwiJ1piQkxtWVApL1dLRz9BPWgqWFJPLXEkXEA/aHJgSkNqRWxSSkRRa1QsRT01ZEQ0XSdfLzYmYEsoLi9DbVxvczdKbyFyclVIKVRVY34+ZW5kc3RyZWFtCmVuZG9iagoxMCAwIG9iago8PAovRmlsdGVyIFsgL0FTQ0lJODVEZWNvZGUgL0ZsYXRlRGVjb2RlIF0gL0xlbmd0aCA3MTcKPj4Kc3RyZWFtCkdhdCVfPkJBN0kmO0IkPy8nX1g0TVFxIUBHNEpbI0ApPFUraTVgSllbX2FINlFCPmAycT1TJUg4UDVtVEI4QzFFTkBvUydJYkpAaGtbV1kmZUdzTVtdUklvOkBbJnNZMWVeZCc/cltDcSIqUWVwKFdiX1YqTiQ2Kzc7U1BNS0xxP0lTMEtTMDs4YXBNcE9FPU1GKTZgXjp1JUVeTmM+RktGZ2VVLD1SWkpYKS1HUjlkS3A6dUg4bTQ/TmxHOD49ZzhdZzZXOHQ6MlI3SmYiajAhTlFlcDcvcUFxXVhgVDZCOkhsUkVbYGtDWyQsNFtBJy4mMS1FaiNnbWAuOmJRPCk0O2pmKVAmYGkvSzpyM29nVUBpWzJEME42YCVvaV1kPFJbSCo6cWFWQW0yXVs9Ti07SEo4IU8kJDhjXCI9Yy51MWNKU3FkXS5xdWUwYDsjKDdoW3AnKUlqRzlYSVJnQSdTIy83WkFtX0JmW2k6XEpmLDMxbTFEO1VkWT5jM25ZUzdMIUxzI25nPXRwci1vPTcja1VSczgnL2Y5OSVjZkVCPzRDbC0iWjs2Uy5cMUYwak9ML0dASWZOLWpbR2AiZjNXRyJzP21LbC9MNTJORzxmUSM+XFc9QltvMFhAVkpSJkBHJ2dBVlhoOG80bk1cb1dCIXNRTE5lJ3M1PCsiJUohUVVCSE1iLCpXRSklUGI8MV1NKFlnNmFbJGxbR2ZKYWViQyRTK3RWVVJnQkpQRlRVaWNCZCNDOGU/KUs2Rm9cK1FYSyMpVy4uNWFlTnBxJFw5cFAsIiIoQ0BkTiFBbzw5V1ZZSDBIX2w9I1VbJ0FfIUJCaE1WLV5hPm9zPVM3XUc5Zk9WLWcqOSNWOlNpaTw9U1ZHJVRHaFtVUUZfNiVdbm5hOlxRV0hmSUNoLDhXTW0mOD8qOi5BajZWSGVlTl5vQE4hU2hPRzJZXEV+PmVuZHN0cmVhbQplbmRvYmoKeHJlZgowIDExCjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDA2MSAwMDAwMCBuIAowMDAwMDAwMTAyIDAwMDAwIG4gCjAwMDAwMDAyMDkgMDAwMDAgbiAKMDAwMDAwMDMyMSAwMDAwMCBuIAowMDAwMDAwNTE0IDAwMDAwIG4gCjAwMDAwMDA3MDggMDAwMDAgbiAKMDAwMDAwMDc3NiAwMDAwMCBuIAowMDAwMDAxMDU2IDAwMDAwIG4gCjAwMDAwMDExMjEgMDAwMDAgbiAKMDAwMDAwMzAxNyAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9JRCAKWzwxMjIxNjBmNWE2ZDVhN2QzZWNmNGEzZjY2YjY2ZWM0NT48MTIyMTYwZjVhNmQ1YTdkM2VjZjRhM2Y2NmI2NmVjNDU+XQolIFJlcG9ydExhYiBnZW5lcmF0ZWQgUERGIGRvY3VtZW50IC0tIGRpZ2VzdCAob3BlbnNvdXJjZSkKCi9JbmZvIDcgMCBSCi9Sb290IDYgMCBSCi9TaXplIDExCj4+CnN0YXJ0eHJlZgozODI1CiUlRU9GCg==',
-  'protocolo-carillas': 'data:application/pdf;base64,JVBERi0xLjQKJZOMi54gUmVwb3J0TGFiIEdlbmVyYXRlZCBQREYgZG9jdW1lbnQgKG9wZW5zb3VyY2UpCjEgMCBvYmoKPDwKL0YxIDIgMCBSIC9GMiAzIDAgUiAvRjMgNCAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EgL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcgL05hbWUgL0YxIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udAo+PgplbmRvYmoKMyAwIG9iago8PAovQmFzZUZvbnQgL0hlbHZldGljYS1Cb2xkIC9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIC9OYW1lIC9GMiAvU3VidHlwZSAvVHlwZTEgL1R5cGUgL0ZvbnQKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0Jhc2VGb250IC9aYXBmRGluZ2JhdHMgL05hbWUgL0YzIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udAo+PgplbmRvYmoKNSAwIG9iago8PAovQ29udGVudHMgMTAgMCBSIC9NZWRpYUJveCBbIDAgMCA2MTIgNzkyIF0gL1BhcmVudCA5IDAgUiAvUmVzb3VyY2VzIDw8Ci9Gb250IDEgMCBSIC9Qcm9jU2V0IFsgL1BERiAvVGV4dCAvSW1hZ2VCIC9JbWFnZUMgL0ltYWdlSSBdCj4+IC9Sb3RhdGUgMCAvVHJhbnMgPDwKCj4+IAogIC9UeXBlIC9QYWdlCj4+CmVuZG9iago2IDAgb2JqCjw8Ci9Db250ZW50cyAxMSAwIFIgL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSAvUGFyZW50IDkgMCBSIC9SZXNvdXJjZXMgPDwKL0ZvbnQgMSAwIFIgL1Byb2NTZXQgWyAvUERGIC9UZXh0IC9JbWFnZUIgL0ltYWdlQyAvSW1hZ2VJIF0KPj4gL1JvdGF0ZSAwIC9UcmFucyA8PAoKPj4gCiAgL1R5cGUgL1BhZ2UKPj4KZW5kb2JqCjcgMCBvYmoKPDwKL1BhZ2VNb2RlIC9Vc2VOb25lIC9QYWdlcyA5IDAgUiAvVHlwZSAvQ2F0YWxvZwo+PgplbmRvYmoKOCAwIG9iago8PAovQXV0aG9yIChcKGFub255bW91c1wpKSAvQ3JlYXRpb25EYXRlIChEOjIwMjYwNDA5MDc1ODQyKzAwJzAwJykgL0NyZWF0b3IgKFwodW5zcGVjaWZpZWRcKSkgL0tleXdvcmRzICgpIC9Nb2REYXRlIChEOjIwMjYwNDA5MDc1ODQyKzAwJzAwJykgL1Byb2R1Y2VyIChSZXBvcnRMYWIgUERGIExpYnJhcnkgLSBcKG9wZW5zb3VyY2VcKSkgCiAgL1N1YmplY3QgKFwodW5zcGVjaWZpZWRcKSkgL1RpdGxlIChcKGFub255bW91c1wpKSAvVHJhcHBlZCAvRmFsc2UKPj4KZW5kb2JqCjkgMCBvYmoKPDwKL0NvdW50IDIgL0tpZHMgWyA1IDAgUiA2IDAgUiBdIC9UeXBlIC9QYWdlcwo+PgplbmRvYmoKMTAgMCBvYmoKPDwKL0ZpbHRlciBbIC9BU0NJSTg1RGVjb2RlIC9GbGF0ZURlY29kZSBdIC9MZW5ndGggMTQ3Nwo+PgpzdHJlYW0KR2F1SEw5bT47TiddJkAyaE5IKGhZJT5jdUFDaCxeOlpsN0xSPipMSjJTcDROW0JgMUhSbjxNQ3Fdb1lRS1EvbjElT1dBbFteYyhGcWBZLjYmNzxBaihIJyJzOTZiWU5KNC1XcyEyMEZJalpSdW46OzBORnJtISdNMWlrVjk+UyplLVFVKTIuLjNVXFMsYC1JQ1ZPSEY0aktOaV1nWFdmUmpAOjBoSUxmOXFqQyplZGI3XlpfN1E3cCo7U3JVQylIY2E9QVZTI1ExST1dR1UjXTpaciFMWClKMFpDMjhfY1AyOXUvLFNYQyVRXS8uJCI+L0wxLCxuVER0c1RtSSEuYmdSLGM7anJFXiouZkhTTTNlV0E3ZlksLl1PYTNWMV5wWzteJ0NxJFtjQVBLQ187TlZMazZATidyUzxnSiFrL0A+OkZnQTxIRk83NzswODpmcmVjQlZCdS4/QzozLUFbZl9XTTA9WE90Tl1TLV5ya25iIy0zPEFoI0I/OCY4SE0yTGpFWC9QYksjSjFPND9MWidMKm0rP0okbiRJUWEvcG5vU2ZOczRSPio8alsnL1UjJmhcWmRuXS49VXNLcyg0b1EvKThKLylkLiQoTF1tQkM9I1VhP0Eua2YoW20nJmthN0NTQzFWOmVNTixtVW81Kl9QRmJdWHModFksQylXVCYyR1s0LVg4ZWZPYmpHJC1IJkJgXDs3c2o7KTFxVnJvUmolVFhtdW9IdTBaYG1rZHJkSERMKFs8a3IyPi1HKDVHdTZVSFk+PWlCRSVBPFQvdUJXYltNMFc6TlhEWW5ML00hZiNuZSVXXWdgcGEnVFVpaEtkW2gkX0E/TWJnREs8I2YlUUBfQUFBb3M5RVRdZidraG9GL2pqMVppWFhFTEVQRyQuO14tbzEoLGNHYGFXJD1KLEZoJ0U5PlJjWjViTCVDZmlmYCtUOWtcP2VdSi5aYUc4cDJMalZDYkpmQGBPYWRlJGxTJDNtOWFiY0pbcGI+KU5PLE10WVRQNlM2TnM/KUxqNG9UNFtzM0kmKiImZkVBJllvW102LCNybFg8KiwsZW9GMEJnZ2kwTWFmVzhZSCpYR2dzUiIjNXVdIUZkQD84Jm8mOk4sXEFFLXIrby43Lz0mW2ZPIk4/aFwzMidRTVlZKSZRLUFJY3RrTCMpYjUuM1pSSGhAYCZnL2ApQjskaFUycV01cD0wY05cckU2VkVjbkcrMlo7OVJVWzxyLnV0REJLQUk9VnJEXGYxc3VSZWtEZkJHJCM8b1xqXEIsKihETV9UL0BIa0RuMUY5V3VCZi5iL0dsa1lxQysoMj5SVj44VFlSbj0zM190Sm01PXVIQj8rRTxVM0ZtLlByc2hCODlKWUBbRi42JV5mN0I8Sl9fa0JUU3JUPWssXSJDcUsrOiMhJVdHXz1sLEArNS5bLTciWWJuRSQjNWhZWXQrTkhkUHEoWiYuVy1MJUg3WmRANnVZZlZNQlcnPFZGWG1GcmJQR1dvYFdhayFWIzYnMzhMbzs5TGU2aE8ldSlXVkthVVpyZ0RkZT5ZOEA6dVlxJV8rbGIuR2wwPEdlTGVGcXQ+bFdkSFYmQjtJRkhaLm8+aldmbnJrQE4qPUFBXTBmZShddCtsSTU1I0xMSWVqSmNgT09LT1xnRjFRWGFlXnMpX1dNcDdzOUguJTMpRVM9LFxeTEYlNyklKjNSUyVvLHM1b1g0S1pTbT8lVzNWZTdibEkoQHI7PlhpKC5xZ18yQjdfYixaOEo1Q08wbmRkLi9COlNSQHA2VGlBai9CTyYpaXQ8UkU1LXQ+VUFjZT91WkQtcUhrYGtvNCcsMzpHNiNCQiJPJzUnZ0VcLmZwSlt1QjlmZywvYldGR0B0PkI7MjNXSDRAJW0jdHIyS1dDKT9wXytBIkdqPyRTLEAzSHQkTiJYKEMlIW10dCJqRG4wcGNWPGRedCM+QlJJImg8U25+PmVuZHN0cmVhbQplbmRvYmoKMTEgMCBvYmoKPDwKL0ZpbHRlciBbIC9BU0NJSTg1RGVjb2RlIC9GbGF0ZURlY29kZSBdIC9MZW5ndGggOTk3Cj4+CnN0cmVhbQpHYXVgUjlpS2UjJ1lOVTFdTHVuMSIzLlZ1Z1lrViNfUEcpVidLY2VaPlNMQkshYTBPaVMmMnIvUEZQR3QmMy41XFJKOUY7Rz89XDhNKlFrJW5cOFdFbj4xWWYuMDEmSVlscDNtI28nOlY+YD0sa2FFaEJfNlRROktAIWlgQz1lPFA3SmlLTEgoXW9rczhPZ0xzN1E6cChTPTJjQXBYPWtHPjNbRnRSKVtKP0dMUzVaMl9UcFFea2xKLTxiW3JBI3E2JGE8KlRMNjIzVFZJO1FJUGNRSip0U0U+ZmNuQzVCMmxjdEVOJCNhVltsZ3IzbnJqWDIrcWwvXmZSRkguN2c4bk5UUmZBKTZGbUVqLDwvNWpoM2g8SW5dU3RRbi1qWWFxay4hYSc7Yj1eYTdXTkIsdDEqRGo9YTV1NlJvRWAsZElbdFg3UjFXVTBGaDduQT5XdUUvLSEtVis0bnNJQGNaY2tYOlNJbVtUQ1o3REU8SC1RakFvSydWRklLc2VSdG9EcCpoYCYnbTo5JSNeYS42IktELihbbElXTFUlRVFhW1VSV1VMMiZZQFo7ckJeI0tUSj0tSyEzNzlTUCpOWkVOTnVCS0ZnSjI6U2RsYm1NX0RZPTBhUk05QnE1UWkhXVlJTipHa3A9VENuUlZpSiVLT2dUNjdUYT5nNkJLWVlPLTE8RFArR1IpYWxmcWsqcF0lbiVlTDtaPi4kZ21QaFdZRF0mQUNPKU5ESEc9LkJfJk8pJzdTLGRXJSFZLWheMyZHUjkwKlNTSlFBXTchL2dvTmokPWlIZz9WJF1YN3JYVEJpPlZqPi8hUiJGbkk7WCgqYz05SGEnJSFLQW0vLTo5Ni8wcDdIak1aI25RZ1tIJHNTJik1I1NVcTQmSEElU1FmTTVnNlE/TmxJdXNKKWEvYzFwYFYkcFs1SmFoVWdEakcoMkwyP2JXNy9LXUNZJ2E6SjdibF9zTEprSy9UVjpUZDtXN0xWNmNOU0MyIScpMjY/S0U2VEhuWnI1VTJiSkpBcV9VZEpuQUMxPV9bTHJxK0FVcVU3Ui1eOz9tMCRLNG5QQzQ9UClEbUdeQG1mUCFGPCUsbi9HX18pWy1RMUFzYnJJLFshWyMtZ2NRWXIrKVckNUFOZidNSiE1M1lDJkwvTyMrTClkMk5CYytTUzJqOidhSUU0TkRZNyJabUNOL2A8XGElOCQ9bEJpWFpuKD9TSl9fKGZobzpgKmg1azRYUzVYMU5WbCpFTTNILERvSlNTOWIoc0dzaHJRYHRPZ1tTXiEkOj5TTlFyOWtGcmo7N1s/XXMyZyZKaWtqbWlTQVcxb34+ZW5kc3RyZWFtCmVuZG9iagp4cmVmCjAgMTIKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDYxIDAwMDAwIG4gCjAwMDAwMDAxMTIgMDAwMDAgbiAKMDAwMDAwMDIxOSAwMDAwMCBuIAowMDAwMDAwMzMxIDAwMDAwIG4gCjAwMDAwMDA0MTQgMDAwMDAgbiAKMDAwMDAwMDYwOCAwMDAwMCBuIAowMDAwMDAwODAyIDAwMDAwIG4gCjAwMDAwMDA4NzAgMDAwMDAgbiAKMDAwMDAwMTE1MCAwMDAwMCBuIAowMDAwMDAxMjE1IDAwMDAwIG4gCjAwMDAwMDI3ODQgMDAwMDAgbiAKdHJhaWxlcgo8PAovSUQgCls8Yzc4MTM0NDdjZmQzN2Q5ODUwYjhlMmZlYmRjZjdiMTg+PGM3ODEzNDQ3Y2ZkMzdkOTg1MGI4ZTJmZWJkY2Y3YjE4Pl0KJSBSZXBvcnRMYWIgZ2VuZXJhdGVkIFBERiBkb2N1bWVudCAtLSBkaWdlc3QgKG9wZW5zb3VyY2UpCgovSW5mbyA4IDAgUgovUm9vdCA3IDAgUgovU2l6ZSAxMgo+PgpzdGFydHhyZWYKMzg3MgolJUVPRgo=',
-};
-
-function openPDF(key, title) {
-  const data = pdfData[key];
-  if (data) {
-    const w = window.open('');
-    w.document.write('<html><head><title>' + title + ' — Club Dental OdonTeck</title></head><body style="margin:0"><iframe src="' + data + '" style="width:100%;height:100vh;border:none"></iframe></body></html>');
-    w.document.close();
-    showToast('📄 Abriendo: ' + title);
-  }
-}
-
-</script>
+  <script>
+    const hamburger=document.getElementById('hamburger'),navLinks=document.getElementById('navLinks');
+    if(hamburger)hamburger.addEventListener('click',()=>{navLinks.classList.toggle('open');hamburger.setAttribute('aria-expanded',navLinks.classList.contains('open'))});
+    const scrollTop=document.getElementById('scrollTop');
+    window.addEventListener('scroll',()=>{scrollTop.classList.toggle('visible',window.scrollY>400)});
+    scrollTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+  </script>
 </body>
 </html>

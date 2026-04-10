@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Club Dental OdonTeck | Membresía exclusiva para dentistas</title>
+  <meta name="description" content="Únete al Club Dental OdonTeck: casos clínicos semanales, sesiones en vivo, comunidad privada y descuentos exclusivos." />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    .club-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+    .club-badge.red{background:#fef2f2;color:#dc2626}
+    .club-hero{padding:74px 0 50px;position:relative;overflow:hidden}
+    .club-hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 18%,rgba(127,211,255,.55),transparent 24%),radial-gradient(circle at 82% 18%,rgba(0,81,135,.12),transparent 28%),linear-gradient(135deg,#fbfdff 0%,#e8f1fb 55%,#f6faff 100%);z-index:-2}
+    .club-hero h1{font-size:clamp(2.4rem,5vw,4.2rem);line-height:1.02;letter-spacing:-.05em;max-width:18ch}
+    .club-hero h1 span{color:var(--primary)}
+    .pain-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .pain-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);padding:24px;display:flex;gap:16px;transition:.3s}
+    .pain-card:hover{box-shadow:var(--shadow);transform:translateY(-3px)}
+    .pain-emoji{font-size:24px;width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .pain-card h3{font-size:15px;font-weight:700;margin-bottom:4px}
+    .pain-card p{font-size:13px;color:var(--muted);line-height:1.6}
+    .pain-card .sol{font-size:12px;color:var(--primary);font-weight:700;margin-top:8px}
+    .ba-grid{display:grid;grid-template-columns:1fr 50px 1fr;gap:0;align-items:stretch}
+    .ba-col{border-radius:var(--radius-sm);padding:28px 24px}
+    .ba-no{background:#fef2f2;border:1px solid rgba(220,38,38,.08)}.ba-yes{background:#ecfdf5;border:1px solid rgba(5,150,105,.08)}
+    .ba-col h3{font-size:15px;font-weight:800;margin-bottom:16px}.ba-no h3{color:#dc2626}.ba-yes h3{color:#059669}
+    .ba-item{font-size:14px;padding:7px 0;line-height:1.55}.ba-no .ba-item{color:#7f1d1d}.ba-yes .ba-item{color:#14532d}
+    .ba-arrow{display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--primary);font-weight:800}
+    .get-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .get-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:.3s}
+    .get-card:hover{box-shadow:var(--shadow);transform:translateY(-4px)}
+    .get-img{height:180px;overflow:hidden}.get-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+    .get-card:hover .get-img img{transform:scale(1.04)}
+    .get-body{padding:22px}
+    .get-tag{display:inline-block;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;margin-bottom:10px}
+    .gt-w{background:#edf5fd;color:var(--primary)}.gt-m{background:#fffbeb;color:#d97706}.gt-a{background:#ecfdf5;color:#059669}
+    .get-body h3{font-size:17px;font-weight:800;margin-bottom:6px}.get-body p{font-size:13px;color:var(--muted);line-height:1.6}
+    .get-body .why{font-size:12px;color:var(--primary);font-weight:700;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+    .cal-item{display:grid;grid-template-columns:80px 1fr auto;gap:16px;padding:18px 0;border-bottom:1px solid var(--line);align-items:center;transition:.2s}
+    .cal-item:hover{padding-left:8px;background:rgba(0,81,135,.03);border-radius:14px;margin:0 -8px;padding-right:8px}
+    .cal-item:last-child{border-bottom:none}
+    .cal-day{font-size:11px;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:.04em}
+    .cal-title{font-size:15px;font-weight:700}.cal-desc{font-size:12px;color:var(--muted);margin-top:2px}
+    .cal-badge{padding:5px 14px;border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap}
+    .cb-v{background:#fef2f2;color:#dc2626}.cb-l{background:#edf5fd;color:var(--primary)}.cb-p{background:#fffbeb;color:#92400e}.cb-n{background:#ecfdf5;color:#059669}
+    .pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:820px;margin:0 auto}
+    .price-card{background:#fff;border:2px solid var(--line);border-radius:var(--radius);padding:36px 28px;text-align:center;position:relative;transition:.3s}
+    .price-card:hover{box-shadow:var(--shadow);transform:translateY(-4px)}
+    .price-card.featured{border-color:var(--primary);box-shadow:0 20px 50px rgba(0,81,135,.12)}
+    .price-card.featured::before{content:"MEJOR PRECIO";position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;padding:5px 18px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.08em}
+    .price-label{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+    .price-old{font-size:15px;color:#9ca3af;text-decoration:line-through}
+    .price-amount{font-size:48px;font-weight:900;color:var(--text);line-height:1}.price-amount span{font-size:16px;font-weight:500;color:var(--muted)}
+    .price-save{display:inline-block;margin-top:8px;padding:4px 12px;background:#ecfdf5;color:#059669;border-radius:999px;font-size:12px;font-weight:700}
+    .price-note{font-size:12px;color:var(--muted);margin-top:6px}
+    .price-features{list-style:none;text-align:left;margin:24px 0;display:grid;gap:2px}
+    .price-features li{display:flex;align-items:center;gap:10px;padding:10px 0;font-size:14px;border-bottom:1px solid #f3f4f6}
+    .price-features li i{color:var(--primary);font-size:14px;width:20px;text-align:center}
+    .price-btn{display:block;width:100%;padding:14px;border-radius:999px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:.25s}
+    .price-btn.primary{background:var(--primary);color:#fff;box-shadow:0 12px 28px rgba(0,81,135,.2)}
+    .price-btn.primary:hover{background:var(--primary-2);transform:translateY(-2px)}
+    .price-btn.outline{background:#fff;color:var(--primary);border:2px solid var(--primary)}
+    .price-btn.outline:hover{background:var(--primary);color:#fff}
+    .price-detail{font-size:11px;color:var(--muted);margin-top:10px}
+    .scar-bar{background:linear-gradient(135deg,#071a33,#005187);padding:36px 0;text-align:center;color:#fff}
+    .scar-bar h3{font-size:22px;font-weight:800;margin-bottom:6px}.scar-bar p{color:rgba(255,255,255,.7);font-size:15px}
+    .scar-nums{display:flex;justify-content:center;gap:14px;margin-top:18px}
+    .scar-n{background:rgba(255,255,255,.08);padding:12px 20px;border-radius:14px;min-width:80px}
+    .scar-n .num{font-size:26px;font-weight:900}.scar-n .lbl{font-size:10px;color:rgba(255,255,255,.5);margin-top:2px}
+    .test-section{background:var(--surface-soft);padding:72px 0}
+    .test-quote{font-size:clamp(18px,2.8vw,24px);font-weight:600;line-height:1.55;max-width:680px;margin:24px auto;text-align:center;font-style:italic;color:var(--text)}
+    .test-author{text-align:center;font-size:14px;font-weight:700;color:var(--primary)}
+    .test-role{text-align:center;font-size:12px;color:var(--muted);margin-top:2px}
+    .faq-list{max-width:760px;margin:0 auto}
+    .faq-item{border-bottom:1px solid var(--line);padding:18px 0;cursor:pointer}
+    .faq-q{display:flex;justify-content:space-between;align-items:center;font-size:15px;font-weight:700;gap:14px}
+    .faq-q i{color:var(--primary);transition:transform .3s;font-size:14px}
+    .faq-item.open .faq-q i{transform:rotate(45deg)}
+    .faq-a{font-size:14px;color:var(--muted);line-height:1.7;max-height:0;overflow:hidden;transition:all .3s}
+    .faq-item.open .faq-a{max-height:200px;padding-top:10px}
+    @media(max-width:820px){.pain-grid,.get-grid,.pricing-grid{grid-template-columns:1fr}.ba-grid{grid-template-columns:1fr;gap:14px}.ba-arrow{transform:rotate(90deg)}.cal-item{grid-template-columns:60px 1fr}.cal-badge{display:none}}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <a href="mailto:odontckconsul@gmail.com"><i class="fa fa-envelope"></i> odontckconsul@gmail.com</a>
+      <a href="https://wa.me/5212381479365" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> +52 238 147 9365</a>
+    </div>
+  </div>
+  <header class="site-header">
+    <nav class="navbar container">
+      <a href="../index.html" class="brand">
+        <img src="../assets/img/logo/logo.jpg" alt="Logo OdonTeck" />
+        <div><strong>OdonTeck</strong><span>Capacitación odontológica especializada</span></div>
+      </a>
+      <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="../index.html">Inicio</a></li>
+        <li><a href="cursos.html">Cursos</a></li>
+        <li><a href="servicios.html">Servicios</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="galeria.html">Galería</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+        <li><a class="active" href="club.html">⭐ Club Dental</a></li>
+        <li><a href="club-login.html" style="font-weight:700">Iniciar sesión</a></li>
+        <li><a class="nav-cta" href="https://wa.me/5212381479365?text=Hola%2C%20quiero%20info%20del%20Club%20Dental" target="_blank" rel="noopener">WhatsApp</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="club-hero">
+      <div class="container hero-grid"><div class="hero-copy">
+        <span class="club-badge red"><i class="fa-solid fa-circle" style="font-size:6px"></i> El 80% de los dentistas dejan de actualizarse</span>
+        <h1>Tus pacientes merecen un dentista que <span>nunca deja de aprender</span></h1>
+        <p class="hero-text">Cada semana un caso clínico real que puedes aplicar el lunes en tu consultorio. Sin diplomados de 6 meses.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#precio">Quiero unirme — $199/mes</a>
+          <a class="btn btn-secondary" href="#problemas">¿Por qué lo necesito?</a>
+        </div>
+        <ul class="hero-points"><li>Sin compromiso largo</li><li>Acceso inmediato al contenido</li><li>47 dentistas ya son miembros</li></ul>
+      </div></div>
+    </section>
+
+    <section class="section soft-section" id="problemas"><div class="container">
+      <p class="eyebrow dark">El problema</p>
+      <h2 class="section-title centered">¿Te identificas con alguno?</h2>
+      <p class="section-text narrow" style="text-align:center;margin:0 auto 36px">Si respondiste "sí" a al menos uno, el Club es para ti.</p>
+      <div class="pain-grid">
+        <div class="pain-card"><div class="pain-emoji" style="background:#fef2f2">😰</div><div><h3>Te llega un caso complejo y no sabes resolverlo</h3><p>Buscas en YouTube videos viejos, o refieres y pierdes ingreso.</p><div class="sol">En el Club: ves cómo especialistas resuelven esos casos →</div></div></div>
+        <div class="pain-card"><div class="pain-emoji" style="background:#edf5fd">🏫</div><div><h3>Los diplomados cuestan $15,000+ y duran meses</h3><p>Horarios imposibles y la mitad es teoría.</p><div class="sol">En el Club: contenido práctico semanal por $199/mes →</div></div></div>
+        <div class="pain-card"><div class="pain-emoji" style="background:#ecfdf5">🤷</div><div><h3>No tienes colegas para consultar un caso difícil</h3><p>Trabajas solo y no hay a quién preguntar.</p><div class="sol">En el Club: 47 dentistas en WhatsApp →</div></div></div>
+        <div class="pain-card"><div class="pain-emoji" style="background:#fffbeb">📉</div><div><h3>Tus pacientes se van con quien ofrece más</h3><p>No ofreces alineadores ni carillas.</p><div class="sol">En el Club: aprendes técnicas que amplían tus servicios →</div></div></div>
+      </div>
+    </div></section>
+
+    <section class="section"><div class="container">
+      <p class="eyebrow dark">La diferencia</p>
+      <h2 class="section-title centered">Tu práctica sin el Club vs con el Club</h2>
+      <div class="ba-grid" style="margin-top:36px">
+        <div class="ba-col ba-no"><h3>✕ Sin el Club</h3><div class="ba-item">✕ Resuelves por intuición y YouTube</div><div class="ba-item">✕ Refieres pacientes y pierdes ingreso</div><div class="ba-item">✕ Te actualizas 1-2 veces al año</div><div class="ba-item">✕ Trabajas aislado sin colegas</div><div class="ba-item">✕ Mismos servicios desde la facultad</div></div>
+        <div class="ba-arrow">→</div>
+        <div class="ba-col ba-yes"><h3>✓ Con el Club</h3><div class="ba-item">✓ Ves cómo especialistas resuelven casos</div><div class="ba-item">✓ Tratas más casos = más ingresos</div><div class="ba-item">✓ Te actualizas cada semana en 15 min</div><div class="ba-item">✓ 47 dentistas en WhatsApp</div><div class="ba-item">✓ Aprendes técnicas nuevas cada mes</div></div>
+      </div>
+    </div></section>
+
+    <section class="section soft-section" id="beneficios"><div class="container">
+      <p class="eyebrow dark">Tu membresía incluye</p>
+      <h2 class="section-title centered">Lo que recibes cada mes</h2>
+      <p class="section-text narrow" style="text-align:center;margin:0 auto 36px">Contenido que complementa tus cursos — no los reemplaza.</p>
+      <div class="get-grid">
+        <div class="get-card"><div class="get-img"><img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=600&h=360&fit=crop&q=80" alt="Caso clínico"></div><div class="get-body"><span class="get-tag gt-w">Cada semana</span><h3>Caso clínico en video</h3><p>Especialista resuelve caso real en 10-15 min.</p><div class="why">Como estar al lado del especialista</div></div></div>
+        <div class="get-card"><div class="get-img"><img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&h=360&fit=crop&q=80" alt="Sesión en vivo"></div><div class="get-body"><span class="get-tag gt-m">Cada mes</span><h3>Sesión en vivo con especialista</h3><p>Trae TU caso, obtén respuesta directa.</p><div class="why">Un especialista de guardia para ti</div></div></div>
+        <div class="get-card"><div class="get-img"><img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=600&h=360&fit=crop&q=80" alt="Comunidad"></div><div class="get-body"><span class="get-tag gt-a">Siempre</span><h3>Comunidad + recursos + descuentos</h3><p>WhatsApp privado, PDFs, 20% en cursos, certificado.</p><div class="why">Nunca más solo con un caso difícil</div></div></div>
+      </div>
+    </div></section>
+
+    <section class="section"><div class="container">
+      <p class="eyebrow dark">Contenido real</p>
+      <h2 class="section-title centered">Esto se publicó esta semana</h2>
+      <p class="section-text narrow" style="text-align:center;margin:0 auto 36px">Si no eres miembro, te lo estás perdiendo.</p>
+      <div style="max-width:760px;margin:0 auto">
+        <div class="cal-item"><span class="cal-day">Lunes</span><div><div class="cal-title">Mordida cruzada posterior: tratamiento con ortopedia</div><div class="cal-desc">Dr. Ramírez · 12 min · Caso real</div></div><span class="cal-badge cb-v"><i class="fa-solid fa-play" style="font-size:9px;margin-right:4px"></i>Video</span></div>
+        <div class="cal-item"><span class="cal-day">Miércoles</span><div><div class="cal-title">Los 5 errores de cementación más comunes</div><div class="cal-desc">PDF · 4 páginas</div></div><span class="cal-badge cb-p"><i class="fa-solid fa-file-pdf" style="font-size:9px;margin-right:4px"></i>PDF</span></div>
+        <div class="cal-item"><span class="cal-day">Jueves</span><div><div class="cal-title">Q&A endodoncia — traigan sus casos</div><div class="cal-desc">Dr. Juárez · 8:00 PM</div></div><span class="cal-badge cb-l"><i class="fa-solid fa-circle" style="font-size:7px;margin-right:4px;color:#dc2626"></i>En vivo</span></div>
+        <div class="cal-item" style="background:#ecfdf5;border-radius:14px;padding:18px 16px;border:1px solid rgba(5,150,105,.1);margin:6px 0"><span class="cal-day" style="color:#059669">Nuevo hoy</span><div><div class="cal-title">Carillas fracturadas a los 6 meses: qué salió mal</div><div class="cal-desc">Dra. Méndez · 15 min · Hoy</div></div><span class="cal-badge cb-n">Nuevo</span></div>
+      </div>
+    </div></section>
+
+    <section class="test-section"><div class="container">
+      <p class="eyebrow dark" style="text-align:center">Lo que dicen nuestros miembros</p>
+      <p class="test-quote">"Vi el caso de carillas el martes. El jueves me llegó una paciente con el mismo problema. Sabía exactamente qué hacer. Eso vale más que cualquier diplomado."</p>
+      <p class="test-author">Dr. Arturo García</p>
+      <p class="test-role">Miembro fundador · Odontólogo general, Puebla</p>
+    </div></section>
+
+    <div class="scar-bar"><div class="container">
+      <h3>Los lugares de fundador se están acabando</h3>
+      <p>Empezamos con 30. Cuando se llenen, el precio sube y no regresa.</p>
+      <div class="scar-nums"><div class="scar-n"><div class="num" style="color:#f87171">12</div><div class="lbl">Lugares</div></div><div class="scar-n"><div class="num">$199</div><div class="lbl">Ahora</div></div><div class="scar-n"><div class="num" style="color:rgba(255,255,255,.4);text-decoration:line-through">$249</div><div class="lbl">Después</div></div></div>
+    </div></div>
+
+    <section class="section" id="precio"><div class="container">
+      <p class="eyebrow dark" style="text-align:center">Membresía</p>
+      <h2 class="section-title centered">Invierte en tu carrera</h2>
+      <p class="section-text narrow" style="text-align:center;margin:0 auto 40px">Menos de lo que cobras por una limpieza. Elige tu plan:</p>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="price-label">Mensual</div>
+          <div class="price-old">$249/mes</div>
+          <div class="price-amount">$199 <span>/mes</span></div>
+          <div class="price-note">Precio de fundador</div>
+          <ul class="price-features">
+            <li><i class="fa-solid fa-check"></i>4 casos clínicos en video</li>
+            <li><i class="fa-solid fa-check"></i>1 sesión en vivo mensual</li>
+            <li><i class="fa-solid fa-check"></i>Grupo WhatsApp privado</li>
+            <li><i class="fa-solid fa-check"></i>Plantillas y protocolos</li>
+            <li><i class="fa-solid fa-check"></i>20% en cursos y diplomados</li>
+            <li><i class="fa-solid fa-check"></i>Certificado mensual</li>
+            <li><i class="fa-solid fa-check"></i>Biblioteca completa</li>
+          </ul>
+          <div id="shopify-btn-mensual"></div>
+          <p class="price-detail">3 meses mínimo · Después cancela cuando quieras</p>
+        </div>
+        <div class="price-card featured">
+          <div class="price-label">Anual</div>
+          <div class="price-old">$2,988/año ($249×12)</div>
+          <div class="price-amount">$1,788 <span>/año</span></div>
+          <div class="price-save"><i class="fa-solid fa-tag" style="font-size:10px"></i> Ahorras $1,200 al año (40% OFF)</div>
+          <div class="price-note">Equivale a $149/mes</div>
+          <ul class="price-features">
+            <li><i class="fa-solid fa-check"></i><strong>Todo lo del plan mensual</strong></li>
+            <li><i class="fa-solid fa-check"></i>4 casos clínicos en video</li>
+            <li><i class="fa-solid fa-check"></i>1 sesión en vivo mensual</li>
+            <li><i class="fa-solid fa-check"></i>Grupo WhatsApp privado</li>
+            <li><i class="fa-solid fa-check"></i>Plantillas y protocolos</li>
+            <li><i class="fa-solid fa-check"></i>20% en cursos y diplomados</li>
+            <li><i class="fa-solid fa-check"></i>Certificado mensual</li>
+            <li><i class="fa-solid fa-star" style="color:#d97706"></i><strong>Acceso anticipado</strong> a contenido</li>
+            <li><i class="fa-solid fa-star" style="color:#d97706"></i><strong>1 mentoría grupal extra</strong> al mes</li>
+          </ul>
+          <div id="shopify-btn-anual"></div>
+          <p class="price-detail">Pago único de $1,788 · Renueva cada año</p>
+        </div>
+      </div>
+    </div></section>
+
+    <section class="section soft-section" id="faq"><div class="container">
+      <p class="eyebrow dark" style="text-align:center">Preguntas frecuentes</p>
+      <h2 class="section-title centered">Antes de decidir</h2>
+      <div class="faq-list" style="margin-top:36px">
+        <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q">¿Es lo mismo que los cursos de OdonTeck?<i class="fa-solid fa-plus"></i></div><div class="faq-a">No. Los cursos son programas completos a $650. La membresía es contenido semanal diferente. Como miembro tienes 20% en todos los cursos.</div></div>
+        <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q">No tengo tiempo para ver contenido cada semana<i class="fa-solid fa-plus"></i></div><div class="faq-a">Cada video dura 10-15 min. Todo queda grabado en tu biblioteca.</div></div>
+        <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q">¿Puedo cancelar cuando quiera?<i class="fa-solid fa-plus"></i></div><div class="faq-a">Plan mensual: después de 3 meses cancelas con un clic. Plan anual: acceso los 12 meses completos.</div></div>
+        <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q">¿El precio de fundador es para siempre?<i class="fa-solid fa-plus"></i></div><div class="faq-a">Sí. Mantienes tu precio mientras estés activo. Si cancelas y regresas, pagas precio vigente.</div></div>
+        <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q">¿Diferencia entre plan mensual y anual?<i class="fa-solid fa-plus"></i></div><div class="faq-a">El anual incluye acceso anticipado a contenido + 1 mentoría grupal extra al mes. Además ahorras $1,200 al año ($149/mes vs $199/mes).</div></div>
+      </div>
+    </div></section>
+
+    <section class="cta-section" style="padding-top:40px"><div class="container cta-box">
+      <div>
+        <p class="eyebrow">No te quedes fuera</p>
+        <h2>Mientras lees esto, los miembros ya están aprendiendo algo nuevo.</h2>
+        <p>12 lugares de fundador. Cuando se llenen, el precio sube a $249/mes.</p>
+      </div>
+      <div class="cta-actions">
+        <a class="btn btn-primary" href="#precio">Unirme al Club</a>
+        <a class="btn btn-secondary white" href="https://wa.me/5212381479365?text=Hola%2C%20quiero%20info%20del%20Club%20Dental%20OdonTeck" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      </div>
+    </div></section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div><div class="brand footer-brand"><img src="../assets/img/logo/logo.jpg" alt="Logo OdonTeck" /><div><strong>OdonTeck</strong><span>Capacitación odontológica especializada</span></div></div><p class="footer-text">Formación odontológica con enfoque profesional, comunicación clara y experiencia visual cuidada.</p></div>
+      <div><h3>Secciones</h3><ul><li><a href="cursos.html">Cursos</a></li><li><a href="servicios.html">Servicios</a></li><li><a href="nosotros.html">Nosotros</a></li><li><a href="contacto.html">Contacto</a></li><li><a href="club.html">Club Dental</a></li></ul></div>
+      <div><h3>Contacto</h3><ul><li><a href="mailto:odontckconsul@gmail.com">odontckconsul@gmail.com</a></li><li><a href="https://wa.me/5212381479365" target="_blank" rel="noopener">+52 238 147 9365</a></li><li><a href="https://www.instagram.com/odonteckconsulting/" target="_blank" rel="noopener">Instagram</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">© 2025 OdonTeck. Todos los derechos reservados.</div>
+  </footer>
+
+  <div class="floating-socials">
+    <a href="https://www.facebook.com/profile.php?id=61575818279014" target="_blank" rel="noopener" aria-label="Facebook" class="social facebook"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.instagram.com/odonteckconsulting/" target="_blank" rel="noopener" aria-label="Instagram" class="social instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://wa.me/5212381479365" target="_blank" rel="noopener" aria-label="WhatsApp" class="social whatsapp"><i class="fab fa-whatsapp"></i></a>
+  </div>
+  <button class="scroll-top" id="scrollTop" aria-label="Subir arriba"><i class="fa-solid fa-arrow-up"></i></button>
+
+  <script>
+    const hamburger=document.getElementById('hamburger'),navLinks=document.getElementById('navLinks');
+    if(hamburger)hamburger.addEventListener('click',()=>{navLinks.classList.toggle('open');hamburger.setAttribute('aria-expanded',navLinks.classList.contains('open'))});
+    const scrollTop=document.getElementById('scrollTop');
+    window.addEventListener('scroll',()=>{scrollTop.classList.toggle('visible',window.scrollY>400)});
+    scrollTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+  </script>
+
+  <!-- SHOPIFY BUY BUTTONS -->
+  <script type="text/javascript">
+  (function () {
+    var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+    if (window.ShopifyBuy) {
+      if (window.ShopifyBuy.UI) { ShopifyBuyInit(); } else { loadScript(); }
+    } else { loadScript(); }
+    function loadScript() {
+      var script = document.createElement('script');
+      script.async = true;
+      script.src = scriptURL;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+      script.onload = ShopifyBuyInit;
+    }
+    function ShopifyBuyInit() {
+      var client = ShopifyBuy.buildClient({
+        domain: 'pfueck-wm.myshopify.com',
+        storefrontAccessToken: '4c5d8f6909eccf2964cbb97e0ee2187e',
+      });
+      var btnStyle = {
+        "font-family": "Inter, sans-serif","font-weight": "700","font-size": "15px",
+        "padding-top": "14px","padding-bottom": "14px",
+        "background-color": "#005187",
+        ":hover": {"background-color": "#0c74c4"},
+        ":focus": {"background-color": "#0c74c4"},
+        "border-radius": "999px","width": "100%"
+      };
+      var cartStyle = {
+        "styles": {"button": {"background-color": "#005187",":hover": {"background-color": "#0c74c4"},":focus": {"background-color": "#0c74c4"},"border-radius": "999px","font-family": "Inter, sans-serif","font-weight": "700"}},
+        "text": {"total": "Subtotal","button": "Pagar"}
+      };
+      var toggleStyle = {
+        "styles": {"toggle": {"background-color": "#005187",":hover": {"background-color": "#0c74c4"},":focus": {"background-color": "#0c74c4"}}}
+      };
+      ShopifyBuy.UI.onReady(client).then(function (ui) {
+        /* PLAN MENSUAL $199 */
+        ui.createComponent('product', {
+          id: '8462765260854',
+          node: document.getElementById('shopify-btn-mensual'),
+          moneyFormat: '%24%20%7B%7Bamount%7D%7D',
+          options: {
+            "product": {
+              "styles": {"product": {"@media (min-width: 601px)": {"max-width": "100%","margin-left": "0","margin-bottom": "0"}},"button": btnStyle},
+              "contents": {"img": false,"title": false,"price": false,"description": false,"options": false},
+              "buttonDestination": "checkout",
+              "text": {"button": "Elegir plan mensual — $199/mes"}
+            },
+            "cart": cartStyle,
+            "toggle": toggleStyle
+          }
+        });
+        /* PLAN ANUAL $1,788 */
+        ui.createComponent('product', {
+          id: '8462956986422',
+          node: document.getElementById('shopify-btn-anual'),
+          moneyFormat: '%24%20%7B%7Bamount%7D%7D',
+          options: {
+            "product": {
+              "styles": {"product": {"@media (min-width: 601px)": {"max-width": "100%","margin-left": "0","margin-bottom": "0"}},"button": btnStyle},
+              "contents": {"img": false,"title": false,"price": false,"description": false,"options": false},
+              "buttonDestination": "checkout",
+              "text": {"button": "Elegir plan anual — Ahorra $1,200"}
+            },
+            "cart": cartStyle,
+            "toggle": toggleStyle
+          }
+        });
+      });
+    }
+  })();
+  </script>
+</body>
+</html>

@@ -5,491 +5,696 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Club Dental · OdonTeck</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    :root{--navy:#0D1B2A;--navy2:#142232;--navy3:#1C2E40;--teal:#1BA87E;--teal2:#16916C;--tealb:#E3F5EF;--blue:#1565C0;--blueb:#E8F0FE;--amber:#E65100;--amberb:#FFF3E0;--purple:#4527A0;--purpleb:#EDE7F6;--coral:#C62828;--coralb:#FFEBEE;--red:#E24B4A;--white:#fff;--g1:#F4F6F9;--g2:#E8ECF2;--g3:#B0BAC8;--text:#0D1B2A;--muted:#5C6B7A;--border:rgba(13,27,42,.10);--r:10px;--rl:14px}
+    :root{
+      --pr:#005187;--pr2:#0c74c4;--prb:#eef4fa;
+      --bg:#f5f7fb;--sur:#ffffff;--soft:#eef3f9;
+      --tx:#0d1b2f;--mu:#5f6f86;--ln:#dbe4ef;
+      --gn:#059669;--gnb:#ecfdf5;
+      --am:#d97706;--amb:#fffbeb;
+      --rd:#dc2626;--rdb:#fef2f2;
+      --ra:20px;--rsm:14px;--rp:999px;
+      --sh:0 16px 45px rgba(0,36,81,.10);
+    }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
-    body{font-family:'DM Sans',sans-serif;background:var(--g1);color:var(--text);min-height:100vh}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
     a{text-decoration:none;color:inherit}
     button{font-family:inherit;cursor:pointer;border:none}
-    .shell{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
 
-    /* ── SIDEBAR ── */
-    .sb{background:var(--navy);color:white;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
-    .sb-logo{display:flex;align-items:center;gap:10px;padding:1.4rem 1.25rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.07)}
-    .sb-img{width:38px;height:38px;border-radius:9px;background:var(--teal);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
-    .sb-img img{width:38px;height:38px;object-fit:cover}
-    .sb-img svg{width:20px;height:20px;fill:white}
-    .sb-name{font-family:'Outfit',sans-serif;font-size:14px;font-weight:700}
-    .sb-sub{font-size:10px;color:rgba(255,255,255,.4)}
-    .nav-sec{padding:.9rem .75rem .4rem}
-    .nav-lbl{font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.3);padding:0 .5rem;margin-bottom:4px}
-    .ni{display:flex;align-items:center;gap:10px;padding:9px .75rem;border-radius:8px;font-size:13px;color:rgba(255,255,255,.6);cursor:pointer;transition:all .15s;margin-bottom:2px}
-    .ni svg{width:15px;height:15px;flex-shrink:0}
+    /* SHELL */
+    .shell{display:grid;grid-template-columns:228px 1fr;min-height:100vh}
+
+    /* SIDEBAR */
+    .sb{background:var(--tx);color:white;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
+    .sb-logo{display:flex;align-items:center;gap:10px;padding:1.2rem 1rem 1rem;border-bottom:1px solid rgba(255,255,255,.08)}
+    .sb-img{width:36px;height:36px;border-radius:10px;overflow:hidden;flex-shrink:0}
+    .sb-img img{width:36px;height:36px;object-fit:cover}
+    .sb-title{font-size:13px;font-weight:700;line-height:1.1}
+    .sb-sub2{font-size:10px;color:rgba(255,255,255,.38);margin-top:1px}
+    .nav-s{padding:.7rem .65rem .3rem}
+    .nav-l{font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.28);padding:0 .45rem;margin-bottom:3px}
+    .ni{display:flex;align-items:center;gap:8px;padding:8px .65rem;border-radius:10px;font-size:13px;color:rgba(255,255,255,.56);cursor:pointer;transition:all .15s;margin-bottom:1px}
+    .ni i{font-size:13px;width:16px;text-align:center;flex-shrink:0}
     .ni:hover{background:rgba(255,255,255,.07);color:white}
-    .ni.active{background:var(--teal);color:white;font-weight:500}
-    .nbg{margin-left:auto;font-size:10px;font-weight:700;border-radius:99px;padding:1px 7px;min-width:18px;text-align:center;line-height:1.6}
-    .ng-r{background:var(--red);color:white}.ng-g{background:var(--teal);color:white}.ng-w{background:rgba(255,255,255,.15);color:rgba(255,255,255,.8)}
-    .sb-ft{margin-top:auto;padding:1rem;border-top:1px solid rgba(255,255,255,.07)}
-    .sb-user{display:flex;align-items:center;gap:10px}
-    .sb-av{width:34px;height:34px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:white;flex-shrink:0}
-    .sb-un{font-size:12px;font-weight:600;color:white}.sb-ur{font-size:10px;color:rgba(255,255,255,.4)}
-    .sb-exit{margin-left:auto;font-size:10px;color:rgba(255,255,255,.35);background:rgba(255,255,255,.07);border-radius:6px;padding:4px 8px;cursor:pointer;transition:all .15s}
-    .sb-exit:hover{color:white;background:rgba(255,255,255,.15)}
+    .ni.active{background:var(--pr);color:white;font-weight:600}
+    .nbg{margin-left:auto;font-size:9px;font-weight:700;border-radius:var(--rp);padding:1px 6px;min-width:16px;text-align:center;line-height:1.7}
+    .nr{background:#dc2626;color:white}.ng{background:#059669;color:white}.nw{background:rgba(255,255,255,.14);color:rgba(255,255,255,.8)}
+    .sb-plan{margin:.6rem .65rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:9px 11px;font-size:11px}
+    .sbpl{color:rgba(255,255,255,.38);font-size:9px;text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px}
+    .sbpn{color:white;font-weight:700;margin-bottom:1px}
+    .sbpv{font-size:10px;color:rgba(255,255,255,.42)}
+    .sbpv.warn{color:#fbbf24}.sbpv.exp{color:#f87171}
+    .adm-btn{display:flex;align-items:center;gap:7px;padding:7px .65rem;border-radius:10px;font-size:12px;color:rgba(255,255,255,.55);cursor:pointer;transition:all .15s;margin:.25rem .65rem;background:rgba(255,165,0,.1);border:1px solid rgba(255,165,0,.18)}
+    .adm-btn:hover{background:rgba(255,165,0,.2);color:white}
+    .adm-btn i{color:#fbbf24}
+    .sb-ft{margin-top:auto;padding:.75rem .65rem;border-top:1px solid rgba(255,255,255,.07)}
+    .sb-user{display:flex;align-items:center;gap:8px}
+    .sb-av{width:30px;height:30px;border-radius:50%;background:var(--pr);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white;flex-shrink:0;overflow:hidden}
+    .sb-av img{width:30px;height:30px;object-fit:cover;border-radius:50%}
+    .sb-un{font-size:11px;font-weight:600;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:108px}
+    .sb-ur{font-size:9px;color:rgba(255,255,255,.33)}
+    .sb-ex{margin-left:auto;font-size:9px;color:rgba(255,255,255,.32);background:rgba(255,255,255,.07);border-radius:5px;padding:3px 7px;cursor:pointer;transition:all .15s;flex-shrink:0}
+    .sb-ex:hover{color:white;background:rgba(255,255,255,.15)}
 
-    /* ── MAIN ── */
-    .main{display:flex;flex-direction:column;gap:1.5rem;padding:2rem 2rem 3rem;background:var(--g1)}
+    /* MAIN */
+    .main{display:flex;flex-direction:column;gap:1.3rem;padding:1.75rem 1.75rem 3rem;background:var(--bg)}
     .topbar{display:flex;align-items:flex-start;justify-content:space-between}
-    .greeting{font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:var(--navy);line-height:1.1}
-    .greeting em{color:var(--teal);font-style:normal}
-    .topbar-date{font-size:12px;color:var(--muted);margin-top:4px}
-    .nb-btn{width:36px;height:36px;border-radius:var(--r);background:var(--white);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:border-color .15s}
-    .nb-btn:hover{border-color:var(--teal)}.nb-btn svg{width:15px;height:15px;stroke:var(--muted)}
-    .ndot{width:7px;height:7px;background:var(--red);border-radius:50%;position:absolute;top:7px;right:7px;border:1.5px solid var(--g1)}
+    .greeting{font-size:20px;font-weight:800;color:var(--tx);line-height:1.1}
+    .greeting em{color:var(--pr);font-style:normal}
+    .tdate{font-size:12px;color:var(--mu);margin-top:3px}
+    .nbbtn{width:34px;height:34px;border-radius:12px;background:var(--sur);border:1px solid var(--ln);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:border .15s}
+    .nbbtn:hover{border-color:var(--pr)}.nbbtn svg{width:14px;height:14px;stroke:var(--mu);fill:none}
+    .ndot{width:6px;height:6px;background:var(--rd);border-radius:50%;position:absolute;top:6px;right:6px;border:1.5px solid var(--bg)}
 
-    /* ── MÉTRICAS ── */
-    .mets{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-    .mc{background:var(--white);border:1px solid var(--border);border-radius:var(--rl);padding:1.1rem 1.25rem;animation:up .4s ease forwards;opacity:0}
+    /* ALERTA RENOVACIÓN */
+    .renew-bar{background:var(--amb);border:1px solid #fcd34d;border-radius:var(--rsm);padding:12px 16px;display:none;align-items:center;gap:12px}
+    .renew-bar.show{display:flex}
+    .rb-txt{font-size:13px;flex:1;line-height:1.5}
+    .rb-txt b{color:var(--am)}
+    .btn-rn{padding:7px 16px;background:var(--pr);color:white;font-size:12px;font-weight:700;border-radius:var(--rp);transition:background .15s;flex-shrink:0}
+    .btn-rn:hover{background:var(--pr2)}
+
+    /* MÉTRICAS */
+    .mets{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}
+    .mc{background:var(--sur);border:1px solid var(--ln);border-radius:var(--ra);padding:.9rem 1.1rem;animation:up .4s ease forwards;opacity:0}
     .mc:nth-child(1){animation-delay:.05s}.mc:nth-child(2){animation-delay:.1s}.mc:nth-child(3){animation-delay:.15s}.mc:nth-child(4){animation-delay:.2s}
-    .mc-l{font-size:10px;font-weight:600;color:var(--muted);display:flex;align-items:center;gap:6px;margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em}
-    .mc-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-    .mc-v{font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;line-height:1;margin-bottom:5px}
-    .mc-s{font-size:11px;color:var(--muted)}.mc-s b{color:var(--teal)}
+    .mc-l{font-size:10px;font-weight:600;color:var(--mu);display:flex;align-items:center;gap:5px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+    .mc-dot{width:6px;height:6px;border-radius:50%}
+    .mc-v{font-size:24px;font-weight:800;line-height:1;margin-bottom:3px}
+    .mc-s{font-size:11px;color:var(--mu)}
 
-    /* ── GRID ── */
-    .g2{display:grid;grid-template-columns:1fr 320px;gap:1.5rem}
-    .lcol{display:flex;flex-direction:column;gap:1rem}
+    /* GRID */
+    .g2{display:grid;grid-template-columns:1fr 292px;gap:1.3rem}
+    .lcol{display:flex;flex-direction:column;gap:.9rem}
 
-    /* ── PANEL ── */
-    .panel{background:var(--white);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem}
-    .ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
-    .pt{font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;color:var(--navy)}
-    .pa{font-size:12px;color:var(--teal);font-weight:500;cursor:pointer}
+    /* PANEL */
+    .panel{background:var(--sur);border:1px solid var(--ln);border-radius:var(--ra);padding:1.1rem}
+    .ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem}
+    .pt{font-size:14px;font-weight:700;color:var(--tx)}
+    .pa{font-size:12px;color:var(--pr);font-weight:600;cursor:pointer}
     .pa:hover{text-decoration:underline}
 
-    /* ── TABS ── */
-    .tabs{display:flex;gap:4px;margin-bottom:1rem;flex-wrap:wrap}
-    .tab{padding:6px 14px;border-radius:99px;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;color:var(--muted);background:var(--g1);border:1px solid var(--g2)}
-    .tab.active{background:var(--navy);color:white;border-color:var(--navy)}
-    .tab:hover:not(.active){background:var(--g2)}
+    /* TABS */
+    .tabs{display:flex;gap:4px;margin-bottom:.9rem;flex-wrap:wrap}
+    .tab{padding:5px 13px;border-radius:var(--rp);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;color:var(--mu);background:var(--soft);border:1px solid var(--ln)}
+    .tab.active{background:var(--tx);color:white;border-color:var(--tx)}
+    .tab:hover:not(.active){background:var(--ln)}
 
-    /* ── CONTENT LIST ── */
-    .clist{display:flex;flex-direction:column;gap:8px}
-    .ci{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--r);background:var(--g1);transition:background .15s;cursor:pointer}
-    .ci:hover{background:var(--g2)}
-    .cthumb{width:40px;height:40px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:17px}
+    /* CONTENT LIST */
+    .clist{display:flex;flex-direction:column;gap:6px}
+    .ci{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:11px;background:var(--soft);transition:background .15s;cursor:pointer}
+    .ci:hover{background:var(--ln)}
+    .cth{width:36px;height:36px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:15px}
     .ci-i{flex:1;min-width:0}
-    .ci-t{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .ci-m{font-size:11px;color:var(--muted);margin-top:2px}
-    .ctag{font-size:10px;font-weight:600;padding:3px 9px;border-radius:99px;white-space:nowrap;flex-shrink:0}
-    .tg{background:var(--tealb);color:var(--teal2)}.ta{background:var(--amberb);color:var(--amber)}.tb{background:var(--blueb);color:var(--blue)}.tp{background:var(--purpleb);color:var(--purple)}
-    .tv{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px}
+    .ci-t{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .ci-m{font-size:11px;color:var(--mu);margin-top:1px}
+    .ctag{font-size:10px;font-weight:700;padding:3px 8px;border-radius:var(--rp);white-space:nowrap;flex-shrink:0}
+    .tg{background:var(--gnb);color:var(--gn)}.ta{background:var(--amb);color:var(--am)}.tb{background:var(--prb);color:var(--pr)}
 
-    /* ── COURSE GRID ── */
-    .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
-    .cc{background:var(--white);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;transition:transform .2s,box-shadow .2s;cursor:pointer}
-    .cc:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(13,27,42,.10)}
-    .cc-cover{height:130px;background:var(--navy3);display:flex;align-items:center;justify-content:center;font-size:40px;position:relative;overflow:hidden}
-    .cc-cover img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+    /* COURSE GRID */
+    .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:11px}
+    .cc{background:var(--sur);border:1px solid var(--ln);border-radius:var(--ra);overflow:hidden;transition:transform .2s,box-shadow .2s;cursor:pointer}
+    .cc:hover{transform:translateY(-3px);box-shadow:var(--sh)}
+    .cc-cover{height:115px;background:var(--tx);display:flex;align-items:center;justify-content:center;font-size:34px;position:relative;overflow:hidden}
     .cc-em{position:relative;z-index:1}
-    .cc-badge{position:absolute;top:8px;right:8px;z-index:2;font-size:9px;font-weight:700;padding:3px 8px;border-radius:99px}
-    .cb-new{background:var(--teal);color:white}.cb-free{background:var(--amber);color:white}.cb-live{background:var(--red);color:white}
-    .cc-body{padding:.9rem 1rem}
-    .cc-title{font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;line-height:1.3}
-    .cc-meta{font-size:11px;color:var(--muted);margin-bottom:10px}
-    .cc-pw{height:4px;background:var(--g2);border-radius:99px;margin-bottom:5px}
-    .cc-pb{height:100%;background:var(--teal);border-radius:99px}
-    .cc-pl{font-size:10px;color:var(--muted)}
-    .btn-cc{width:100%;margin-top:10px;padding:8px;background:var(--tealb);color:var(--teal2);font-size:12px;font-weight:600;border-radius:8px;transition:background .15s}
-    .btn-cc:hover{background:#c5eadf}
+    .cc-badge{position:absolute;top:7px;right:7px;z-index:2;font-size:9px;font-weight:700;padding:2px 7px;border-radius:var(--rp)}
+    .cb-new{background:var(--pr);color:white}.cb-free{background:var(--am);color:white}
+    .cc-body{padding:.75rem .9rem}
+    .cc-title{font-size:13px;font-weight:700;margin-bottom:3px;line-height:1.3}
+    .cc-meta{font-size:11px;color:var(--mu);margin-bottom:7px}
+    .cc-pw{height:3px;background:var(--ln);border-radius:var(--rp);margin-bottom:3px}
+    .cc-pb{height:100%;background:var(--pr);border-radius:var(--rp)}
+    .cc-pl{font-size:10px;color:var(--mu)}
+    .btn-cc{width:100%;margin-top:7px;padding:6px;background:var(--prb);color:var(--pr);font-size:12px;font-weight:700;border-radius:9px;transition:background .15s}
+    .btn-cc:hover{background:#d4e7f7}
 
-    /* ── NEWS ── */
-    .nlist{display:flex;flex-direction:column;gap:10px}
-    .nitem{display:flex;gap:12px;padding:12px;background:var(--g1);border-radius:var(--r);cursor:pointer;transition:background .15s}
-    .nitem:hover{background:var(--g2)}
-    .nicon{width:38px;height:38px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:17px}
-    .ntitle{font-size:13px;font-weight:600;margin-bottom:3px;line-height:1.3}
-    .nbody{font-size:12px;color:var(--muted);line-height:1.45}
-    .ndate{font-size:10px;color:var(--g3);margin-top:4px}
+    /* NEWS */
+    .nlist{display:flex;flex-direction:column;gap:8px}
+    .nitem{display:flex;gap:10px;padding:10px 11px;background:var(--soft);border-radius:11px;cursor:pointer;transition:background .15s}
+    .nitem:hover{background:var(--ln)}
+    .nico{width:34px;height:34px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px}
+    .ntit{font-size:13px;font-weight:700;margin-bottom:2px}
+    .nbod{font-size:12px;color:var(--mu);line-height:1.45}
+    .ndat{font-size:10px;color:var(--ln);margin-top:3px}
 
-    /* ── LIB ROWS ── */
-    .lrow{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--g2)}
+    /* LIB ROWS */
+    .lrow{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--soft)}
     .lrow:last-child{border:none;padding-bottom:0}
-    .lname{font-size:13px;font-weight:500}
-    .lbdgs{display:flex;gap:5px;flex-wrap:wrap}
-    .lb{font-size:10px;font-weight:600;padding:3px 9px;border-radius:99px}
+    .lname{font-size:13px;font-weight:600}
+    .lbdgs{display:flex;gap:4px;flex-wrap:wrap}
+    .lb{font-size:10px;font-weight:700;padding:2px 8px;border-radius:var(--rp)}
 
-    /* ── LIVE CARD ── */
-    .lcard{background:var(--navy);border-radius:var(--rl);padding:1.25rem;color:white;position:relative;overflow:hidden;transition:all .4s}
-    .lcard::before{content:'';position:absolute;top:-30px;right:-30px;width:110px;height:110px;background:var(--teal);opacity:.12;border-radius:50%}
-    .lcard::after{content:'';position:absolute;bottom:-20px;left:40px;width:70px;height:70px;background:white;opacity:.04;border-radius:50%}
-    .lcard.live-now{background:linear-gradient(135deg,var(--teal2),var(--teal))}
-    .lcard.live-soon{border:2px solid var(--teal)}
-    .ltag{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);background:rgba(27,168,126,.18);display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:99px;margin-bottom:8px;position:relative;z-index:1}
-    .ltag.now-tag{background:rgba(255,255,255,.2);color:white;animation:pls 1.2s infinite}
-    @keyframes pls{0%,100%{opacity:1}50%{opacity:.6}}
-    .ldot{width:6px;height:6px;border-radius:50%;background:currentColor}
-    .ltitle{font-family:'Outfit',sans-serif;font-size:17px;font-weight:800;margin-bottom:2px;line-height:1.2;position:relative;z-index:1}
-    .ldoc{font-size:11px;color:rgba(255,255,255,.55);margin-bottom:14px;position:relative;z-index:1}
-    .countdown{display:flex;align-items:flex-start;gap:8px;margin-bottom:14px;position:relative;z-index:1}
+    /* RIGHT COL */
+    .rcol{display:flex;flex-direction:column;gap:10px}
+
+    /* LIVE CARD */
+    .lcard{background:var(--tx);border-radius:var(--ra);padding:1.1rem;color:white;position:relative;overflow:hidden;transition:all .3s}
+    .lcard::before{content:'';position:absolute;top:-22px;right:-22px;width:80px;height:80px;background:var(--pr);opacity:.18;border-radius:50%}
+    .lcard.ln{background:linear-gradient(135deg,var(--pr),var(--pr2))}
+    .lcard.ls{border:2px solid var(--pr)}
+    .ltag{font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#7dd3fc;background:rgba(125,211,252,.12);display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:var(--rp);margin-bottom:7px;position:relative;z-index:1}
+    .ltag.ln-tag{background:rgba(255,255,255,.18);color:white;animation:pls 1.2s infinite}
+    @keyframes pls{0%,100%{opacity:1}50%{opacity:.55}}
+    .ldot{width:5px;height:5px;border-radius:50%;background:currentColor}
+    .ltit{font-size:15px;font-weight:800;margin-bottom:1px;line-height:1.2;position:relative;z-index:1}
+    .ldoc{font-size:11px;color:rgba(255,255,255,.46);margin-bottom:11px;position:relative;z-index:1}
+    .cdown{display:flex;align-items:flex-start;gap:5px;margin-bottom:11px;position:relative;z-index:1}
     .cdu{text-align:center}
-    .cdn{font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;line-height:1;color:white;min-width:32px}
-    .cdl{font-size:9px;color:rgba(255,255,255,.45);letter-spacing:.05em;text-transform:uppercase}
-    .cds{font-size:22px;font-weight:300;color:rgba(255,255,255,.3);padding-top:1px}
-    .btn-live{width:100%;padding:10px;background:var(--teal);color:white;font-size:12px;font-weight:700;border-radius:9px;transition:all .15s;position:relative;z-index:1}
-    .btn-live:hover{background:var(--teal2);transform:translateY(-1px)}
-    .lcard.live-now .btn-live{background:white;color:var(--teal2);animation:pulse-btn 1.5s infinite}
-    @keyframes pulse-btn{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.3)}50%{box-shadow:0 0 0 6px rgba(255,255,255,0)}}
-    .no-live{text-align:center;padding:1.5rem 1rem;color:rgba(255,255,255,.5);font-size:13px;position:relative;z-index:1}
-    .no-live span{display:block;font-size:28px;margin-bottom:8px}
+    .cdn{font-size:22px;font-weight:800;line-height:1;color:white;min-width:24px}
+    .cdl{font-size:9px;color:rgba(255,255,255,.38);text-transform:uppercase}
+    .cds{font-size:16px;font-weight:300;color:rgba(255,255,255,.3);padding-top:1px}
+    .btn-lv{width:100%;padding:8px;background:var(--pr);color:white;font-size:12px;font-weight:700;border-radius:9px;transition:all .15s;position:relative;z-index:1}
+    .btn-lv:hover{background:var(--pr2);transform:translateY(-1px)}
+    .lcard.ln .btn-lv{background:white;color:var(--pr)}
 
-    /* ── WA CARD ── */
-    .wcard{background:var(--white);border:1px solid var(--border);border-radius:var(--rl);padding:1rem 1.25rem}
-    .whead{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-    .wicon{width:38px;height:38px;background:#E8F5E9;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-    .wicon svg{width:20px;height:20px}
-    .wname{font-size:13px;font-weight:600}.wcnt{font-size:11px;color:var(--muted)}
-    .btn-wa{width:100%;padding:9px;background:var(--tealb);color:var(--teal2);font-size:12px;font-weight:600;border-radius:8px;transition:background .15s}
-    .btn-wa:hover{background:#c5eadf}
+    /* WA */
+    .wcard{background:var(--sur);border:1px solid var(--ln);border-radius:var(--ra);padding:.9rem 1rem}
+    .whead{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+    .wico{width:34px;height:34px;background:#dcfce7;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .wico svg{width:17px;height:17px}
+    .wname{font-size:13px;font-weight:700}.wcnt{font-size:11px;color:var(--mu)}
+    .btn-wa{width:100%;padding:7px;background:var(--gnb);color:var(--gn);font-size:12px;font-weight:700;border-radius:9px;transition:background .15s}
+    .btn-wa:hover{background:#d1fae5}
 
-    /* ── DISCOUNT ── */
-    .dcard{background:var(--amberb);border-radius:var(--rl);padding:1rem 1.25rem}
-    .dlbl{font-size:9px;font-weight:700;color:var(--amber);letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px}
-    .dpct{font-family:'Outfit',sans-serif;font-size:32px;font-weight:800;color:var(--amber);line-height:1;margin-bottom:2px}
-    .dsub{font-size:11px;color:var(--amber);opacity:.8;margin-bottom:10px}
-    .btn-d{width:100%;padding:8px;background:var(--amber);color:white;font-size:12px;font-weight:600;border-radius:8px;transition:opacity .15s}
+    /* DISCOUNT */
+    .dcard{background:var(--amb);border-radius:var(--ra);padding:.9rem 1rem}
+    .dlbl{font-size:9px;font-weight:700;color:var(--am);letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px}
+    .dpct{font-size:26px;font-weight:900;color:var(--am);line-height:1;margin-bottom:2px}
+    .dsub{font-size:11px;color:var(--am);opacity:.8;margin-bottom:8px}
+    .btn-d{width:100%;padding:7px;background:var(--am);color:white;font-size:12px;font-weight:700;border-radius:9px;transition:opacity .15s}
     .btn-d:hover{opacity:.88}
 
-    /* ── CERT ── */
-    .certc{background:var(--purpleb);border-radius:var(--rl);padding:1rem 1.25rem}
-    .certl{font-size:9px;font-weight:700;color:var(--purple);letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px}
-    .certt{font-size:13px;font-weight:700;color:var(--purple);margin-bottom:3px}
-    .certs{font-size:11px;color:var(--purple);opacity:.75;margin-bottom:10px}
-    .plab{display:flex;justify-content:space-between;font-size:10px;color:var(--purple);margin-bottom:5px;font-weight:600}
-    .ptr{height:5px;background:rgba(69,39,160,.18);border-radius:99px;margin-bottom:10px}
-    .pfi{height:100%;background:var(--purple);border-radius:99px}
-    .btn-cert{width:100%;padding:8px;background:var(--purple);color:white;font-size:12px;font-weight:600;border-radius:8px;transition:opacity .15s}
+    /* CERT */
+    .certc{background:var(--prb);border-radius:var(--ra);padding:.9rem 1rem}
+    .certl{font-size:9px;font-weight:700;color:var(--pr);letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px}
+    .certt{font-size:13px;font-weight:700;color:var(--pr);margin-bottom:2px}
+    .certs{font-size:11px;color:var(--pr);opacity:.7;margin-bottom:8px}
+    .plab{display:flex;justify-content:space-between;font-size:10px;color:var(--pr);margin-bottom:3px;font-weight:600}
+    .ptr{height:4px;background:rgba(0,81,135,.14);border-radius:var(--rp);margin-bottom:8px}
+    .pfi{height:100%;background:var(--pr);border-radius:var(--rp)}
+    .btn-cert{width:100%;padding:7px;background:var(--pr);color:white;font-size:12px;font-weight:700;border-radius:9px}
     .btn-cert:hover{opacity:.88}
 
-    /* ── ALERT ── */
-    .lalert{position:fixed;bottom:90px;right:24px;background:var(--navy);color:white;border-left:4px solid var(--teal);padding:14px 18px;border-radius:12px;font-size:13px;box-shadow:0 8px 32px rgba(0,0,0,.25);z-index:9000;max-width:290px;display:none;animation:si .4s ease}
-    .lalert.show{display:block}
-    @keyframes si{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
-    .la-t{font-family:'Outfit',sans-serif;font-weight:800;font-size:14px;margin-bottom:4px;color:var(--teal)}
-    .la-x{position:absolute;top:10px;right:12px;cursor:pointer;opacity:.4;font-size:16px;line-height:1}
-    .la-x:hover{opacity:1}
-    .btn-la{display:block;margin-top:10px;padding:8px;background:var(--teal);color:white;font-size:12px;font-weight:700;border-radius:8px;text-align:center;transition:background .15s}
-    .btn-la:hover{background:var(--teal2)}
+    /* PERFIL */
+    .prof-card{background:var(--sur);border:1px solid var(--ln);border-radius:var(--ra);padding:1.3rem}
+    .prof-av{width:68px;height:68px;border-radius:50%;background:var(--prb);border:3px solid var(--pr);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:var(--pr);margin:0 auto 10px;overflow:hidden}
+    .prof-av img{width:68px;height:68px;object-fit:cover;border-radius:50%}
+    .prof-nm{font-size:16px;font-weight:800;text-align:center;margin-bottom:2px}
+    .prof-ro{font-size:12px;color:var(--mu);text-align:center;margin-bottom:14px}
+    .pf-grid{display:grid;gap:9px}
+    .pf-lbl{font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+    .pf-inp{width:100%;padding:8px 11px;border:1.5px solid var(--ln);border-radius:10px;font-size:13px;font-family:'Inter',sans-serif;color:var(--tx);background:var(--soft);outline:none;transition:border .2s}
+    .pf-inp:focus{border-color:var(--pr);background:#fff}
+    .pf-inp[readonly]{cursor:not-allowed;opacity:.7}
+    .btn-save{width:100%;margin-top:10px;padding:8px;background:var(--pr);color:white;font-size:13px;font-weight:700;border-radius:10px;transition:all .15s}
+    .btn-save:hover{background:var(--pr2);transform:translateY(-1px)}
+    .prof-msg{text-align:center;font-size:12px;margin-top:6px;display:none}
 
-    /* ── SKELETON ── */
-    .sk{background:linear-gradient(90deg,var(--g2) 25%,var(--g1) 50%,var(--g2) 75%);background-size:200% 100%;animation:sh 1.2s infinite;border-radius:8px}
+    /* SUSCRIPCIÓN */
+    .sub-box{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:12px;margin-bottom:13px}
+    .sub-box.act{background:var(--gnb);border:1px solid #a7f3d0}
+    .sub-box.wrn{background:var(--amb);border:1px solid #fcd34d}
+    .sub-box.exp{background:var(--rdb);border:1px solid #fecaca}
+    .sub-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+    .sub-box.act .sub-dot{background:var(--gn)}.sub-box.wrn .sub-dot{background:var(--am)}.sub-box.exp .sub-dot{background:var(--rd)}
+    .sub-lbl{font-size:13px;font-weight:700}
+    .sub-inf{font-size:11px;color:var(--mu);margin-top:1px}
+    .sub-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--soft);font-size:13px}
+    .sub-row:last-child{border:none}
+    .sub-row span:first-child{color:var(--mu)}
+    .sub-row span:last-child{font-weight:700}
+
+    /* ALERT LIVE */
+    .live-al{position:fixed;bottom:84px;right:20px;background:var(--tx);color:white;border-left:4px solid var(--pr);padding:12px 15px;border-radius:12px;font-size:13px;box-shadow:0 8px 28px rgba(0,0,0,.22);z-index:9000;max-width:275px;display:none;animation:si .4s ease}
+    .live-al.show{display:block}
+    @keyframes si{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}
+    .al-t{font-weight:800;font-size:14px;margin-bottom:3px;color:#7dd3fc}
+    .al-x{position:absolute;top:8px;right:10px;cursor:pointer;opacity:.38;font-size:14px;line-height:1}
+    .al-x:hover{opacity:1}
+    .btn-al{display:block;margin-top:8px;padding:6px;background:var(--pr);color:white;font-size:11px;font-weight:700;border-radius:7px;text-align:center}
+
+    /* SKEL */
+    .sk{background:linear-gradient(90deg,var(--ln) 25%,var(--soft) 50%,var(--ln) 75%);background-size:200% 100%;animation:sh 1.2s infinite;border-radius:8px}
     @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-    /* ── ANIMACIONES ── */
-    @keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-
-    /* ── SECTIONS ── */
+    /* SECTIONS */
     .sv{display:none}.sv.active{display:block}
+    .empty{text-align:center;padding:2rem;color:var(--mu)}
+    .empty span{display:block;font-size:26px;margin-bottom:5px}
 
-    /* ── EMPTY STATE ── */
-    .empty{text-align:center;padding:2rem 1rem;color:var(--muted)}
-    .empty span{display:block;font-size:32px;margin-bottom:8px}
-    .empty p{font-size:13px}
+    @keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
-    /* ── RESPONSIVE ── */
-    @media(max-width:1100px){.g2{grid-template-columns:1fr}.rcol{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}}
-    @media(max-width:800px){.shell{grid-template-columns:1fr}.sb{display:none}.mets{grid-template-columns:repeat(2,1fr)}.main{padding:1.25rem}}
+    @media(max-width:1100px){.g2{grid-template-columns:1fr}.rcol{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}}
+    @media(max-width:800px){.shell{grid-template-columns:1fr}.sb{display:none}.mets{grid-template-columns:repeat(2,1fr)}.main{padding:1.2rem}}
     @media(max-width:500px){.mets{grid-template-columns:1fr 1fr}.rcol{grid-template-columns:1fr!important}.cgrid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
 
-<!-- ALERTA 5 MIN ANTES -->
-<div class="lalert" id="lalert">
-  <span class="la-x" onclick="this.parentElement.classList.remove('show')">✕</span>
-  <div class="la-t">🔴 ¡Tu live comienza pronto!</div>
-  <div id="alert-msg" style="font-size:12px;color:rgba(255,255,255,.7);line-height:1.4;margin-top:2px">La sesión empieza en menos de 5 minutos.</div>
-  <a class="btn-la" id="alert-link" href="#" target="_blank">Unirme al live ahora →</a>
+<!-- ALERTA LIVE -->
+<div class="live-al" id="lAl">
+  <span class="al-x" onclick="this.parentElement.classList.remove('show')">✕</span>
+  <div class="al-t">🔴 ¡Tu live comienza pronto!</div>
+  <div id="alMsg" style="font-size:12px;color:rgba(255,255,255,.62);line-height:1.4;margin-top:2px"></div>
+  <a class="btn-al" id="alLnk" href="#" target="_blank">Unirme ahora →</a>
 </div>
 
 <div class="shell">
+<!-- ══ SIDEBAR ══ -->
+<aside class="sb">
+  <div class="sb-logo">
+    <div class="sb-img"><img src="../assets/img/logo/logo.jpg" alt="OdonTeck" onerror="this.parentElement.style.background='var(--pr)'"></div>
+    <div><div class="sb-title">OdonTeck</div><div class="sb-sub2">Club Dental</div></div>
+  </div>
 
-  <!-- ══ SIDEBAR ══ -->
-  <aside class="sb">
-    <div class="sb-logo">
-      <div class="sb-img">
-        <img src="https://www.odonteckconsulting.com/assets/img/logo/logo.jpg" alt="OdonTeck"
-             onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-        <svg style="display:none" viewBox="0 0 24 24"><path d="M12 2C8 2 4.5 6 4.5 10c0 2.8 1.2 5 3 6.5L12 22l4.5-5.5c1.8-1.5 3-3.7 3-6.5C19.5 6 16 2 12 2z"/></svg>
-      </div>
-      <div><div class="sb-name">OdonTeck</div><div class="sb-sub">Club Dental · Fundador</div></div>
+  <div class="nav-s">
+    <div class="nav-l">Principal</div>
+    <div class="ni active" onclick="go('inicio',this)"><i class="fa-solid fa-house"></i>Inicio</div>
+    <div class="ni" onclick="go('cursos',this)"><i class="fa-solid fa-book-open"></i>Biblioteca de cursos<span class="nbg nw" id="nb-c">2</span></div>
+    <div class="ni" onclick="go('videos',this)"><i class="fa-solid fa-video"></i>Videos<span class="nbg nr" id="nb-v">0</span></div>
+    <div class="ni" onclick="go('lives',this)"><i class="fa-regular fa-circle-dot"></i>Sesiones en vivo</div>
+    <div class="ni" onclick="go('pdfs',this)"><i class="fa-solid fa-file-pdf"></i>PDFs<span class="nbg nr" id="nb-p">0</span></div>
+  </div>
+
+  <div class="nav-s">
+    <div class="nav-l">Biblioteca</div>
+    <div class="ni" onclick="go('bib',this)"><i class="fa-regular fa-calendar"></i>Abril 2026<span class="nbg ng">7</span></div>
+    <div class="ni" onclick="go('bib',this)"><i class="fa-regular fa-calendar"></i>Marzo 2026<span class="nbg ng">5</span></div>
+  </div>
+
+  <div class="nav-s">
+    <div class="nav-l">Mi cuenta</div>
+    <div class="ni" onclick="go('perfil',this)"><i class="fa-regular fa-user"></i>Mi perfil</div>
+    <div class="ni" onclick="go('suscripcion',this)"><i class="fa-solid fa-crown"></i>Suscripción</div>
+    <div class="ni" onclick="go('config',this)"><i class="fa-solid fa-sliders"></i>Configuración</div>
+  </div>
+
+  <div class="sb-plan" id="sb-plan" style="display:none">
+    <div class="sbpl">Plan activo</div>
+    <div class="sbpn" id="sbpn">—</div>
+    <div class="sbpv" id="sbpv">—</div>
+  </div>
+
+  <div class="adm-btn" id="admBtn" style="display:none" onclick="window.open('admin-club.html','_blank')">
+    <i class="fa-solid fa-shield-halved"></i>
+    <span style="font-size:12px;font-weight:600">Panel Admin</span>
+    <i class="fa-solid fa-arrow-up-right-from-square" style="margin-left:auto;font-size:9px;opacity:.55"></i>
+  </div>
+
+  <div class="sb-ft">
+    <div class="sb-user">
+      <div class="sb-av" id="sbAv">?</div>
+      <div><div class="sb-un" id="sbUn">Cargando...</div><div class="sb-ur" id="sbUr">Miembro</div></div>
+      <div class="sb-ex" onclick="doLogout()">Salir</div>
     </div>
+  </div>
+</aside>
 
-    <div class="nav-sec">
-      <div class="nav-lbl">Principal</div>
-      <div class="ni active" onclick="goSec('inicio',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Inicio
-      </div>
-      <div class="ni" onclick="goSec('cursos',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Biblioteca de cursos
-        <span class="nbg ng-w" id="nb-c">0</span>
-      </div>
-      <div class="ni" onclick="goSec('videos',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>Videos
-        <span class="nbg ng-r" id="nb-v">0</span>
-      </div>
-      <div class="ni" onclick="goSec('lives',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Sesiones en vivo
-      </div>
-      <div class="ni" onclick="goSec('pdfs',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDFs
-        <span class="nbg ng-r" id="nb-p">0</span>
-      </div>
+<!-- ══ MAIN ══ -->
+<main class="main">
+
+  <div class="topbar">
+    <div>
+      <div class="greeting">Bienvenido, <em id="uGr">...</em></div>
+      <div class="tdate" id="fhoy"></div>
     </div>
+    <button class="nbbtn"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><div class="ndot"></div></button>
+  </div>
 
-    <div class="nav-sec">
-      <div class="nav-lbl">Biblioteca</div>
-      <div class="ni" id="ni-bib1" onclick="goSec('bib',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Abril 2026
-        <span class="nbg ng-g">7</span>
-      </div>
-      <div class="ni" onclick="goSec('bib',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Marzo 2026
-        <span class="nbg ng-g">5</span>
-      </div>
-    </div>
+  <!-- ALERTA RENOVACIÓN -->
+  <div class="renew-bar" id="renewBar">
+    <div class="rb-txt"><b id="rbMsg">Tu membresía vence pronto.</b> <span id="rbSub">Renueva para mantener tu acceso.</span></div>
+    <button class="btn-rn" onclick="window.open('club-login.html?plan=mensual','_blank')">Renovar</button>
+  </div>
 
-    <div class="nav-sec">
-      <div class="nav-lbl">Mi cuenta</div>
-      <div class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Mi perfil</div>
-      <div class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Suscripción</div>
-      <div class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>Configuración</div>
-    </div>
+  <!-- MÉTRICAS -->
+  <div class="mets">
+    <div class="mc"><div class="mc-l"><span class="mc-dot" style="background:var(--pr)"></span>Tu plan</div><div class="mc-v" style="color:var(--pr);font-size:16px" id="m-plan">—</div><div class="mc-s" id="m-vence">—</div></div>
+    <div class="mc"><div class="mc-l"><span class="mc-dot" style="background:var(--pr2)"></span>Videos</div><div class="mc-v" style="color:var(--pr2)" id="m-v">0</div><div class="mc-s">Publicados</div></div>
+    <div class="mc"><div class="mc-l"><span class="mc-dot" style="background:var(--am)"></span>PDFs</div><div class="mc-v" style="color:var(--am)" id="m-p">0</div><div class="mc-s">Disponibles</div></div>
+    <div class="mc"><div class="mc-l"><span class="mc-dot" style="background:#7c3aed"></span>Cursos</div><div class="mc-v" style="color:#7c3aed" id="m-c">2</div><div class="mc-s">En biblioteca</div></div>
+  </div>
 
-    <div class="sb-ft">
-      <div class="sb-user">
-        <div class="sb-av">DG</div>
-        <div><div class="sb-un">Dr. García</div><div class="sb-ur">Fundador</div></div>
-        <div class="sb-exit">Salir</div>
-      </div>
-    </div>
-  </aside>
-
-  <!-- ══ MAIN ══ -->
-  <main class="main">
-
-    <div class="topbar">
-      <div>
-        <div class="greeting">Bienvenido, <em>Dr. García</em></div>
-        <div class="topbar-date" id="fhoy"></div>
-      </div>
-      <button class="nb-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-        <div class="ndot"></div>
-      </button>
-    </div>
-
-    <!-- MÉTRICAS -->
-    <div class="mets">
-      <div class="mc"><div class="mc-l"><span class="mc-dot" style="background:var(--teal)"></span>Miembros activos</div><div class="mc-v" style="color:var(--teal)">47</div><div class="mc-s"><b>+3</b> este mes</div></div>
-      <div class="mc"><div class="mc-l"><span class="mc-dot" style="background:var(--blue)"></span>Videos</div><div class="mc-v" style="color:var(--blue)" id="m-v">0</div><div class="mc-s">Publicados</div></div>
-      <div class="mc"><div class="mc-l"><span class="mc-dot" style="background:var(--amber)"></span>PDFs</div><div class="mc-v" style="color:var(--amber)" id="m-p">0</div><div class="mc-s">Disponibles</div></div>
-      <div class="mc"><div class="mc-l"><span class="mc-dot" style="background:var(--purple)"></span>Cursos</div><div class="mc-v" style="color:var(--purple)" id="m-c">0</div><div class="mc-s">En biblioteca</div></div>
-    </div>
-
-    <!-- ══ INICIO ══ -->
-    <div class="sv active" id="sv-inicio">
-      <div class="g2">
-        <div class="lcol">
-
-          <!-- Noticias -->
-          <div class="panel">
-            <div class="ph"><span class="pt">📢 Noticias y novedades</span><span class="pa" onclick="goSec('cursos',null)">Ver cursos →</span></div>
-            <div class="nlist" id="news-list">
-              <div class="sk" style="height:68px;margin-bottom:8px"></div>
-              <div class="sk" style="height:68px;margin-bottom:8px"></div>
-              <div class="sk" style="height:68px"></div>
-            </div>
-          </div>
-
-          <!-- Contenido reciente -->
-          <div class="panel">
-            <div class="ph"><span class="pt">Contenido reciente</span><span class="pa">Ver todo</span></div>
-            <div class="clist" id="recent-list">
-              <div class="sk" style="height:58px;margin-bottom:8px"></div>
-              <div class="sk" style="height:58px;margin-bottom:8px"></div>
-              <div class="sk" style="height:58px"></div>
-            </div>
-          </div>
-
-          <!-- Biblioteca por mes -->
-          <div class="panel">
-            <div class="ph"><span class="pt">Biblioteca por mes</span><span class="pa" onclick="goSec('bib',null)">Ver archivos</span></div>
-            <div class="lrow"><div class="lname">Abril 2026</div><div class="lbdgs"><span class="lb" style="background:var(--blueb);color:var(--blue)">4 videos</span><span class="lb" style="background:var(--coralb);color:var(--coral)">2 PDFs</span><span class="lb" style="background:var(--tealb);color:var(--teal2)">1 live</span></div></div>
-            <div class="lrow"><div class="lname">Marzo 2026</div><div class="lbdgs"><span class="lb" style="background:var(--blueb);color:var(--blue)">3 videos</span><span class="lb" style="background:var(--coralb);color:var(--coral)">2 PDFs</span></div></div>
-          </div>
+  <!-- ══ INICIO ══ -->
+  <div class="sv active" id="sv-inicio">
+    <div class="g2">
+      <div class="lcol">
+        <div class="panel">
+          <div class="ph"><span class="pt">📢 Noticias y novedades</span><span class="pa" onclick="go('cursos',null)">Ver cursos →</span></div>
+          <div class="nlist" id="nlist"><div class="sk" style="height:58px;margin-bottom:7px"></div><div class="sk" style="height:58px;margin-bottom:7px"></div><div class="sk" style="height:58px"></div></div>
         </div>
-
-        <!-- COLUMNA DERECHA -->
-        <div class="rcol" style="display:flex;flex-direction:column;gap:12px">
-
-          <!-- LIVE CARD DINÁMICA -->
-          <div class="lcard" id="lcard">
-            <div class="ltag" id="ltag"><span class="ldot"></span> Cargando...</div>
-            <div class="ltitle" id="ltitle" style="height:20px"></div>
-            <div class="ldoc" id="ldoc" style="height:14px;margin-bottom:14px"></div>
-            <div class="countdown" id="cdwrap">
-              <div class="cdu"><div class="cdn" id="cd-d">--</div><div class="cdl">días</div></div>
-              <div class="cds">:</div>
-              <div class="cdu"><div class="cdn" id="cd-h">--</div><div class="cdl">hrs</div></div>
-              <div class="cds">:</div>
-              <div class="cdu"><div class="cdn" id="cd-m">--</div><div class="cdl">min</div></div>
-              <div class="cds">:</div>
-              <div class="cdu"><div class="cdn" id="cd-s">--</div><div class="cdl">seg</div></div>
-            </div>
-            <button class="btn-live" id="btn-lv" onclick="liveClick()">+ Agregar a calendario</button>
+        <div class="panel">
+          <div class="ph"><span class="pt">Contenido reciente</span></div>
+          <div class="clist" id="reclist"><div class="sk" style="height:50px;margin-bottom:6px"></div><div class="sk" style="height:50px;margin-bottom:6px"></div><div class="sk" style="height:50px"></div></div>
+        </div>
+        <div class="panel">
+          <div class="ph"><span class="pt">Biblioteca por mes</span><span class="pa" onclick="go('bib',null)">Ver archivos</span></div>
+          <div class="lrow"><div class="lname">Abril 2026</div><div class="lbdgs"><span class="lb" style="background:var(--prb);color:var(--pr)">4 videos</span><span class="lb" style="background:var(--rdb);color:var(--rd)">2 PDFs</span><span class="lb" style="background:var(--gnb);color:var(--gn)">1 live</span></div></div>
+          <div class="lrow"><div class="lname">Marzo 2026</div><div class="lbdgs"><span class="lb" style="background:var(--prb);color:var(--pr)">3 videos</span><span class="lb" style="background:var(--rdb);color:var(--rd)">2 PDFs</span></div></div>
+        </div>
+      </div>
+      <div class="rcol">
+        <div class="lcard" id="lcard">
+          <div class="ltag" id="ltag"><span class="ldot"></span> Cargando...</div>
+          <div class="ltit" id="ltit"></div>
+          <div class="ldoc" id="ldoc"></div>
+          <div class="cdown" id="cdw">
+            <div class="cdu"><div class="cdn" id="cd-d">--</div><div class="cdl">días</div></div>
+            <div class="cds">:</div>
+            <div class="cdu"><div class="cdn" id="cd-h">--</div><div class="cdl">hrs</div></div>
+            <div class="cds">:</div>
+            <div class="cdu"><div class="cdn" id="cd-m">--</div><div class="cdl">min</div></div>
+            <div class="cds">:</div>
+            <div class="cdu"><div class="cdn" id="cd-s">--</div><div class="cdl">seg</div></div>
           </div>
-
-          <!-- Canal WA -->
-          <div class="wcard">
-            <div class="whead">
-              <div class="wicon">
-                <svg viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.138.563 4.14 1.535 5.874L0 24l6.29-1.508A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.814 9.814 0 01-5.058-1.4l-.361-.214-3.735.896.944-3.653-.235-.374A9.817 9.817 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
-              </div>
-              <div><div class="wname">Canal OdonTeck</div><div class="wcnt">Novedades y anuncios oficiales</div></div>
-            </div>
-            <button class="btn-wa" onclick="window.open('https://whatsapp.com/channel/0029VbCQbyVISTkPMfD7hz0N','_blank')">📢 Seguir canal de WhatsApp</button>
+          <button class="btn-lv" id="btnLv" onclick="lvClick()">+ Agregar a calendario</button>
+        </div>
+        <div class="wcard">
+          <div class="whead">
+            <div class="wico"><svg viewBox="0 0 24 24" fill="#16a34a"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.138.563 4.14 1.535 5.874L0 24l6.29-1.508A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.814 9.814 0 01-5.058-1.4l-.361-.214-3.735.896.944-3.653-.235-.374A9.817 9.817 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg></div>
+            <div><div class="wname">Canal OdonTeck</div><div class="wcnt">Novedades oficiales</div></div>
           </div>
-
-          <!-- Descuento -->
-          <div class="dcard">
-            <div class="dlbl">Tu descuento exclusivo</div>
-            <div class="dpct">20%</div>
-            <div class="dsub">En todos los cursos OdonTeck</div>
-            <button class="btn-d" onclick="goSec('cursos',null)">Ver cursos disponibles</button>
-          </div>
-
-          <!-- Certificado -->
-          <div class="certc">
-            <div class="certl">Certificado abril 2026</div>
-            <div class="certt">Completa para obtenerlo</div>
-            <div class="certs">3/4 videos + 1 live pendiente</div>
-            <div class="plab"><span>Progreso</span><span>75%</span></div>
-            <div class="ptr"><div class="pfi" style="width:75%"></div></div>
-            <button class="btn-cert">Ver progreso detallado</button>
-          </div>
+          <button class="btn-wa" onclick="window.open('https://whatsapp.com/channel/0029VbCQbyVISTkPMfD7hz0N','_blank')">📢 Seguir canal</button>
+        </div>
+        <div class="dcard">
+          <div class="dlbl">Tu descuento exclusivo</div>
+          <div class="dpct">20%</div>
+          <div class="dsub">En todos los cursos OdonTeck</div>
+          <button class="btn-d" onclick="go('cursos',null)">Ver cursos</button>
+        </div>
+        <div class="certc">
+          <div class="certl">Certificado abril 2026</div>
+          <div class="certt">Completa para obtenerlo</div>
+          <div class="certs">3/4 videos + 1 live</div>
+          <div class="plab"><span>Progreso</span><span>75%</span></div>
+          <div class="ptr"><div class="pfi" style="width:75%"></div></div>
+          <button class="btn-cert">Ver progreso</button>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- ══ CURSOS ══ -->
-    <div class="sv" id="sv-cursos">
+  <!-- ══ CURSOS ══ -->
+  <div class="sv" id="sv-cursos">
+    <div class="panel">
+      <div class="ph"><span class="pt">📚 Biblioteca de cursos</span><span class="pa" id="cnt-c">2 cursos disponibles</span></div>
+      <div class="tabs" id="ctabs">
+        <div class="tab active" onclick="fC('todos',this)">Todos</div>
+        <div class="tab" onclick="fC('cirugia',this)">Cirugía</div>
+        <div class="tab" onclick="fC('endodoncia',this)">Endodoncia</div>
+        <div class="tab" onclick="fC('ortodoncia',this)">Ortodoncia</div>
+        <div class="tab" onclick="fC('protesis',this)">Prótesis</div>
+        <div class="tab" onclick="fC('otros',this)">Otros</div>
+      </div>
+      <div class="cgrid" id="cgrid"></div>
+    </div>
+  </div>
+
+  <!-- ══ VIDEOS ══ -->
+  <div class="sv" id="sv-videos">
+    <div class="panel"><div class="ph"><span class="pt">🎬 Videos de casos clínicos</span></div>
+    <div class="clist" id="vlist"><div class="sk" style="height:50px;margin-bottom:6px"></div><div class="sk" style="height:50px"></div></div></div>
+  </div>
+
+  <!-- ══ LIVES ══ -->
+  <div class="sv" id="sv-lives">
+    <div class="panel"><div class="ph"><span class="pt">📺 Sesiones en vivo · cada 15 días</span></div>
+    <div id="lvlist"><div class="sk" style="height:68px;border-radius:11px"></div></div></div>
+  </div>
+
+  <!-- ══ PDFs ══ -->
+  <div class="sv" id="sv-pdfs">
+    <div class="panel"><div class="ph"><span class="pt">📄 PDFs y recursos clínicos</span></div>
+    <div class="clist" id="plist"><div class="sk" style="height:50px"></div></div></div>
+  </div>
+
+  <!-- ══ BIBLIOTECA ══ -->
+  <div class="sv" id="sv-bib">
+    <div class="panel"><div class="ph"><span class="pt">📁 Biblioteca de contenido</span></div>
+    <div class="clist" id="blist"><div class="sk" style="height:50px"></div></div></div>
+  </div>
+
+  <!-- ══ PERFIL ══ -->
+  <div class="sv" id="sv-perfil">
+    <div style="display:grid;grid-template-columns:300px 1fr;gap:1.2rem">
+      <div class="prof-card">
+        <div class="prof-av" id="pav">?</div>
+        <div class="prof-nm" id="pnm">—</div>
+        <div class="prof-ro" id="pro">Miembro Club Dental</div>
+        <div class="pf-grid">
+          <div><div class="pf-lbl">Nombre completo</div><input class="pf-inp" id="pf-nm" placeholder="Dr. Juan Pérez"></div>
+          <div><div class="pf-lbl">Correo electrónico</div><input class="pf-inp" id="pf-em" placeholder="tu@email.com" readonly></div>
+          <div><div class="pf-lbl">WhatsApp</div><input class="pf-inp" id="pf-ph" placeholder="+52 238 000 0000"></div>
+          <div><div class="pf-lbl">Especialidad</div><input class="pf-inp" id="pf-sp" placeholder="Odontología general..."></div>
+        </div>
+        <button class="btn-save" onclick="savePerfil()"><i class="fa-solid fa-floppy-disk"></i> Guardar cambios</button>
+        <div class="prof-msg" id="prof-msg"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1rem">
+        <div class="panel">
+          <div class="ph"><span class="pt">🏆 Mi actividad</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;text-align:center">
+            <div style="background:var(--soft);border-radius:11px;padding:12px"><div style="font-size:20px;font-weight:800;color:var(--pr)" id="a-v">0</div><div style="font-size:11px;color:var(--mu)">Videos</div></div>
+            <div style="background:var(--soft);border-radius:11px;padding:12px"><div style="font-size:20px;font-weight:800;color:var(--am)" id="a-p">0</div><div style="font-size:11px;color:var(--mu)">PDFs</div></div>
+            <div style="background:var(--soft);border-radius:11px;padding:12px"><div style="font-size:20px;font-weight:800;color:var(--gn)" id="a-l">0</div><div style="font-size:11px;color:var(--mu)">Lives</div></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="ph"><span class="pt">🔐 Seguridad</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 11px;background:var(--soft);border-radius:11px">
+            <div><div style="font-size:13px;font-weight:600">Contraseña</div><div style="font-size:11px;color:var(--mu)">Cambia tu contraseña de acceso</div></div>
+            <button onclick="sendReset()" style="font-size:12px;font-weight:600;color:var(--pr);background:var(--prb);padding:6px 12px;border-radius:8px">Cambiar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SUSCRIPCIÓN ══ -->
+  <div class="sv" id="sv-suscripcion">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem">
       <div class="panel">
-        <div class="ph"><span class="pt">📚 Biblioteca de cursos</span><span class="pa" id="cnt-c">Cargando...</span></div>
-        <div class="tabs" id="ctabs">
-          <div class="tab active" onclick="fCurso('todos',this)">Todos</div>
-          <div class="tab" onclick="fCurso('endodoncia',this)">Endodoncia</div>
-          <div class="tab" onclick="fCurso('cirugia',this)">Cirugía</div>
-          <div class="tab" onclick="fCurso('ortodoncia',this)">Ortodoncia</div>
-          <div class="tab" onclick="fCurso('protesis',this)">Prótesis</div>
-          <div class="tab" onclick="fCurso('otros',this)">Otros</div>
+        <div class="ph"><span class="pt">💳 Mi suscripción</span></div>
+        <div class="sub-box act" id="subBox">
+          <div class="sub-dot"></div>
+          <div><div class="sub-lbl" id="subLbl">Cargando...</div><div class="sub-inf" id="subInf"></div></div>
         </div>
-        <div class="cgrid" id="cgrid">
-          <div class="sk" style="height:220px;border-radius:var(--rl)"></div>
-          <div class="sk" style="height:220px;border-radius:var(--rl)"></div>
-          <div class="sk" style="height:220px;border-radius:var(--rl)"></div>
+        <div class="sub-row"><span>Plan</span><span id="s-plan">—</span></div>
+        <div class="sub-row"><span>Inicio</span><span id="s-inicio">—</span></div>
+        <div class="sub-row"><span>Próximo cobro</span><span id="s-vence">—</span></div>
+        <div class="sub-row"><span>Estado</span><span id="s-estado" style="color:var(--gn)">—</span></div>
+        <div style="display:flex;gap:8px;margin-top:14px">
+          <button onclick="window.open('club-login.html?plan=mensual','_blank')" style="flex:1;padding:8px;background:var(--pr);color:white;font-size:12px;font-weight:700;border-radius:9px">Renovar plan</button>
+          <button onclick="go('inicio',null)" style="flex:1;padding:8px;background:var(--soft);color:var(--tx);font-size:12px;font-weight:600;border-radius:9px;border:1px solid var(--ln)">Ver contenido</button>
         </div>
       </div>
-    </div>
-
-    <!-- ══ VIDEOS ══ -->
-    <div class="sv" id="sv-videos">
       <div class="panel">
-        <div class="ph"><span class="pt">🎬 Videos de casos clínicos</span></div>
-        <div class="clist" id="vlist">
-          <div class="sk" style="height:58px"></div>
-          <div class="sk" style="height:58px;margin-top:8px"></div>
+        <div class="ph"><span class="pt">✅ Beneficios incluidos</span></div>
+        <div style="display:grid;gap:7px">
+          <div style="display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--gnb);border-radius:10px;font-size:13px"><i class="fa-solid fa-check" style="color:var(--gn);width:14px"></i> Casos clínicos semanales</div>
+          <div style="display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--gnb);border-radius:10px;font-size:13px"><i class="fa-solid fa-check" style="color:var(--gn);width:14px"></i> Webinars cada 15 días</div>
+          <div style="display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--gnb);border-radius:10px;font-size:13px"><i class="fa-solid fa-check" style="color:var(--gn);width:14px"></i> PDFs y guías clínicas</div>
+          <div style="display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--gnb);border-radius:10px;font-size:13px"><i class="fa-solid fa-check" style="color:var(--gn);width:14px"></i> 20% descuento en cursos</div>
+          <div style="display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--gnb);border-radius:10px;font-size:13px"><i class="fa-solid fa-check" style="color:var(--gn);width:14px"></i> Canal exclusivo WhatsApp</div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- ══ LIVES ══ -->
-    <div class="sv" id="sv-lives">
-      <div class="panel">
-        <div class="ph"><span class="pt">📺 Sesiones en vivo · Webinars gratuitos cada 15 días</span></div>
-        <div id="lvlist" style="display:flex;flex-direction:column;gap:10px">
-          <div class="sk" style="height:80px;border-radius:var(--r)"></div>
+  <!-- ══ CONFIGURACIÓN ══ -->
+  <div class="sv" id="sv-config">
+    <div class="panel" style="max-width:480px">
+      <div class="ph"><span class="pt">⚙️ Configuración</span></div>
+      <div style="display:grid;gap:10px">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 13px;background:var(--soft);border-radius:11px">
+          <div><div style="font-size:13px;font-weight:600">Notificaciones por email</div><div style="font-size:11px;color:var(--mu)">Nuevo contenido y lives</div></div>
+          <input type="checkbox" checked style="accent-color:var(--pr);width:17px;height:17px">
         </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 13px;background:var(--soft);border-radius:11px">
+          <div><div style="font-size:13px;font-weight:600">Recordatorio de live</div><div style="font-size:11px;color:var(--mu)">5 minutos antes del webinar</div></div>
+          <input type="checkbox" checked style="accent-color:var(--pr);width:17px;height:17px">
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 13px;background:var(--soft);border-radius:11px">
+          <div><div style="font-size:13px;font-weight:600">Aviso de renovación</div><div style="font-size:11px;color:var(--mu)">2 días antes del vencimiento</div></div>
+          <input type="checkbox" checked style="accent-color:var(--pr);width:17px;height:17px">
+        </div>
+        <button onclick="doLogout()" style="width:100%;padding:9px;background:var(--rdb);color:var(--rd);font-size:13px;font-weight:700;border-radius:10px;border:1px solid #fecaca;margin-top:4px">
+          <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+        </button>
       </div>
     </div>
+  </div>
 
-    <!-- ══ PDFs ══ -->
-    <div class="sv" id="sv-pdfs">
-      <div class="panel">
-        <div class="ph"><span class="pt">📄 PDFs y recursos clínicos</span></div>
-        <div class="clist" id="plist">
-          <div class="sk" style="height:58px"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══ BIBLIOTECA ══ -->
-    <div class="sv" id="sv-bib">
-      <div class="panel">
-        <div class="ph"><span class="pt">📁 Biblioteca de contenido</span><span class="pa">Descargar todo</span></div>
-        <div class="clist" id="blist">
-          <div class="sk" style="height:58px"></div>
-        </div>
-      </div>
-    </div>
-
-  </main>
+</main>
 </div>
 
 <!-- WA FLOTANTE -->
-<a href="https://wa.me/5212381479365?text=Hola%2C%20soy%20miembro%20del%20Club%20Dental%20y%20tengo%20una%20pregunta"
-   target="_blank"
-   style="position:fixed;bottom:24px;right:24px;z-index:9999;background:#25D366;border-radius:50%;width:52px;height:52px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.4);transition:transform .2s"
+<a href="https://wa.me/5212381479365?text=Hola%2C%20soy%20miembro%20del%20Club%20Dental"
+   target="_blank" style="position:fixed;bottom:20px;right:20px;z-index:9999;background:#16a34a;border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(22,163,74,.36);transition:transform .2s"
    onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-  <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="white">
-    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.138.563 4.14 1.535 5.874L0 24l6.29-1.508A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.814 9.814 0 01-5.058-1.4l-.361-.214-3.735.896.944-3.653-.235-.374A9.817 9.817 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/>
-  </svg>
+  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.138.563 4.14 1.535 5.874L0 24l6.29-1.508A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.814 9.814 0 01-5.058-1.4l-.361-.214-3.735.896.944-3.653-.235-.374A9.817 9.817 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
 </a>
 
 <script type="module">
-import { initializeApp }      from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, collection, onSnapshot, orderBy, query, where, limit }
-  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, collection, onSnapshot, orderBy, query, where, limit, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getAuth, onAuthStateChanged, signOut, sendPasswordResetEmail } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
-// ══ FIREBASE CONFIG — club-odonteck ══════════════════════════
-const app = initializeApp({
-  apiKey:            "AIzaSyA3xYpORcvvcXrhNaXOBBBPm19mxdIcNsU",
-  authDomain:        "club-odonteck.firebaseapp.com",
-  projectId:         "club-odonteck",
-  storageBucket:     "club-odonteck.firebasestorage.app",
-  messagingSenderId: "306331582203",
-  appId:             "1:306331582203:web:7d70e51f0180528ddffa5e"
+const app  = initializeApp({ apiKey:"AIzaSyA3xYpORcvvcXrhNaXOBBBPm19mxdIcNsU", authDomain:"club-odonteck.firebaseapp.com", projectId:"club-odonteck", storageBucket:"club-odonteck.firebasestorage.app", messagingSenderId:"306331582203", appId:"1:306331582203:web:7d70e51f0180528ddffa5e" });
+const auth = getAuth(app);
+const db   = getFirestore(app);
+const ADMIN = 'odontckconsul@gmail.com';
+
+// ── CURSOS BASE (siempre visibles desde el primer día) ────────
+const CURSOS_BASE = [
+  {
+    id:'c1', titulo:'Extracciones Simples — Domina el procedimiento más frecuente',
+    descripcion:'Técnicas seguras para exodoncias rutinarias. Protocolos clínicos probados en el consultorio real.',
+    categoria:'cirugia', emoji:'🦷', badge:'new', badgeLabel:'Nuevo', progreso:0,
+    link:'https://drive.google.com/drive/folders/1TJfnzdpal-KZIuK_gd5k934PayVjb4bR',
+    instructor:'OdonTeck', duracion:'Módulo completo · Acceso inmediato'
+  },
+  {
+    id:'c2', titulo:'Cirugía Oral Avanzada — Casos clínicos reales',
+    descripcion:'Abordaje de casos complejos. Colgajos, suturas y manejo posoperatorio con evidencia actualizada.',
+    categoria:'cirugia', emoji:'🔬', badge:'', progreso:0,
+    link:'https://drive.google.com/drive/folders/1NKrGRT9Cbp_hYNBgOBP7zzs_4etTIcCi',
+    instructor:'OdonTeck', duracion:'Módulo completo · Acceso inmediato'
+  }
+];
+
+let allCursos = [...CURSOS_BASE];
+let liveActivo = null, alertShown = false, timerID = null;
+
+// Renderizar cursos BASE inmediatamente (sin esperar Firebase)
+renderCursos(allCursos);
+
+// ── AUTH GUARD ────────────────────────────────────────────────
+onAuthStateChanged(auth, async user => {
+  if (!user) { location.href = 'club-login.html'; return; }
+
+  const nom = user.displayName || user.email.split('@')[0];
+  const ini = (user.displayName||user.email||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+  document.getElementById('uGr').textContent  = nom;
+  document.getElementById('sbUn').textContent = nom;
+  const avEl = document.getElementById('sbAv');
+  if (user.photoURL) avEl.innerHTML = `<img src="${user.photoURL}" alt="">`;
+  else avEl.textContent = ini;
+
+  if (user.email === ADMIN) {
+    document.getElementById('admBtn').style.display = 'flex';
+    document.getElementById('sbUr').textContent = 'Fundador';
+  }
+
+  // Perfil Firestore
+  const snap = await getDoc(doc(db,'miembros', user.uid));
+  const data = snap.exists() ? snap.data() : {};
+  window._uid = user.uid; window._user = user;
+
+  // Llenar perfil
+  document.getElementById('pav').textContent  = ini;
+  document.getElementById('pnm').textContent  = data.nombre || nom;
+  document.getElementById('pro').textContent  = data.especialidad || 'Miembro Club Dental';
+  document.getElementById('pf-nm').value = data.nombre    || '';
+  document.getElementById('pf-em').value = user.email     || '';
+  document.getElementById('pf-ph').value = data.telefono  || '';
+  document.getElementById('pf-sp').value = data.especialidad || '';
+
+  // Plan
+  const pTipo  = data.planTipo || 'mensual';
+  const pNames = { mensual:'Plan Mensual', anual:'Plan Anual' };
+  const pName  = user.email === ADMIN ? 'Fundador' : (pNames[pTipo]||'Membresía');
+  const pVence = data.planVence ? new Date(data.planVence) : null;
+  const pIni   = data.planInicio? new Date(data.planInicio): null;
+
+  document.getElementById('m-plan').textContent = pName;
+  document.getElementById('sbpn').textContent   = pName;
+  document.getElementById('sb-plan').style.display = 'block';
+  document.getElementById('s-plan').textContent = pName;
+  document.getElementById('s-inicio').textContent = pIni ? pIni.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'}) : 'Miembro fundador';
+
+  if (user.email === ADMIN) {
+    document.getElementById('m-vence').textContent   = 'Acceso permanente';
+    document.getElementById('sbpv').textContent      = 'Acceso permanente';
+    document.getElementById('subLbl').textContent    = 'Fundador · Acceso permanente';
+    document.getElementById('s-vence').textContent   = 'Permanente';
+    document.getElementById('s-estado').textContent  = '✓ Activo';
+    document.getElementById('s-estado').style.color  = 'var(--gn)';
+    return;
+  }
+
+  if (pVence) {
+    const dias = Math.ceil((pVence - new Date()) / 86400000);
+    const vStr = pVence.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'});
+    document.getElementById('sbpv').textContent = dias > 0 ? `Vence ${vStr}` : 'Membresía vencida';
+    if (dias <= 0)     document.getElementById('sbpv').className = 'sbpv exp';
+    else if (dias <= 3) document.getElementById('sbpv').className = 'sbpv warn';
+    document.getElementById('m-vence').innerHTML = dias > 0 ? `Vence en ${dias} días` : '<span style="color:var(--rd)">Vencida</span>';
+    document.getElementById('s-vence').textContent = vStr;
+
+    // Estado suscripción
+    const sb = document.getElementById('subBox');
+    if (dias > 3) {
+      document.getElementById('subLbl').textContent = 'Membresía activa';
+      document.getElementById('subInf').textContent = `Vence el ${vStr}`;
+      document.getElementById('s-estado').textContent = '✓ Activa'; document.getElementById('s-estado').style.color='var(--gn)';
+    } else if (dias > 0) {
+      sb.className='sub-box wrn';
+      document.getElementById('subLbl').textContent = `⚠️ Vence en ${dias} día${dias!==1?'s':''}`;
+      document.getElementById('s-estado').textContent = '⚠️ Por vencer'; document.getElementById('s-estado').style.color='var(--am)';
+    } else if (dias > -3) {
+      sb.className='sub-box exp';
+      document.getElementById('subLbl').textContent = `🔴 Venció — ${Math.abs(dias)} día${Math.abs(dias)!==1?'s':''} de tolerancia restante${3+dias<=1?'':'s'}`;
+      document.getElementById('s-estado').textContent = '✗ Vencida'; document.getElementById('s-estado').style.color='var(--rd)';
+    }
+
+    // Alerta 2 días antes o dentro de tolerancia
+    if (dias <= 2 && dias > -3) {
+      const bar = document.getElementById('renewBar');
+      bar.classList.add('show');
+      document.getElementById('rbMsg').textContent = dias > 0
+        ? `⚠️ Tu membresía vence en ${dias} día${dias!==1?'s':''}.`
+        : `🔴 Tu membresía venció hace ${Math.abs(dias)} día${Math.abs(dias)!==1?'s':''}. Tienes ${3+dias} día${3+dias!==1?'s':''} de tolerancia.`;
+    }
+  } else {
+    document.getElementById('subLbl').textContent = 'Sin plan activo';
+    document.getElementById('s-vence').textContent = '—';
+    document.getElementById('s-estado').textContent = '—';
+  }
 });
-const db = getFirestore(app);
-// ═════════════════════════════════════════════════════════════
 
-let allCursos   = [];
-let liveActivo  = null;
-let alertShown  = false;
-let timerID     = null;
+window.doLogout  = async () => { await signOut(auth); location.href='club-login.html'; };
+window.sendReset = async () => { if (window._user) { await sendPasswordResetEmail(auth, window._user.email); alert('📧 Enlace enviado a '+window._user.email); }};
+window.savePerfil = async () => {
+  if (!window._uid) return;
+  const nm = document.getElementById('pf-nm').value.trim();
+  const ph = document.getElementById('pf-ph').value.trim();
+  const sp = document.getElementById('pf-sp').value.trim();
+  await setDoc(doc(db,'miembros',window._uid), { nombre:nm, telefono:ph, especialidad:sp }, { merge:true });
+  document.getElementById('pnm').textContent = nm;
+  document.getElementById('pro').textContent = sp || 'Miembro Club Dental';
+  const msg = document.getElementById('prof-msg');
+  msg.textContent='✓ Perfil guardado'; msg.style.color='var(--gn)'; msg.style.display='block';
+  setTimeout(()=>msg.style.display='none', 2500);
+};
 
-// ── NOTICIAS ─────────────────────────────────────────────────
+// ── FIREBASE LISTENERS ─────────────────────────────────────────
+
+// Noticias
 onSnapshot(query(collection(db,'noticias'), orderBy('creadoEn','desc'), limit(10)), snap => {
-  const arr = snap.docs.map(d => ({id:d.id,...d.data()}));
-  renderNoticias(arr);
-  renderRecent(arr);
+  const arr = snap.docs.map(d=>({id:d.id,...d.data()}));
+  rNoticias(arr); rRecent(arr);
 });
 
-// ── CURSOS ───────────────────────────────────────────────────
+// Cursos Firebase — se MERGEN con los base
 onSnapshot(collection(db,'cursos'), snap => {
-  allCursos = snap.docs.map(d=>({id:d.id,...d.data()}));
+  const fbC = snap.docs.map(d=>({id:d.id,...d.data()}));
+  const fbIds = new Set(fbC.map(c=>c.id));
+  // Base siempre primero, Firebase agrega los adicionales
+  allCursos = [...CURSOS_BASE.filter(c=>!fbIds.has(c.id)), ...fbC];
   renderCursos(allCursos);
   const n = allCursos.length;
   document.getElementById('m-c').textContent  = n;
@@ -497,255 +702,142 @@ onSnapshot(collection(db,'cursos'), snap => {
   document.getElementById('cnt-c').textContent = n + ' cursos disponibles';
 });
 
-// ── VIDEOS ───────────────────────────────────────────────────
-onSnapshot(query(collection(db,'videos'), orderBy('creadoEn','desc')), snap => {
-  const arr = snap.docs.map(d=>({id:d.id,...d.data()}));
-  renderVideos(arr);
-  document.getElementById('m-v').textContent  = arr.length;
-  document.getElementById('nb-v').textContent = arr.length;
+// Lives
+onSnapshot(query(collection(db,'lives'), where('activo','==',true), orderBy('fechaISO','asc'), limit(1)), snap => {
+  liveActivo = snap.empty ? null : {id:snap.docs[0].id,...snap.docs[0].data()};
+  liveActivo ? setLive(liveActivo) : setNoLive();
 });
-
-// ── PDFs ─────────────────────────────────────────────────────
-onSnapshot(query(collection(db,'pdfs'), orderBy('creadoEn','desc')), snap => {
-  const arr = snap.docs.map(d=>({id:d.id,...d.data()}));
-  renderPdfs(arr);
-  document.getElementById('m-p').textContent  = arr.length;
-  document.getElementById('nb-p').textContent = arr.length;
-});
-
-// ── LIVES — solo el próximo activo para el countdown ─────────
-onSnapshot(
-  query(collection(db,'lives'), where('activo','==',true), orderBy('fechaISO','asc'), limit(1)),
-  snap => {
-    if (!snap.empty) {
-      liveActivo = {id: snap.docs[0].id, ...snap.docs[0].data()};
-      setLiveCard(liveActivo);
-    } else {
-      liveActivo = null;
-      setNoLive();
-    }
-  }
-);
-
-// ── LIVES — lista completa para la sección ───────────────────
 onSnapshot(query(collection(db,'lives'), orderBy('fechaISO','asc')), snap => {
-  renderLives(snap.docs.map(d=>({id:d.id,...d.data()})));
+  rLives(snap.docs.map(d=>({id:d.id,...d.data()})));
+  document.getElementById('a-l').textContent = snap.docs.filter(d=>d.data().activo).length;
 });
 
-// ══ RENDERS ══════════════════════════════════════════════════
+// Videos
+onSnapshot(query(collection(db,'videos'), orderBy('creadoEn','desc')), snap => {
+  const a = snap.docs.map(d=>({id:d.id,...d.data()}));
+  rVideos(a);
+  ['m-v','nb-v','a-v'].forEach(id=>document.getElementById(id).textContent=a.length);
+});
 
-function renderNoticias(arr) {
-  const el = document.getElementById('news-list');
-  if (!arr.length) {
-    el.innerHTML = `<div class="empty"><span>📭</span><p>Sin noticias por el momento.</p></div>`;
-    return;
-  }
-  el.innerHTML = arr.map(n => `
-    <div class="nitem">
-      <div class="nicon" style="background:${n.color||'var(--tealb)'}">${n.emoji||'📢'}</div>
-      <div>
-        <div class="ntitle">${esc(n.titulo)}</div>
-        <div class="nbody">${esc(n.cuerpo||'')}</div>
-        <div class="ndate">${n.fecha||''}</div>
-      </div>
-    </div>`).join('');
+// PDFs
+onSnapshot(query(collection(db,'pdfs'), orderBy('creadoEn','desc')), snap => {
+  const a = snap.docs.map(d=>({id:d.id,...d.data()}));
+  rPdfs(a);
+  ['m-p','nb-p','a-p'].forEach(id=>document.getElementById(id).textContent=a.length);
+});
+
+// ── RENDERS ───────────────────────────────────────────────────
+function rNoticias(arr) {
+  const el = document.getElementById('nlist');
+  if (!arr.length) { el.innerHTML=`<div class="empty"><span>📭</span><p>Sin noticias aún.</p></div>`; return; }
+  el.innerHTML = arr.map(n=>`<div class="nitem"><div class="nico" style="background:${n.color||'var(--prb)'}">${n.emoji||'📢'}</div><div><div class="ntit">${esc(n.titulo)}</div><div class="nbod">${esc(n.cuerpo||'')}</div><div class="ndat">${n.fecha||''}</div></div></div>`).join('');
 }
-
-function renderRecent(noticias) {
-  const el = document.getElementById('recent-list');
-  const items = [
-    ...noticias.slice(0,2).map(n=>({tipo:'noticia',titulo:n.titulo,meta:'Noticia',emoji:n.emoji||'📢',color:'var(--tealb)',link:'#'})),
-  ];
-  if (!items.length) { el.innerHTML = `<div class="empty"><span>📂</span><p>Sin contenido reciente.</p></div>`; return; }
-  el.innerHTML = items.map(i => `
-    <div class="ci" onclick="window.open('${i.link}','_blank')">
-      <div class="cthumb" style="background:${i.color}">${i.emoji}</div>
-      <div class="ci-i"><div class="ci-t">${esc(i.titulo)}</div><div class="ci-m">${i.meta}</div></div>
-      <span class="ctag tg">Nuevo</span>
-    </div>`).join('');
+function rRecent(arr) {
+  const el = document.getElementById('reclist');
+  if (!arr.length) { el.innerHTML=`<div class="empty"><span>📂</span><p>Sin contenido reciente.</p></div>`; return; }
+  el.innerHTML = arr.slice(0,3).map(n=>`<div class="ci"><div class="cth" style="background:${n.color||'var(--prb)'}">${n.emoji||'📢'}</div><div class="ci-i"><div class="ci-t">${esc(n.titulo)}</div><div class="ci-m">Noticia</div></div><span class="ctag tg">Nuevo</span></div>`).join('');
 }
-
 function renderCursos(arr) {
   const el = document.getElementById('cgrid');
-  if (!arr.length) {
-    el.innerHTML = `<div class="empty" style="grid-column:1/-1"><span>📚</span><p>Los cursos aparecerán aquí cuando el admin los publique.</p></div>`;
-    return;
-  }
-  el.innerHTML = arr.map(c => {
-    const badge   = c.badge ? `<span class="cc-badge cb-${c.badge}">${c.badgeLabel||c.badge}</span>` : '';
-    const progNum = parseInt(c.progreso||0);
-    const progBar = progNum > 0
-      ? `<div class="cc-pw"><div class="cc-pb" style="width:${progNum}%"></div></div><div class="cc-pl">${progNum}% completado</div>`
-      : `<div class="cc-pl" style="color:var(--g3)">Sin comenzar</div>`;
-    const btnTxt  = progNum===100 ? '🏆 Completado' : progNum>0 ? '▶ Continuar curso' : '▶ Comenzar ahora';
-    return `
-    <div class="cc" onclick="window.open('${c.link||'#'}','_blank')">
-      <div class="cc-cover">
-        ${c.imagen ? `<img src="${c.imagen}" alt="${esc(c.titulo)}">` : ''}
-        ${badge}
-        <span class="cc-em">${c.emoji||'📚'}</span>
-      </div>
-      <div class="cc-body">
-        <div class="cc-title">${esc(c.titulo)}</div>
-        <div class="cc-meta">${esc(c.instructor||'')} · ${esc(c.duracion||'')}</div>
-        ${progBar}
-        <button class="btn-cc" onclick="event.stopPropagation();window.open('${c.link||'#'}','_blank')">${btnTxt}</button>
-      </div>
-    </div>`;
+  if (!el) return;
+  if (!arr.length) { el.innerHTML=`<div class="empty" style="grid-column:1/-1"><span>📚</span><p>Sin cursos aún.</p></div>`; return; }
+  el.innerHTML = arr.map(c=>{
+    const badge = c.badge?`<span class="cc-badge cb-${c.badge}">${c.badgeLabel||c.badge}</span>`:'';
+    const prog  = parseInt(c.progreso||0);
+    const pbar  = prog>0?`<div class="cc-pw"><div class="cc-pb" style="width:${prog}%"></div></div><div class="cc-pl">${prog}% completado</div>`:`<div class="cc-pl" style="color:var(--mu)">Sin comenzar</div>`;
+    const btn   = prog===100?'🏆 Completado':prog>0?'▶ Continuar':'▶ Comenzar ahora';
+    return `<div class="cc" onclick="window.open('${esc(c.link||'#')}','_blank')">
+      <div class="cc-cover">${badge}<span class="cc-em">${c.emoji||'📚'}</span></div>
+      <div class="cc-body"><div class="cc-title">${esc(c.titulo)}</div><div class="cc-meta">${esc(c.instructor||'')} · ${esc(c.duracion||'')}</div>${pbar}
+      <button class="btn-cc" onclick="event.stopPropagation();window.open('${esc(c.link||'#')}','_blank')">${btn}</button></div></div>`;
   }).join('');
 }
-
-function renderVideos(arr) {
-  const el = document.getElementById('vlist');
-  el.innerHTML = arr.length
-    ? arr.map(v=>`
-      <div class="ci" onclick="window.open('${v.link||'#'}','_blank')">
-        <div class="cthumb" style="background:var(--blueb)">🎬</div>
-        <div class="ci-i"><div class="ci-t">${esc(v.titulo)}</div><div class="ci-m">${v.mes||''} · ${v.duracion||'Video'}</div></div>
-        <span class="ctag tb">Ver video</span>
-      </div>`).join('')
-    : `<div class="empty"><span>🎬</span><p>Los videos aparecerán aquí cuando el admin los publique.</p></div>`;
+function rVideos(arr) {
+  const el=document.getElementById('vlist');
+  el.innerHTML = arr.length ? arr.map(v=>`<div class="ci" onclick="window.open('${esc(v.link||'#')}','_blank')"><div class="cth" style="background:var(--prb)">🎬</div><div class="ci-i"><div class="ci-t">${esc(v.titulo)}</div><div class="ci-m">${v.mes||''} · ${v.duracion||'Video'}</div></div><span class="ctag tb">Ver</span></div>`).join('') : `<div class="empty"><span>🎬</span><p>Sin videos publicados.</p></div>`;
 }
-
-function renderPdfs(arr) {
-  const el = document.getElementById('plist');
-  el.innerHTML = arr.length
-    ? arr.map(p=>`
-      <div class="ci" onclick="window.open('${p.link||'#'}','_blank')">
-        <div class="cthumb" style="background:var(--coralb)">📄</div>
-        <div class="ci-i"><div class="ci-t">${esc(p.titulo)}</div><div class="ci-m">${p.mes||''} · PDF</div></div>
-        <span class="ctag tg">Descargar</span>
-      </div>`).join('')
-    : `<div class="empty"><span>📄</span><p>Los PDFs aparecerán aquí cuando el admin los publique.</p></div>`;
+function rPdfs(arr) {
+  const el=document.getElementById('plist');
+  el.innerHTML = arr.length ? arr.map(p=>`<div class="ci" onclick="window.open('${esc(p.link||'#')}','_blank')"><div class="cth" style="background:var(--rdb)">📄</div><div class="ci-i"><div class="ci-t">${esc(p.titulo)}</div><div class="ci-m">${p.mes||''} · PDF</div></div><span class="ctag tg">Descargar</span></div>`).join('') : `<div class="empty"><span>📄</span><p>Sin PDFs publicados.</p></div>`;
 }
-
-function renderLives(arr) {
-  const el = document.getElementById('lvlist');
-  if (!arr.length) {
-    el.innerHTML = `<div class="empty"><span>📺</span><p>No hay sesiones programadas. Los webinars se realizan cada 15 días.</p></div>`;
-    return;
-  }
-  el.innerHTML = arr.map(l => {
+function rLives(arr) {
+  const el=document.getElementById('lvlist');
+  if (!arr.length) { el.innerHTML=`<div class="empty"><span>📺</span><p>Sin sesiones programadas. Los webinars son cada 15 días.</p></div>`; return; }
+  el.innerHTML = arr.map(l=>{
     const f = l.fechaISO ? new Date(l.fechaISO).toLocaleString('es-MX',{weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}) : '';
-    const tag = l.activo ? `<span class="ctag tp">Próximo</span>` : `<span class="ctag" style="background:var(--g2);color:var(--muted)">Pasado</span>`;
-    return `
-    <div class="nitem" onclick="window.open('${l.link||'#'}','_blank')" style="cursor:pointer">
-      <div class="nicon" style="background:var(--purpleb)">📺</div>
-      <div style="flex:1">
-        <div class="ntitle">${esc(l.titulo)}</div>
-        <div class="nbody">${esc(l.descripcion||'')}</div>
-        <div class="ndate">${esc(l.instructor||'')} · ${f}</div>
-      </div>
-      ${tag}
-    </div>`;
+    return `<div class="nitem" onclick="window.open('${esc(l.link||'#')}','_blank')" style="cursor:pointer"><div class="nico" style="background:#f5f3ff">📺</div><div style="flex:1"><div class="ntit">${esc(l.titulo)}</div><div class="nbod">${esc(l.descripcion||'')}</div><div class="ndat">${esc(l.instructor||'')} · ${f}</div></div><span class="ctag" style="background:${l.activo?'#f5f3ff':'var(--soft)'};color:${l.activo?'#7c3aed':'var(--mu)'}">${l.activo?'Próximo':'Pasado'}</span></div>`;
   }).join('');
 }
 
-// ══ LIVE CARD ════════════════════════════════════════════════
-
-function setLiveCard(live) {
+// ── LIVE COUNTDOWN ────────────────────────────────────────────
+function setLive(live) {
+  window._lISO  = live.fechaISO;
+  window._lLink = live.link||'#';
+  window._lTit  = live.titulo;
   const f = new Date(live.fechaISO);
-  document.getElementById('ltitle').textContent = live.titulo;
-  document.getElementById('ldoc').textContent   = (live.instructor||'') + ' · ' + f.toLocaleString('es-MX',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
-  document.getElementById('lcard').style.cursor = 'default';
-  window._liveISO  = live.fechaISO;
-  window._liveLink = live.link || '#';
-  window._liveTit  = live.titulo;
+  document.getElementById('ltit').textContent = live.titulo;
+  document.getElementById('ldoc').textContent = (live.instructor||'') + ' · ' + f.toLocaleString('es-MX',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
   if (timerID) clearInterval(timerID);
   timerID = setInterval(tick, 1000);
   tick();
 }
-
 function setNoLive() {
   if (timerID) clearInterval(timerID);
-  document.getElementById('ltag').className   = 'ltag';
   document.getElementById('ltag').innerHTML   = '<span class="ldot"></span> Sin sesión programada';
-  document.getElementById('ltitle').textContent = 'Próxima sesión';
-  document.getElementById('ldoc').textContent   = 'Los webinars se realizan cada 15 días';
-  document.getElementById('cdwrap').style.display = 'none';
-  document.getElementById('btn-lv').textContent   = '📢 Seguir canal';
-  document.getElementById('btn-lv').onclick = () => window.open('https://whatsapp.com/channel/0029VbCQbyVISTkPMfD7hz0N','_blank');
+  document.getElementById('ltit').textContent = 'Próximo webinar';
+  document.getElementById('ldoc').textContent = 'Sesiones gratuitas cada 15 días';
+  document.getElementById('cdw').style.display = 'none';
+  const btn = document.getElementById('btnLv');
+  btn.textContent = '📢 Seguir canal WA';
+  btn.onclick = ()=>window.open('https://whatsapp.com/channel/0029VbCQbyVISTkPMfD7hz0N','_blank');
 }
-
 function tick() {
-  if (!window._liveISO) return;
-  const diff   = new Date(window._liveISO).getTime() - Date.now();
-  const card   = document.getElementById('lcard');
-  const tag    = document.getElementById('ltag');
-  const btn    = document.getElementById('btn-lv');
-  const cdwrap = document.getElementById('cdwrap');
-
+  if (!window._lISO) return;
+  const diff = new Date(window._lISO).getTime() - Date.now();
+  const card=document.getElementById('lcard'), tag=document.getElementById('ltag'), btn=document.getElementById('btnLv');
   if (diff <= 0) {
-    // EN VIVO AHORA
-    card.classList.add('live-now');
-    card.classList.remove('live-soon');
-    tag.className   = 'ltag now-tag';
-    tag.innerHTML   = '<span class="ldot"></span> 🔴 EN VIVO AHORA';
-    cdwrap.style.display = 'none';
-    btn.textContent = '▶ Unirme al live ahora';
-    btn.onclick     = () => window.open(window._liveLink,'_blank');
-    clearInterval(timerID);
-    return;
+    card.classList.add('ln'); tag.className='ltag ln-tag'; tag.innerHTML='<span class="ldot"></span> 🔴 EN VIVO AHORA';
+    document.getElementById('cdw').style.display='none';
+    btn.textContent='▶ Unirme al live'; btn.onclick=()=>window.open(window._lLink,'_blank');
+    clearInterval(timerID); return;
   }
-
-  // Alerta 5 minutos antes
-  if (diff <= 300000 && !alertShown) {
-    alertShown = true;
-    card.classList.add('live-soon');
-    tag.innerHTML = '<span class="ldot"></span> ⚡ ¡Empieza en 5 min!';
-    document.getElementById('alert-msg').textContent = '"' + (window._liveTit||'Tu sesión') + '" comienza en menos de 5 minutos.';
-    document.getElementById('alert-link').href = window._liveLink;
-    document.getElementById('lalert').classList.add('show');
+  if (diff<=300000&&!alertShown) {
+    alertShown=true; card.classList.add('ls'); tag.innerHTML='<span class="ldot"></span> ⚡ ¡Empieza en 5 min!';
+    document.getElementById('alMsg').textContent='"'+(window._lTit||'Tu sesión')+'" comienza en menos de 5 minutos.';
+    document.getElementById('alLnk').href=window._lLink;
+    document.getElementById('lAl').classList.add('show');
   }
-
-  cdwrap.style.display = 'flex';
-  const pad = n => String(n).padStart(2,'0');
-  document.getElementById('cd-d').textContent = pad(Math.floor(diff/86400000));
-  document.getElementById('cd-h').textContent = pad(Math.floor((diff%86400000)/3600000));
-  document.getElementById('cd-m').textContent = pad(Math.floor((diff%3600000)/60000));
-  document.getElementById('cd-s').textContent = pad(Math.floor((diff%60000)/1000));
-
-  tag.innerHTML = '<span class="ldot"></span> Próxima sesión';
-  tag.className = 'ltag';
+  const p=n=>String(n).padStart(2,'0');
+  document.getElementById('cd-d').textContent=p(Math.floor(diff/86400000));
+  document.getElementById('cd-h').textContent=p(Math.floor((diff%86400000)/3600000));
+  document.getElementById('cd-m').textContent=p(Math.floor((diff%3600000)/60000));
+  document.getElementById('cd-s').textContent=p(Math.floor((diff%60000)/1000));
 }
-
-// ══ FILTRO CURSOS ═════════════════════════════════════════════
-window.fCurso = function(cat, el) {
-  document.querySelectorAll('#ctabs .tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  renderCursos(cat==='todos' ? allCursos : allCursos.filter(c=>c.categoria===cat));
+window.lvClick = () => {
+  if (!window._lISO) return;
+  const d=new Date(window._lISO),s=d.toISOString().replace(/[-:.]/g,'').slice(0,15)+'Z',e=new Date(d.getTime()+3600000).toISOString().replace(/[-:.]/g,'').slice(0,15)+'Z';
+  window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(window._lTit||'Webinar OdonTeck')}&dates=${s}/${e}&details=${encodeURIComponent('Club Dental OdonTeck')}`, '_blank');
 };
 
-// ══ CALENDAR CLICK ═══════════════════════════════════════════
-window.liveClick = function() {
-  if (!window._liveISO) return;
-  const d   = new Date(window._liveISO);
-  const s   = d.toISOString().replace(/[-:.]/g,'').slice(0,15)+'Z';
-  const end = new Date(d.getTime()+3600000).toISOString().replace(/[-:.]/g,'').slice(0,15)+'Z';
-  const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent((window._liveTit||'Webinar OdonTeck'))}&dates=${s}/${end}&details=${encodeURIComponent('Webinar gratuito - Club Dental OdonTeck')}`;
-  window.open(url,'_blank');
+window.fC = (cat,el) => {
+  document.querySelectorAll('#ctabs .tab').forEach(t=>t.classList.remove('active')); el.classList.add('active');
+  renderCursos(cat==='todos'?allCursos:allCursos.filter(c=>c.categoria===cat));
 };
 
-// ══ UTILS ════════════════════════════════════════════════════
-function esc(s){ const d=document.createElement('div');d.textContent=s;return d.innerHTML; }
-
+function esc(s){ const d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML; }
 </script>
 
 <script>
-// ── NAVEGACIÓN ───────────────────────────────────────────────
-window.goSec = function(id, el) {
+window.go = (id,el) => {
   document.querySelectorAll('.sv').forEach(s=>s.classList.remove('active'));
   document.getElementById('sv-'+id).classList.add('active');
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
   if (el) el.classList.add('active');
 };
-
-// Fecha hoy
 const M=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 const D=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
 const h=new Date();
-document.getElementById('fhoy').textContent = D[h.getDay()] + ' ' + h.getDate() + ' de ' + M[h.getMonth()] + ', ' + h.getFullYear();
+document.getElementById('fhoy').textContent=D[h.getDay()]+' '+h.getDate()+' de '+M[h.getMonth()]+', '+h.getFullYear();
 </script>
-
 </body>
 </html>

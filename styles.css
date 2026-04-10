@@ -106,6 +106,17 @@ button { font: inherit; }
   color: #fff !important;
 }
 .nav-cta:hover { background: var(--primary-2) !important; }
+.nav-club {
+  background: #eef4fa !important;
+  color: var(--primary) !important;
+  font-weight: 700 !important;
+}
+.nav-club:hover { background: #deeaf5 !important; }
+.nav-login {
+  color: var(--primary) !important;
+  font-weight: 700 !important;
+  border: 1.5px solid var(--primary) !important;
+}
 .hamburger {
   display: none;
   width: 48px;

@@ -10,72 +10,84 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
     body{background:linear-gradient(135deg,#f7f9fc 0%,#e8f1fb 60%,#f6faff 100%);min-height:100vh}
-    .wrap{min-height:calc(100vh - 160px);display:flex;align-items:center;justify-content:center;padding:48px 20px}
-    .card{width:100%;max-width:460px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:44px 36px;box-shadow:var(--shadow)}
-    .llogo{text-align:center;margin-bottom:26px}
-    .llogo img{width:66px;height:66px;border-radius:18px;margin:0 auto 12px;display:block;box-shadow:0 8px 22px rgba(0,0,0,.09)}
-    .llogo h2{font-size:24px;font-weight:800;color:var(--text)}
-    .llogo p{font-size:14px;color:var(--muted);margin-top:4px}
-    .plan-chip{display:flex;align-items:center;gap:12px;background:var(--surface-soft);border:1px solid var(--line);border-radius:16px;padding:13px 18px;margin-bottom:20px}
-    .pc-ico{width:40px;height:40px;border-radius:12px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+    .wrap{min-height:calc(100vh - 80px);display:flex;align-items:center;justify-content:center;padding:40px 20px}
+    .card{width:100%;max-width:460px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:40px 34px;box-shadow:var(--shadow)}
+    .llogo{text-align:center;margin-bottom:24px}
+    .llogo img{width:64px;height:64px;border-radius:18px;margin:0 auto 10px;display:block;box-shadow:0 8px 22px rgba(0,0,0,.09)}
+    .llogo h2{font-size:23px;font-weight:800;color:var(--text)}
+    .llogo p{font-size:14px;color:var(--muted);margin-top:3px}
+    .plan-chip{display:flex;align-items:center;gap:11px;background:var(--surface-soft);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin-bottom:18px}
+    .pc-ico{width:38px;height:38px;border-radius:10px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
     .pc-name{font-size:14px;font-weight:700}.pc-desc{font-size:11px;color:var(--muted)}
-    .pc-price{margin-left:auto;font-size:18px;font-weight:800;color:var(--primary)}
-    .ltabs{display:flex;gap:4px;background:var(--surface-soft);border-radius:999px;padding:4px;margin-bottom:20px}
-    .ltab{flex:1;padding:10px;text-align:center;border-radius:999px;font-size:14px;font-weight:700;cursor:pointer;transition:.2s;color:var(--muted);border:none;background:none;font-family:'Inter',sans-serif}
+    .pc-price{margin-left:auto;font-size:17px;font-weight:800;color:var(--primary);white-space:nowrap}
+    .ltabs{display:flex;gap:4px;background:var(--surface-soft);border-radius:999px;padding:4px;margin-bottom:18px}
+    .ltab{flex:1;padding:9px;text-align:center;border-radius:999px;font-size:14px;font-weight:700;cursor:pointer;transition:.2s;color:var(--muted);border:none;background:none;font-family:'Inter',sans-serif}
     .ltab.active{background:#fff;color:var(--primary);box-shadow:0 2px 10px rgba(0,0,0,.07)}
-    .fg{margin-bottom:13px}
-    .fg label{display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em}
-    .fg input{width:100%;padding:11px 14px;border-radius:14px;border:1.5px solid var(--line);background:#fafbfd;font-size:15px;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border .2s}
+    .fg{margin-bottom:12px}
+    .fg label{display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em}
+    .fg input{width:100%;padding:10px 13px;border-radius:12px;border:1.5px solid var(--line);background:#fafbfd;font-size:14px;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border .2s}
     .fg input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,81,135,.08);background:#fff}
     .fg input::placeholder{color:#b0bac8}
-    .terms-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;padding:11px 13px;background:var(--surface-soft);border-radius:12px;border:1px solid var(--line)}
-    .terms-row input[type=checkbox]{width:17px;height:17px;margin-top:2px;accent-color:var(--primary);flex-shrink:0;cursor:pointer}
+    .terms-row{display:flex;align-items:flex-start;gap:9px;margin-bottom:14px;padding:10px 12px;background:var(--surface-soft);border-radius:11px;border:1px solid var(--line)}
+    .terms-row input[type=checkbox]{width:16px;height:16px;margin-top:2px;accent-color:var(--primary);flex-shrink:0;cursor:pointer}
     .terms-row span{font-size:12px;color:var(--muted);line-height:1.6}
     .terms-row a{color:var(--primary);font-weight:700;text-decoration:none}
-    .terms-row a:hover{text-decoration:underline}
-    .lbtn{width:100%;min-height:50px;border-radius:999px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:.25s;border:none;display:flex;align-items:center;justify-content:center;gap:10px}
-    .lbtn.primary{background:var(--primary);color:#fff;box-shadow:0 12px 28px rgba(0,81,135,.2)}
+    .lbtn{width:100%;min-height:48px;border-radius:999px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:.25s;border:none;display:flex;align-items:center;justify-content:center;gap:9px}
+    .lbtn.primary{background:var(--primary);color:#fff;box-shadow:0 10px 26px rgba(0,81,135,.18)}
     .lbtn.primary:hover{background:var(--primary-2);transform:translateY(-2px)}
     .lbtn.primary:disabled{background:#9cb8d1;cursor:not-allowed;transform:none}
-    .lbtn.google{background:#fff;color:var(--text);border:1.5px solid var(--line);margin-top:10px}
+    .lbtn.google{background:#fff;color:var(--text);border:1.5px solid var(--line);margin-top:9px}
     .lbtn.google:hover{border-color:var(--primary);background:var(--surface-soft)}
-    .ldivider{text-align:center;color:var(--muted);font-size:12px;margin:14px 0;position:relative}
+    .ldivider{text-align:center;color:var(--muted);font-size:12px;margin:13px 0;position:relative}
     .ldivider::before,.ldivider::after{content:'';position:absolute;top:50%;width:38%;height:1px;background:var(--line)}
     .ldivider::before{left:0}.ldivider::after{right:0}
-    .lfooter{text-align:center;margin-top:16px;font-size:14px;color:var(--muted)}
+    .lfooter{text-align:center;margin-top:14px;font-size:13px;color:var(--muted)}
     .lfooter a{color:var(--primary);font-weight:700;cursor:pointer;text-decoration:none}
-    .lforgot{text-align:right;margin:-4px 0 13px}
+    .lforgot{text-align:right;margin:-3px 0 12px}
     .lforgot a{font-size:12px;color:var(--primary);font-weight:600;cursor:pointer}
-    .lmsg{padding:10px 13px;border-radius:12px;font-size:13px;font-weight:600;margin-bottom:12px;display:none;text-align:center}
+    .lmsg{padding:10px 13px;border-radius:11px;font-size:13px;font-weight:600;margin-bottom:12px;display:none;text-align:center}
     .lmsg.err{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
     .lmsg.ok{background:#ecfdf5;color:#059669;border:1px solid #a7f3d0}
     .fsec{display:none}.fsec.active{display:block}
-    .back-link{text-align:center;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+    .back-link{text-align:center;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
     .back-link a{font-size:13px;color:var(--primary);font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
 
-    /* ── CHECKOUT ── */
+    /* CHECKOUT */
     .co-wrap{width:100%;max-width:900px;display:none}
     .co-wrap.show{display:block}
-    .co-steps{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:26px}
-    .cst{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--muted)}
+    .co-steps{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:24px}
+    .cst{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:var(--muted)}
     .cst.done,.cst.cur{color:var(--primary)}
-    .cstn{width:26px;height:26px;border-radius:50%;background:var(--surface-soft);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;border:2px solid var(--line)}
+    .cstn{width:24px;height:24px;border-radius:50%;background:var(--surface-soft);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;border:2px solid var(--line)}
     .cst.done .cstn,.cst.cur .cstn{background:var(--primary);color:#fff;border-color:var(--primary)}
-    .cst-arr{color:var(--line);font-size:14px}
-    /* Shopify iframe */
-    .shopify-wrap{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
-    .shopify-head{display:flex;align-items:center;gap:14px;padding:20px 28px;border-bottom:1px solid var(--line)}
-    .shopify-head img{width:42px;height:42px;border-radius:10px;object-fit:cover}
-    .sh-title{font-size:17px;font-weight:800}
-    .sh-sub{font-size:13px;color:var(--muted);margin-top:1px}
-    .shopify-iframe-wrap{position:relative;width:100%;height:700px}
-    .shopify-iframe-wrap iframe{width:100%;height:100%;border:none;display:block}
-    .shopify-iframe-wrap .iframe-loading{position:absolute;inset:0;background:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px}
-    .spinner{width:40px;height:40px;border:3px solid var(--line);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite}
+    .cst-arr{color:var(--line);font-size:13px}
+    .co-box{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+    .co-head{display:flex;align-items:center;gap:12px;padding:18px 24px;border-bottom:1px solid var(--line)}
+    .co-head img{width:40px;height:40px;border-radius:10px;object-fit:cover}
+    .co-title{font-size:16px;font-weight:800}.co-sub{font-size:12px;color:var(--muted);margin-top:1px}
+    .shopify-frame-wrap{position:relative;width:100%;height:680px}
+    .shopify-frame-wrap iframe{width:100%;height:100%;border:none;display:block}
+    .frame-loading{position:absolute;inset:0;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+    .spinner{width:38px;height:38px;border:3px solid var(--line);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
-    .shopify-note{text-align:center;padding:14px;font-size:13px;color:var(--muted)}
-    .shopify-note a{color:var(--primary);font-weight:700}
-    @media(max-width:600px){.card{padding:28px 18px}.shopify-iframe-wrap{height:500px}}
+    .co-note{text-align:center;padding:12px;font-size:12px;color:var(--muted);background:var(--surface-soft);border-top:1px solid var(--line)}
+    .co-note a{color:var(--primary);font-weight:600}
+
+    /* PLAN SELECTOR */
+    .plan-selector{display:none;margin-bottom:18px}
+    .plan-selector.show{display:block}
+    .ps-title{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+    .ps-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+    .ps-card{border:2px solid var(--line);border-radius:13px;padding:12px 14px;cursor:pointer;transition:all .15s;background:#fff}
+    .ps-card:hover{border-color:var(--primary)}
+    .ps-card.selected{border-color:var(--primary);background:var(--surface-soft)}
+    .ps-name{font-size:14px;font-weight:700;margin-bottom:2px}
+    .ps-price{font-size:18px;font-weight:900;color:var(--primary)}
+    .ps-price span{font-size:12px;font-weight:500;color:var(--muted)}
+    .ps-desc{font-size:11px;color:var(--muted);margin-top:3px}
+    .ps-badge{display:inline-block;font-size:9px;font-weight:700;background:var(--amber-bg,#fffbeb);color:var(--amber,#d97706);padding:2px 7px;border-radius:var(--rp);margin-top:4px}
+
+    @media(max-width:600px){.card{padding:26px 16px}.shopify-frame-wrap{height:500px}.ps-grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -101,7 +113,7 @@
 </header>
 
 <main>
-<!-- ══ PASO 1: AUTH ══ -->
+<!-- PASO 1: AUTH -->
 <div class="wrap" id="step-auth">
   <div class="card">
     <div class="llogo">
@@ -110,10 +122,29 @@
       <p id="lsub">Accede a tu contenido exclusivo</p>
     </div>
 
+    <!-- Plan chip (cuando viene de pricing) -->
     <div class="plan-chip" id="planChip" style="display:none">
       <div class="pc-ico"><i class="fa-solid fa-crown"></i></div>
       <div><div class="pc-name" id="pName">Plan Mensual</div><div class="pc-desc" id="pDesc">Precio de fundador</div></div>
       <div class="pc-price" id="pPrice">$199/mes</div>
+    </div>
+
+    <!-- Selector de plan (cuando viene sin plan) -->
+    <div class="plan-selector" id="planSelector">
+      <div class="ps-title">Elige tu plan</div>
+      <div class="ps-grid">
+        <div class="ps-card selected" id="ps-mensual" onclick="selPlan('mensual')">
+          <div class="ps-name">Plan Mensual</div>
+          <div class="ps-price">$199<span>/mes</span></div>
+          <div class="ps-desc">Sin permanencia · Cancela cuando quieras</div>
+        </div>
+        <div class="ps-card" id="ps-anual" onclick="selPlan('anual')">
+          <div class="ps-name">Plan Anual</div>
+          <div class="ps-price">$1,788<span>/año</span></div>
+          <div class="ps-desc">$149/mes · Ahorras $1,200</div>
+          <div class="ps-badge">40% OFF</div>
+        </div>
+      </div>
     </div>
 
     <div class="ltabs">
@@ -131,10 +162,7 @@
       <div class="lforgot"><a onclick="doForgot()">¿Olvidaste tu contraseña?</a></div>
       <button class="lbtn primary" id="btn-li" onclick="doLogin()"><i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión</button>
       <div class="ldivider">o continúa con</div>
-      <button class="lbtn google" onclick="doGoogle()">
-        <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.63-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 01-1.8 2.71v2.26h2.92a8.78 8.78 0 002.68-6.61z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.91-2.26c-.81.54-1.85.86-3.05.86-2.34 0-4.33-1.58-5.04-3.71H.96v2.33A8.99 8.99 0 009 18z"/><path fill="#FBBC05" d="M3.96 10.71A5.41 5.41 0 013.68 9c0-.59.1-1.17.28-1.71V4.96H.96A8.99 8.99 0 000 9c0 1.45.35 2.82.96 4.04l3-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.59C13.46.89 11.43 0 9 0A8.99 8.99 0 00.96 4.96l3 2.33C4.67 5.16 6.66 3.58 9 3.58z"/></svg>
-        Continuar con Google
-      </button>
+      <button class="lbtn google" onclick="doGoogle()"><svg width="17" height="17" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.63-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 01-1.8 2.71v2.26h2.92a8.78 8.78 0 002.68-6.61z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.91-2.26c-.81.54-1.85.86-3.05.86-2.34 0-4.33-1.58-5.04-3.71H.96v2.33A8.99 8.99 0 009 18z"/><path fill="#FBBC05" d="M3.96 10.71A5.41 5.41 0 013.68 9c0-.59.1-1.17.28-1.71V4.96H.96A8.99 8.99 0 000 9c0 1.45.35 2.82.96 4.04l3-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.59C13.46.89 11.43 0 9 0A8.99 8.99 0 00.96 4.96l3 2.33C4.67 5.16 6.66 3.58 9 3.58z"/></svg> Continuar con Google</button>
       <p class="lfooter">¿No tienes cuenta? <a onclick="showF('register')">Regístrate</a></p>
     </div>
 
@@ -149,48 +177,37 @@
         <input type="checkbox" id="tck">
         <span>Acepto los <a href="terminos.html" target="_blank">Términos y Condiciones</a> y la <a href="privacidad.html" target="_blank">Política de Privacidad</a> del Club Dental OdonTeck</span>
       </div>
-      <button class="lbtn primary" id="btn-rg" onclick="doRegister()"><i class="fa-solid fa-user-plus"></i> Crear cuenta y elegir plan</button>
+      <button class="lbtn primary" id="btn-rg" onclick="doRegister()"><i class="fa-solid fa-user-plus"></i> Crear cuenta y pagar</button>
       <div class="ldivider">o continúa con</div>
-      <button class="lbtn google" onclick="doGoogle()">
-        <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.63-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 01-1.8 2.71v2.26h2.92a8.78 8.78 0 002.68-6.61z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.91-2.26c-.81.54-1.85.86-3.05.86-2.34 0-4.33-1.58-5.04-3.71H.96v2.33A8.99 8.99 0 009 18z"/><path fill="#FBBC05" d="M3.96 10.71A5.41 5.41 0 013.68 9c0-.59.1-1.17.28-1.71V4.96H.96A8.99 8.99 0 000 9c0 1.45.35 2.82.96 4.04l3-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.59C13.46.89 11.43 0 9 0A8.99 8.99 0 00.96 4.96l3 2.33C4.67 5.16 6.66 3.58 9 3.58z"/></svg>
-        Registrarme con Google
-      </button>
+      <button class="lbtn google" onclick="doGoogle()"><svg width="17" height="17" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.63-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 01-1.8 2.71v2.26h2.92a8.78 8.78 0 002.68-6.61z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.91-2.26c-.81.54-1.85.86-3.05.86-2.34 0-4.33-1.58-5.04-3.71H.96v2.33A8.99 8.99 0 009 18z"/><path fill="#FBBC05" d="M3.96 10.71A5.41 5.41 0 013.68 9c0-.59.1-1.17.28-1.71V4.96H.96A8.99 8.99 0 000 9c0 1.45.35 2.82.96 4.04l3-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.59C13.46.89 11.43 0 9 0A8.99 8.99 0 00.96 4.96l3 2.33C4.67 5.16 6.66 3.58 9 3.58z"/></svg> Registrarme con Google</button>
       <p class="lfooter">¿Ya tienes cuenta? <a onclick="showF('login')">Inicia sesión</a></p>
     </div>
-
-    <div class="back-link"><a href="club.html"><i class="fa-solid fa-arrow-left"></i> Ver planes y beneficios</a></div>
+    <div class="back-link"><a href="club.html"><i class="fa-solid fa-arrow-left"></i> Ver planes</a></div>
   </div>
 </div>
 
-<!-- ══ PASO 2: CHECKOUT SHOPIFY EMBEBIDO ══ -->
-<div class="wrap" id="step-co" style="display:none;align-items:flex-start;padding-top:36px">
+<!-- PASO 2: CHECKOUT SHOPIFY -->
+<div class="wrap" id="step-co" style="display:none;align-items:flex-start;padding-top:32px">
   <div class="co-wrap show">
     <div class="co-steps">
-      <div class="cst done"><span class="cstn"><i class="fa-solid fa-check" style="font-size:10px"></i></span> Registro</div>
+      <div class="cst done"><span class="cstn"><i class="fa-solid fa-check" style="font-size:9px"></i></span> Registro</div>
       <div class="cst-arr">→</div>
       <div class="cst cur"><span class="cstn">2</span> Pago</div>
       <div class="cst-arr">→</div>
       <div class="cst"><span class="cstn">3</span> Acceso</div>
     </div>
-    <div class="shopify-wrap">
-      <div class="shopify-head">
+    <div class="co-box">
+      <div class="co-head">
         <img src="../assets/img/logo/logo.jpg" alt="OdonTeck"/>
-        <div>
-          <div class="sh-title">Completa tu membresía</div>
-          <div class="sh-sub" id="sh-plan-label">Club Dental OdonTeck · Plan Mensual $199/mes</div>
-        </div>
+        <div><div class="co-title">Completa tu membresía</div><div class="co-sub" id="co-sub-label">Club Dental OdonTeck</div></div>
       </div>
-      <div class="shopify-iframe-wrap">
-        <div class="iframe-loading" id="iframe-loading">
-          <div class="spinner"></div>
-          <p style="font-size:13px;color:var(--muted)">Cargando checkout seguro...</p>
-        </div>
-        <iframe id="shopify-frame" src="" title="Checkout Shopify" allowfullscreen
-          onload="document.getElementById('iframe-loading').style.display='none'"></iframe>
+      <div class="shopify-frame-wrap">
+        <div class="frame-loading" id="frame-loading"><div class="spinner"></div><p style="font-size:13px;color:var(--muted)">Cargando checkout seguro...</p></div>
+        <iframe id="shopify-frame" src="" title="Checkout OdonTeck" allowfullscreen onload="document.getElementById('frame-loading').style.display='none'"></iframe>
       </div>
-      <div class="shopify-note">
+      <div class="co-note">
         Pago 100% seguro · Sin permanencia · <a href="terminos.html" target="_blank">Términos</a>
-        <br><small>¿Ya pagaste? <a href="club-miembro.html">Ir al Club Dental →</a></small>
+        &nbsp;·&nbsp; <small>¿Ya pagaste? <a href="club-miembro.html" id="skip-link">Ir al Club →</a></small>
       </div>
     </div>
   </div>
@@ -198,13 +215,7 @@
 </main>
 
 <footer class="site-footer">
-  <div class="container footer-grid">
-    <div><div class="brand footer-brand"><img src="../assets/img/logo/logo.jpg" alt="OdonTeck"/><div><strong>OdonTeck</strong><span>Capacitación odontológica especializada</span></div></div></div>
-    <div><h3>Club Dental</h3><ul><li><a href="club.html">Planes y beneficios</a></li><li><a href="club-login.html">Iniciar sesión</a></li></ul></div>
-    <div><h3>Legal</h3><ul><li><a href="terminos.html">Términos y Condiciones</a></li><li><a href="privacidad.html">Política de Privacidad</a></li></ul></div>
-    <div><h3>Contacto</h3><ul><li><a href="mailto:odontckconsul@gmail.com">odontckconsul@gmail.com</a></li><li><a href="https://wa.me/5212381479365">+52 238 147 9365</a></li></ul></div>
-  </div>
-  <div class="footer-bottom">© 2026 OdonTeck. Todos los derechos reservados.</div>
+  <div class="footer-bottom">© 2026 OdonTeck · <a href="terminos.html" style="color:inherit">Términos</a> · <a href="privacidad.html" style="color:inherit">Privacidad</a></div>
 </footer>
 
 <script type="module">
@@ -219,82 +230,134 @@ const auth = getAuth(app);
 const db   = getFirestore(app);
 const gp   = new GoogleAuthProvider();
 
-// URLs de Shopify (tus productos reales)
-const SHOPIFY = {
+// URLs Shopify reales
+const SHOPIFY_URLS = {
   mensual: 'https://pfueck-wm.myshopify.com/products/membresia-mensual-club-dental-odonteck',
   anual:   'https://pfueck-wm.myshopify.com/products/membresia-anual-club-dental-odonteck'
 };
 
-// Si ya está logueado → dashboard
-onAuthStateChanged(auth, u => {
-  if (u && !window._inCO) window.location.href = 'club-miembro.html';
-});
-
-// Plan desde URL
+// Plan desde URL o selector
 const params = new URLSearchParams(location.search);
-const plan = params.get('plan') || 'mensual';
-const PLANS = {
-  mensual:{ name:'Plan Mensual', desc:'Precio de fundador · Sin compromiso', price:'$199/mes', label:'Club Dental OdonTeck · Plan Mensual $199/mes' },
-  anual:  { name:'Plan Anual',   desc:'40% OFF · Ahorras $1,200 al año',    price:'$1,788/año', label:'Club Dental OdonTeck · Plan Anual $1,788/año' }
-};
-const P = PLANS[plan] || PLANS.mensual;
+let selectedPlan = params.get('plan') || 'mensual';
+const isRenovar  = params.get('renovar') === '1'; // Viene de "Renovar membresía"
 
+const PLANS = {
+  mensual: { name:'Plan Mensual', desc:'Sin compromiso · Precio de fundador', price:'$199/mes', dias:30,  label:'Club Dental OdonTeck · Plan Mensual $199/mes' },
+  anual:   { name:'Plan Anual',   desc:'40% OFF · Ahorras $1,200 al año',    price:'$1,788/año', dias:365, label:'Club Dental OdonTeck · Plan Anual $1,788/año' }
+};
+
+// Si viene con plan desde URL, mostrar chip. Si no, mostrar selector
 if (params.get('plan')) {
+  showPlanChip(selectedPlan);
+} else {
+  document.getElementById('planSelector').classList.add('show');
+  document.getElementById('lsub').textContent = 'Elige tu plan y regístrate';
+}
+
+function showPlanChip(p) {
+  const P = PLANS[p];
   document.getElementById('planChip').style.display = 'flex';
   document.getElementById('pName').textContent  = P.name;
   document.getElementById('pDesc').textContent  = P.desc;
   document.getElementById('pPrice').textContent = P.price;
-  document.getElementById('lsub').textContent   = 'Regístrate para activar tu membresía';
+  document.getElementById('lsub').textContent   = isRenovar ? 'Renueva tu membresía' : 'Regístrate para activar tu membresía';
 }
+
+window.selPlan = function(p) {
+  selectedPlan = p;
+  document.getElementById('ps-mensual').classList.toggle('selected', p==='mensual');
+  document.getElementById('ps-anual').classList.toggle('selected', p==='anual');
+};
+
+// Si es renovar y ya está logueado → ir directo al checkout SIN redirigir al dashboard
+onAuthStateChanged(auth, async u => {
+  if (!u) return; // No está logueado → mostrar form normal
+  if (isRenovar) {
+    // Viene a renovar → abrir checkout directamente
+    goCheckout(u.email);
+    return;
+  }
+  // Está logueado y no es renovar → ver si tiene plan activo
+  const snap = await getDoc(doc(db,'miembros',u.uid));
+  const data = snap.exists() ? snap.data() : {};
+  if (data.planActivo && !data.planCancelado) {
+    // Ya tiene plan activo → ir al dashboard
+    location.href = 'club-miembro.html';
+  }
+  // Si no tiene plan activo → mostrar el form normalmente para que pague
+});
 
 function goCheckout(email) {
   window._inCO = true;
+  const P = PLANS[selectedPlan] || PLANS.mensual;
   document.getElementById('step-auth').style.display = 'none';
   document.getElementById('step-co').style.display   = 'flex';
-  document.getElementById('sh-plan-label').textContent = P.label;
-  // Cargar Shopify en iframe con email pre-llenado si disponible
-  let url = SHOPIFY[plan] || SHOPIFY.mensual;
+  document.getElementById('co-sub-label').textContent = P.label;
+  let url = SHOPIFY_URLS[selectedPlan] || SHOPIFY_URLS.mensual;
   if (email) url += '?checkout[email]=' + encodeURIComponent(email);
   document.getElementById('shopify-frame').src = url;
   window.scrollTo(0, 0);
 }
 
+// LOGIN — al iniciar sesión verificar si tiene plan, si no → checkout
 window.doLogin = async () => {
   const em = v('li-em'), pw = v('li-pw');
   if (!em||!pw) { msg('err','Ingresa tu correo y contraseña'); return; }
   busy('btn-li', true);
   try {
-    await signInWithEmailAndPassword(auth, em, pw);
-    msg('ok','✓ Iniciando sesión...');
-    setTimeout(()=>location.href='club-miembro.html', 700);
+    const c = await signInWithEmailAndPassword(auth, em, pw);
+    const snap = await getDoc(doc(db,'miembros',c.user.uid));
+    const data = snap.exists() ? snap.data() : {};
+    if (!data.planActivo || data.planCancelado) {
+      // Sin plan activo → checkout
+      msg('ok','✓ Sesión iniciada. Completa tu pago...');
+      setTimeout(()=>goCheckout(em), 700);
+    } else {
+      msg('ok','✓ Bienvenido de vuelta');
+      setTimeout(()=>location.href='club-miembro.html', 600);
+    }
   } catch(e) { msg('err', fe(e.code)); busy('btn-li', false); }
 };
 
+// REGISTRO → siempre va al checkout
 window.doRegister = async () => {
   const nm=v('rg-nm'), em=v('rg-em'), ph=v('rg-ph'), sp=v('rg-sp'), pw=v('rg-pw');
-  const terms = document.getElementById('tck').checked;
   if (!nm||!em) { msg('err','Completa nombre y correo'); return; }
   if (pw.length<8) { msg('err','Contraseña mínimo 8 caracteres'); return; }
-  if (!terms) { msg('err','Debes aceptar los Términos y Condiciones'); return; }
+  if (!document.getElementById('tck').checked) { msg('err','Acepta los Términos y Condiciones'); return; }
   busy('btn-rg', true);
   try {
     const c = await createUserWithEmailAndPassword(auth, em, pw);
-    await setDoc(doc(db,'miembros',c.user.uid), { nombre:nm, email:em, telefono:ph, especialidad:sp, plan, planActivo:false, creadoEn:serverTimestamp() });
-    msg('ok','✓ ¡Cuenta creada! Redirigiendo al pago...');
-    setTimeout(()=>goCheckout(em), 800);
+    await setDoc(doc(db,'miembros',c.user.uid), {
+      nombre:nm, email:em, telefono:ph, especialidad:sp,
+      plan:selectedPlan, planActivo:false, planCancelado:false,
+      creadoEn:serverTimestamp()
+    });
+    msg('ok','✓ Cuenta creada. Completando pago...');
+    setTimeout(()=>goCheckout(em), 700);
   } catch(e) { msg('err', fe(e.code)); busy('btn-rg', false); }
 };
 
+// GOOGLE → si nuevo → checkout, si existe con plan → dashboard
 window.doGoogle = async () => {
   try {
     const r    = await signInWithPopup(auth, gp);
-    const snap = await getDoc(doc(db,'miembros', r.user.uid));
+    const snap = await getDoc(doc(db,'miembros',r.user.uid));
     if (!snap.exists()) {
-      await setDoc(doc(db,'miembros',r.user.uid), { nombre:r.user.displayName||'', email:r.user.email, telefono:'', especialidad:'', plan, planActivo:false, creadoEn:serverTimestamp() });
-      msg('ok','✓ Cuenta creada con Google. Redirigiendo al pago...');
+      await setDoc(doc(db,'miembros',r.user.uid), {
+        nombre:r.user.displayName||'', email:r.user.email,
+        telefono:'', especialidad:'', plan:selectedPlan,
+        planActivo:false, planCancelado:false, creadoEn:serverTimestamp()
+      });
+      msg('ok','✓ Cuenta Google creada. Completando pago...');
       setTimeout(()=>goCheckout(r.user.email), 700);
     } else {
-      location.href = 'club-miembro.html';
+      const data = snap.data();
+      if (!data.planActivo || data.planCancelado) {
+        goCheckout(r.user.email);
+      } else {
+        location.href = 'club-miembro.html';
+      }
     }
   } catch(e) { msg('err', fe(e.code)); }
 };
@@ -302,7 +365,7 @@ window.doGoogle = async () => {
 window.doForgot = async () => {
   const em = v('li-em');
   if (!em) { msg('err','Ingresa tu correo primero'); return; }
-  try { await sendPasswordResetEmail(auth, em); msg('ok','📧 Enlace enviado a '+em); }
+  try { await sendPasswordResetEmail(auth,em); msg('ok','📧 Enlace enviado a '+em); }
   catch(e) { msg('err', fe(e.code)); }
 };
 
@@ -312,7 +375,7 @@ function msg(t,tx){
   const el=document.getElementById(t==='err'?'mErr':'mOk'); el.textContent=tx; el.style.display='block';
 }
 function busy(id,b){ const el=document.getElementById(id); el.disabled=b; if(b) el.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Un momento...'; }
-function fe(c){ return({'auth/user-not-found':'No existe cuenta con ese correo','auth/wrong-password':'Contraseña incorrecta','auth/email-already-in-use':'Ya existe cuenta con ese correo','auth/weak-password':'Contraseña muy débil','auth/invalid-email':'Correo inválido','auth/popup-closed-by-user':'Ventana cerrada, intenta de nuevo','auth/invalid-credential':'Credenciales inválidas','auth/network-request-failed':'Error de conexión'}[c]||'Error: '+c); }
+function fe(c){ return({'auth/user-not-found':'No existe cuenta con ese correo','auth/wrong-password':'Contraseña incorrecta','auth/email-already-in-use':'Ya existe una cuenta con ese correo','auth/weak-password':'Contraseña muy débil (mín. 8)','auth/invalid-email':'Correo inválido','auth/popup-closed-by-user':'Ventana cerrada, intenta de nuevo','auth/invalid-credential':'Credenciales inválidas','auth/network-request-failed':'Error de conexión — verifica tu internet'}[c]||'Error: '+c); }
 </script>
 
 <script>
@@ -330,8 +393,10 @@ document.addEventListener('keydown',e=>{
     else window.doRegister();
   }
 });
-// Si no viene con plan=, mostrar login por defecto
-if (!new URLSearchParams(location.search).get('plan')) window.showF('login');
+// Por defecto mostrar login si viene sin plan
+if (!new URLSearchParams(location.search).get('plan') && !new URLSearchParams(location.search).get('renovar')) {
+  window.showF('login');
+}
 </script>
 </body>
 </html>

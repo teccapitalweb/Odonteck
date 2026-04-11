@@ -329,10 +329,10 @@
 
 <!-- BLOCK SCREEN -->
 <div class="block-screen" id="blockScreen">
-  <div class="bs-icon">🔒</div>
-  <div class="bs-title">Membresía cancelada</div>
-  <div class="bs-sub">Tu membresía ha sido cancelada o venció. Renueva para volver a acceder a todo el contenido del Club Dental.</div>
-  <button class="btn-bs" onclick="window.location.href='club-login.html?plan=mensual'">Renovar membresía</button>
+  <div class="bs-icon" id="bs-icon">🔒</div>
+  <div class="bs-title" id="bs-title">Membresía cancelada</div>
+  <div class="bs-sub" id="bs-sub">Tu membresía ha sido cancelada o venció. Renueva para volver a acceder a todo el contenido del Club Dental.</div>
+  <button class="btn-bs" onclick="renovarDesdeBloqueo()">🔄 Renovar membresía</button>
   <button onclick="doLogout()" style="margin-top:8px;font-size:13px;color:rgba(255,255,255,.45);background:none;border:none;cursor:pointer">Cerrar sesión</button>
 </div>
 
@@ -711,7 +711,7 @@ onAuthStateChanged(auth, async user => {
   const pVence=data.planVence?new Date(data.planVence):null;
   const pIni=data.planInicio?new Date(data.planInicio):null;
   document.getElementById('sb-plan').style.display='block';
-  document.getElementById('sbpn').textContent=pName;
+  document.getElementById('sbpn').textContent=pName;window._planTipo=pTipo;
   document.getElementById('s-plan').textContent=pName;
   document.getElementById('s-inicio').textContent=pIni?pIni.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'}):'—';
 
@@ -733,7 +733,19 @@ onAuthStateChanged(auth, async user => {
   }
 });
 
-window.cancelarSub=async()=>{if(!confirm('¿Cancelar membresía?'))return;if(!_uid)return;await setDoc(doc(db,'miembros',_uid),{planCancelado:true},{merge:true});document.getElementById('blockScreen').classList.add('show');};
+window.cancelarSub=async()=>{
+  if(!confirm('¿Estás seguro de cancelar tu membresía? Perderás el acceso al contenido del Club Dental.'))return;
+  if(!_uid)return;
+  await setDoc(doc(db,'miembros',_uid),{planCancelado:true},{merge:true});
+  document.getElementById('bs-title').textContent='Membresía cancelada';
+  document.getElementById('bs-sub').textContent='Tu membresía ha sido cancelada. Renueva para volver a acceder a todo el contenido.';
+  document.getElementById('blockScreen').classList.add('show');
+};
+window.renovarDesdeBloqueo=function(){
+  // Abrir checkout SIN cerrar sesión — el plan en URL para que sepa qué checkout abrir
+  const plan=window._planTipo||'mensual';
+  window.location.href='club-login.html?plan='+plan+'&renovar=1';
+};
 window.doLogout=async()=>{await signOut(auth);location.href='club-login.html';};
 window.sendReset=async()=>{if(window._user){await sendPasswordResetEmail(auth,window._user.email);alert('📧 Enlace enviado a '+window._user.email);}};
 window.savePerfil=async()=>{if(!_uid)return;const nm=document.getElementById('pf-nm').value.trim(),ph=document.getElementById('pf-ph').value.trim(),sp=document.getElementById('pf-sp').value.trim();await setDoc(doc(db,'miembros',_uid),{nombre:nm,telefono:ph,especialidad:sp},{merge:true});document.getElementById('pnm').textContent=nm;document.getElementById('pro').textContent=sp||'Miembro Club Dental';const msg=document.getElementById('prof-msg');msg.textContent='✓ Guardado';msg.style.color='var(--gn)';msg.style.display='block';setTimeout(()=>msg.style.display='none',2500);};

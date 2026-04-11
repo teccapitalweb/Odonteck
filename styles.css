@@ -85,16 +85,18 @@ button { font: inherit; }
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 2px;
   list-style: none;
+  flex-wrap: nowrap;
 }
 .nav-links a {
   color: var(--text);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
-  padding: 11px 14px;
+  padding: 9px 10px;
   border-radius: 999px;
   transition: 0.25s ease;
+  white-space: nowrap;
 }
 .nav-links a:hover,
 .nav-links a.active {

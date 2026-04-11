@@ -8,55 +8,95 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    :root{
-      --pr:#005187;--pr2:#0c74c4;--prb:#eef4fa;
-      --bg:#f5f7fb;--sur:#fff;--soft:#eef3f9;
-      --tx:#0d1b2f;--mu:#5f6f86;--ln:#dbe4ef;
-      --gn:#059669;--gnb:#ecfdf5;
-      --am:#d97706;--amb:#fffbeb;
-      --rd:#dc2626;--rdb:#fef2f2;
-      --ra:16px;--rsm:12px;--rp:999px;
-      --sh:0 8px 32px rgba(0,36,81,.09);
-    }
+    :root{--pr:#005187;--pr2:#0c74c4;--prb:#eef4fa;--bg:#f5f7fb;--sur:#fff;--soft:#eef3f9;--tx:#0d1b2f;--mu:#5f6f86;--ln:#dbe4ef;--gn:#059669;--gnb:#ecfdf5;--am:#d97706;--amb:#fffbeb;--rd:#dc2626;--rdb:#fef2f2;--ra:16px;--rsm:12px;--rp:999px;--sh:0 8px 32px rgba(0,36,81,.09)}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
     a{text-decoration:none;color:inherit}
     button{font-family:inherit;cursor:pointer;border:none}
 
-    /* ── MODAL BLOQUEADO ── */
-    .block-screen{position:fixed;inset:0;background:rgba(13,27,47,.92);z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column;gap:1rem;text-align:center;padding:2rem}
+    /* BLOCK SCREEN */
+    .block-screen{position:fixed;inset:0;background:rgba(13,27,47,.93);z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column;gap:1rem;text-align:center;padding:2rem}
     .block-screen.show{display:flex}
-    .bs-icon{font-size:48px;margin-bottom:8px}
-    .bs-title{font-family:'Inter',sans-serif;font-size:24px;font-weight:800;color:white}
-    .bs-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:400px;line-height:1.6}
-    .btn-bs{margin-top:8px;padding:12px 28px;background:var(--pr);color:white;font-size:15px;font-weight:700;border-radius:var(--rp);transition:background .15s}
-    .btn-bs:hover{background:var(--pr2)}
+    .bs-icon{font-size:48px}.bs-title{font-size:24px;font-weight:800;color:white}.bs-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:400px;line-height:1.6}
+    .btn-bs{margin-top:8px;padding:12px 28px;background:var(--pr);color:white;font-size:15px;font-weight:700;border-radius:var(--rp)}
 
-    /* ── MODAL REPRODUCTOR ── */
-    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:8000;display:none;align-items:flex-start;justify-content:center;padding:24px 16px;overflow-y:auto}
-    .modal-overlay.show{display:flex}
-    .modal-box{background:var(--sur);border-radius:20px;width:100%;max-width:900px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.4);animation:mIn .25s ease}
-    @keyframes mIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-    .modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--ln)}
-    .modal-title{font-size:16px;font-weight:700;color:var(--tx)}
-    .modal-close{width:32px;height:32px;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--mu);transition:all .15s}
-    .modal-close:hover{background:var(--ln);color:var(--tx)}
-    .modal-video{position:relative;width:100%;padding-bottom:56.25%;background:#000}
-    .modal-video iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
-    .modal-info{padding:20px 22px}
-    .modal-course-title{font-size:20px;font-weight:800;margin-bottom:6px}
-    .modal-instructor{font-size:13px;color:var(--mu);margin-bottom:16px;display:flex;align-items:center;gap:6px}
-    .modal-desc{font-size:14px;color:var(--mu);line-height:1.7;margin-bottom:16px}
-    .modal-temario{background:var(--soft);border-radius:var(--rsm);padding:14px 16px}
-    .mt-title{font-size:12px;font-weight:700;color:var(--pr);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
-    .mt-item{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid var(--ln);font-size:13px}
-    .mt-item:last-child{border:none;padding-bottom:0}
-    .mt-item i{color:var(--pr);margin-top:2px;width:14px;flex-shrink:0}
+    /* LIVE ALERT */
+    .live-al{position:fixed;bottom:84px;right:20px;background:var(--tx);color:white;border-left:4px solid var(--pr);padding:12px 15px;border-radius:12px;font-size:13px;box-shadow:0 8px 28px rgba(0,0,0,.22);z-index:7000;max-width:275px;display:none;animation:si .4s ease}
+    .live-al.show{display:block}
+    @keyframes si{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}
+    .al-t{font-weight:800;font-size:14px;margin-bottom:3px;color:#7dd3fc}
+    .al-x{position:absolute;top:8px;right:10px;cursor:pointer;opacity:.38;font-size:14px}
+    .al-x:hover{opacity:1}
+    .btn-al{display:block;margin-top:8px;padding:6px;background:var(--pr);color:white;font-size:11px;font-weight:700;border-radius:7px;text-align:center}
 
-    /* ── SHELL ── */
+    /* ══ MODAL CURSO (pantalla completa tipo Platzi) ══ */
+    .curso-overlay{position:fixed;inset:0;background:var(--bg);z-index:8000;display:none;flex-direction:column;overflow-y:auto}
+    .curso-overlay.show{display:flex}
+    .curso-topbar{background:var(--tx);padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:10;flex-shrink:0}
+    .curso-back{color:rgba(255,255,255,.7);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:color .15s}
+    .curso-back:hover{color:white}
+    .curso-topbar-title{font-size:14px;font-weight:700;color:white;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .curso-progress-bar{height:3px;background:rgba(255,255,255,.15);flex-shrink:0;width:120px;border-radius:var(--rp);overflow:hidden}
+    .curso-progress-fill{height:100%;background:var(--pr2);border-radius:var(--rp);transition:width .3s}
+    .curso-progress-txt{font-size:11px;color:rgba(255,255,255,.5);white-space:nowrap}
+
+    .curso-layout{display:grid;grid-template-columns:1fr 340px;flex:1;min-height:0}
+
+    /* Panel izquierdo: reproductor + info */
+    .curso-left{display:flex;flex-direction:column;overflow-y:auto}
+    .curso-video-wrap{background:#000;position:relative;width:100%;padding-bottom:56.25%}
+    .curso-video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+    .curso-video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:rgba(255,255,255,.4);gap:10px}
+    .curso-video-placeholder i{font-size:40px}
+    .curso-info{padding:24px 28px}
+    .ci-modulo-tag{font-size:11px;font-weight:700;color:var(--pr);background:var(--prb);padding:3px 10px;border-radius:var(--rp);margin-bottom:8px;display:inline-block}
+    .ci-clase-title{font-size:22px;font-weight:800;margin-bottom:6px}
+    .ci-instructor{font-size:13px;color:var(--mu);margin-bottom:16px;display:flex;align-items:center;gap:6px}
+    .ci-desc{font-size:14px;color:var(--mu);line-height:1.7;margin-bottom:20px}
+    .btn-complete{padding:10px 24px;background:var(--gn);color:white;font-size:13px;font-weight:700;border-radius:var(--rp);display:inline-flex;align-items:center;gap:8px;transition:all .15s}
+    .btn-complete:hover{background:#047857;transform:translateY(-1px)}
+    .btn-complete.done{background:var(--gnb);color:var(--gn);cursor:default}
+    .btn-complete.done:hover{transform:none}
+    .next-clase-btn{padding:10px 20px;background:var(--pr);color:white;font-size:13px;font-weight:700;border-radius:var(--rp);display:inline-flex;align-items:center;gap:8px;transition:all .15s;margin-left:10px}
+    .next-clase-btn:hover{background:var(--pr2)}
+
+    /* Panel derecho: índice del curso */
+    .curso-right{border-left:1px solid var(--ln);background:var(--sur);overflow-y:auto;display:flex;flex-direction:column}
+    .cr-header{padding:16px 18px;border-bottom:1px solid var(--ln);flex-shrink:0}
+    .cr-title{font-size:14px;font-weight:800;margin-bottom:4px}
+    .cr-meta{font-size:12px;color:var(--mu)}
+    .cr-prog{margin-top:10px}
+    .cr-prog-bar{height:5px;background:var(--ln);border-radius:var(--rp);margin-bottom:4px;overflow:hidden}
+    .cr-prog-fill{height:100%;background:var(--pr);border-radius:var(--rp);transition:width .4s}
+    .cr-prog-txt{font-size:11px;color:var(--mu);display:flex;justify-content:space-between}
+    .modulo-block{border-bottom:1px solid var(--ln)}
+    .mod-header{padding:12px 18px;background:var(--soft);display:flex;align-items:center;gap:8px;cursor:pointer;transition:background .15s}
+    .mod-header:hover{background:var(--ln)}
+    .mod-h-num{width:20px;height:20px;border-radius:50%;background:var(--pr);color:white;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .mod-h-name{flex:1;font-size:12px;font-weight:700;color:var(--tx)}
+    .mod-h-count{font-size:11px;color:var(--mu)}
+    .mod-h-arrow{font-size:11px;color:var(--mu);transition:transform .2s}
+    .mod-h-arrow.open{transform:rotate(180deg)}
+    .mod-clases{display:none}
+    .mod-clases.open{display:block}
+    .clase-item{display:flex;align-items:center;gap:10px;padding:10px 18px 10px 46px;cursor:pointer;transition:all .15s;border-bottom:1px solid var(--soft);position:relative}
+    .clase-item:last-child{border:none}
+    .clase-item:hover:not(.locked){background:var(--soft)}
+    .clase-item.active{background:var(--prb)}
+    .clase-item.locked{cursor:not-allowed;opacity:.6}
+    .clase-check{width:18px;height:18px;border-radius:50%;border:2px solid var(--ln);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;transition:all .2s}
+    .clase-check.done{background:var(--gn);border-color:var(--gn);color:white}
+    .clase-check.active{border-color:var(--pr);background:var(--prb);color:var(--pr)}
+    .clase-check.locked{border-color:var(--ln);color:var(--mu)}
+    .clase-item-name{flex:1;font-size:13px;font-weight:500;line-height:1.3}
+    .clase-item.active .clase-item-name{font-weight:700;color:var(--pr)}
+    .clase-item-dur{font-size:11px;color:var(--mu);flex-shrink:0}
+    .clase-lock-icon{font-size:10px;color:var(--mu);flex-shrink:0}
+
+    /* SHELL */
     .shell{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
 
-    /* ── SIDEBAR ── */
+    /* SIDEBAR */
     .sb{background:var(--tx);color:white;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
     .sb-logo{display:flex;align-items:center;gap:10px;padding:1.2rem 1rem 1rem;border-bottom:1px solid rgba(255,255,255,.08)}
     .sb-img{width:36px;height:36px;border-radius:10px;overflow:hidden;flex-shrink:0;background:var(--pr)}
@@ -88,7 +128,7 @@
     .sb-ex{margin-left:auto;font-size:9px;color:rgba(255,255,255,.32);background:rgba(255,255,255,.07);border-radius:5px;padding:3px 7px;cursor:pointer;transition:all .15s;flex-shrink:0}
     .sb-ex:hover{color:white;background:rgba(255,255,255,.15)}
 
-    /* ── MAIN ── */
+    /* MAIN */
     .main{display:flex;flex-direction:column;gap:1.3rem;padding:1.75rem 1.75rem 3rem;background:var(--bg)}
     .topbar{display:flex;align-items:flex-start;justify-content:space-between}
     .greeting{font-size:20px;font-weight:800;color:var(--tx);line-height:1.1}
@@ -98,39 +138,22 @@
     .nbbtn:hover{border-color:var(--pr)}.nbbtn svg{width:14px;height:14px;stroke:var(--mu);fill:none}
     .ndot{width:6px;height:6px;background:var(--rd);border-radius:50%;position:absolute;top:6px;right:6px;border:1.5px solid var(--bg)}
 
-    /* ALERTA RENOVACIÓN */
     .renew-bar{background:var(--amb);border:1px solid #fcd34d;border-radius:var(--rsm);padding:12px 16px;display:none;align-items:center;gap:12px}
     .renew-bar.show{display:flex}
     .rb-txt{font-size:13px;flex:1;line-height:1.5}.rb-txt b{color:var(--am)}
-    .btn-rn{padding:7px 16px;background:var(--pr);color:white;font-size:12px;font-weight:700;border-radius:var(--rp);transition:background .15s;flex-shrink:0}
-    .btn-rn:hover{background:var(--pr2)}
+    .btn-rn{padding:7px 16px;background:var(--pr);color:white;font-size:12px;font-weight:700;border-radius:var(--rp);flex-shrink:0}
 
     /* GRID */
     .g2{display:grid;grid-template-columns:1fr 292px;gap:1.3rem}
     .lcol{display:flex;flex-direction:column;gap:.9rem}
-
-    /* PANEL */
     .panel{background:var(--sur);border:1px solid var(--ln);border-radius:var(--ra);padding:1.1rem}
     .ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem}
     .pt{font-size:14px;font-weight:700;color:var(--tx)}
     .pa{font-size:12px;color:var(--pr);font-weight:600;cursor:pointer}
     .pa:hover{text-decoration:underline}
-
-    /* TABS */
     .tabs{display:flex;gap:4px;margin-bottom:.9rem;flex-wrap:wrap}
     .tab{padding:5px 13px;border-radius:var(--rp);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;color:var(--mu);background:var(--soft);border:1px solid var(--ln)}
     .tab.active{background:var(--tx);color:white;border-color:var(--tx)}
-
-    /* CONTENT LIST */
-    .clist{display:flex;flex-direction:column;gap:6px}
-    .ci{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:11px;background:var(--soft);transition:background .15s;cursor:pointer}
-    .ci:hover{background:var(--ln)}
-    .cth{width:36px;height:36px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:15px}
-    .ci-i{flex:1;min-width:0}
-    .ci-t{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .ci-m{font-size:11px;color:var(--mu);margin-top:1px}
-    .ctag{font-size:10px;font-weight:700;padding:3px 8px;border-radius:var(--rp);white-space:nowrap;flex-shrink:0}
-    .tg{background:var(--gnb);color:var(--gn)}.ta{background:var(--amb);color:var(--am)}.tb{background:var(--prb);color:var(--pr)}
 
     /* COURSE GRID */
     .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:11px}
@@ -141,14 +164,28 @@
     .cc-em{position:relative;z-index:1}
     .cc-badge{position:absolute;top:7px;right:7px;z-index:2;font-size:9px;font-weight:700;padding:2px 7px;border-radius:var(--rp)}
     .cb-new{background:var(--pr);color:white}.cb-free{background:var(--am);color:white}
+    .cc-prog-strip{height:3px;background:var(--pr);position:absolute;bottom:0;left:0;transition:width .3s}
     .cc-body{padding:.75rem .9rem}
     .cc-title{font-size:13px;font-weight:700;margin-bottom:3px;line-height:1.3}
-    .cc-meta{font-size:11px;color:var(--mu);margin-bottom:7px}
+    .cc-meta{font-size:11px;color:var(--mu);margin-bottom:5px}
+    .cc-stats{display:flex;gap:10px;font-size:11px;color:var(--mu);margin-bottom:7px}
+    .cc-stats span{display:flex;align-items:center;gap:3px}
     .cc-pw{height:3px;background:var(--ln);border-radius:var(--rp);margin-bottom:3px}
     .cc-pb{height:100%;background:var(--pr);border-radius:var(--rp)}
     .cc-pl{font-size:10px;color:var(--mu)}
     .btn-cc{width:100%;margin-top:7px;padding:7px;background:var(--pr);color:white;font-size:12px;font-weight:700;border-radius:9px;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px}
-    .btn-cc:hover{background:var(--pr2);transform:translateY(-1px)}
+    .btn-cc:hover{background:var(--pr2)}
+
+    /* CONTENT LIST */
+    .clist{display:flex;flex-direction:column;gap:6px}
+    .ci{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:11px;background:var(--soft);transition:background .15s;cursor:pointer}
+    .ci:hover{background:var(--ln)}
+    .cth{width:36px;height:36px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:15px}
+    .ci-i{flex:1;min-width:0}
+    .ci-t{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .ci-m{font-size:11px;color:var(--mu);margin-top:1px}
+    .ctag{font-size:10px;font-weight:700;padding:3px 8px;border-radius:var(--rp);white-space:nowrap;flex-shrink:0}
+    .tg{background:var(--gnb);color:var(--gn)}.tb{background:var(--prb);color:var(--pr)}
 
     /* BANNER VIP */
     .vip-banner{background:linear-gradient(135deg,var(--tx) 0%,#1a3a5c 100%);border-radius:var(--ra);padding:1.1rem 1.3rem;display:flex;align-items:center;gap:16px;cursor:pointer;transition:opacity .15s;border:none;width:100%;text-align:left}
@@ -158,7 +195,6 @@
     .vip-title{font-size:14px;font-weight:800;color:white;margin-bottom:3px}
     .vip-sub{font-size:12px;color:rgba(255,255,255,.6);line-height:1.4}
     .vip-badge{background:#fbbf24;color:#78350f;font-size:11px;font-weight:800;padding:4px 10px;border-radius:var(--rp);flex-shrink:0}
-    .vip-arrow{color:rgba(255,255,255,.4);font-size:16px;flex-shrink:0}
 
     /* NEWS */
     .nlist{display:flex;flex-direction:column;gap:8px}
@@ -167,7 +203,7 @@
     .nico{width:34px;height:34px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px}
     .ntit{font-size:13px;font-weight:700;margin-bottom:2px}
     .nbod{font-size:12px;color:var(--mu);line-height:1.45}
-    .ndat{font-size:10px;color:var(--g3,#b0bac8);margin-top:3px}
+    .ndat{font-size:10px;color:var(--ln);margin-top:3px}
 
     /* LIB ROWS */
     .lrow{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--soft)}
@@ -178,8 +214,6 @@
 
     /* RIGHT COL */
     .rcol{display:flex;flex-direction:column;gap:10px}
-
-    /* LIVE CARD */
     .lcard{background:var(--tx);border-radius:var(--ra);padding:1.1rem;color:white;position:relative;overflow:hidden;transition:all .3s}
     .lcard::before{content:'';position:absolute;top:-22px;right:-22px;width:80px;height:80px;background:var(--pr);opacity:.18;border-radius:50%}
     .lcard.ln{background:linear-gradient(135deg,var(--pr),var(--pr2))}
@@ -191,32 +225,23 @@
     .ltit{font-size:15px;font-weight:800;margin-bottom:1px;line-height:1.2;position:relative;z-index:1}
     .ldoc{font-size:11px;color:rgba(255,255,255,.46);margin-bottom:11px;position:relative;z-index:1}
     .cdown{display:flex;align-items:flex-start;gap:5px;margin-bottom:11px;position:relative;z-index:1}
-    .cdu{text-align:center}
-    .cdn{font-size:22px;font-weight:800;line-height:1;color:white;min-width:24px}
+    .cdu{text-align:center}.cdn{font-size:22px;font-weight:800;line-height:1;color:white;min-width:24px}
     .cdl{font-size:9px;color:rgba(255,255,255,.38);text-transform:uppercase}
     .cds{font-size:16px;font-weight:300;color:rgba(255,255,255,.3);padding-top:1px}
     .btn-lv{width:100%;padding:8px;background:var(--pr);color:white;font-size:12px;font-weight:700;border-radius:9px;transition:all .15s;position:relative;z-index:1}
     .btn-lv:hover{background:var(--pr2)}
     .lcard.ln .btn-lv{background:white;color:var(--pr)}
-
-    /* WA */
     .wcard{background:var(--sur);border:1px solid var(--ln);border-radius:var(--ra);padding:.9rem 1rem}
     .whead{display:flex;align-items:center;gap:8px;margin-bottom:8px}
     .wico{width:34px;height:34px;background:#dcfce7;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .wico svg{width:17px;height:17px}
     .wname{font-size:13px;font-weight:700}.wcnt{font-size:11px;color:var(--mu)}
     .btn-wa{width:100%;padding:7px;background:var(--gnb);color:var(--gn);font-size:12px;font-weight:700;border-radius:9px;transition:background .15s}
-    .btn-wa:hover{background:#d1fae5}
-
-    /* DISCOUNT */
     .dcard{background:var(--amb);border-radius:var(--ra);padding:.9rem 1rem}
     .dlbl{font-size:9px;font-weight:700;color:var(--am);letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px}
     .dpct{font-size:26px;font-weight:900;color:var(--am);line-height:1;margin-bottom:2px}
     .dsub{font-size:11px;color:var(--am);opacity:.8;margin-bottom:8px}
     .btn-d{width:100%;padding:7px;background:var(--am);color:white;font-size:12px;font-weight:700;border-radius:9px}
-    .btn-d:hover{opacity:.88}
-
-    /* CERT */
     .certc{background:var(--prb);border-radius:var(--ra);padding:.9rem 1rem}
     .certl{font-size:9px;font-weight:700;color:var(--pr);letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px}
     .certt{font-size:13px;font-weight:700;color:var(--pr);margin-bottom:2px}
@@ -237,8 +262,7 @@
     .pf-inp{width:100%;padding:8px 11px;border:1.5px solid var(--ln);border-radius:10px;font-size:13px;font-family:'Inter',sans-serif;color:var(--tx);background:var(--soft);outline:none;transition:border .2s}
     .pf-inp:focus{border-color:var(--pr);background:#fff}
     .pf-inp[readonly]{cursor:not-allowed;opacity:.7}
-    .btn-save{width:100%;margin-top:10px;padding:8px;background:var(--pr);color:white;font-size:13px;font-weight:700;border-radius:10px;transition:all .15s}
-    .btn-save:hover{background:var(--pr2)}
+    .btn-save{width:100%;margin-top:10px;padding:8px;background:var(--pr);color:white;font-size:13px;font-weight:700;border-radius:10px}
     .prof-msg{text-align:center;font-size:12px;margin-top:6px;display:none}
 
     /* SUSCRIPCIÓN */
@@ -248,50 +272,36 @@
     .sub-box.exp{background:var(--rdb);border:1px solid #fecaca}
     .sub-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
     .sub-box.act .sub-dot{background:var(--gn)}.sub-box.wrn .sub-dot{background:var(--am)}.sub-box.exp .sub-dot{background:var(--rd)}
-    .sub-lbl{font-size:13px;font-weight:700}
-    .sub-inf{font-size:11px;color:var(--mu);margin-top:1px}
+    .sub-lbl{font-size:13px;font-weight:700}.sub-inf{font-size:11px;color:var(--mu);margin-top:1px}
     .sub-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--soft);font-size:13px}
     .sub-row:last-child{border:none}
-    .sub-row span:first-child{color:var(--mu)}
-    .sub-row span:last-child{font-weight:700}
-    .btn-cancel{width:100%;padding:8px;background:var(--rdb);color:var(--rd);font-size:12px;font-weight:700;border-radius:9px;border:1px solid #fecaca;margin-top:10px;transition:all .15s}
-    .btn-cancel:hover{background:#ffcdd2}
-
-    /* ALERT LIVE */
-    .live-al{position:fixed;bottom:84px;right:20px;background:var(--tx);color:white;border-left:4px solid var(--pr);padding:12px 15px;border-radius:12px;font-size:13px;box-shadow:0 8px 28px rgba(0,0,0,.22);z-index:7000;max-width:275px;display:none;animation:si .4s ease}
-    .live-al.show{display:block}
-    @keyframes si{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}
-    .al-t{font-weight:800;font-size:14px;margin-bottom:3px;color:#7dd3fc}
-    .al-x{position:absolute;top:8px;right:10px;cursor:pointer;opacity:.38;font-size:14px;line-height:1}
-    .al-x:hover{opacity:1}
-    .btn-al{display:block;margin-top:8px;padding:6px;background:var(--pr);color:white;font-size:11px;font-weight:700;border-radius:7px;text-align:center}
+    .sub-row span:first-child{color:var(--mu)}.sub-row span:last-child{font-weight:700}
+    .btn-cancel{width:100%;padding:8px;background:var(--rdb);color:var(--rd);font-size:12px;font-weight:700;border-radius:9px;border:1px solid #fecaca;margin-top:10px}
 
     /* SK */
     .sk{background:linear-gradient(90deg,var(--ln) 25%,var(--soft) 50%,var(--ln) 75%);background-size:200% 100%;animation:sh 1.2s infinite;border-radius:8px}
     @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
     .sv{display:none}.sv.active{display:block}
     .empty{text-align:center;padding:2rem;color:var(--mu)}
     .empty span{display:block;font-size:26px;margin-bottom:5px}
     @keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-
-    @media(max-width:1100px){.g2{grid-template-columns:1fr}.rcol{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}}
+    @media(max-width:1100px){.g2{grid-template-columns:1fr}.rcol{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.curso-layout{grid-template-columns:1fr}}
     @media(max-width:800px){.shell{grid-template-columns:1fr}.sb{display:none}.main{padding:1.2rem}}
-    @media(max-width:500px){.rcol{grid-template-columns:1fr!important}.cgrid{grid-template-columns:1fr}}
+    @media(max-width:500px){.rcol{grid-template-columns:1fr!important}.cgrid{grid-template-columns:1fr}.curso-right{display:none}}
   </style>
 </head>
 <body>
 
-<!-- PANTALLA BLOQUEADA -->
+<!-- BLOCK SCREEN -->
 <div class="block-screen" id="blockScreen">
   <div class="bs-icon">🔒</div>
   <div class="bs-title">Membresía cancelada</div>
-  <div class="bs-sub">Tu membresía ha sido cancelada o ha vencido. Renueva para volver a acceder a todo el contenido del Club Dental.</div>
+  <div class="bs-sub">Tu membresía ha sido cancelada o venció. Renueva para volver a acceder a todo el contenido del Club Dental.</div>
   <button class="btn-bs" onclick="window.location.href='club-login.html?plan=mensual'">Renovar membresía</button>
   <button onclick="doLogout()" style="margin-top:8px;font-size:13px;color:rgba(255,255,255,.45);background:none;border:none;cursor:pointer">Cerrar sesión</button>
 </div>
 
-<!-- ALERTA LIVE -->
+<!-- LIVE ALERT -->
 <div class="live-al" id="lAl">
   <span class="al-x" onclick="this.parentElement.classList.remove('show')">✕</span>
   <div class="al-t">🔴 ¡Tu live comienza pronto!</div>
@@ -299,30 +309,56 @@
   <a class="btn-al" id="alLnk" href="#" target="_blank">Unirme ahora →</a>
 </div>
 
-<!-- MODAL REPRODUCTOR -->
-<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
-  <div class="modal-box" id="modalBox">
-    <div class="modal-head">
-      <div class="modal-title" id="mTitle">Cargando...</div>
-      <div class="modal-close" onclick="closeModalDirect()"><i class="fa-solid fa-xmark"></i></div>
-    </div>
-    <div class="modal-video">
-      <iframe id="mFrame" src="" allowfullscreen allow="autoplay"></iframe>
-    </div>
-    <div class="modal-info">
-      <div class="modal-course-title" id="mCourseTitle"></div>
-      <div class="modal-instructor" id="mInstructor"><i class="fa-solid fa-user-doctor" style="color:var(--pr)"></i><span></span></div>
-      <div class="modal-desc" id="mDesc"></div>
-      <div class="modal-temario" id="mTemario" style="display:none">
-        <div class="mt-title"><i class="fa-solid fa-list-check" style="margin-right:6px"></i>Lo que aprenderás</div>
-        <div id="mItems"></div>
+<!-- ══ VISOR DE CURSO (pantalla completa) ══ -->
+<div class="curso-overlay" id="cursoOverlay">
+  <div class="curso-topbar">
+    <div class="curso-back" onclick="closeCurso()"><i class="fa-solid fa-arrow-left"></i> Mis cursos</div>
+    <div class="curso-topbar-title" id="co-title">—</div>
+    <div class="curso-progress-bar"><div class="curso-progress-fill" id="co-prog-fill" style="width:0%"></div></div>
+    <div class="curso-progress-txt" id="co-prog-txt">0%</div>
+  </div>
+  <div class="curso-layout">
+    <!-- REPRODUCTOR + INFO -->
+    <div class="curso-left">
+      <div class="curso-video-wrap" id="co-video-wrap">
+        <div class="curso-video-placeholder" id="co-placeholder">
+          <i class="fa-solid fa-play-circle"></i>
+          <span style="font-size:14px">Selecciona una clase para reproducir</span>
+        </div>
+        <iframe id="co-frame" src="" allowfullscreen allow="autoplay" style="display:none"></iframe>
       </div>
+      <div class="curso-info">
+        <div class="ci-modulo-tag" id="co-mod-tag">Módulo</div>
+        <div class="ci-clase-title" id="co-clase-title">Selecciona una clase</div>
+        <div class="ci-instructor" id="co-instructor"><i class="fa-solid fa-user-doctor" style="color:var(--pr)"></i><span></span></div>
+        <div class="ci-desc" id="co-desc"></div>
+        <div style="display:flex;align-items:center;gap:0;flex-wrap:wrap;gap:8px">
+          <button class="btn-complete" id="co-btn-done" onclick="marcarClaseCompleta()" style="display:none">
+            <i class="fa-solid fa-check"></i> Marcar como completada
+          </button>
+          <button class="next-clase-btn" id="co-btn-next" onclick="irSiguienteClase()" style="display:none">
+            Siguiente clase <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- ÍNDICE DEL CURSO -->
+    <div class="curso-right">
+      <div class="cr-header">
+        <div class="cr-title" id="cr-title">Cargando...</div>
+        <div class="cr-meta" id="cr-meta"></div>
+        <div class="cr-prog">
+          <div class="cr-prog-bar"><div class="cr-prog-fill" id="cr-prog-fill" style="width:0%"></div></div>
+          <div class="cr-prog-txt"><span id="cr-prog-lbl">0 de 0 clases</span><span id="cr-prog-pct">0%</span></div>
+        </div>
+      </div>
+      <div id="cr-modulos"></div>
     </div>
   </div>
 </div>
 
 <div class="shell">
-<!-- ══ SIDEBAR ══ -->
+<!-- SIDEBAR -->
 <aside class="sb">
   <div class="sb-logo">
     <div class="sb-img"><img src="../assets/img/logo/logo.jpg" alt="OdonTeck" onerror="this.parentElement.style.background='var(--pr)'"></div>
@@ -366,7 +402,7 @@
   </div>
 </aside>
 
-<!-- ══ MAIN ══ -->
+<!-- MAIN -->
 <main class="main">
   <div class="topbar">
     <div>
@@ -377,48 +413,38 @@
   </div>
 
   <div class="renew-bar" id="renewBar">
-    <div class="rb-txt"><b id="rbMsg">Tu membresía vence pronto.</b> <span id="rbSub">Renueva para mantener tu acceso.</span></div>
+    <div class="rb-txt"><b id="rbMsg">Tu membresía vence pronto.</b> <span>Renueva para mantener tu acceso.</span></div>
     <button class="btn-rn" onclick="window.open('club-login.html?plan=mensual','_blank')">Renovar</button>
   </div>
 
-  <!-- ══ INICIO ══ -->
+  <!-- INICIO -->
   <div class="sv active" id="sv-inicio">
     <div class="g2">
       <div class="lcol">
-
-        <!-- BANNER VIP -->
         <button class="vip-banner" onclick="window.open('https://wa.me/5212381479365?text=Hola%2C%20soy%20miembro%20VIP%20del%20Club%20Dental%20y%20me%20interesa%20un%20curso','_blank')">
           <div class="vip-icon">🎓</div>
           <div class="vip-text">
             <div class="vip-title">¿Quieres cursos actualizados de OdonTeck?</div>
-            <div class="vip-sub">Recuerda que eres miembro VIP y recibes 20% de descuento en todas nuestras capacitaciones. Contáctanos por WhatsApp.</div>
+            <div class="vip-sub">Recuerda que eres miembro VIP y recibes 20% de descuento en todas nuestras capacitaciones.</div>
           </div>
           <div class="vip-badge">20% OFF</div>
-          <i class="fa-brands fa-whatsapp vip-arrow" style="font-size:22px;color:#4ade80"></i>
+          <i class="fa-brands fa-whatsapp" style="font-size:22px;color:#4ade80;flex-shrink:0"></i>
         </button>
-
-        <!-- NOTICIAS -->
         <div class="panel">
           <div class="ph"><span class="pt">📢 Noticias y novedades</span><span class="pa" onclick="go('cursos',null)">Ver cursos →</span></div>
           <div class="nlist" id="nlist"><div class="sk" style="height:58px;margin-bottom:7px"></div><div class="sk" style="height:58px"></div></div>
         </div>
-
-        <!-- CONTENIDO RECIENTE DINÁMICO -->
         <div class="panel">
           <div class="ph"><span class="pt">🆕 Contenido reciente</span><span class="pa" onclick="go('cursos',null)">Ver todo</span></div>
           <div class="clist" id="reclist"><div class="sk" style="height:50px;margin-bottom:6px"></div><div class="sk" style="height:50px;margin-bottom:6px"></div><div class="sk" style="height:50px"></div></div>
         </div>
-
-        <!-- BIBLIOTECA -->
         <div class="panel">
-          <div class="ph"><span class="pt">Biblioteca por mes</span><span class="pa">Ver archivos</span></div>
+          <div class="ph"><span class="pt">Biblioteca por mes</span></div>
           <div class="lrow"><div class="lname">Abril 2026</div><div class="lbdgs"><span class="lb" style="background:var(--prb);color:var(--pr)">4 videos</span><span class="lb" style="background:var(--rdb);color:var(--rd)">2 PDFs</span><span class="lb" style="background:var(--gnb);color:var(--gn)">1 live</span></div></div>
           <div class="lrow"><div class="lname">Marzo 2026</div><div class="lbdgs"><span class="lb" style="background:var(--prb);color:var(--pr)">3 videos</span><span class="lb" style="background:var(--rdb);color:var(--rd)">2 PDFs</span></div></div>
         </div>
       </div>
-
       <div class="rcol">
-        <!-- LIVE -->
         <div class="lcard" id="lcard">
           <div class="ltag" id="ltag"><span class="ldot"></span> Cargando...</div>
           <div class="ltit" id="ltit"></div>
@@ -434,7 +460,6 @@
           </div>
           <button class="btn-lv" id="btnLv" onclick="lvClick()">+ Agregar a calendario</button>
         </div>
-        <!-- WA -->
         <div class="wcard">
           <div class="whead">
             <div class="wico"><svg viewBox="0 0 24 24" fill="#16a34a"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.138.563 4.14 1.535 5.874L0 24l6.29-1.508A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.814 9.814 0 01-5.058-1.4l-.361-.214-3.735.896.944-3.653-.235-.374A9.817 9.817 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg></div>
@@ -446,7 +471,7 @@
           <div class="dlbl">Tu descuento VIP</div>
           <div class="dpct">20%</div>
           <div class="dsub">En todos los cursos OdonTeck</div>
-          <button class="btn-d" onclick="window.open('https://wa.me/5212381479365?text=Hola%2C%20quiero%20usar%20mi%20descuento%20del%2020%25%20como%20miembro%20del%20Club%20Dental','_blank')">Canjear descuento</button>
+          <button class="btn-d" onclick="window.open('https://wa.me/5212381479365?text=Hola%2C%20quiero%20usar%20mi%20descuento%20VIP%2020%25','_blank')">Canjear</button>
         </div>
         <div class="certc">
           <div class="certl">Certificado abril 2026</div>
@@ -460,7 +485,7 @@
     </div>
   </div>
 
-  <!-- ══ CURSOS ══ -->
+  <!-- CURSOS -->
   <div class="sv" id="sv-cursos">
     <div class="panel">
       <div class="ph"><span class="pt">📚 Biblioteca de cursos</span><span class="pa" id="cnt-c">Cargando...</span></div>
@@ -472,35 +497,35 @@
         <div class="tab" onclick="fC('protesis',this)">Prótesis</div>
         <div class="tab" onclick="fC('otros',this)">Otros</div>
       </div>
-      <div class="cgrid" id="cgrid"></div>
+      <div class="cgrid" id="cgrid"><div class="sk" style="height:200px;border-radius:var(--ra)"></div><div class="sk" style="height:200px;border-radius:var(--ra)"></div></div>
     </div>
   </div>
 
-  <!-- ══ VIDEOS ══ -->
+  <!-- VIDEOS -->
   <div class="sv" id="sv-videos">
     <div class="panel"><div class="ph"><span class="pt">🎬 Videos de casos clínicos</span></div>
     <div class="clist" id="vlist"><div class="sk" style="height:50px;margin-bottom:6px"></div><div class="sk" style="height:50px"></div></div></div>
   </div>
 
-  <!-- ══ LIVES ══ -->
+  <!-- LIVES -->
   <div class="sv" id="sv-lives">
     <div class="panel"><div class="ph"><span class="pt">📺 Sesiones en vivo · cada 15 días</span></div>
     <div id="lvlist"><div class="sk" style="height:68px;border-radius:11px"></div></div></div>
   </div>
 
-  <!-- ══ PDFs ══ -->
+  <!-- PDFs -->
   <div class="sv" id="sv-pdfs">
     <div class="panel"><div class="ph"><span class="pt">📄 PDFs y recursos clínicos</span></div>
     <div class="clist" id="plist"><div class="sk" style="height:50px"></div></div></div>
   </div>
 
-  <!-- ══ BIBLIOTECA ══ -->
+  <!-- BIBLIOTECA -->
   <div class="sv" id="sv-bib">
     <div class="panel"><div class="ph"><span class="pt">📁 Biblioteca</span></div>
     <div class="clist" id="blist"><div class="sk" style="height:50px"></div></div></div>
   </div>
 
-  <!-- ══ PERFIL ══ -->
+  <!-- PERFIL -->
   <div class="sv" id="sv-perfil">
     <div style="display:grid;grid-template-columns:300px 1fr;gap:1.2rem">
       <div class="prof-card">
@@ -508,12 +533,12 @@
         <div class="prof-nm" id="pnm">—</div>
         <div class="prof-ro" id="pro">Miembro Club Dental</div>
         <div class="pf-grid">
-          <div><div class="pf-lbl">Nombre completo</div><input class="pf-inp" id="pf-nm" placeholder="Dr. Juan Pérez"></div>
+          <div><div class="pf-lbl">Nombre</div><input class="pf-inp" id="pf-nm" placeholder="Dr. Juan Pérez"></div>
           <div><div class="pf-lbl">Correo</div><input class="pf-inp" id="pf-em" readonly></div>
           <div><div class="pf-lbl">WhatsApp</div><input class="pf-inp" id="pf-ph" placeholder="+52 238 000 0000"></div>
           <div><div class="pf-lbl">Especialidad</div><input class="pf-inp" id="pf-sp" placeholder="Odontología general..."></div>
         </div>
-        <button class="btn-save" onclick="savePerfil()"><i class="fa-solid fa-floppy-disk"></i> Guardar cambios</button>
+        <button class="btn-save" onclick="savePerfil()"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
         <div class="prof-msg" id="prof-msg"></div>
       </div>
       <div style="display:flex;flex-direction:column;gap:1rem">
@@ -536,15 +561,12 @@
     </div>
   </div>
 
-  <!-- ══ SUSCRIPCIÓN ══ -->
+  <!-- SUSCRIPCIÓN -->
   <div class="sv" id="sv-suscripcion">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem">
       <div class="panel">
         <div class="ph"><span class="pt">💳 Mi suscripción</span></div>
-        <div class="sub-box act" id="subBox">
-          <div class="sub-dot"></div>
-          <div><div class="sub-lbl" id="subLbl">Cargando...</div><div class="sub-inf" id="subInf"></div></div>
-        </div>
+        <div class="sub-box act" id="subBox"><div class="sub-dot"></div><div><div class="sub-lbl" id="subLbl">Cargando...</div><div class="sub-inf" id="subInf"></div></div></div>
         <div class="sub-row"><span>Plan</span><span id="s-plan">—</span></div>
         <div class="sub-row"><span>Inicio</span><span id="s-inicio">—</span></div>
         <div class="sub-row"><span>Próximo cobro</span><span id="s-vence">—</span></div>
@@ -555,18 +577,17 @@
       <div class="panel">
         <div class="ph"><span class="pt">✅ Beneficios incluidos</span></div>
         <div style="display:grid;gap:7px">
-          <div style="display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--gnb);border-radius:10px;font-size:13px"><i class="fa-solid fa-check" style="color:var(--gn);width:14px"></i> Casos clínicos semanales</div>
-          <div style="display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--gnb);border-radius:10px;font-size:13px"><i class="fa-solid fa-check" style="color:var(--gn);width:14px"></i> Webinars cada 15 días</div>
+          <div style="display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--gnb);border-radius:10px;font-size:13px"><i class="fa-solid fa-check" style="color:var(--gn);width:14px"></i> Cursos con módulos y clases secuenciales</div>
+          <div style="display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--gnb);border-radius:10px;font-size:13px"><i class="fa-solid fa-check" style="color:var(--gn);width:14px"></i> Webinars en vivo cada 15 días</div>
           <div style="display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--gnb);border-radius:10px;font-size:13px"><i class="fa-solid fa-check" style="color:var(--gn);width:14px"></i> PDFs y guías clínicas</div>
-          <div style="display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--gnb);border-radius:10px;font-size:13px"><i class="fa-solid fa-check" style="color:var(--gn);width:14px"></i> 20% descuento en cursos</div>
-          <div style="display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--gnb);border-radius:10px;font-size:13px"><i class="fa-solid fa-check" style="color:var(--gn);width:14px"></i> Canal exclusivo WhatsApp</div>
-          <div style="display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--gnb);border-radius:10px;font-size:13px"><i class="fa-solid fa-check" style="color:var(--gn);width:14px"></i> Reproductor de cursos integrado</div>
+          <div style="display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--gnb);border-radius:10px;font-size:13px"><i class="fa-solid fa-check" style="color:var(--gn);width:14px"></i> 20% descuento en cursos OdonTeck</div>
+          <div style="display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--gnb);border-radius:10px;font-size:13px"><i class="fa-solid fa-check" style="color:var(--gn);width:14px"></i> Canal exclusivo de WhatsApp</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ══ CONFIGURACIÓN ══ -->
+  <!-- CONFIGURACIÓN -->
   <div class="sv" id="sv-config">
     <div class="panel" style="max-width:480px">
       <div class="ph"><span class="pt">⚙️ Configuración</span></div>
@@ -576,7 +597,7 @@
           <input type="checkbox" checked style="accent-color:var(--pr);width:17px;height:17px">
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 13px;background:var(--soft);border-radius:11px">
-          <div><div style="font-size:13px;font-weight:600">Recordatorio de live</div><div style="font-size:11px;color:var(--mu)">5 minutos antes del webinar</div></div>
+          <div><div style="font-size:13px;font-weight:600">Recordatorio de live</div><div style="font-size:11px;color:var(--mu)">5 minutos antes</div></div>
           <input type="checkbox" checked style="accent-color:var(--pr);width:17px;height:17px">
         </div>
         <button onclick="doLogout()" style="width:100%;padding:9px;background:var(--rdb);color:var(--rd);font-size:13px;font-weight:700;border-radius:10px;border:1px solid #fecaca;margin-top:4px">
@@ -606,320 +627,316 @@ const auth = getAuth(app);
 const db   = getFirestore(app);
 const ADMIN = 'odontckconsul@gmail.com';
 
-// CURSOS BASE siempre visibles
-const CURSOS_BASE = [
-  { id:'c1', titulo:'Extracciones Simples — Domina el procedimiento más frecuente', descripcion:'Técnicas seguras y eficientes para exodoncias rutinarias. Protocolos clínicos probados en el consultorio.', categoria:'cirugia', emoji:'🦷', badge:'new', badgeLabel:'Nuevo', progreso:0, link:'https://drive.google.com/drive/folders/1TJfnzdpal-KZIuK_gd5k934PayVjb4bR', instructor:'OdonTeck', duracion:'Módulo completo', temario:['Anatomía del alvéolo y tejidos periapicales','Técnicas de anestesia local segura','Sindesmotomía y luxación correcta','Manejo de complicaciones intraoperatorias','Protocolo posoperatorio y receta'] },
-  { id:'c2', titulo:'Cirugía Oral Avanzada — Casos clínicos reales', descripcion:'Abordaje de casos complejos: terceros molares, colgajos, suturas y manejo posoperatorio con evidencia actualizada.', categoria:'cirugia', emoji:'🔬', badge:'', progreso:0, link:'https://drive.google.com/drive/folders/1NKrGRT9Cbp_hYNBgOBP7zzs_4etTIcCi', instructor:'OdonTeck', duracion:'Módulo completo', temario:['Clasificación de terceros molares','Diseño y elevación de colgajos','Odontosección y extracción quirúrgica','Técnicas de sutura y cierre por planos','Manejo del dolor y antibioticoterapia'] }
-];
+let allCursos=[], liveActivo=null, alertShown=false, timerID=null;
+let _uid=null, _progresoData={};
 
-let allCursos = [...CURSOS_BASE];
-let liveActivo = null, alertShown = false, timerID = null;
-let allItems = []; // para contenido reciente combinado
-
-// Render cursos BASE inmediatamente
-renderCursos(allCursos);
-updCursoCount(allCursos.length);
-
-// ── AUTH GUARD ─────────────────────────────────────────────
+// ── AUTH ──────────────────────────────────────────────────────
 onAuthStateChanged(auth, async user => {
-  if (!user) { location.href = 'club-login.html'; return; }
+  if (!user) { location.href='club-login.html'; return; }
 
-  const nom = user.displayName || user.email.split('@')[0];
-  const ini = (user.displayName||user.email||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
-  document.getElementById('uGr').textContent  = nom;
-  document.getElementById('sbUn').textContent = nom;
-  const avEl = document.getElementById('sbAv');
-  if (user.photoURL) avEl.innerHTML = `<img src="${user.photoURL}" alt="">`;
-  else avEl.textContent = ini;
-  document.getElementById('pav').textContent = ini;
-  document.getElementById('pnm').textContent = nom;
-  document.getElementById('pf-em').value = user.email || '';
+  // Nombre real del usuario
+  const displayName = user.displayName || user.email.split('@')[0];
+  // Si el displayName tiene formato de email, tomar solo la parte antes del @
+  const nombre = displayName.includes('@') ? displayName.split('@')[0] : displayName;
+  const ini = nombre.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
 
-  if (user.email === ADMIN) {
-    document.getElementById('admBtn').style.display = 'flex';
-    document.getElementById('sbUr').textContent = 'Fundador';
-  }
+  document.getElementById('uGr').textContent  = nombre;
+  document.getElementById('sbUn').textContent = nombre;
+  const avEl=document.getElementById('sbAv');
+  if(user.photoURL) avEl.innerHTML=`<img src="${user.photoURL}" alt="">`;
+  else avEl.textContent=ini;
+  document.getElementById('pav').textContent=ini;
+  document.getElementById('pnm').textContent=nombre;
+  document.getElementById('pf-em').value=user.email||'';
 
-  const snap = await getDoc(doc(db,'miembros', user.uid));
-  const data = snap.exists() ? snap.data() : {};
-  window._uid = user.uid; window._user = user;
+  if(user.email===ADMIN){document.getElementById('admBtn').style.display='flex';document.getElementById('sbUr').textContent='Fundador';}
 
-  // VERIFICAR CANCELACIÓN
-  if (data.planCancelado && user.email !== ADMIN) {
-    document.getElementById('blockScreen').classList.add('show');
-    return;
-  }
+  _uid=user.uid;
+  const snap=await getDoc(doc(db,'miembros',user.uid));
+  const data=snap.exists()?snap.data():{};
+  window._user=user;
+
+  // Cargar progreso guardado
+  _progresoData = data.progresoCursos || {};
+
+  if(data.planCancelado&&user.email!==ADMIN){document.getElementById('blockScreen').classList.add('show');return;}
 
   // Perfil
-  document.getElementById('pro').textContent  = data.especialidad || 'Miembro Club Dental';
-  document.getElementById('pf-nm').value = data.nombre    || '';
-  document.getElementById('pf-ph').value = data.telefono  || '';
-  document.getElementById('pf-sp').value = data.especialidad || '';
+  document.getElementById('pro').textContent=data.especialidad||'Miembro Club Dental';
+  document.getElementById('pf-nm').value=data.nombre||'';
+  document.getElementById('pf-ph').value=data.telefono||'';
+  document.getElementById('pf-sp').value=data.especialidad||'';
 
-  // Plan sidebar
-  const pTipo  = data.planTipo || 'mensual';
-  const pNames = { mensual:'Plan Mensual', anual:'Plan Anual' };
-  const pName  = user.email === ADMIN ? 'Fundador' : (pNames[pTipo]||'Membresía');
-  const pVence = data.planVence ? new Date(data.planVence) : null;
-  const pIni   = data.planInicio ? new Date(data.planInicio) : null;
+  // Plan
+  const pTipo=data.planTipo||'mensual';
+  const pName=user.email===ADMIN?'Fundador':({mensual:'Plan Mensual',anual:'Plan Anual'}[pTipo]||'Membresía');
+  const pVence=data.planVence?new Date(data.planVence):null;
+  const pIni=data.planInicio?new Date(data.planInicio):null;
+  document.getElementById('sb-plan').style.display='block';
+  document.getElementById('sbpn').textContent=pName;
+  document.getElementById('s-plan').textContent=pName;
+  document.getElementById('s-inicio').textContent=pIni?pIni.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'}):'—';
 
-  document.getElementById('sb-plan').style.display = 'block';
-  document.getElementById('sbpn').textContent = pName;
-  document.getElementById('s-plan').textContent = pName;
-  document.getElementById('s-inicio').textContent = pIni ? pIni.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'}) : '—';
+  if(user.email===ADMIN){document.getElementById('sbpv').textContent='Acceso permanente';document.getElementById('subLbl').textContent='Fundador';document.getElementById('s-vence').textContent='Permanente';document.getElementById('s-estado').textContent='✓ Activo';document.getElementById('btnCancel').style.display='none';return;}
 
-  if (user.email === ADMIN) {
-    document.getElementById('sbpv').textContent    = 'Acceso permanente';
-    document.getElementById('subLbl').textContent  = 'Fundador · Acceso permanente';
-    document.getElementById('s-vence').textContent = 'Permanente';
-    document.getElementById('s-estado').textContent= '✓ Activo';
-    document.getElementById('btnCancel').style.display = 'none';
-    return;
-  }
-
-  if (pVence) {
-    const dias = Math.ceil((pVence - new Date()) / 86400000);
-    const vStr = pVence.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'});
-    document.getElementById('sbpv').textContent   = dias > 0 ? `Vence ${vStr}` : 'Vencida';
-    if (dias <= 0)      document.getElementById('sbpv').className = 'sbpv exp';
-    else if (dias <= 3) document.getElementById('sbpv').className = 'sbpv warn';
-    document.getElementById('s-vence').textContent = vStr;
-
-    const sb = document.getElementById('subBox');
-    if (dias > 3) {
-      document.getElementById('subLbl').textContent = 'Membresía activa';
-      document.getElementById('subInf').textContent = `Vence el ${vStr}`;
-      document.getElementById('s-estado').textContent= '✓ Activa'; document.getElementById('s-estado').style.color='var(--gn)';
-    } else if (dias > 0) {
-      sb.className='sub-box wrn';
-      document.getElementById('subLbl').textContent=`⚠️ Vence en ${dias} día${dias!==1?'s':''}`;
-      document.getElementById('s-estado').textContent='⚠️ Por vencer'; document.getElementById('s-estado').style.color='var(--am)';
-    } else if (dias > -3) {
-      sb.className='sub-box exp';
-      document.getElementById('subLbl').textContent='🔴 Período de tolerancia';
-      document.getElementById('s-estado').textContent='⚠️ Vencida (tolerancia)'; document.getElementById('s-estado').style.color='var(--rd)';
-    } else {
-      // Bloquear acceso
-      document.getElementById('blockScreen').classList.add('show');
-      return;
-    }
-    if (dias <= 2 && dias > -3) {
-      document.getElementById('renewBar').classList.add('show');
-      document.getElementById('rbMsg').textContent = dias > 0 ? `⚠️ Tu membresía vence en ${dias} día${dias!==1?'s':''}.` : `🔴 Tu membresía venció. Tienes ${3+dias} día${3+dias!==1?'s':''} de tolerancia.`;
-    }
+  if(pVence){
+    const dias=Math.ceil((pVence-new Date())/86400000);
+    const vStr=pVence.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'});
+    document.getElementById('sbpv').textContent=dias>0?`Vence ${vStr}`:'Vencida';
+    if(dias<=0)document.getElementById('sbpv').className='sbpv exp';
+    else if(dias<=3)document.getElementById('sbpv').className='sbpv warn';
+    document.getElementById('s-vence').textContent=vStr;
+    const sb=document.getElementById('subBox');
+    if(dias>3){document.getElementById('subLbl').textContent='Membresía activa';document.getElementById('subInf').textContent=`Vence el ${vStr}`;document.getElementById('s-estado').textContent='✓ Activa';document.getElementById('s-estado').style.color='var(--gn)';}
+    else if(dias>0){sb.className='sub-box wrn';document.getElementById('subLbl').textContent=`⚠️ Vence en ${dias} día${dias!==1?'s':''}`;document.getElementById('s-estado').textContent='⚠️ Por vencer';document.getElementById('s-estado').style.color='var(--am)';}
+    else if(dias>-3){sb.className='sub-box exp';document.getElementById('subLbl').textContent='🔴 Período de tolerancia';document.getElementById('s-estado').textContent='Tolerancia';document.getElementById('s-estado').style.color='var(--rd)';}
+    else{document.getElementById('blockScreen').classList.add('show');return;}
+    if(dias<=2&&dias>-3){document.getElementById('renewBar').classList.add('show');document.getElementById('rbMsg').textContent=dias>0?`⚠️ Tu membresía vence en ${dias} día${dias!==1?'s':''}.`:`🔴 Venció. Quedan ${3+dias} día${3+dias!==1?'s':''} de tolerancia.`;}
   }
 });
 
-// CANCELAR SUSCRIPCIÓN
-window.cancelarSub = async () => {
-  if (!confirm('¿Estás seguro de cancelar tu membresía? Perderás el acceso al contenido del Club Dental.')) return;
-  if (!window._uid) return;
-  await setDoc(doc(db,'miembros',window._uid), { planCancelado: true }, { merge:true });
-  document.getElementById('blockScreen').classList.add('show');
-};
+window.cancelarSub=async()=>{if(!confirm('¿Cancelar membresía?'))return;if(!_uid)return;await setDoc(doc(db,'miembros',_uid),{planCancelado:true},{merge:true});document.getElementById('blockScreen').classList.add('show');};
+window.doLogout=async()=>{await signOut(auth);location.href='club-login.html';};
+window.sendReset=async()=>{if(window._user){await sendPasswordResetEmail(auth,window._user.email);alert('📧 Enlace enviado a '+window._user.email);}};
+window.savePerfil=async()=>{if(!_uid)return;const nm=document.getElementById('pf-nm').value.trim(),ph=document.getElementById('pf-ph').value.trim(),sp=document.getElementById('pf-sp').value.trim();await setDoc(doc(db,'miembros',_uid),{nombre:nm,telefono:ph,especialidad:sp},{merge:true});document.getElementById('pnm').textContent=nm;document.getElementById('pro').textContent=sp||'Miembro Club Dental';const msg=document.getElementById('prof-msg');msg.textContent='✓ Guardado';msg.style.color='var(--gn)';msg.style.display='block';setTimeout(()=>msg.style.display='none',2500);};
 
-window.doLogout  = async () => { await signOut(auth); location.href='club-login.html'; };
-window.sendReset = async () => { if (window._user) { await sendPasswordResetEmail(auth, window._user.email); alert('📧 Enlace enviado a '+window._user.email); }};
-window.savePerfil = async () => {
-  if (!window._uid) return;
-  const nm=document.getElementById('pf-nm').value.trim(), ph=document.getElementById('pf-ph').value.trim(), sp=document.getElementById('pf-sp').value.trim();
-  await setDoc(doc(db,'miembros',window._uid),{nombre:nm,telefono:ph,especialidad:sp},{merge:true});
-  document.getElementById('pnm').textContent=nm; document.getElementById('pro').textContent=sp||'Miembro Club Dental';
-  const msg=document.getElementById('prof-msg'); msg.textContent='✓ Guardado'; msg.style.color='var(--gn)'; msg.style.display='block';
-  setTimeout(()=>msg.style.display='none',2500);
-};
+// ── FIREBASE LISTENERS ─────────────────────────────────────────
+onSnapshot(query(collection(db,'noticias'),orderBy('creadoEn','desc'),limit(10)),snap=>{const a=snap.docs.map(d=>({id:d.id,...d.data()}));rNoticias(a);});
+onSnapshot(collection(db,'cursos'),snap=>{allCursos=snap.docs.map(d=>({id:d.id,...d.data()}));renderCursos(allCursos);const n=allCursos.length;document.getElementById('nb-c').textContent=n;document.getElementById('cnt-c').textContent=n+' cursos disponibles';buildRecent();});
+onSnapshot(query(collection(db,'lives'),where('activo','==',true),orderBy('fechaISO','asc'),limit(1)),snap=>{liveActivo=snap.empty?null:{id:snap.docs[0].id,...snap.docs[0].data()};liveActivo?setLive(liveActivo):setNoLive();});
+onSnapshot(query(collection(db,'lives'),orderBy('fechaISO','asc')),snap=>{rLives(snap.docs.map(d=>({id:d.id,...d.data()})));document.getElementById('a-l').textContent=snap.docs.filter(d=>d.data().activo).length;});
+onSnapshot(query(collection(db,'videos'),orderBy('creadoEn','desc')),snap=>{const a=snap.docs.map(d=>({id:d.id,...d.data(),tipo:'video'}));rVideos(a);['nb-v','a-v'].forEach(i=>document.getElementById(i).textContent=a.length);window._videos=a;buildRecent();});
+onSnapshot(query(collection(db,'pdfs'),orderBy('creadoEn','desc')),snap=>{const a=snap.docs.map(d=>({id:d.id,...d.data(),tipo:'pdf'}));rPdfs(a);['nb-p','a-p'].forEach(i=>document.getElementById(i).textContent=a.length);window._pdfs=a;buildRecent();});
 
-// ── FIREBASE ─────────────────────────────────────────────────
-onSnapshot(query(collection(db,'noticias'),orderBy('creadoEn','desc'),limit(10)), snap => {
-  rNoticias(snap.docs.map(d=>({id:d.id,...d.data()})));
-});
-
-onSnapshot(collection(db,'cursos'), snap => {
-  const fbC = snap.docs.map(d=>({id:d.id,...d.data()}));
-  const fbIds = new Set(fbC.map(c=>c.id));
-  allCursos = [...CURSOS_BASE.filter(c=>!fbIds.has(c.id)), ...fbC];
-  renderCursos(allCursos);
-  updCursoCount(allCursos.length);
-  buildRecent();
-});
-
-onSnapshot(query(collection(db,'lives'),where('activo','==',true),orderBy('fechaISO','asc'),limit(1)), snap => {
-  liveActivo = snap.empty ? null : {id:snap.docs[0].id,...snap.docs[0].data()};
-  liveActivo ? setLive(liveActivo) : setNoLive();
-});
-onSnapshot(query(collection(db,'lives'),orderBy('fechaISO','asc')), snap => {
-  rLives(snap.docs.map(d=>({id:d.id,...d.data()})));
-  document.getElementById('a-l').textContent=snap.docs.filter(d=>d.data().activo).length;
-});
-onSnapshot(query(collection(db,'videos'),orderBy('creadoEn','desc')), snap => {
-  const a=snap.docs.map(d=>({id:d.id,...d.data(),tipo:'video'}));
-  rVideos(a);
-  ['nb-v','a-v'].forEach(i=>document.getElementById(i).textContent=a.length);
-  window._videos = a; buildRecent();
-});
-onSnapshot(query(collection(db,'pdfs'),orderBy('creadoEn','desc')), snap => {
-  const a=snap.docs.map(d=>({id:d.id,...d.data(),tipo:'pdf'}));
-  rPdfs(a);
-  ['nb-p','a-p'].forEach(i=>document.getElementById(i).textContent=a.length);
-  window._pdfs = a; buildRecent();
-});
-
-// CONTENIDO RECIENTE — mezcla cursos + videos + PDFs ordenados por fecha
-function buildRecent() {
-  const cursos = allCursos.map(c=>({...c, tipo:'curso', _ts: c.creadoEn?.toDate?.()?.getTime() || 0}));
-  const videos = (window._videos||[]).map(v=>({...v, _ts: v.creadoEn?.toDate?.()?.getTime() || 0}));
-  const pdfs   = (window._pdfs||[]).map(p=>({...p, _ts: p.creadoEn?.toDate?.()?.getTime() || 0}));
-  const all    = [...cursos, ...videos, ...pdfs].sort((a,b)=>b._ts-a._ts).slice(0,6);
-  rRecent(all);
+function buildRecent(){
+  const cursos=allCursos.map(c=>({...c,tipo:'curso',_ts:c.creadoEn?.toDate?.()?.getTime()||0}));
+  const videos=(window._videos||[]).map(v=>({...v,_ts:v.creadoEn?.toDate?.()?.getTime()||0}));
+  const pdfs=(window._pdfs||[]).map(p=>({...p,_ts:p.creadoEn?.toDate?.()?.getTime()||0}));
+  rRecent([...cursos,...videos,...pdfs].sort((a,b)=>b._ts-a._ts).slice(0,6));
 }
 
 // ── RENDERS ───────────────────────────────────────────────────
-function rNoticias(arr) {
-  const el=document.getElementById('nlist');
-  if (!arr.length){el.innerHTML=`<div class="empty"><span>📭</span><p>Sin noticias aún.</p></div>`;return;}
-  el.innerHTML=arr.map(n=>`<div class="nitem"><div class="nico" style="background:${n.color||'var(--prb)'}">${n.emoji||'📢'}</div><div><div class="ntit">${esc(n.titulo)}</div><div class="nbod">${esc(n.cuerpo||'')}</div><div class="ndat">${n.fecha||''}</div></div></div>`).join('');
-}
+function rNoticias(arr){const el=document.getElementById('nlist');if(!arr.length){el.innerHTML=`<div class="empty"><span>📭</span><p>Sin noticias aún.</p></div>`;return;}el.innerHTML=arr.map(n=>`<div class="nitem"><div class="nico" style="background:${n.color||'var(--prb)'}">${n.emoji||'📢'}</div><div><div class="ntit">${esc(n.titulo)}</div><div class="nbod">${esc(n.cuerpo||'')}</div><div class="ndat">${n.fecha||''}</div></div></div>`).join('');}
 
-function rRecent(arr) {
-  const el=document.getElementById('reclist');
-  if (!arr.length){el.innerHTML=`<div class="empty"><span>📂</span><p>Aún no hay contenido. Pronto llegará.</p></div>`;return;}
-  const icons = {curso:'📚',video:'🎬',pdf:'📄'};
-  const tags  = {curso:'Curso',video:'Video',pdf:'PDF'};
-  const colors= {curso:'var(--prb)',video:'var(--prb)',pdf:'var(--rdb)'};
-  const tc    = {curso:'tb',video:'tb',pdf:'tg'};
-  el.innerHTML = arr.map(i=>`
-    <div class="ci" onclick="${i.tipo==='curso'?`openModal(${JSON.stringify(i).replace(/"/g,"'")})`:`window.open('${esc(i.link||'#')}','_blank')`}">
-      <div class="cth" style="background:${colors[i.tipo]||'var(--prb)'}">${icons[i.tipo]||'📄'}</div>
-      <div class="ci-i"><div class="ci-t">${esc(i.titulo)}</div><div class="ci-m">${i.instructor||i.mes||''} · ${tags[i.tipo]||'Contenido'}</div></div>
-      <span class="ctag ${tc[i.tipo]||'tb'}">Nuevo</span>
-    </div>`).join('');
-}
+function rRecent(arr){const el=document.getElementById('reclist');if(!arr.length){el.innerHTML=`<div class="empty"><span>📂</span><p>Aún no hay contenido.</p></div>`;return;}const icons={curso:'📚',video:'🎬',pdf:'📄'},tags={curso:'Curso',video:'Video',pdf:'PDF'},clrs={curso:'var(--prb)',video:'var(--prb)',pdf:'var(--rdb)'},tc={curso:'tb',video:'tb',pdf:'tg'};el.innerHTML=arr.map(i=>`<div class="ci" onclick="${i.tipo==='curso'?`openCurso(${JSON.stringify(i).replace(/"/g,"'")})`:`window.open('${esc(i.link||'#')}','_blank')`}"><div class="cth" style="background:${clrs[i.tipo]||'var(--prb)'}">${icons[i.tipo]||'📄'}</div><div class="ci-i"><div class="ci-t">${esc(i.titulo)}</div><div class="ci-m">${i.instructor||i.mes||''} · ${tags[i.tipo]||''}</div></div><span class="ctag ${tc[i.tipo]||'tb'}">Nuevo</span></div>`).join('');}
 
-function renderCursos(arr) {
-  const el=document.getElementById('cgrid');
-  if(!el)return;
-  if(!arr.length){el.innerHTML=`<div class="empty" style="grid-column:1/-1"><span>📚</span><p>Los cursos aparecerán aquí.</p></div>`;return;}
+function renderCursos(arr){
+  const el=document.getElementById('cgrid');if(!el)return;
+  if(!arr.length){el.innerHTML=`<div class="empty" style="grid-column:1/-1"><span>📚</span><p>Los cursos aparecerán aquí cuando se publiquen.</p></div>`;return;}
   el.innerHTML=arr.map(c=>{
     const badge=c.badge?`<span class="cc-badge cb-${c.badge}">${c.badgeLabel||c.badge}</span>`:'';
-    const prog=parseInt(c.progreso||0);
-    const pbar=prog>0?`<div class="cc-pw"><div class="cc-pb" style="width:${prog}%"></div></div><div class="cc-pl">${prog}% completado</div>`:`<div class="cc-pl" style="color:var(--mu)">Sin comenzar</div>`;
-    const btn=prog===100?'🏆 Completado':prog>0?'▶ Continuar':'▶ Ver curso';
-    const cJson=JSON.stringify(c).replace(/"/g,"'");
-    return `<div class="cc" onclick="openModal(${cJson})">
-      <div class="cc-cover">${badge}<span class="cc-em">${c.emoji||'📚'}</span></div>
-      <div class="cc-body"><div class="cc-title">${esc(c.titulo)}</div><div class="cc-meta">${esc(c.instructor||'')} · ${esc(c.duracion||'')}</div>${pbar}
-      <button class="btn-cc" onclick="event.stopPropagation();openModal(${cJson})"><i class="fa-solid fa-play"></i> ${btn}</button></div></div>`;
+    const prog=calcProgreso(c);
+    const pct=prog.pct;
+    const btn=pct===100?'🏆 Completado':pct>0?'▶ Continuar':'▶ Comenzar curso';
+    const cJ=JSON.stringify(c).replace(/"/g,"'");
+    return `<div class="cc" onclick="openCurso(${cJ})">
+      <div class="cc-cover">
+        ${c.imagen?`<img src="${c.imagen}" alt="">`:''}
+        ${badge}<span class="cc-em">${c.emoji||'📚'}</span>
+        <div class="cc-prog-strip" style="width:${pct}%"></div>
+      </div>
+      <div class="cc-body">
+        <div class="cc-title">${esc(c.titulo)}</div>
+        <div class="cc-meta">${esc(c.instructor||'')} · ${esc(c.duracion||'')}</div>
+        <div class="cc-stats">
+          <span><i class="fa-solid fa-layer-group" style="font-size:10px"></i>${c.totalModulos||0} módulos</span>
+          <span><i class="fa-solid fa-play-circle" style="font-size:10px"></i>${c.totalClases||0} clases</span>
+        </div>
+        ${pct>0?`<div class="cc-pw"><div class="cc-pb" style="width:${pct}%"></div></div><div class="cc-pl">${pct}% completado · ${prog.done} de ${prog.total} clases</div>`:`<div class="cc-pl">Sin comenzar</div>`}
+        <button class="btn-cc" onclick="event.stopPropagation();openCurso(${cJ})"><i class="fa-solid fa-play"></i> ${btn}</button>
+      </div>
+    </div>`;
   }).join('');
 }
 
-function rVideos(arr) {
-  const el=document.getElementById('vlist');
-  el.innerHTML=arr.length?arr.map(v=>`<div class="ci" onclick="openVideoModal('${esc(v.link||'#')}','${esc(v.titulo)}')"><div class="cth" style="background:var(--prb)">🎬</div><div class="ci-i"><div class="ci-t">${esc(v.titulo)}</div><div class="ci-m">${v.mes||''} · ${v.duracion||'Video'}</div></div><span class="ctag tb"><i class="fa-solid fa-play" style="font-size:9px"></i> Ver</span></div>`).join(''):`<div class="empty"><span>🎬</span><p>Sin videos publicados.</p></div>`;
+function calcProgreso(curso){
+  const p=_progresoData[curso.id]||{};
+  let total=0, done=0;
+  (curso.modulos||[]).forEach((mod,mi)=>{(mod.clases||[]).forEach((_,ci)=>{total++;if(p[`${mi}-${ci}`])done++;});});
+  return{total,done,pct:total?Math.round(done/total*100):0};
 }
 
-function rPdfs(arr) {
-  const el=document.getElementById('plist');
-  el.innerHTML=arr.length?arr.map(p=>`<div class="ci" onclick="window.open('${esc(p.link||'#')}','_blank')"><div class="cth" style="background:var(--rdb)">📄</div><div class="ci-i"><div class="ci-t">${esc(p.titulo)}</div><div class="ci-m">${p.mes||''} · PDF</div></div><span class="ctag tg">Descargar</span></div>`).join('') : `<div class="empty"><span>📄</span><p>Sin PDFs publicados.</p></div>`;
-}
+function rVideos(arr){const el=document.getElementById('vlist');el.innerHTML=arr.length?arr.map(v=>`<div class="ci" onclick="openVideoSimple('${esc(v.link||'#')}','${esc(v.titulo)}')"><div class="cth" style="background:var(--prb)">🎬</div><div class="ci-i"><div class="ci-t">${esc(v.titulo)}</div><div class="ci-m">${v.mes||''} · ${v.duracion||'Video'}</div></div><span class="ctag tb"><i class="fa-solid fa-play" style="font-size:9px"></i> Ver</span></div>`).join(''):`<div class="empty"><span>🎬</span><p>Sin videos publicados.</p></div>`;}
+function rPdfs(arr){const el=document.getElementById('plist');el.innerHTML=arr.length?arr.map(p=>`<div class="ci" onclick="window.open('${esc(p.link||'#')}','_blank')"><div class="cth" style="background:var(--rdb)">📄</div><div class="ci-i"><div class="ci-t">${esc(p.titulo)}</div><div class="ci-m">${p.mes||''} · PDF</div></div><span class="ctag tg">Descargar</span></div>`).join(''):`<div class="empty"><span>📄</span><p>Sin PDFs.</p></div>`;}
+function rLives(arr){const el=document.getElementById('lvlist');if(!arr.length){el.innerHTML=`<div class="empty"><span>📺</span><p>Sin sesiones programadas.</p></div>`;return;}el.innerHTML=arr.map(l=>{const f=l.fechaISO?new Date(l.fechaISO).toLocaleString('es-MX',{weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}):'';return`<div class="nitem" onclick="window.open('${esc(l.link||'#')}','_blank')" style="cursor:pointer"><div class="nico" style="background:#f5f3ff">📺</div><div style="flex:1"><div class="ntit">${esc(l.titulo)}</div><div class="nbod">${esc(l.descripcion||'')}</div><div class="ndat">${esc(l.instructor||'')} · ${f}</div></div><span class="ctag" style="background:${l.activo?'#f5f3ff':'var(--soft)'};color:${l.activo?'#7c3aed':'var(--mu)'}">${l.activo?'Próximo':'Pasado'}</span></div>`;}).join('');}
 
-function rLives(arr) {
-  const el=document.getElementById('lvlist');
-  if(!arr.length){el.innerHTML=`<div class="empty"><span>📺</span><p>Sin sesiones programadas. Los webinars son cada 15 días.</p></div>`;return;}
-  el.innerHTML=arr.map(l=>{
-    const f=l.fechaISO?new Date(l.fechaISO).toLocaleString('es-MX',{weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}):'';
-    return `<div class="nitem" onclick="window.open('${esc(l.link||'#')}','_blank')" style="cursor:pointer"><div class="nico" style="background:#f5f3ff">📺</div><div style="flex:1"><div class="ntit">${esc(l.titulo)}</div><div class="nbod">${esc(l.descripcion||'')}</div><div class="ndat">${esc(l.instructor||'')} · ${f}</div></div><span class="ctag" style="background:${l.activo?'#f5f3ff':'var(--soft)'};color:${l.activo?'#7c3aed':'var(--mu)'}">${l.activo?'Próximo':'Pasado'}</span></div>`;
+// ── VISOR DE CURSO ─────────────────────────────────────────────
+let _cursoActual=null, _claseActual={mi:-1,ci:-1};
+
+window.openCurso = function(c) {
+  if(typeof c==='string')c=JSON.parse(c.replace(/'/g,'"'));
+  _cursoActual=c;
+  const prog=calcProgreso(c);
+  document.getElementById('co-title').textContent=c.titulo||'Curso';
+  document.getElementById('cr-title').textContent=c.titulo||'Curso';
+  document.getElementById('cr-meta').textContent=(c.instructor||'')+(c.duracion?' · '+c.duracion:'')+(c.totalModulos?' · '+c.totalModulos+' módulos':'');
+  actualizarBarraProgreso(prog);
+  renderIndice(c);
+  document.getElementById('cursoOverlay').classList.add('show');
+  document.body.style.overflow='hidden';
+  // Auto-abrir la última clase activa o la primera
+  const p=_progresoData[c.id]||{};
+  let primeraDisponible={mi:0,ci:0};
+  outer:for(let mi=0;mi<(c.modulos||[]).length;mi++){for(let ci=0;ci<(c.modulos[mi].clases||[]).length;ci++){if(!p[`${mi}-${ci}`]){primeraDisponible={mi,ci};break outer;}}}
+  seleccionarClase(primeraDisponible.mi,primeraDisponible.ci);
+};
+
+window.closeCurso=function(){document.getElementById('cursoOverlay').classList.remove('show');document.getElementById('co-frame').src='';document.getElementById('co-frame').style.display='none';document.getElementById('co-placeholder').style.display='flex';document.body.style.overflow='';renderCursos(allCursos);};
+
+function renderIndice(c){
+  const el=document.getElementById('cr-modulos');
+  const p=_progresoData[c.id]||{};
+  el.innerHTML=(c.modulos||[]).map((mod,mi)=>{
+    const clasesDone=(mod.clases||[]).filter((_,ci)=>p[`${mi}-${ci}`]).length;
+    const isModOpen=mi===0||clasesDone>0||(mi>0&&estaModuloDesbloqueado(c,mi,p));
+    return`<div class="modulo-block">
+      <div class="mod-header" onclick="toggleModIndice(${mi})">
+        <div class="mod-h-num">${mi+1}</div>
+        <div class="mod-h-name">${esc(mod.nombre)}</div>
+        <div class="mod-h-count">${clasesDone}/${mod.clases?.length||0}</div>
+        <i class="fa-solid fa-chevron-down mod-h-arrow ${mi===0?'open':''}" id="mha-${mi}"></i>
+      </div>
+      <div class="mod-clases ${mi===0?'open':''}" id="mc-${mi}">
+        ${(mod.clases||[]).map((cl,ci)=>{
+          const isDone=!!p[`${mi}-${ci}`];
+          const isActive=_claseActual.mi===mi&&_claseActual.ci===ci;
+          const isLocked=!puedeVerClase(c,mi,ci,p);
+          return`<div class="clase-item ${isDone?'done':''} ${isActive?'active':''} ${isLocked?'locked':''}" id="ci-${mi}-${ci}" onclick="${isLocked?`mostrarToastBloqueado()`:`seleccionarClase(${mi},${ci})`}">
+            <div class="clase-check ${isDone?'done':isActive?'active':isLocked?'locked':''}">
+              ${isDone?'<i class="fa-solid fa-check" style="font-size:8px"></i>':isLocked?'':'<i class="fa-solid fa-play" style="font-size:7px"></i>'}
+            </div>
+            <div class="clase-item-name">${esc(cl.nombre)}</div>
+            ${cl.duracion?`<div class="clase-item-dur">${esc(cl.duracion)}</div>`:''}
+            ${isLocked?`<i class="fa-solid fa-lock clase-lock-icon"></i>`:''}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
   }).join('');
 }
 
-function updCursoCount(n){
-  document.getElementById('nb-c').textContent=n;
-  document.getElementById('cnt-c').textContent=n+' cursos disponibles';
+function estaModuloDesbloqueado(c,mi,p){
+  if(mi===0)return true;
+  const modAnterior=c.modulos[mi-1];
+  const todasCompletadas=(modAnterior.clases||[]).every((_,ci)=>p[`${mi-1}-${ci}`]);
+  return todasCompletadas;
 }
 
-// ── MODAL REPRODUCTOR ─────────────────────────────────────────
-window.openModal = function(c) {
-  if (typeof c === 'string') c = JSON.parse(c.replace(/'/g,'"'));
-  const link = c.link || '';
-  // Convertir link Drive a embed
-  let embedURL = '';
-  const fileMatch = link.match(/\/file\/d\/([^/]+)/);
-  const folderMatch = link.match(/\/folders\/([^/?]+)/);
-  if (fileMatch) {
-    embedURL = `https://drive.google.com/file/d/${fileMatch[1]}/preview`;
-  } else if (folderMatch) {
-    embedURL = `https://drive.google.com/embeddedfolderview?id=${folderMatch[1]}#list`;
-  } else {
-    embedURL = link;
-  }
+function puedeVerClase(c,mi,ci,p){
+  if(mi===0&&ci===0)return true;
+  if(ci>0)return!!p[`${mi}-${ci-1}`];
+  return estaModuloDesbloqueado(c,mi,p)&&!!p[`${mi}-0`]||( mi>0 && estaModuloDesbloqueado(c,mi,p) && ci===0 );
+}
 
-  document.getElementById('mTitle').textContent      = c.titulo || 'Curso';
-  document.getElementById('mCourseTitle').textContent = c.titulo || '';
-  document.getElementById('mInstructor').querySelector('span').textContent = c.instructor || '';
-  document.getElementById('mDesc').textContent       = c.descripcion || '';
-  document.getElementById('mFrame').src              = embedURL;
-
-  const temario = c.temario || [];
-  if (temario.length) {
-    document.getElementById('mTemario').style.display = 'block';
-    document.getElementById('mItems').innerHTML = temario.map(t=>`<div class="mt-item"><i class="fa-solid fa-circle-check"></i><span>${esc(t)}</span></div>`).join('');
-  } else {
-    document.getElementById('mTemario').style.display = 'none';
-  }
-  document.getElementById('modalOverlay').classList.add('show');
-  document.body.style.overflow = 'hidden';
+window.seleccionarClase=function(mi,ci){
+  if(!_cursoActual)return;
+  const p=_progresoData[_cursoActual.id]||{};
+  if(!puedeVerClase(_cursoActual,mi,ci,p)){mostrarToastBloqueado();return;}
+  _claseActual={mi,ci};
+  const mod=_cursoActual.modulos[mi];
+  const clase=mod.clases[ci];
+  // Reproductor
+  const link=clase.link||'';
+  const fileMatch=link.match(/\/file\/d\/([^/]+)/);
+  const embedURL=fileMatch?`https://drive.google.com/file/d/${fileMatch[1]}/preview`:link;
+  document.getElementById('co-frame').src=embedURL;
+  document.getElementById('co-frame').style.display='block';
+  document.getElementById('co-placeholder').style.display='none';
+  // Info
+  document.getElementById('co-mod-tag').textContent=`Módulo ${mi+1} — ${mod.nombre}`;
+  document.getElementById('co-clase-title').textContent=clase.nombre;
+  document.getElementById('co-instructor').querySelector('span').textContent=_cursoActual.instructor||'';
+  document.getElementById('co-desc').textContent=clase.descripcion||_cursoActual.descripcion||'';
+  // Botón completar
+  const isDone=!!p[`${mi}-${ci}`];
+  const btnDone=document.getElementById('co-btn-done');
+  btnDone.style.display='inline-flex';
+  if(isDone){btnDone.className='btn-complete done';btnDone.innerHTML='<i class="fa-solid fa-check"></i> Clase completada';}
+  else{btnDone.className='btn-complete';btnDone.innerHTML='<i class="fa-solid fa-check"></i> Marcar como completada';}
+  // Botón siguiente
+  const btnNext=document.getElementById('co-btn-next');
+  const hayNext=hayClaseSiguiente(mi,ci);
+  btnNext.style.display=hayNext?'inline-flex':'none';
+  // Resaltar en índice
+  renderIndice(_cursoActual);
 };
 
-window.openVideoModal = function(link, titulo) {
-  const fileMatch = link.match(/\/file\/d\/([^/]+)/);
-  const embedURL = fileMatch ? `https://drive.google.com/file/d/${fileMatch[1]}/preview` : link;
-  document.getElementById('mTitle').textContent = titulo || 'Video';
-  document.getElementById('mCourseTitle').textContent = titulo || '';
-  document.getElementById('mInstructor').querySelector('span').textContent = '';
-  document.getElementById('mDesc').textContent = '';
-  document.getElementById('mTemario').style.display = 'none';
-  document.getElementById('mFrame').src = embedURL;
-  document.getElementById('modalOverlay').classList.add('show');
-  document.body.style.overflow = 'hidden';
+function hayClaseSiguiente(mi,ci){
+  const mods=_cursoActual.modulos||[];
+  if(ci<(mods[mi].clases?.length||0)-1)return true;
+  if(mi<mods.length-1)return true;
+  return false;
+}
+
+window.irSiguienteClase=function(){
+  const mods=_cursoActual.modulos||[];
+  let{mi,ci}=_claseActual;
+  if(ci<(mods[mi].clases?.length||0)-1){seleccionarClase(mi,ci+1);}
+  else if(mi<mods.length-1){seleccionarClase(mi+1,0);}
 };
 
-window.closeModal = function(e) {
-  if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
+window.marcarClaseCompleta=async function(){
+  if(!_cursoActual||!_uid)return;
+  const{mi,ci}=_claseActual;
+  if(!_progresoData[_cursoActual.id])_progresoData[_cursoActual.id]={};
+  _progresoData[_cursoActual.id][`${mi}-${ci}`]=true;
+  await setDoc(doc(db,'miembros',_uid),{progresoCursos:_progresoData},{merge:true});
+  const prog=calcProgreso(_cursoActual);
+  actualizarBarraProgreso(prog);
+  renderIndice(_cursoActual);
+  const btnDone=document.getElementById('co-btn-done');
+  btnDone.className='btn-complete done';
+  btnDone.innerHTML='<i class="fa-solid fa-check"></i> Clase completada';
+  document.getElementById('co-btn-next').style.display=hayClaseSiguiente(mi,ci)?'inline-flex':'none';
+  if(prog.pct===100){setTimeout(()=>alert('🏆 ¡Felicitaciones! Completaste el curso "'+_cursoActual.titulo+'"'),300);}
 };
-window.closeModalDirect = function() {
-  document.getElementById('modalOverlay').classList.remove('show');
-  document.getElementById('mFrame').src = '';
-  document.body.style.overflow = '';
+
+function actualizarBarraProgreso(prog){
+  document.getElementById('co-prog-fill').style.width=prog.pct+'%';
+  document.getElementById('co-prog-txt').textContent=prog.pct+'%';
+  document.getElementById('cr-prog-fill').style.width=prog.pct+'%';
+  document.getElementById('cr-prog-lbl').textContent=prog.done+' de '+prog.total+' clases';
+  document.getElementById('cr-prog-pct').textContent=prog.pct+'%';
+}
+
+window.toggleModIndice=function(mi){
+  document.getElementById(`mc-${mi}`).classList.toggle('open');
+  document.getElementById(`mha-${mi}`).classList.toggle('open');
+};
+
+function mostrarToastBloqueado(){
+  const t=document.createElement('div');
+  t.style.cssText='position:fixed;top:80px;left:50%;transform:translateX(-50%);background:var(--tx);color:white;padding:10px 20px;border-radius:var(--rp);font-size:13px;font-weight:600;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.2);display:flex;align-items:center;gap:8px';
+  t.innerHTML='<i class="fa-solid fa-lock" style="color:#fbbf24"></i> Completa la clase anterior para desbloquear esta';
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2500);
+}
+
+// Video simple (para la sección Videos)
+window.openVideoSimple=function(link,titulo){
+  const fileMatch=link.match(/\/file\/d\/([^/]+)/);
+  const embedURL=fileMatch?`https://drive.google.com/file/d/${fileMatch[1]}/preview`:link;
+  _cursoActual={titulo:titulo,modulos:[{nombre:'Video',clases:[{nombre:titulo,link}]}],totalModulos:1,totalClases:1,id:'_video_'+Date.now()};
+  document.getElementById('co-title').textContent=titulo;
+  document.getElementById('cr-title').textContent=titulo;
+  document.getElementById('cr-meta').textContent='Video clínico';
+  document.getElementById('cr-modulos').innerHTML='';
+  actualizarBarraProgreso({total:1,done:0,pct:0});
+  document.getElementById('co-frame').src=embedURL;
+  document.getElementById('co-frame').style.display='block';
+  document.getElementById('co-placeholder').style.display='none';
+  document.getElementById('co-mod-tag').textContent='Video';
+  document.getElementById('co-clase-title').textContent=titulo;
+  document.getElementById('co-btn-done').style.display='none';
+  document.getElementById('co-btn-next').style.display='none';
+  document.getElementById('cursoOverlay').classList.add('show');
+  document.body.style.overflow='hidden';
 };
 
 // ── LIVE COUNTDOWN ─────────────────────────────────────────────
-function setLive(live) {
-  window._lISO=live.fechaISO; window._lLink=live.link||'#'; window._lTit=live.titulo;
-  const f=new Date(live.fechaISO);
-  document.getElementById('ltit').textContent=live.titulo;
-  document.getElementById('ldoc').textContent=(live.instructor||'')+' · '+f.toLocaleString('es-MX',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
-  if(timerID)clearInterval(timerID);
-  timerID=setInterval(tick,1000); tick();
-}
-function setNoLive(){
-  if(timerID)clearInterval(timerID);
-  document.getElementById('ltag').innerHTML='<span class="ldot"></span> Sin sesión programada';
-  document.getElementById('ltit').textContent='Próximo webinar';
-  document.getElementById('ldoc').textContent='Sesiones gratuitas cada 15 días';
-  document.getElementById('cdw').style.display='none';
-  const btn=document.getElementById('btnLv'); btn.textContent='📢 Seguir canal WA'; btn.onclick=()=>window.open('https://whatsapp.com/channel/0029VbCQbyVISTkPMfD7hz0N','_blank');
-}
-function tick(){
-  if(!window._lISO)return;
-  const diff=new Date(window._lISO).getTime()-Date.now();
-  const card=document.getElementById('lcard'),tag=document.getElementById('ltag'),btn=document.getElementById('btnLv');
-  if(diff<=0){card.classList.add('ln');tag.className='ltag ln-tag';tag.innerHTML='<span class="ldot"></span> 🔴 EN VIVO AHORA';document.getElementById('cdw').style.display='none';btn.textContent='▶ Unirme al live';btn.onclick=()=>window.open(window._lLink,'_blank');clearInterval(timerID);return;}
-  if(diff<=300000&&!alertShown){alertShown=true;card.classList.add('ls');tag.innerHTML='<span class="ldot"></span> ⚡ ¡Empieza en 5 min!';document.getElementById('alMsg').textContent='"'+(window._lTit||'Tu sesión')+'" comienza en menos de 5 minutos.';document.getElementById('alLnk').href=window._lLink;document.getElementById('lAl').classList.add('show');}
-  const p=n=>String(n).padStart(2,'0');
-  document.getElementById('cd-d').textContent=p(Math.floor(diff/86400000));
-  document.getElementById('cd-h').textContent=p(Math.floor((diff%86400000)/3600000));
-  document.getElementById('cd-m').textContent=p(Math.floor((diff%3600000)/60000));
-  document.getElementById('cd-s').textContent=p(Math.floor((diff%60000)/1000));
-}
+function setLive(live){window._lISO=live.fechaISO;window._lLink=live.link||'#';window._lTit=live.titulo;const f=new Date(live.fechaISO);document.getElementById('ltit').textContent=live.titulo;document.getElementById('ldoc').textContent=(live.instructor||'')+' · '+f.toLocaleString('es-MX',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});if(timerID)clearInterval(timerID);timerID=setInterval(tick,1000);tick();}
+function setNoLive(){if(timerID)clearInterval(timerID);document.getElementById('ltag').innerHTML='<span class="ldot"></span> Sin sesión programada';document.getElementById('ltit').textContent='Próximo webinar';document.getElementById('ldoc').textContent='Sesiones cada 15 días';document.getElementById('cdw').style.display='none';const btn=document.getElementById('btnLv');btn.textContent='📢 Canal WA';btn.onclick=()=>window.open('https://whatsapp.com/channel/0029VbCQbyVISTkPMfD7hz0N','_blank');}
+function tick(){if(!window._lISO)return;const diff=new Date(window._lISO).getTime()-Date.now();const card=document.getElementById('lcard'),tag=document.getElementById('ltag'),btn=document.getElementById('btnLv');if(diff<=0){card.classList.add('ln');tag.className='ltag ln-tag';tag.innerHTML='<span class="ldot"></span> 🔴 EN VIVO AHORA';document.getElementById('cdw').style.display='none';btn.textContent='▶ Unirme';btn.onclick=()=>window.open(window._lLink,'_blank');clearInterval(timerID);return;}if(diff<=300000&&!alertShown){alertShown=true;card.classList.add('ls');tag.innerHTML='<span class="ldot"></span> ⚡ ¡5 min!';document.getElementById('alMsg').textContent='"'+(window._lTit||'Tu sesión')+'" comienza en menos de 5 minutos.';document.getElementById('alLnk').href=window._lLink;document.getElementById('lAl').classList.add('show');}const p=n=>String(n).padStart(2,'0');document.getElementById('cd-d').textContent=p(Math.floor(diff/86400000));document.getElementById('cd-h').textContent=p(Math.floor((diff%86400000)/3600000));document.getElementById('cd-m').textContent=p(Math.floor((diff%3600000)/60000));document.getElementById('cd-s').textContent=p(Math.floor((diff%60000)/1000));}
 window.lvClick=()=>{if(!window._lISO)return;const d=new Date(window._lISO),s=d.toISOString().replace(/[-:.]/g,'').slice(0,15)+'Z',e=new Date(d.getTime()+3600000).toISOString().replace(/[-:.]/g,'').slice(0,15)+'Z';window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(window._lTit||'Webinar OdonTeck')}&dates=${s}/${e}`),'_blank';};
 window.fC=(cat,el)=>{document.querySelectorAll('#ctabs .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderCursos(cat==='todos'?allCursos:allCursos.filter(c=>c.categoria===cat));};
 function esc(s){const d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML;}

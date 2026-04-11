@@ -10,30 +10,59 @@
   <style>
     :root{
       --pr:#005187;--pr2:#0c74c4;--prb:#eef4fa;
-      --bg:#f5f7fb;--sur:#ffffff;--soft:#eef3f9;
+      --bg:#f5f7fb;--sur:#fff;--soft:#eef3f9;
       --tx:#0d1b2f;--mu:#5f6f86;--ln:#dbe4ef;
       --gn:#059669;--gnb:#ecfdf5;
       --am:#d97706;--amb:#fffbeb;
       --rd:#dc2626;--rdb:#fef2f2;
-      --ra:20px;--rsm:14px;--rp:999px;
-      --sh:0 16px 45px rgba(0,36,81,.10);
+      --ra:16px;--rsm:12px;--rp:999px;
+      --sh:0 8px 32px rgba(0,36,81,.09);
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
     body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
     a{text-decoration:none;color:inherit}
     button{font-family:inherit;cursor:pointer;border:none}
 
-    /* SHELL */
-    .shell{display:grid;grid-template-columns:228px 1fr;min-height:100vh}
+    /* ── MODAL BLOQUEADO ── */
+    .block-screen{position:fixed;inset:0;background:rgba(13,27,47,.92);z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column;gap:1rem;text-align:center;padding:2rem}
+    .block-screen.show{display:flex}
+    .bs-icon{font-size:48px;margin-bottom:8px}
+    .bs-title{font-family:'Inter',sans-serif;font-size:24px;font-weight:800;color:white}
+    .bs-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:400px;line-height:1.6}
+    .btn-bs{margin-top:8px;padding:12px 28px;background:var(--pr);color:white;font-size:15px;font-weight:700;border-radius:var(--rp);transition:background .15s}
+    .btn-bs:hover{background:var(--pr2)}
 
-    /* SIDEBAR */
+    /* ── MODAL REPRODUCTOR ── */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:8000;display:none;align-items:flex-start;justify-content:center;padding:24px 16px;overflow-y:auto}
+    .modal-overlay.show{display:flex}
+    .modal-box{background:var(--sur);border-radius:20px;width:100%;max-width:900px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.4);animation:mIn .25s ease}
+    @keyframes mIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--ln)}
+    .modal-title{font-size:16px;font-weight:700;color:var(--tx)}
+    .modal-close{width:32px;height:32px;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--mu);transition:all .15s}
+    .modal-close:hover{background:var(--ln);color:var(--tx)}
+    .modal-video{position:relative;width:100%;padding-bottom:56.25%;background:#000}
+    .modal-video iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+    .modal-info{padding:20px 22px}
+    .modal-course-title{font-size:20px;font-weight:800;margin-bottom:6px}
+    .modal-instructor{font-size:13px;color:var(--mu);margin-bottom:16px;display:flex;align-items:center;gap:6px}
+    .modal-desc{font-size:14px;color:var(--mu);line-height:1.7;margin-bottom:16px}
+    .modal-temario{background:var(--soft);border-radius:var(--rsm);padding:14px 16px}
+    .mt-title{font-size:12px;font-weight:700;color:var(--pr);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+    .mt-item{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid var(--ln);font-size:13px}
+    .mt-item:last-child{border:none;padding-bottom:0}
+    .mt-item i{color:var(--pr);margin-top:2px;width:14px;flex-shrink:0}
+
+    /* ── SHELL ── */
+    .shell{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+
+    /* ── SIDEBAR ── */
     .sb{background:var(--tx);color:white;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
     .sb-logo{display:flex;align-items:center;gap:10px;padding:1.2rem 1rem 1rem;border-bottom:1px solid rgba(255,255,255,.08)}
-    .sb-img{width:36px;height:36px;border-radius:10px;overflow:hidden;flex-shrink:0}
+    .sb-img{width:36px;height:36px;border-radius:10px;overflow:hidden;flex-shrink:0;background:var(--pr)}
     .sb-img img{width:36px;height:36px;object-fit:cover}
     .sb-title{font-size:13px;font-weight:700;line-height:1.1}
-    .sb-sub2{font-size:10px;color:rgba(255,255,255,.38);margin-top:1px}
+    .sb-sub2{font-size:10px;color:rgba(255,255,255,.35);margin-top:1px}
     .nav-s{padding:.7rem .65rem .3rem}
     .nav-l{font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.28);padding:0 .45rem;margin-bottom:3px}
     .ni{display:flex;align-items:center;gap:8px;padding:8px .65rem;border-radius:10px;font-size:13px;color:rgba(255,255,255,.56);cursor:pointer;transition:all .15s;margin-bottom:1px}
@@ -42,7 +71,7 @@
     .ni.active{background:var(--pr);color:white;font-weight:600}
     .nbg{margin-left:auto;font-size:9px;font-weight:700;border-radius:var(--rp);padding:1px 6px;min-width:16px;text-align:center;line-height:1.7}
     .nr{background:#dc2626;color:white}.ng{background:#059669;color:white}.nw{background:rgba(255,255,255,.14);color:rgba(255,255,255,.8)}
-    .sb-plan{margin:.6rem .65rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:9px 11px;font-size:11px}
+    .sb-plan{margin:.6rem .65rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:9px 11px;font-size:11px;display:none}
     .sbpl{color:rgba(255,255,255,.38);font-size:9px;text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px}
     .sbpn{color:white;font-weight:700;margin-bottom:1px}
     .sbpv{font-size:10px;color:rgba(255,255,255,.42)}
@@ -59,7 +88,7 @@
     .sb-ex{margin-left:auto;font-size:9px;color:rgba(255,255,255,.32);background:rgba(255,255,255,.07);border-radius:5px;padding:3px 7px;cursor:pointer;transition:all .15s;flex-shrink:0}
     .sb-ex:hover{color:white;background:rgba(255,255,255,.15)}
 
-    /* MAIN */
+    /* ── MAIN ── */
     .main{display:flex;flex-direction:column;gap:1.3rem;padding:1.75rem 1.75rem 3rem;background:var(--bg)}
     .topbar{display:flex;align-items:flex-start;justify-content:space-between}
     .greeting{font-size:20px;font-weight:800;color:var(--tx);line-height:1.1}
@@ -72,19 +101,9 @@
     /* ALERTA RENOVACIÓN */
     .renew-bar{background:var(--amb);border:1px solid #fcd34d;border-radius:var(--rsm);padding:12px 16px;display:none;align-items:center;gap:12px}
     .renew-bar.show{display:flex}
-    .rb-txt{font-size:13px;flex:1;line-height:1.5}
-    .rb-txt b{color:var(--am)}
+    .rb-txt{font-size:13px;flex:1;line-height:1.5}.rb-txt b{color:var(--am)}
     .btn-rn{padding:7px 16px;background:var(--pr);color:white;font-size:12px;font-weight:700;border-radius:var(--rp);transition:background .15s;flex-shrink:0}
     .btn-rn:hover{background:var(--pr2)}
-
-    /* MÉTRICAS */
-    .mets{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}
-    .mc{background:var(--sur);border:1px solid var(--ln);border-radius:var(--ra);padding:.9rem 1.1rem;animation:up .4s ease forwards;opacity:0}
-    .mc:nth-child(1){animation-delay:.05s}.mc:nth-child(2){animation-delay:.1s}.mc:nth-child(3){animation-delay:.15s}.mc:nth-child(4){animation-delay:.2s}
-    .mc-l{font-size:10px;font-weight:600;color:var(--mu);display:flex;align-items:center;gap:5px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
-    .mc-dot{width:6px;height:6px;border-radius:50%}
-    .mc-v{font-size:24px;font-weight:800;line-height:1;margin-bottom:3px}
-    .mc-s{font-size:11px;color:var(--mu)}
 
     /* GRID */
     .g2{display:grid;grid-template-columns:1fr 292px;gap:1.3rem}
@@ -101,7 +120,6 @@
     .tabs{display:flex;gap:4px;margin-bottom:.9rem;flex-wrap:wrap}
     .tab{padding:5px 13px;border-radius:var(--rp);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;color:var(--mu);background:var(--soft);border:1px solid var(--ln)}
     .tab.active{background:var(--tx);color:white;border-color:var(--tx)}
-    .tab:hover:not(.active){background:var(--ln)}
 
     /* CONTENT LIST */
     .clist{display:flex;flex-direction:column;gap:6px}
@@ -119,6 +137,7 @@
     .cc{background:var(--sur);border:1px solid var(--ln);border-radius:var(--ra);overflow:hidden;transition:transform .2s,box-shadow .2s;cursor:pointer}
     .cc:hover{transform:translateY(-3px);box-shadow:var(--sh)}
     .cc-cover{height:115px;background:var(--tx);display:flex;align-items:center;justify-content:center;font-size:34px;position:relative;overflow:hidden}
+    .cc-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5}
     .cc-em{position:relative;z-index:1}
     .cc-badge{position:absolute;top:7px;right:7px;z-index:2;font-size:9px;font-weight:700;padding:2px 7px;border-radius:var(--rp)}
     .cb-new{background:var(--pr);color:white}.cb-free{background:var(--am);color:white}
@@ -128,8 +147,18 @@
     .cc-pw{height:3px;background:var(--ln);border-radius:var(--rp);margin-bottom:3px}
     .cc-pb{height:100%;background:var(--pr);border-radius:var(--rp)}
     .cc-pl{font-size:10px;color:var(--mu)}
-    .btn-cc{width:100%;margin-top:7px;padding:6px;background:var(--prb);color:var(--pr);font-size:12px;font-weight:700;border-radius:9px;transition:background .15s}
-    .btn-cc:hover{background:#d4e7f7}
+    .btn-cc{width:100%;margin-top:7px;padding:7px;background:var(--pr);color:white;font-size:12px;font-weight:700;border-radius:9px;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px}
+    .btn-cc:hover{background:var(--pr2);transform:translateY(-1px)}
+
+    /* BANNER VIP */
+    .vip-banner{background:linear-gradient(135deg,var(--tx) 0%,#1a3a5c 100%);border-radius:var(--ra);padding:1.1rem 1.3rem;display:flex;align-items:center;gap:16px;cursor:pointer;transition:opacity .15s;border:none;width:100%;text-align:left}
+    .vip-banner:hover{opacity:.92}
+    .vip-icon{width:46px;height:46px;background:rgba(255,255,255,.12);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+    .vip-text{flex:1}
+    .vip-title{font-size:14px;font-weight:800;color:white;margin-bottom:3px}
+    .vip-sub{font-size:12px;color:rgba(255,255,255,.6);line-height:1.4}
+    .vip-badge{background:#fbbf24;color:#78350f;font-size:11px;font-weight:800;padding:4px 10px;border-radius:var(--rp);flex-shrink:0}
+    .vip-arrow{color:rgba(255,255,255,.4);font-size:16px;flex-shrink:0}
 
     /* NEWS */
     .nlist{display:flex;flex-direction:column;gap:8px}
@@ -138,7 +167,7 @@
     .nico{width:34px;height:34px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px}
     .ntit{font-size:13px;font-weight:700;margin-bottom:2px}
     .nbod{font-size:12px;color:var(--mu);line-height:1.45}
-    .ndat{font-size:10px;color:var(--ln);margin-top:3px}
+    .ndat{font-size:10px;color:var(--g3,#b0bac8);margin-top:3px}
 
     /* LIB ROWS */
     .lrow{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--soft)}
@@ -167,7 +196,7 @@
     .cdl{font-size:9px;color:rgba(255,255,255,.38);text-transform:uppercase}
     .cds{font-size:16px;font-weight:300;color:rgba(255,255,255,.3);padding-top:1px}
     .btn-lv{width:100%;padding:8px;background:var(--pr);color:white;font-size:12px;font-weight:700;border-radius:9px;transition:all .15s;position:relative;z-index:1}
-    .btn-lv:hover{background:var(--pr2);transform:translateY(-1px)}
+    .btn-lv:hover{background:var(--pr2)}
     .lcard.ln .btn-lv{background:white;color:var(--pr)}
 
     /* WA */
@@ -184,7 +213,7 @@
     .dlbl{font-size:9px;font-weight:700;color:var(--am);letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px}
     .dpct{font-size:26px;font-weight:900;color:var(--am);line-height:1;margin-bottom:2px}
     .dsub{font-size:11px;color:var(--am);opacity:.8;margin-bottom:8px}
-    .btn-d{width:100%;padding:7px;background:var(--am);color:white;font-size:12px;font-weight:700;border-radius:9px;transition:opacity .15s}
+    .btn-d{width:100%;padding:7px;background:var(--am);color:white;font-size:12px;font-weight:700;border-radius:9px}
     .btn-d:hover{opacity:.88}
 
     /* CERT */
@@ -196,7 +225,6 @@
     .ptr{height:4px;background:rgba(0,81,135,.14);border-radius:var(--rp);margin-bottom:8px}
     .pfi{height:100%;background:var(--pr);border-radius:var(--rp)}
     .btn-cert{width:100%;padding:7px;background:var(--pr);color:white;font-size:12px;font-weight:700;border-radius:9px}
-    .btn-cert:hover{opacity:.88}
 
     /* PERFIL */
     .prof-card{background:var(--sur);border:1px solid var(--ln);border-radius:var(--ra);padding:1.3rem}
@@ -210,7 +238,7 @@
     .pf-inp:focus{border-color:var(--pr);background:#fff}
     .pf-inp[readonly]{cursor:not-allowed;opacity:.7}
     .btn-save{width:100%;margin-top:10px;padding:8px;background:var(--pr);color:white;font-size:13px;font-weight:700;border-radius:10px;transition:all .15s}
-    .btn-save:hover{background:var(--pr2);transform:translateY(-1px)}
+    .btn-save:hover{background:var(--pr2)}
     .prof-msg{text-align:center;font-size:12px;margin-top:6px;display:none}
 
     /* SUSCRIPCIÓN */
@@ -226,9 +254,11 @@
     .sub-row:last-child{border:none}
     .sub-row span:first-child{color:var(--mu)}
     .sub-row span:last-child{font-weight:700}
+    .btn-cancel{width:100%;padding:8px;background:var(--rdb);color:var(--rd);font-size:12px;font-weight:700;border-radius:9px;border:1px solid #fecaca;margin-top:10px;transition:all .15s}
+    .btn-cancel:hover{background:#ffcdd2}
 
     /* ALERT LIVE */
-    .live-al{position:fixed;bottom:84px;right:20px;background:var(--tx);color:white;border-left:4px solid var(--pr);padding:12px 15px;border-radius:12px;font-size:13px;box-shadow:0 8px 28px rgba(0,0,0,.22);z-index:9000;max-width:275px;display:none;animation:si .4s ease}
+    .live-al{position:fixed;bottom:84px;right:20px;background:var(--tx);color:white;border-left:4px solid var(--pr);padding:12px 15px;border-radius:12px;font-size:13px;box-shadow:0 8px 28px rgba(0,0,0,.22);z-index:7000;max-width:275px;display:none;animation:si .4s ease}
     .live-al.show{display:block}
     @keyframes si{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}
     .al-t{font-weight:800;font-size:14px;margin-bottom:3px;color:#7dd3fc}
@@ -236,23 +266,30 @@
     .al-x:hover{opacity:1}
     .btn-al{display:block;margin-top:8px;padding:6px;background:var(--pr);color:white;font-size:11px;font-weight:700;border-radius:7px;text-align:center}
 
-    /* SKEL */
+    /* SK */
     .sk{background:linear-gradient(90deg,var(--ln) 25%,var(--soft) 50%,var(--ln) 75%);background-size:200% 100%;animation:sh 1.2s infinite;border-radius:8px}
     @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-    /* SECTIONS */
     .sv{display:none}.sv.active{display:block}
     .empty{text-align:center;padding:2rem;color:var(--mu)}
     .empty span{display:block;font-size:26px;margin-bottom:5px}
-
     @keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
     @media(max-width:1100px){.g2{grid-template-columns:1fr}.rcol{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}}
-    @media(max-width:800px){.shell{grid-template-columns:1fr}.sb{display:none}.mets{grid-template-columns:repeat(2,1fr)}.main{padding:1.2rem}}
-    @media(max-width:500px){.mets{grid-template-columns:1fr 1fr}.rcol{grid-template-columns:1fr!important}.cgrid{grid-template-columns:1fr}}
+    @media(max-width:800px){.shell{grid-template-columns:1fr}.sb{display:none}.main{padding:1.2rem}}
+    @media(max-width:500px){.rcol{grid-template-columns:1fr!important}.cgrid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
+
+<!-- PANTALLA BLOQUEADA -->
+<div class="block-screen" id="blockScreen">
+  <div class="bs-icon">🔒</div>
+  <div class="bs-title">Membresía cancelada</div>
+  <div class="bs-sub">Tu membresía ha sido cancelada o ha vencido. Renueva para volver a acceder a todo el contenido del Club Dental.</div>
+  <button class="btn-bs" onclick="window.location.href='club-login.html?plan=mensual'">Renovar membresía</button>
+  <button onclick="doLogout()" style="margin-top:8px;font-size:13px;color:rgba(255,255,255,.45);background:none;border:none;cursor:pointer">Cerrar sesión</button>
+</div>
 
 <!-- ALERTA LIVE -->
 <div class="live-al" id="lAl">
@@ -262,6 +299,28 @@
   <a class="btn-al" id="alLnk" href="#" target="_blank">Unirme ahora →</a>
 </div>
 
+<!-- MODAL REPRODUCTOR -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal-box" id="modalBox">
+    <div class="modal-head">
+      <div class="modal-title" id="mTitle">Cargando...</div>
+      <div class="modal-close" onclick="closeModalDirect()"><i class="fa-solid fa-xmark"></i></div>
+    </div>
+    <div class="modal-video">
+      <iframe id="mFrame" src="" allowfullscreen allow="autoplay"></iframe>
+    </div>
+    <div class="modal-info">
+      <div class="modal-course-title" id="mCourseTitle"></div>
+      <div class="modal-instructor" id="mInstructor"><i class="fa-solid fa-user-doctor" style="color:var(--pr)"></i><span></span></div>
+      <div class="modal-desc" id="mDesc"></div>
+      <div class="modal-temario" id="mTemario" style="display:none">
+        <div class="mt-title"><i class="fa-solid fa-list-check" style="margin-right:6px"></i>Lo que aprenderás</div>
+        <div id="mItems"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="shell">
 <!-- ══ SIDEBAR ══ -->
 <aside class="sb">
@@ -269,41 +328,35 @@
     <div class="sb-img"><img src="../assets/img/logo/logo.jpg" alt="OdonTeck" onerror="this.parentElement.style.background='var(--pr)'"></div>
     <div><div class="sb-title">OdonTeck</div><div class="sb-sub2">Club Dental</div></div>
   </div>
-
   <div class="nav-s">
     <div class="nav-l">Principal</div>
     <div class="ni active" onclick="go('inicio',this)"><i class="fa-solid fa-house"></i>Inicio</div>
-    <div class="ni" onclick="go('cursos',this)"><i class="fa-solid fa-book-open"></i>Biblioteca de cursos<span class="nbg nw" id="nb-c">2</span></div>
+    <div class="ni" onclick="go('cursos',this)"><i class="fa-solid fa-book-open"></i>Biblioteca de cursos<span class="nbg nw" id="nb-c">0</span></div>
     <div class="ni" onclick="go('videos',this)"><i class="fa-solid fa-video"></i>Videos<span class="nbg nr" id="nb-v">0</span></div>
     <div class="ni" onclick="go('lives',this)"><i class="fa-regular fa-circle-dot"></i>Sesiones en vivo</div>
     <div class="ni" onclick="go('pdfs',this)"><i class="fa-solid fa-file-pdf"></i>PDFs<span class="nbg nr" id="nb-p">0</span></div>
   </div>
-
   <div class="nav-s">
     <div class="nav-l">Biblioteca</div>
     <div class="ni" onclick="go('bib',this)"><i class="fa-regular fa-calendar"></i>Abril 2026<span class="nbg ng">7</span></div>
     <div class="ni" onclick="go('bib',this)"><i class="fa-regular fa-calendar"></i>Marzo 2026<span class="nbg ng">5</span></div>
   </div>
-
   <div class="nav-s">
     <div class="nav-l">Mi cuenta</div>
     <div class="ni" onclick="go('perfil',this)"><i class="fa-regular fa-user"></i>Mi perfil</div>
     <div class="ni" onclick="go('suscripcion',this)"><i class="fa-solid fa-crown"></i>Suscripción</div>
     <div class="ni" onclick="go('config',this)"><i class="fa-solid fa-sliders"></i>Configuración</div>
   </div>
-
-  <div class="sb-plan" id="sb-plan" style="display:none">
+  <div class="sb-plan" id="sb-plan">
     <div class="sbpl">Plan activo</div>
     <div class="sbpn" id="sbpn">—</div>
     <div class="sbpv" id="sbpv">—</div>
   </div>
-
   <div class="adm-btn" id="admBtn" style="display:none" onclick="window.open('admin-club.html','_blank')">
     <i class="fa-solid fa-shield-halved"></i>
     <span style="font-size:12px;font-weight:600">Panel Admin</span>
     <i class="fa-solid fa-arrow-up-right-from-square" style="margin-left:auto;font-size:9px;opacity:.55"></i>
   </div>
-
   <div class="sb-ft">
     <div class="sb-user">
       <div class="sb-av" id="sbAv">?</div>
@@ -315,7 +368,6 @@
 
 <!-- ══ MAIN ══ -->
 <main class="main">
-
   <div class="topbar">
     <div>
       <div class="greeting">Bienvenido, <em id="uGr">...</em></div>
@@ -324,39 +376,49 @@
     <button class="nbbtn"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><div class="ndot"></div></button>
   </div>
 
-  <!-- ALERTA RENOVACIÓN -->
   <div class="renew-bar" id="renewBar">
     <div class="rb-txt"><b id="rbMsg">Tu membresía vence pronto.</b> <span id="rbSub">Renueva para mantener tu acceso.</span></div>
     <button class="btn-rn" onclick="window.open('club-login.html?plan=mensual','_blank')">Renovar</button>
-  </div>
-
-  <!-- MÉTRICAS -->
-  <div class="mets">
-    <div class="mc"><div class="mc-l"><span class="mc-dot" style="background:var(--pr)"></span>Tu plan</div><div class="mc-v" style="color:var(--pr);font-size:16px" id="m-plan">—</div><div class="mc-s" id="m-vence">—</div></div>
-    <div class="mc"><div class="mc-l"><span class="mc-dot" style="background:var(--pr2)"></span>Videos</div><div class="mc-v" style="color:var(--pr2)" id="m-v">0</div><div class="mc-s">Publicados</div></div>
-    <div class="mc"><div class="mc-l"><span class="mc-dot" style="background:var(--am)"></span>PDFs</div><div class="mc-v" style="color:var(--am)" id="m-p">0</div><div class="mc-s">Disponibles</div></div>
-    <div class="mc"><div class="mc-l"><span class="mc-dot" style="background:#7c3aed"></span>Cursos</div><div class="mc-v" style="color:#7c3aed" id="m-c">2</div><div class="mc-s">En biblioteca</div></div>
   </div>
 
   <!-- ══ INICIO ══ -->
   <div class="sv active" id="sv-inicio">
     <div class="g2">
       <div class="lcol">
+
+        <!-- BANNER VIP -->
+        <button class="vip-banner" onclick="window.open('https://wa.me/5212381479365?text=Hola%2C%20soy%20miembro%20VIP%20del%20Club%20Dental%20y%20me%20interesa%20un%20curso','_blank')">
+          <div class="vip-icon">🎓</div>
+          <div class="vip-text">
+            <div class="vip-title">¿Quieres cursos actualizados de OdonTeck?</div>
+            <div class="vip-sub">Recuerda que eres miembro VIP y recibes 20% de descuento en todas nuestras capacitaciones. Contáctanos por WhatsApp.</div>
+          </div>
+          <div class="vip-badge">20% OFF</div>
+          <i class="fa-brands fa-whatsapp vip-arrow" style="font-size:22px;color:#4ade80"></i>
+        </button>
+
+        <!-- NOTICIAS -->
         <div class="panel">
           <div class="ph"><span class="pt">📢 Noticias y novedades</span><span class="pa" onclick="go('cursos',null)">Ver cursos →</span></div>
-          <div class="nlist" id="nlist"><div class="sk" style="height:58px;margin-bottom:7px"></div><div class="sk" style="height:58px;margin-bottom:7px"></div><div class="sk" style="height:58px"></div></div>
+          <div class="nlist" id="nlist"><div class="sk" style="height:58px;margin-bottom:7px"></div><div class="sk" style="height:58px"></div></div>
         </div>
+
+        <!-- CONTENIDO RECIENTE DINÁMICO -->
         <div class="panel">
-          <div class="ph"><span class="pt">Contenido reciente</span></div>
+          <div class="ph"><span class="pt">🆕 Contenido reciente</span><span class="pa" onclick="go('cursos',null)">Ver todo</span></div>
           <div class="clist" id="reclist"><div class="sk" style="height:50px;margin-bottom:6px"></div><div class="sk" style="height:50px;margin-bottom:6px"></div><div class="sk" style="height:50px"></div></div>
         </div>
+
+        <!-- BIBLIOTECA -->
         <div class="panel">
-          <div class="ph"><span class="pt">Biblioteca por mes</span><span class="pa" onclick="go('bib',null)">Ver archivos</span></div>
+          <div class="ph"><span class="pt">Biblioteca por mes</span><span class="pa">Ver archivos</span></div>
           <div class="lrow"><div class="lname">Abril 2026</div><div class="lbdgs"><span class="lb" style="background:var(--prb);color:var(--pr)">4 videos</span><span class="lb" style="background:var(--rdb);color:var(--rd)">2 PDFs</span><span class="lb" style="background:var(--gnb);color:var(--gn)">1 live</span></div></div>
           <div class="lrow"><div class="lname">Marzo 2026</div><div class="lbdgs"><span class="lb" style="background:var(--prb);color:var(--pr)">3 videos</span><span class="lb" style="background:var(--rdb);color:var(--rd)">2 PDFs</span></div></div>
         </div>
       </div>
+
       <div class="rcol">
+        <!-- LIVE -->
         <div class="lcard" id="lcard">
           <div class="ltag" id="ltag"><span class="ldot"></span> Cargando...</div>
           <div class="ltit" id="ltit"></div>
@@ -372,6 +434,7 @@
           </div>
           <button class="btn-lv" id="btnLv" onclick="lvClick()">+ Agregar a calendario</button>
         </div>
+        <!-- WA -->
         <div class="wcard">
           <div class="whead">
             <div class="wico"><svg viewBox="0 0 24 24" fill="#16a34a"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.138.563 4.14 1.535 5.874L0 24l6.29-1.508A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.814 9.814 0 01-5.058-1.4l-.361-.214-3.735.896.944-3.653-.235-.374A9.817 9.817 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg></div>
@@ -380,10 +443,10 @@
           <button class="btn-wa" onclick="window.open('https://whatsapp.com/channel/0029VbCQbyVISTkPMfD7hz0N','_blank')">📢 Seguir canal</button>
         </div>
         <div class="dcard">
-          <div class="dlbl">Tu descuento exclusivo</div>
+          <div class="dlbl">Tu descuento VIP</div>
           <div class="dpct">20%</div>
           <div class="dsub">En todos los cursos OdonTeck</div>
-          <button class="btn-d" onclick="go('cursos',null)">Ver cursos</button>
+          <button class="btn-d" onclick="window.open('https://wa.me/5212381479365?text=Hola%2C%20quiero%20usar%20mi%20descuento%20del%2020%25%20como%20miembro%20del%20Club%20Dental','_blank')">Canjear descuento</button>
         </div>
         <div class="certc">
           <div class="certl">Certificado abril 2026</div>
@@ -400,7 +463,7 @@
   <!-- ══ CURSOS ══ -->
   <div class="sv" id="sv-cursos">
     <div class="panel">
-      <div class="ph"><span class="pt">📚 Biblioteca de cursos</span><span class="pa" id="cnt-c">2 cursos disponibles</span></div>
+      <div class="ph"><span class="pt">📚 Biblioteca de cursos</span><span class="pa" id="cnt-c">Cargando...</span></div>
       <div class="tabs" id="ctabs">
         <div class="tab active" onclick="fC('todos',this)">Todos</div>
         <div class="tab" onclick="fC('cirugia',this)">Cirugía</div>
@@ -433,7 +496,7 @@
 
   <!-- ══ BIBLIOTECA ══ -->
   <div class="sv" id="sv-bib">
-    <div class="panel"><div class="ph"><span class="pt">📁 Biblioteca de contenido</span></div>
+    <div class="panel"><div class="ph"><span class="pt">📁 Biblioteca</span></div>
     <div class="clist" id="blist"><div class="sk" style="height:50px"></div></div></div>
   </div>
 
@@ -446,7 +509,7 @@
         <div class="prof-ro" id="pro">Miembro Club Dental</div>
         <div class="pf-grid">
           <div><div class="pf-lbl">Nombre completo</div><input class="pf-inp" id="pf-nm" placeholder="Dr. Juan Pérez"></div>
-          <div><div class="pf-lbl">Correo electrónico</div><input class="pf-inp" id="pf-em" placeholder="tu@email.com" readonly></div>
+          <div><div class="pf-lbl">Correo</div><input class="pf-inp" id="pf-em" readonly></div>
           <div><div class="pf-lbl">WhatsApp</div><input class="pf-inp" id="pf-ph" placeholder="+52 238 000 0000"></div>
           <div><div class="pf-lbl">Especialidad</div><input class="pf-inp" id="pf-sp" placeholder="Odontología general..."></div>
         </div>
@@ -465,7 +528,7 @@
         <div class="panel">
           <div class="ph"><span class="pt">🔐 Seguridad</span></div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 11px;background:var(--soft);border-radius:11px">
-            <div><div style="font-size:13px;font-weight:600">Contraseña</div><div style="font-size:11px;color:var(--mu)">Cambia tu contraseña de acceso</div></div>
+            <div><div style="font-size:13px;font-weight:600">Contraseña</div><div style="font-size:11px;color:var(--mu)">Cambia tu contraseña</div></div>
             <button onclick="sendReset()" style="font-size:12px;font-weight:600;color:var(--pr);background:var(--prb);padding:6px 12px;border-radius:8px">Cambiar</button>
           </div>
         </div>
@@ -486,10 +549,8 @@
         <div class="sub-row"><span>Inicio</span><span id="s-inicio">—</span></div>
         <div class="sub-row"><span>Próximo cobro</span><span id="s-vence">—</span></div>
         <div class="sub-row"><span>Estado</span><span id="s-estado" style="color:var(--gn)">—</span></div>
-        <div style="display:flex;gap:8px;margin-top:14px">
-          <button onclick="window.open('club-login.html?plan=mensual','_blank')" style="flex:1;padding:8px;background:var(--pr);color:white;font-size:12px;font-weight:700;border-radius:9px">Renovar plan</button>
-          <button onclick="go('inicio',null)" style="flex:1;padding:8px;background:var(--soft);color:var(--tx);font-size:12px;font-weight:600;border-radius:9px;border:1px solid var(--ln)">Ver contenido</button>
-        </div>
+        <button onclick="window.open('club-login.html?plan=mensual','_blank')" style="width:100%;padding:8px;background:var(--pr);color:white;font-size:12px;font-weight:700;border-radius:9px;margin-top:14px">Renovar / Cambiar plan</button>
+        <button class="btn-cancel" id="btnCancel" onclick="cancelarSub()">Cancelar membresía</button>
       </div>
       <div class="panel">
         <div class="ph"><span class="pt">✅ Beneficios incluidos</span></div>
@@ -499,6 +560,7 @@
           <div style="display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--gnb);border-radius:10px;font-size:13px"><i class="fa-solid fa-check" style="color:var(--gn);width:14px"></i> PDFs y guías clínicas</div>
           <div style="display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--gnb);border-radius:10px;font-size:13px"><i class="fa-solid fa-check" style="color:var(--gn);width:14px"></i> 20% descuento en cursos</div>
           <div style="display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--gnb);border-radius:10px;font-size:13px"><i class="fa-solid fa-check" style="color:var(--gn);width:14px"></i> Canal exclusivo WhatsApp</div>
+          <div style="display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--gnb);border-radius:10px;font-size:13px"><i class="fa-solid fa-check" style="color:var(--gn);width:14px"></i> Reproductor de cursos integrado</div>
         </div>
       </div>
     </div>
@@ -517,10 +579,6 @@
           <div><div style="font-size:13px;font-weight:600">Recordatorio de live</div><div style="font-size:11px;color:var(--mu)">5 minutos antes del webinar</div></div>
           <input type="checkbox" checked style="accent-color:var(--pr);width:17px;height:17px">
         </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 13px;background:var(--soft);border-radius:11px">
-          <div><div style="font-size:13px;font-weight:600">Aviso de renovación</div><div style="font-size:11px;color:var(--mu)">2 días antes del vencimiento</div></div>
-          <input type="checkbox" checked style="accent-color:var(--pr);width:17px;height:17px">
-        </div>
         <button onclick="doLogout()" style="width:100%;padding:9px;background:var(--rdb);color:var(--rd);font-size:13px;font-weight:700;border-radius:10px;border:1px solid #fecaca;margin-top:4px">
           <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
         </button>
@@ -532,8 +590,8 @@
 </div>
 
 <!-- WA FLOTANTE -->
-<a href="https://wa.me/5212381479365?text=Hola%2C%20soy%20miembro%20del%20Club%20Dental"
-   target="_blank" style="position:fixed;bottom:20px;right:20px;z-index:9999;background:#16a34a;border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(22,163,74,.36);transition:transform .2s"
+<a href="https://wa.me/5212381479365?text=Hola%2C%20soy%20miembro%20del%20Club%20Dental" target="_blank"
+   style="position:fixed;bottom:20px;right:20px;z-index:6000;background:#16a34a;border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(22,163,74,.36);transition:transform .2s"
    onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
   <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.138.563 4.14 1.535 5.874L0 24l6.29-1.508A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.814 9.814 0 01-5.058-1.4l-.361-.214-3.735.896.944-3.653-.235-.374A9.817 9.817 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
 </a>
@@ -548,31 +606,21 @@ const auth = getAuth(app);
 const db   = getFirestore(app);
 const ADMIN = 'odontckconsul@gmail.com';
 
-// ── CURSOS BASE (siempre visibles desde el primer día) ────────
+// CURSOS BASE siempre visibles
 const CURSOS_BASE = [
-  {
-    id:'c1', titulo:'Extracciones Simples — Domina el procedimiento más frecuente',
-    descripcion:'Técnicas seguras para exodoncias rutinarias. Protocolos clínicos probados en el consultorio real.',
-    categoria:'cirugia', emoji:'🦷', badge:'new', badgeLabel:'Nuevo', progreso:0,
-    link:'https://drive.google.com/drive/folders/1TJfnzdpal-KZIuK_gd5k934PayVjb4bR',
-    instructor:'OdonTeck', duracion:'Módulo completo · Acceso inmediato'
-  },
-  {
-    id:'c2', titulo:'Cirugía Oral Avanzada — Casos clínicos reales',
-    descripcion:'Abordaje de casos complejos. Colgajos, suturas y manejo posoperatorio con evidencia actualizada.',
-    categoria:'cirugia', emoji:'🔬', badge:'', progreso:0,
-    link:'https://drive.google.com/drive/folders/1NKrGRT9Cbp_hYNBgOBP7zzs_4etTIcCi',
-    instructor:'OdonTeck', duracion:'Módulo completo · Acceso inmediato'
-  }
+  { id:'c1', titulo:'Extracciones Simples — Domina el procedimiento más frecuente', descripcion:'Técnicas seguras y eficientes para exodoncias rutinarias. Protocolos clínicos probados en el consultorio.', categoria:'cirugia', emoji:'🦷', badge:'new', badgeLabel:'Nuevo', progreso:0, link:'https://drive.google.com/drive/folders/1TJfnzdpal-KZIuK_gd5k934PayVjb4bR', instructor:'OdonTeck', duracion:'Módulo completo', temario:['Anatomía del alvéolo y tejidos periapicales','Técnicas de anestesia local segura','Sindesmotomía y luxación correcta','Manejo de complicaciones intraoperatorias','Protocolo posoperatorio y receta'] },
+  { id:'c2', titulo:'Cirugía Oral Avanzada — Casos clínicos reales', descripcion:'Abordaje de casos complejos: terceros molares, colgajos, suturas y manejo posoperatorio con evidencia actualizada.', categoria:'cirugia', emoji:'🔬', badge:'', progreso:0, link:'https://drive.google.com/drive/folders/1NKrGRT9Cbp_hYNBgOBP7zzs_4etTIcCi', instructor:'OdonTeck', duracion:'Módulo completo', temario:['Clasificación de terceros molares','Diseño y elevación de colgajos','Odontosección y extracción quirúrgica','Técnicas de sutura y cierre por planos','Manejo del dolor y antibioticoterapia'] }
 ];
 
 let allCursos = [...CURSOS_BASE];
 let liveActivo = null, alertShown = false, timerID = null;
+let allItems = []; // para contenido reciente combinado
 
-// Renderizar cursos BASE inmediatamente (sin esperar Firebase)
+// Render cursos BASE inmediatamente
 renderCursos(allCursos);
+updCursoCount(allCursos.length);
 
-// ── AUTH GUARD ────────────────────────────────────────────────
+// ── AUTH GUARD ─────────────────────────────────────────────
 onAuthStateChanged(auth, async user => {
   if (!user) { location.href = 'club-login.html'; return; }
 
@@ -583,260 +631,303 @@ onAuthStateChanged(auth, async user => {
   const avEl = document.getElementById('sbAv');
   if (user.photoURL) avEl.innerHTML = `<img src="${user.photoURL}" alt="">`;
   else avEl.textContent = ini;
+  document.getElementById('pav').textContent = ini;
+  document.getElementById('pnm').textContent = nom;
+  document.getElementById('pf-em').value = user.email || '';
 
   if (user.email === ADMIN) {
     document.getElementById('admBtn').style.display = 'flex';
     document.getElementById('sbUr').textContent = 'Fundador';
   }
 
-  // Perfil Firestore
   const snap = await getDoc(doc(db,'miembros', user.uid));
   const data = snap.exists() ? snap.data() : {};
   window._uid = user.uid; window._user = user;
 
-  // Llenar perfil
-  document.getElementById('pav').textContent  = ini;
-  document.getElementById('pnm').textContent  = data.nombre || nom;
+  // VERIFICAR CANCELACIÓN
+  if (data.planCancelado && user.email !== ADMIN) {
+    document.getElementById('blockScreen').classList.add('show');
+    return;
+  }
+
+  // Perfil
   document.getElementById('pro').textContent  = data.especialidad || 'Miembro Club Dental';
   document.getElementById('pf-nm').value = data.nombre    || '';
-  document.getElementById('pf-em').value = user.email     || '';
   document.getElementById('pf-ph').value = data.telefono  || '';
   document.getElementById('pf-sp').value = data.especialidad || '';
 
-  // Plan
+  // Plan sidebar
   const pTipo  = data.planTipo || 'mensual';
   const pNames = { mensual:'Plan Mensual', anual:'Plan Anual' };
   const pName  = user.email === ADMIN ? 'Fundador' : (pNames[pTipo]||'Membresía');
   const pVence = data.planVence ? new Date(data.planVence) : null;
-  const pIni   = data.planInicio? new Date(data.planInicio): null;
+  const pIni   = data.planInicio ? new Date(data.planInicio) : null;
 
-  document.getElementById('m-plan').textContent = pName;
-  document.getElementById('sbpn').textContent   = pName;
   document.getElementById('sb-plan').style.display = 'block';
+  document.getElementById('sbpn').textContent = pName;
   document.getElementById('s-plan').textContent = pName;
-  document.getElementById('s-inicio').textContent = pIni ? pIni.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'}) : 'Miembro fundador';
+  document.getElementById('s-inicio').textContent = pIni ? pIni.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'}) : '—';
 
   if (user.email === ADMIN) {
-    document.getElementById('m-vence').textContent   = 'Acceso permanente';
-    document.getElementById('sbpv').textContent      = 'Acceso permanente';
-    document.getElementById('subLbl').textContent    = 'Fundador · Acceso permanente';
-    document.getElementById('s-vence').textContent   = 'Permanente';
-    document.getElementById('s-estado').textContent  = '✓ Activo';
-    document.getElementById('s-estado').style.color  = 'var(--gn)';
+    document.getElementById('sbpv').textContent    = 'Acceso permanente';
+    document.getElementById('subLbl').textContent  = 'Fundador · Acceso permanente';
+    document.getElementById('s-vence').textContent = 'Permanente';
+    document.getElementById('s-estado').textContent= '✓ Activo';
+    document.getElementById('btnCancel').style.display = 'none';
     return;
   }
 
   if (pVence) {
     const dias = Math.ceil((pVence - new Date()) / 86400000);
     const vStr = pVence.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'});
-    document.getElementById('sbpv').textContent = dias > 0 ? `Vence ${vStr}` : 'Membresía vencida';
-    if (dias <= 0)     document.getElementById('sbpv').className = 'sbpv exp';
+    document.getElementById('sbpv').textContent   = dias > 0 ? `Vence ${vStr}` : 'Vencida';
+    if (dias <= 0)      document.getElementById('sbpv').className = 'sbpv exp';
     else if (dias <= 3) document.getElementById('sbpv').className = 'sbpv warn';
-    document.getElementById('m-vence').innerHTML = dias > 0 ? `Vence en ${dias} días` : '<span style="color:var(--rd)">Vencida</span>';
     document.getElementById('s-vence').textContent = vStr;
 
-    // Estado suscripción
     const sb = document.getElementById('subBox');
     if (dias > 3) {
       document.getElementById('subLbl').textContent = 'Membresía activa';
       document.getElementById('subInf').textContent = `Vence el ${vStr}`;
-      document.getElementById('s-estado').textContent = '✓ Activa'; document.getElementById('s-estado').style.color='var(--gn)';
+      document.getElementById('s-estado').textContent= '✓ Activa'; document.getElementById('s-estado').style.color='var(--gn)';
     } else if (dias > 0) {
       sb.className='sub-box wrn';
-      document.getElementById('subLbl').textContent = `⚠️ Vence en ${dias} día${dias!==1?'s':''}`;
-      document.getElementById('s-estado').textContent = '⚠️ Por vencer'; document.getElementById('s-estado').style.color='var(--am)';
+      document.getElementById('subLbl').textContent=`⚠️ Vence en ${dias} día${dias!==1?'s':''}`;
+      document.getElementById('s-estado').textContent='⚠️ Por vencer'; document.getElementById('s-estado').style.color='var(--am)';
     } else if (dias > -3) {
       sb.className='sub-box exp';
-      document.getElementById('subLbl').textContent = `🔴 Venció — ${Math.abs(dias)} día${Math.abs(dias)!==1?'s':''} de tolerancia restante${3+dias<=1?'':'s'}`;
-      document.getElementById('s-estado').textContent = '✗ Vencida'; document.getElementById('s-estado').style.color='var(--rd)';
+      document.getElementById('subLbl').textContent='🔴 Período de tolerancia';
+      document.getElementById('s-estado').textContent='⚠️ Vencida (tolerancia)'; document.getElementById('s-estado').style.color='var(--rd)';
+    } else {
+      // Bloquear acceso
+      document.getElementById('blockScreen').classList.add('show');
+      return;
     }
-
-    // Alerta 2 días antes o dentro de tolerancia
     if (dias <= 2 && dias > -3) {
-      const bar = document.getElementById('renewBar');
-      bar.classList.add('show');
-      document.getElementById('rbMsg').textContent = dias > 0
-        ? `⚠️ Tu membresía vence en ${dias} día${dias!==1?'s':''}.`
-        : `🔴 Tu membresía venció hace ${Math.abs(dias)} día${Math.abs(dias)!==1?'s':''}. Tienes ${3+dias} día${3+dias!==1?'s':''} de tolerancia.`;
+      document.getElementById('renewBar').classList.add('show');
+      document.getElementById('rbMsg').textContent = dias > 0 ? `⚠️ Tu membresía vence en ${dias} día${dias!==1?'s':''}.` : `🔴 Tu membresía venció. Tienes ${3+dias} día${3+dias!==1?'s':''} de tolerancia.`;
     }
-  } else {
-    document.getElementById('subLbl').textContent = 'Sin plan activo';
-    document.getElementById('s-vence').textContent = '—';
-    document.getElementById('s-estado').textContent = '—';
   }
 });
+
+// CANCELAR SUSCRIPCIÓN
+window.cancelarSub = async () => {
+  if (!confirm('¿Estás seguro de cancelar tu membresía? Perderás el acceso al contenido del Club Dental.')) return;
+  if (!window._uid) return;
+  await setDoc(doc(db,'miembros',window._uid), { planCancelado: true }, { merge:true });
+  document.getElementById('blockScreen').classList.add('show');
+};
 
 window.doLogout  = async () => { await signOut(auth); location.href='club-login.html'; };
 window.sendReset = async () => { if (window._user) { await sendPasswordResetEmail(auth, window._user.email); alert('📧 Enlace enviado a '+window._user.email); }};
 window.savePerfil = async () => {
   if (!window._uid) return;
-  const nm = document.getElementById('pf-nm').value.trim();
-  const ph = document.getElementById('pf-ph').value.trim();
-  const sp = document.getElementById('pf-sp').value.trim();
-  await setDoc(doc(db,'miembros',window._uid), { nombre:nm, telefono:ph, especialidad:sp }, { merge:true });
-  document.getElementById('pnm').textContent = nm;
-  document.getElementById('pro').textContent = sp || 'Miembro Club Dental';
-  const msg = document.getElementById('prof-msg');
-  msg.textContent='✓ Perfil guardado'; msg.style.color='var(--gn)'; msg.style.display='block';
-  setTimeout(()=>msg.style.display='none', 2500);
+  const nm=document.getElementById('pf-nm').value.trim(), ph=document.getElementById('pf-ph').value.trim(), sp=document.getElementById('pf-sp').value.trim();
+  await setDoc(doc(db,'miembros',window._uid),{nombre:nm,telefono:ph,especialidad:sp},{merge:true});
+  document.getElementById('pnm').textContent=nm; document.getElementById('pro').textContent=sp||'Miembro Club Dental';
+  const msg=document.getElementById('prof-msg'); msg.textContent='✓ Guardado'; msg.style.color='var(--gn)'; msg.style.display='block';
+  setTimeout(()=>msg.style.display='none',2500);
 };
 
-// ── FIREBASE LISTENERS ─────────────────────────────────────────
-
-// Noticias
-onSnapshot(query(collection(db,'noticias'), orderBy('creadoEn','desc'), limit(10)), snap => {
-  const arr = snap.docs.map(d=>({id:d.id,...d.data()}));
-  rNoticias(arr); rRecent(arr);
+// ── FIREBASE ─────────────────────────────────────────────────
+onSnapshot(query(collection(db,'noticias'),orderBy('creadoEn','desc'),limit(10)), snap => {
+  rNoticias(snap.docs.map(d=>({id:d.id,...d.data()})));
 });
 
-// Cursos Firebase — se MERGEN con los base
 onSnapshot(collection(db,'cursos'), snap => {
   const fbC = snap.docs.map(d=>({id:d.id,...d.data()}));
   const fbIds = new Set(fbC.map(c=>c.id));
-  // Base siempre primero, Firebase agrega los adicionales
   allCursos = [...CURSOS_BASE.filter(c=>!fbIds.has(c.id)), ...fbC];
   renderCursos(allCursos);
-  const n = allCursos.length;
-  document.getElementById('m-c').textContent  = n;
-  document.getElementById('nb-c').textContent = n;
-  document.getElementById('cnt-c').textContent = n + ' cursos disponibles';
+  updCursoCount(allCursos.length);
+  buildRecent();
 });
 
-// Lives
-onSnapshot(query(collection(db,'lives'), where('activo','==',true), orderBy('fechaISO','asc'), limit(1)), snap => {
+onSnapshot(query(collection(db,'lives'),where('activo','==',true),orderBy('fechaISO','asc'),limit(1)), snap => {
   liveActivo = snap.empty ? null : {id:snap.docs[0].id,...snap.docs[0].data()};
   liveActivo ? setLive(liveActivo) : setNoLive();
 });
-onSnapshot(query(collection(db,'lives'), orderBy('fechaISO','asc')), snap => {
+onSnapshot(query(collection(db,'lives'),orderBy('fechaISO','asc')), snap => {
   rLives(snap.docs.map(d=>({id:d.id,...d.data()})));
-  document.getElementById('a-l').textContent = snap.docs.filter(d=>d.data().activo).length;
+  document.getElementById('a-l').textContent=snap.docs.filter(d=>d.data().activo).length;
 });
-
-// Videos
-onSnapshot(query(collection(db,'videos'), orderBy('creadoEn','desc')), snap => {
-  const a = snap.docs.map(d=>({id:d.id,...d.data()}));
+onSnapshot(query(collection(db,'videos'),orderBy('creadoEn','desc')), snap => {
+  const a=snap.docs.map(d=>({id:d.id,...d.data(),tipo:'video'}));
   rVideos(a);
-  ['m-v','nb-v','a-v'].forEach(id=>document.getElementById(id).textContent=a.length);
+  ['nb-v','a-v'].forEach(i=>document.getElementById(i).textContent=a.length);
+  window._videos = a; buildRecent();
+});
+onSnapshot(query(collection(db,'pdfs'),orderBy('creadoEn','desc')), snap => {
+  const a=snap.docs.map(d=>({id:d.id,...d.data(),tipo:'pdf'}));
+  rPdfs(a);
+  ['nb-p','a-p'].forEach(i=>document.getElementById(i).textContent=a.length);
+  window._pdfs = a; buildRecent();
 });
 
-// PDFs
-onSnapshot(query(collection(db,'pdfs'), orderBy('creadoEn','desc')), snap => {
-  const a = snap.docs.map(d=>({id:d.id,...d.data()}));
-  rPdfs(a);
-  ['m-p','nb-p','a-p'].forEach(id=>document.getElementById(id).textContent=a.length);
-});
+// CONTENIDO RECIENTE — mezcla cursos + videos + PDFs ordenados por fecha
+function buildRecent() {
+  const cursos = allCursos.map(c=>({...c, tipo:'curso', _ts: c.creadoEn?.toDate?.()?.getTime() || 0}));
+  const videos = (window._videos||[]).map(v=>({...v, _ts: v.creadoEn?.toDate?.()?.getTime() || 0}));
+  const pdfs   = (window._pdfs||[]).map(p=>({...p, _ts: p.creadoEn?.toDate?.()?.getTime() || 0}));
+  const all    = [...cursos, ...videos, ...pdfs].sort((a,b)=>b._ts-a._ts).slice(0,6);
+  rRecent(all);
+}
 
 // ── RENDERS ───────────────────────────────────────────────────
 function rNoticias(arr) {
-  const el = document.getElementById('nlist');
-  if (!arr.length) { el.innerHTML=`<div class="empty"><span>📭</span><p>Sin noticias aún.</p></div>`; return; }
-  el.innerHTML = arr.map(n=>`<div class="nitem"><div class="nico" style="background:${n.color||'var(--prb)'}">${n.emoji||'📢'}</div><div><div class="ntit">${esc(n.titulo)}</div><div class="nbod">${esc(n.cuerpo||'')}</div><div class="ndat">${n.fecha||''}</div></div></div>`).join('');
+  const el=document.getElementById('nlist');
+  if (!arr.length){el.innerHTML=`<div class="empty"><span>📭</span><p>Sin noticias aún.</p></div>`;return;}
+  el.innerHTML=arr.map(n=>`<div class="nitem"><div class="nico" style="background:${n.color||'var(--prb)'}">${n.emoji||'📢'}</div><div><div class="ntit">${esc(n.titulo)}</div><div class="nbod">${esc(n.cuerpo||'')}</div><div class="ndat">${n.fecha||''}</div></div></div>`).join('');
 }
+
 function rRecent(arr) {
-  const el = document.getElementById('reclist');
-  if (!arr.length) { el.innerHTML=`<div class="empty"><span>📂</span><p>Sin contenido reciente.</p></div>`; return; }
-  el.innerHTML = arr.slice(0,3).map(n=>`<div class="ci"><div class="cth" style="background:${n.color||'var(--prb)'}">${n.emoji||'📢'}</div><div class="ci-i"><div class="ci-t">${esc(n.titulo)}</div><div class="ci-m">Noticia</div></div><span class="ctag tg">Nuevo</span></div>`).join('');
+  const el=document.getElementById('reclist');
+  if (!arr.length){el.innerHTML=`<div class="empty"><span>📂</span><p>Aún no hay contenido. Pronto llegará.</p></div>`;return;}
+  const icons = {curso:'📚',video:'🎬',pdf:'📄'};
+  const tags  = {curso:'Curso',video:'Video',pdf:'PDF'};
+  const colors= {curso:'var(--prb)',video:'var(--prb)',pdf:'var(--rdb)'};
+  const tc    = {curso:'tb',video:'tb',pdf:'tg'};
+  el.innerHTML = arr.map(i=>`
+    <div class="ci" onclick="${i.tipo==='curso'?`openModal(${JSON.stringify(i).replace(/"/g,"'")})`:`window.open('${esc(i.link||'#')}','_blank')`}">
+      <div class="cth" style="background:${colors[i.tipo]||'var(--prb)'}">${icons[i.tipo]||'📄'}</div>
+      <div class="ci-i"><div class="ci-t">${esc(i.titulo)}</div><div class="ci-m">${i.instructor||i.mes||''} · ${tags[i.tipo]||'Contenido'}</div></div>
+      <span class="ctag ${tc[i.tipo]||'tb'}">Nuevo</span>
+    </div>`).join('');
 }
+
 function renderCursos(arr) {
-  const el = document.getElementById('cgrid');
-  if (!el) return;
-  if (!arr.length) { el.innerHTML=`<div class="empty" style="grid-column:1/-1"><span>📚</span><p>Sin cursos aún.</p></div>`; return; }
-  el.innerHTML = arr.map(c=>{
-    const badge = c.badge?`<span class="cc-badge cb-${c.badge}">${c.badgeLabel||c.badge}</span>`:'';
-    const prog  = parseInt(c.progreso||0);
-    const pbar  = prog>0?`<div class="cc-pw"><div class="cc-pb" style="width:${prog}%"></div></div><div class="cc-pl">${prog}% completado</div>`:`<div class="cc-pl" style="color:var(--mu)">Sin comenzar</div>`;
-    const btn   = prog===100?'🏆 Completado':prog>0?'▶ Continuar':'▶ Comenzar ahora';
-    return `<div class="cc" onclick="window.open('${esc(c.link||'#')}','_blank')">
+  const el=document.getElementById('cgrid');
+  if(!el)return;
+  if(!arr.length){el.innerHTML=`<div class="empty" style="grid-column:1/-1"><span>📚</span><p>Los cursos aparecerán aquí.</p></div>`;return;}
+  el.innerHTML=arr.map(c=>{
+    const badge=c.badge?`<span class="cc-badge cb-${c.badge}">${c.badgeLabel||c.badge}</span>`:'';
+    const prog=parseInt(c.progreso||0);
+    const pbar=prog>0?`<div class="cc-pw"><div class="cc-pb" style="width:${prog}%"></div></div><div class="cc-pl">${prog}% completado</div>`:`<div class="cc-pl" style="color:var(--mu)">Sin comenzar</div>`;
+    const btn=prog===100?'🏆 Completado':prog>0?'▶ Continuar':'▶ Ver curso';
+    const cJson=JSON.stringify(c).replace(/"/g,"'");
+    return `<div class="cc" onclick="openModal(${cJson})">
       <div class="cc-cover">${badge}<span class="cc-em">${c.emoji||'📚'}</span></div>
       <div class="cc-body"><div class="cc-title">${esc(c.titulo)}</div><div class="cc-meta">${esc(c.instructor||'')} · ${esc(c.duracion||'')}</div>${pbar}
-      <button class="btn-cc" onclick="event.stopPropagation();window.open('${esc(c.link||'#')}','_blank')">${btn}</button></div></div>`;
+      <button class="btn-cc" onclick="event.stopPropagation();openModal(${cJson})"><i class="fa-solid fa-play"></i> ${btn}</button></div></div>`;
   }).join('');
 }
+
 function rVideos(arr) {
   const el=document.getElementById('vlist');
-  el.innerHTML = arr.length ? arr.map(v=>`<div class="ci" onclick="window.open('${esc(v.link||'#')}','_blank')"><div class="cth" style="background:var(--prb)">🎬</div><div class="ci-i"><div class="ci-t">${esc(v.titulo)}</div><div class="ci-m">${v.mes||''} · ${v.duracion||'Video'}</div></div><span class="ctag tb">Ver</span></div>`).join('') : `<div class="empty"><span>🎬</span><p>Sin videos publicados.</p></div>`;
+  el.innerHTML=arr.length?arr.map(v=>`<div class="ci" onclick="openVideoModal('${esc(v.link||'#')}','${esc(v.titulo)}')"><div class="cth" style="background:var(--prb)">🎬</div><div class="ci-i"><div class="ci-t">${esc(v.titulo)}</div><div class="ci-m">${v.mes||''} · ${v.duracion||'Video'}</div></div><span class="ctag tb"><i class="fa-solid fa-play" style="font-size:9px"></i> Ver</span></div>`).join(''):`<div class="empty"><span>🎬</span><p>Sin videos publicados.</p></div>`;
 }
+
 function rPdfs(arr) {
   const el=document.getElementById('plist');
-  el.innerHTML = arr.length ? arr.map(p=>`<div class="ci" onclick="window.open('${esc(p.link||'#')}','_blank')"><div class="cth" style="background:var(--rdb)">📄</div><div class="ci-i"><div class="ci-t">${esc(p.titulo)}</div><div class="ci-m">${p.mes||''} · PDF</div></div><span class="ctag tg">Descargar</span></div>`).join('') : `<div class="empty"><span>📄</span><p>Sin PDFs publicados.</p></div>`;
+  el.innerHTML=arr.length?arr.map(p=>`<div class="ci" onclick="window.open('${esc(p.link||'#')}','_blank')"><div class="cth" style="background:var(--rdb)">📄</div><div class="ci-i"><div class="ci-t">${esc(p.titulo)}</div><div class="ci-m">${p.mes||''} · PDF</div></div><span class="ctag tg">Descargar</span></div>`).join('') : `<div class="empty"><span>📄</span><p>Sin PDFs publicados.</p></div>`;
 }
+
 function rLives(arr) {
   const el=document.getElementById('lvlist');
-  if (!arr.length) { el.innerHTML=`<div class="empty"><span>📺</span><p>Sin sesiones programadas. Los webinars son cada 15 días.</p></div>`; return; }
-  el.innerHTML = arr.map(l=>{
-    const f = l.fechaISO ? new Date(l.fechaISO).toLocaleString('es-MX',{weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}) : '';
+  if(!arr.length){el.innerHTML=`<div class="empty"><span>📺</span><p>Sin sesiones programadas. Los webinars son cada 15 días.</p></div>`;return;}
+  el.innerHTML=arr.map(l=>{
+    const f=l.fechaISO?new Date(l.fechaISO).toLocaleString('es-MX',{weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}):'';
     return `<div class="nitem" onclick="window.open('${esc(l.link||'#')}','_blank')" style="cursor:pointer"><div class="nico" style="background:#f5f3ff">📺</div><div style="flex:1"><div class="ntit">${esc(l.titulo)}</div><div class="nbod">${esc(l.descripcion||'')}</div><div class="ndat">${esc(l.instructor||'')} · ${f}</div></div><span class="ctag" style="background:${l.activo?'#f5f3ff':'var(--soft)'};color:${l.activo?'#7c3aed':'var(--mu)'}">${l.activo?'Próximo':'Pasado'}</span></div>`;
   }).join('');
 }
 
-// ── LIVE COUNTDOWN ────────────────────────────────────────────
+function updCursoCount(n){
+  document.getElementById('nb-c').textContent=n;
+  document.getElementById('cnt-c').textContent=n+' cursos disponibles';
+}
+
+// ── MODAL REPRODUCTOR ─────────────────────────────────────────
+window.openModal = function(c) {
+  if (typeof c === 'string') c = JSON.parse(c.replace(/'/g,'"'));
+  const link = c.link || '';
+  // Convertir link Drive a embed
+  let embedURL = '';
+  const fileMatch = link.match(/\/file\/d\/([^/]+)/);
+  const folderMatch = link.match(/\/folders\/([^/?]+)/);
+  if (fileMatch) {
+    embedURL = `https://drive.google.com/file/d/${fileMatch[1]}/preview`;
+  } else if (folderMatch) {
+    embedURL = `https://drive.google.com/embeddedfolderview?id=${folderMatch[1]}#list`;
+  } else {
+    embedURL = link;
+  }
+
+  document.getElementById('mTitle').textContent      = c.titulo || 'Curso';
+  document.getElementById('mCourseTitle').textContent = c.titulo || '';
+  document.getElementById('mInstructor').querySelector('span').textContent = c.instructor || '';
+  document.getElementById('mDesc').textContent       = c.descripcion || '';
+  document.getElementById('mFrame').src              = embedURL;
+
+  const temario = c.temario || [];
+  if (temario.length) {
+    document.getElementById('mTemario').style.display = 'block';
+    document.getElementById('mItems').innerHTML = temario.map(t=>`<div class="mt-item"><i class="fa-solid fa-circle-check"></i><span>${esc(t)}</span></div>`).join('');
+  } else {
+    document.getElementById('mTemario').style.display = 'none';
+  }
+  document.getElementById('modalOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+};
+
+window.openVideoModal = function(link, titulo) {
+  const fileMatch = link.match(/\/file\/d\/([^/]+)/);
+  const embedURL = fileMatch ? `https://drive.google.com/file/d/${fileMatch[1]}/preview` : link;
+  document.getElementById('mTitle').textContent = titulo || 'Video';
+  document.getElementById('mCourseTitle').textContent = titulo || '';
+  document.getElementById('mInstructor').querySelector('span').textContent = '';
+  document.getElementById('mDesc').textContent = '';
+  document.getElementById('mTemario').style.display = 'none';
+  document.getElementById('mFrame').src = embedURL;
+  document.getElementById('modalOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeModal = function(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
+};
+window.closeModalDirect = function() {
+  document.getElementById('modalOverlay').classList.remove('show');
+  document.getElementById('mFrame').src = '';
+  document.body.style.overflow = '';
+};
+
+// ── LIVE COUNTDOWN ─────────────────────────────────────────────
 function setLive(live) {
-  window._lISO  = live.fechaISO;
-  window._lLink = live.link||'#';
-  window._lTit  = live.titulo;
-  const f = new Date(live.fechaISO);
-  document.getElementById('ltit').textContent = live.titulo;
-  document.getElementById('ldoc').textContent = (live.instructor||'') + ' · ' + f.toLocaleString('es-MX',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
-  if (timerID) clearInterval(timerID);
-  timerID = setInterval(tick, 1000);
-  tick();
+  window._lISO=live.fechaISO; window._lLink=live.link||'#'; window._lTit=live.titulo;
+  const f=new Date(live.fechaISO);
+  document.getElementById('ltit').textContent=live.titulo;
+  document.getElementById('ldoc').textContent=(live.instructor||'')+' · '+f.toLocaleString('es-MX',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+  if(timerID)clearInterval(timerID);
+  timerID=setInterval(tick,1000); tick();
 }
-function setNoLive() {
-  if (timerID) clearInterval(timerID);
-  document.getElementById('ltag').innerHTML   = '<span class="ldot"></span> Sin sesión programada';
-  document.getElementById('ltit').textContent = 'Próximo webinar';
-  document.getElementById('ldoc').textContent = 'Sesiones gratuitas cada 15 días';
-  document.getElementById('cdw').style.display = 'none';
-  const btn = document.getElementById('btnLv');
-  btn.textContent = '📢 Seguir canal WA';
-  btn.onclick = ()=>window.open('https://whatsapp.com/channel/0029VbCQbyVISTkPMfD7hz0N','_blank');
+function setNoLive(){
+  if(timerID)clearInterval(timerID);
+  document.getElementById('ltag').innerHTML='<span class="ldot"></span> Sin sesión programada';
+  document.getElementById('ltit').textContent='Próximo webinar';
+  document.getElementById('ldoc').textContent='Sesiones gratuitas cada 15 días';
+  document.getElementById('cdw').style.display='none';
+  const btn=document.getElementById('btnLv'); btn.textContent='📢 Seguir canal WA'; btn.onclick=()=>window.open('https://whatsapp.com/channel/0029VbCQbyVISTkPMfD7hz0N','_blank');
 }
-function tick() {
-  if (!window._lISO) return;
-  const diff = new Date(window._lISO).getTime() - Date.now();
-  const card=document.getElementById('lcard'), tag=document.getElementById('ltag'), btn=document.getElementById('btnLv');
-  if (diff <= 0) {
-    card.classList.add('ln'); tag.className='ltag ln-tag'; tag.innerHTML='<span class="ldot"></span> 🔴 EN VIVO AHORA';
-    document.getElementById('cdw').style.display='none';
-    btn.textContent='▶ Unirme al live'; btn.onclick=()=>window.open(window._lLink,'_blank');
-    clearInterval(timerID); return;
-  }
-  if (diff<=300000&&!alertShown) {
-    alertShown=true; card.classList.add('ls'); tag.innerHTML='<span class="ldot"></span> ⚡ ¡Empieza en 5 min!';
-    document.getElementById('alMsg').textContent='"'+(window._lTit||'Tu sesión')+'" comienza en menos de 5 minutos.';
-    document.getElementById('alLnk').href=window._lLink;
-    document.getElementById('lAl').classList.add('show');
-  }
+function tick(){
+  if(!window._lISO)return;
+  const diff=new Date(window._lISO).getTime()-Date.now();
+  const card=document.getElementById('lcard'),tag=document.getElementById('ltag'),btn=document.getElementById('btnLv');
+  if(diff<=0){card.classList.add('ln');tag.className='ltag ln-tag';tag.innerHTML='<span class="ldot"></span> 🔴 EN VIVO AHORA';document.getElementById('cdw').style.display='none';btn.textContent='▶ Unirme al live';btn.onclick=()=>window.open(window._lLink,'_blank');clearInterval(timerID);return;}
+  if(diff<=300000&&!alertShown){alertShown=true;card.classList.add('ls');tag.innerHTML='<span class="ldot"></span> ⚡ ¡Empieza en 5 min!';document.getElementById('alMsg').textContent='"'+(window._lTit||'Tu sesión')+'" comienza en menos de 5 minutos.';document.getElementById('alLnk').href=window._lLink;document.getElementById('lAl').classList.add('show');}
   const p=n=>String(n).padStart(2,'0');
   document.getElementById('cd-d').textContent=p(Math.floor(diff/86400000));
   document.getElementById('cd-h').textContent=p(Math.floor((diff%86400000)/3600000));
   document.getElementById('cd-m').textContent=p(Math.floor((diff%3600000)/60000));
   document.getElementById('cd-s').textContent=p(Math.floor((diff%60000)/1000));
 }
-window.lvClick = () => {
-  if (!window._lISO) return;
-  const d=new Date(window._lISO),s=d.toISOString().replace(/[-:.]/g,'').slice(0,15)+'Z',e=new Date(d.getTime()+3600000).toISOString().replace(/[-:.]/g,'').slice(0,15)+'Z';
-  window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(window._lTit||'Webinar OdonTeck')}&dates=${s}/${e}&details=${encodeURIComponent('Club Dental OdonTeck')}`, '_blank');
-};
-
-window.fC = (cat,el) => {
-  document.querySelectorAll('#ctabs .tab').forEach(t=>t.classList.remove('active')); el.classList.add('active');
-  renderCursos(cat==='todos'?allCursos:allCursos.filter(c=>c.categoria===cat));
-};
-
-function esc(s){ const d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML; }
+window.lvClick=()=>{if(!window._lISO)return;const d=new Date(window._lISO),s=d.toISOString().replace(/[-:.]/g,'').slice(0,15)+'Z',e=new Date(d.getTime()+3600000).toISOString().replace(/[-:.]/g,'').slice(0,15)+'Z';window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(window._lTit||'Webinar OdonTeck')}&dates=${s}/${e}`),'_blank';};
+window.fC=(cat,el)=>{document.querySelectorAll('#ctabs .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderCursos(cat==='todos'?allCursos:allCursos.filter(c=>c.categoria===cat));};
+function esc(s){const d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML;}
 </script>
 
 <script>
-window.go = (id,el) => {
-  document.querySelectorAll('.sv').forEach(s=>s.classList.remove('active'));
-  document.getElementById('sv-'+id).classList.add('active');
-  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
-  if (el) el.classList.add('active');
-};
-const M=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-const D=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
-const h=new Date();
+window.go=(id,el)=>{document.querySelectorAll('.sv').forEach(s=>s.classList.remove('active'));document.getElementById('sv-'+id).classList.add('active');document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));if(el)el.classList.add('active');};
+const M=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],D=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],h=new Date();
 document.getElementById('fhoy').textContent=D[h.getDay()]+' '+h.getDate()+' de '+M[h.getMonth()]+', '+h.getFullYear();
 </script>
 </body>

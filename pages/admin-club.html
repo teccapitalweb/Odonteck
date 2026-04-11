@@ -5,414 +5,387 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin · Club Dental OdonTeck</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    :root{--navy:#0D1B2A;--teal:#1BA87E;--teal2:#16916C;--tealb:#E3F5EF;--amber:#E65100;--amberb:#FFF3E0;--purple:#4527A0;--purpleb:#EDE7F6;--red:#E24B4A;--redb:#FFEBEE;--blue:#1565C0;--blueb:#E8F0FE;--white:#fff;--g1:#F4F6F9;--g2:#E8ECF2;--g3:#B0BAC8;--text:#0D1B2A;--muted:#5C6B7A;--border:rgba(13,27,42,.10);--r:10px;--rl:14px}
+    :root{
+      --pr:#005187;--pr2:#0c74c4;--prb:#eef4fa;
+      --bg:#f5f7fb;--sur:#fff;--soft:#eef3f9;
+      --tx:#0d1b2f;--mu:#5f6f86;--ln:#dbe4ef;
+      --gn:#059669;--gnb:#ecfdf5;
+      --am:#d97706;--amb:#fffbeb;
+      --rd:#dc2626;--rdb:#fef2f2;
+      --ra:16px;--rsm:12px;--rp:999px;
+      --sh:0 8px 32px rgba(0,36,81,.09);
+    }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'DM Sans',sans-serif;background:var(--g1);color:var(--text);min-height:100vh}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
     a{text-decoration:none;color:inherit}
     button{font-family:inherit;cursor:pointer;border:none}
-    input,textarea,select{font-family:inherit}
 
     /* LOGIN */
-    .login{position:fixed;inset:0;background:var(--navy);display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:1.5rem}
+    .login{position:fixed;inset:0;background:var(--tx);display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:1.2rem}
     .login.hidden{display:none}
-    .l-ico{width:56px;height:56px;background:var(--teal);border-radius:14px;display:flex;align-items:center;justify-content:center}
-    .l-ico svg{width:28px;height:28px;fill:white}
-    .l-title{font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:white;text-align:center}
-    .l-sub{font-size:13px;color:rgba(255,255,255,.4);text-align:center}
-    .l-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:var(--rl);padding:1.75rem;width:320px;display:flex;flex-direction:column;gap:12px}
-    .l-box input{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 14px;font-size:14px;color:white;outline:none;transition:border .15s;width:100%}
-    .l-box input::placeholder{color:rgba(255,255,255,.3)}
-    .l-box input:focus{border-color:var(--teal)}
-    .l-lbl{font-size:11px;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.04em}
-    .btn-login{width:100%;padding:11px;background:var(--teal);color:white;font-size:14px;font-weight:700;border-radius:9px;transition:background .15s}
-    .btn-login:hover{background:var(--teal2)}
-    .l-err{font-size:12px;color:var(--red);text-align:center;display:none}
+    .l-ico{width:52px;height:52px;background:var(--pr);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;color:white}
+    .l-title{font-size:22px;font-weight:800;color:white}
+    .l-sub{font-size:13px;color:rgba(255,255,255,.4)}
+    .l-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:var(--ra);padding:1.5rem;width:300px;display:flex;flex-direction:column;gap:10px}
+    .l-lbl{font-size:11px;font-weight:700;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.05em}
+    .l-inp{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 14px;font-size:14px;color:white;outline:none;font-family:'Inter',sans-serif;transition:border .2s}
+    .l-inp::placeholder{color:rgba(255,255,255,.25)}
+    .l-inp:focus{border-color:var(--pr)}
+    .btn-login{width:100%;padding:11px;background:var(--pr);color:white;font-size:14px;font-weight:700;border-radius:var(--rp);transition:background .15s}
+    .btn-login:hover{background:var(--pr2)}
+    .l-err{font-size:12px;color:#f87171;text-align:center;display:none}
     .l-err.show{display:block}
 
-    /* SHELL */
-    .shell{display:grid;grid-template-columns:224px 1fr;min-height:100vh}
+    /* SHELL — igual que miembro */
+    .shell{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
 
-    /* SIDEBAR */
-    .sb{background:var(--navy);color:white;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
-    .sb-logo{display:flex;align-items:center;gap:10px;padding:1.4rem 1.1rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.07)}
-    .sb-ico{width:36px;height:36px;border-radius:8px;background:var(--teal);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-    .sb-ico svg{width:18px;height:18px;fill:white}
-    .sb-name{font-family:'Outfit',sans-serif;font-size:13px;font-weight:700}
-    .sb-sub{font-size:10px;color:rgba(255,255,255,.4)}
-    .nav-sec{padding:.9rem .75rem .4rem}
-    .nav-lbl{font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.3);padding:0 .5rem;margin-bottom:4px}
-    .ni{display:flex;align-items:center;gap:9px;padding:9px .75rem;border-radius:8px;font-size:13px;color:rgba(255,255,255,.6);cursor:pointer;transition:all .15s;margin-bottom:2px}
-    .ni svg{width:14px;height:14px;flex-shrink:0}
+    /* SIDEBAR — idéntico al miembro */
+    .sb{background:var(--tx);color:white;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
+    .sb-logo{display:flex;align-items:center;gap:10px;padding:1.2rem 1rem 1rem;border-bottom:1px solid rgba(255,255,255,.08)}
+    .sb-img{width:36px;height:36px;border-radius:10px;overflow:hidden;flex-shrink:0;background:var(--pr)}
+    .sb-img img{width:36px;height:36px;object-fit:cover}
+    .sb-title{font-size:13px;font-weight:700;line-height:1.1}
+    .sb-sub2{font-size:10px;color:rgba(255,255,255,.35);margin-top:1px}
+    .nav-s{padding:.7rem .65rem .3rem}
+    .nav-l{font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.28);padding:0 .45rem;margin-bottom:3px}
+    .ni{display:flex;align-items:center;gap:8px;padding:8px .65rem;border-radius:10px;font-size:13px;color:rgba(255,255,255,.56);cursor:pointer;transition:all .15s;margin-bottom:1px}
+    .ni i{font-size:13px;width:16px;text-align:center;flex-shrink:0}
     .ni:hover{background:rgba(255,255,255,.07);color:white}
-    .ni.active{background:var(--teal);color:white;font-weight:500}
-    .nbg{margin-left:auto;font-size:10px;font-weight:700;border-radius:99px;padding:1px 7px;min-width:18px;text-align:center;line-height:1.6;background:rgba(255,255,255,.15);color:rgba(255,255,255,.8)}
-    .sb-ft{margin-top:auto;padding:1rem;border-top:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;gap:8px}
-    .sb-lnk{display:block;text-align:center;font-size:12px;color:rgba(255,255,255,.5);padding:8px;border:1px solid rgba(255,255,255,.1);border-radius:8px;cursor:pointer;transition:all .15s}
-    .sb-lnk:hover{background:rgba(255,255,255,.07);color:white}
-    .sb-out{width:100%;padding:8px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.4);font-size:12px;border-radius:8px;transition:all .15s}
+    .ni.active{background:var(--pr);color:white;font-weight:600}
+    .nbg2{margin-left:auto;font-size:9px;font-weight:700;border-radius:var(--rp);padding:1px 6px;background:rgba(255,255,255,.14);color:rgba(255,255,255,.8)}
+    .sb-ft{margin-top:auto;padding:.75rem .65rem;border-top:1px solid rgba(255,255,255,.07)}
+    .sb-link{display:block;text-align:center;font-size:12px;color:rgba(255,255,255,.45);padding:8px;border:1px solid rgba(255,255,255,.1);border-radius:9px;cursor:pointer;transition:all .15s;margin-bottom:8px}
+    .sb-link:hover{background:rgba(255,255,255,.07);color:white}
+    .sb-out{width:100%;padding:8px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.4);font-size:12px;border-radius:9px;transition:all .15s}
     .sb-out:hover{background:rgba(255,255,255,.15);color:white}
 
     /* MAIN */
-    .main{display:flex;flex-direction:column;gap:1.5rem;padding:2rem;background:var(--g1);min-height:100vh}
-    .pg-title{font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;color:var(--navy)}
-    .pg-sub{font-size:12px;color:var(--muted);margin-top:3px}
+    .main{display:flex;flex-direction:column;gap:1.3rem;padding:1.75rem 1.75rem 3rem;background:var(--bg)}
+    .pg-title{font-size:20px;font-weight:800;color:var(--tx)}
+    .pg-sub{font-size:12px;color:var(--mu);margin-top:3px}
 
     /* STATS */
-    .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
-    .sc{background:var(--white);border:1px solid var(--border);border-radius:var(--rl);padding:1rem 1.25rem}
-    .sc-l{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
-    .sc-v{font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;line-height:1}
+    .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:11px}
+    .sc{background:var(--sur);border:1px solid var(--ln);border-radius:var(--ra);padding:.9rem 1rem}
+    .sc-l{font-size:10px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px}
+    .sc-v{font-size:24px;font-weight:800;line-height:1}
 
     /* PANEL */
-    .panel{background:var(--white);border:1px solid var(--border);border-radius:var(--rl);padding:1.5rem}
-    .ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
-    .pt{font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:var(--navy)}
+    .panel{background:var(--sur);border:1px solid var(--ln);border-radius:var(--ra);padding:1.1rem}
+    .ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+    .pt{font-size:14px;font-weight:700;color:var(--tx)}
 
     /* GRID */
-    .g2{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+    .g2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
 
     /* FORM */
-    .fg{display:flex;flex-direction:column;gap:12px}
-    .frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .fl{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
-    .fi{width:100%;padding:10px 14px;border:1px solid var(--g2);border-radius:8px;font-size:13px;color:var(--text);background:var(--white);outline:none;transition:border .15s}
-    .fi:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(27,168,126,.08)}
-    textarea.fi{resize:vertical;min-height:80px;line-height:1.5}
+    .fg{margin-bottom:12px}
+    .fl{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+    .fi{width:100%;padding:9px 12px;border:1.5px solid var(--ln);border-radius:10px;font-size:13px;font-family:'Inter',sans-serif;color:var(--tx);background:var(--soft);outline:none;transition:border .2s}
+    .fi:focus{border-color:var(--pr);background:#fff;box-shadow:0 0 0 3px rgba(0,81,135,.07)}
+    textarea.fi{resize:vertical;min-height:72px;line-height:1.5}
     select.fi{cursor:pointer}
-    .btn-submit{padding:10px 24px;background:var(--teal);color:white;font-size:13px;font-weight:700;border-radius:9px;transition:all .15s}
-    .btn-submit:hover{background:var(--teal2);transform:translateY(-1px)}
-    .btn-del{padding:5px 12px;background:var(--redb);color:var(--red);font-size:11px;font-weight:600;border-radius:7px;transition:background .15s;flex-shrink:0}
+    .frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .btn-pub{padding:9px 22px;background:var(--pr);color:white;font-size:13px;font-weight:700;border-radius:var(--rp);transition:all .15s}
+    .btn-pub:hover{background:var(--pr2);transform:translateY(-1px)}
+    .btn-del{padding:5px 11px;background:var(--rdb);color:var(--rd);font-size:11px;font-weight:700;border-radius:8px;border:1px solid #fecaca;flex-shrink:0;transition:background .15s}
     .btn-del:hover{background:#ffcdd2}
-    .btn-sec{padding:10px 18px;background:var(--g1);color:var(--muted);font-size:13px;font-weight:500;border-radius:9px;border:1px solid var(--g2);transition:all .15s}
-    .btn-sec:hover{background:var(--g2)}
+    .btn-sec{padding:9px 16px;background:var(--soft);color:var(--mu);font-size:13px;font-weight:500;border-radius:var(--rp);border:1px solid var(--ln)}
 
     /* LIST ITEMS */
-    .li-item{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:10px 12px;background:var(--g1);border-radius:9px;margin-bottom:8px}
-    .li-item:last-child{margin-bottom:0}
+    .li{display:flex;align-items:flex-start;gap:10px;padding:9px 11px;background:var(--soft);border-radius:11px;margin-bottom:7px}
+    .li:last-child{margin-bottom:0}
     .li-info{flex:1;min-width:0}
-    .li-title{font-size:13px;font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .li-meta{font-size:11px;color:var(--muted)}
-    .chip{font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;display:inline-block}
+    .li-t{font-size:13px;font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .li-m{font-size:11px;color:var(--mu)}
+
+    /* MIEMBROS TABLE */
+    .mtbl{width:100%;border-collapse:collapse;font-size:13px}
+    .mtbl th{text-align:left;padding:8px 12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--mu);border-bottom:1px solid var(--ln)}
+    .mtbl td{padding:10px 12px;border-bottom:1px solid var(--soft);vertical-align:middle}
+    .mtbl tr:last-child td{border:none}
+    .mtbl tr:hover td{background:var(--soft)}
+    .chip{font-size:10px;font-weight:700;padding:2px 8px;border-radius:var(--rp)}
+    .chip-act{background:var(--gnb);color:var(--gn)}
+    .chip-exp{background:var(--rdb);color:var(--rd)}
+    .chip-can{background:var(--amb);color:var(--am)}
 
     /* TOAST */
-    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--navy);color:white;padding:10px 20px;border-radius:99px;font-size:13px;font-weight:600;z-index:9999;transition:transform .3s;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,.2)}
+    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--tx);color:white;padding:10px 20px;border-radius:var(--rp);font-size:13px;font-weight:600;z-index:9999;transition:transform .3s;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,.2)}
     .toast.show{transform:translateX(-50%) translateY(0)}
 
-    /* SECTIONS */
     .sv{display:none}.sv.active{display:block}
-
-    /* EMPTY */
-    .empty{text-align:center;padding:2rem;color:var(--muted);font-size:13px}
-    .empty span{display:block;font-size:28px;margin-bottom:6px}
-
+    .empty{text-align:center;padding:2rem;color:var(--mu)}
+    .empty span{display:block;font-size:24px;margin-bottom:5px}
     @media(max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:1fr}}
-    @media(max-width:700px){.shell{grid-template-columns:1fr}.sb{display:none}.frow{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
+    @media(max-width:700px){.shell{grid-template-columns:1fr}.sb{display:none}.frow{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
 
 <div class="toast" id="toast">✓ Guardado</div>
 
-<!-- ══ LOGIN ══ -->
+<!-- LOGIN -->
 <div class="login" id="loginScreen">
-  <div class="l-ico"><svg viewBox="0 0 24 24"><path d="M12 2C8 2 4.5 6 4.5 10c0 2.8 1.2 5 3 6.5L12 22l4.5-5.5c1.8-1.5 3-3.7 3-6.5C19.5 6 16 2 12 2z"/></svg></div>
+  <div class="l-ico"><i class="fa-solid fa-shield-halved"></i></div>
   <div class="l-title">Panel Admin</div>
   <div class="l-sub">Club Dental OdonTeck</div>
   <div class="l-box">
-    <div>
-      <div class="l-lbl">Contraseña</div>
-      <input type="password" id="pwd" placeholder="••••••••••" onkeydown="if(event.key==='Enter')doLogin()">
-    </div>
-    <button class="btn-login" onclick="doLogin()">Ingresar al panel</button>
+    <div><div class="l-lbl">Contraseña</div><input type="password" class="l-inp" id="pwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="btn-login" onclick="doLogin()">Ingresar</button>
     <div class="l-err" id="lerr">❌ Contraseña incorrecta</div>
   </div>
 </div>
 
 <div class="shell" id="appShell" style="display:none">
 
-  <!-- ══ SIDEBAR ══ -->
-  <aside class="sb">
-    <div class="sb-logo">
-      <div class="sb-ico"><svg viewBox="0 0 24 24"><path d="M12 2C8 2 4.5 6 4.5 10c0 2.8 1.2 5 3 6.5L12 22l4.5-5.5c1.8-1.5 3-3.7 3-6.5C19.5 6 16 2 12 2z"/></svg></div>
-      <div><div class="sb-name">OdonTeck Admin</div><div class="sb-sub">Club Dental</div></div>
-    </div>
+<!-- SIDEBAR -->
+<aside class="sb">
+  <div class="sb-logo">
+    <div class="sb-img"><img src="../assets/img/logo/logo.jpg" alt="OdonTeck" onerror="this.parentElement.style.background='var(--pr)'"></div>
+    <div><div class="sb-title">OdonTeck Admin</div><div class="sb-sub2">Panel de control</div></div>
+  </div>
+  <div class="nav-s">
+    <div class="nav-l">Gestión</div>
+    <div class="ni active" onclick="go('dashboard',this)"><i class="fa-solid fa-house"></i>Dashboard</div>
+    <div class="ni" onclick="go('noticias',this)"><i class="fa-solid fa-bullhorn"></i>Noticias<span class="nbg2" id="nb-n">0</span></div>
+    <div class="ni" onclick="go('cursos',this)"><i class="fa-solid fa-book-open"></i>Cursos<span class="nbg2" id="nb-c">0</span></div>
+    <div class="ni" onclick="go('videos',this)"><i class="fa-solid fa-video"></i>Videos<span class="nbg2" id="nb-v">0</span></div>
+    <div class="ni" onclick="go('pdfs',this)"><i class="fa-solid fa-file-pdf"></i>PDFs<span class="nbg2" id="nb-p">0</span></div>
+    <div class="ni" onclick="go('lives',this)"><i class="fa-regular fa-circle-dot"></i>Lives<span class="nbg2" id="nb-l">0</span></div>
+    <div class="ni" onclick="go('miembros',this)"><i class="fa-solid fa-users"></i>Miembros<span class="nbg2" id="nb-m">0</span></div>
+  </div>
+  <div class="sb-ft">
+    <a class="sb-link" href="club-miembro.html" target="_blank"><i class="fa-solid fa-eye"></i> Ver como miembro</a>
+    <button class="sb-out" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</button>
+  </div>
+</aside>
 
-    <div class="nav-sec">
-      <div class="nav-lbl">Gestión</div>
-      <div class="ni active" onclick="goSec('dashboard',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard
+<!-- MAIN -->
+<main class="main">
+
+  <!-- DASHBOARD -->
+  <div class="sv active" id="sv-dashboard">
+    <div class="pg-title">Dashboard</div>
+    <div class="pg-sub" id="dash-date"></div>
+    <br>
+    <div class="stats">
+      <div class="sc"><div class="sc-l">Noticias</div><div class="sc-v" style="color:var(--pr)" id="ds-n">0</div></div>
+      <div class="sc"><div class="sc-l">Cursos</div><div class="sc-v" style="color:var(--pr2)" id="ds-c">0</div></div>
+      <div class="sc"><div class="sc-l">Videos</div><div class="sc-v" style="color:var(--am)" id="ds-v">0</div></div>
+      <div class="sc"><div class="sc-l">PDFs</div><div class="sc-v" style="color:var(--rd)" id="ds-p">0</div></div>
+      <div class="sc"><div class="sc-l">Miembros</div><div class="sc-v" style="color:var(--gn)" id="ds-m">0</div></div>
+    </div>
+    <div class="g2">
+      <div class="panel">
+        <div class="ph"><span class="pt">Publicaciones recientes</span></div>
+        <div id="dash-rec"><div style="color:var(--mu);font-size:13px">Cargando...</div></div>
+      </div>
+      <div class="panel">
+        <div class="ph"><span class="pt">Accesos rápidos</span></div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <button class="btn-pub" style="width:100%;text-align:left" onclick="go('noticias',null)"><i class="fa-solid fa-bullhorn" style="margin-right:8px"></i>+ Nueva noticia</button>
+          <button class="btn-pub" style="width:100%;text-align:left" onclick="go('cursos',null)"><i class="fa-solid fa-book-open" style="margin-right:8px"></i>+ Nuevo curso</button>
+          <button class="btn-pub" style="width:100%;text-align:left" onclick="go('lives',null)"><i class="fa-regular fa-circle-dot" style="margin-right:8px"></i>+ Programar live</button>
+          <button class="btn-pub" style="width:100%;text-align:left" onclick="go('videos',null)"><i class="fa-solid fa-video" style="margin-right:8px"></i>+ Nuevo video</button>
+          <button class="btn-pub" style="width:100%;text-align:left" onclick="go('pdfs',null)"><i class="fa-solid fa-file-pdf" style="margin-right:8px"></i>+ Nuevo PDF</button>
         </div>
-      <div class="ni" onclick="goSec('noticias',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Noticias
-        <span class="nbg" id="nb-n">0</span>
-      </div>
-      <div class="ni" onclick="goSec('cursos',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Cursos
-        <span class="nbg" id="nb-c">0</span>
-      </div>
-      <div class="ni" onclick="goSec('videos',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>Videos
-        <span class="nbg" id="nb-v">0</span>
-      </div>
-      <div class="ni" onclick="goSec('pdfs',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDFs
-        <span class="nbg" id="nb-p">0</span>
-      </div>
-      <div class="ni" onclick="goSec('lives',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Lives / Webinars
-        <span class="nbg" id="nb-l">0</span>
       </div>
     </div>
+  </div>
 
-    <div class="sb-ft">
-      <a class="sb-lnk" href="club-miembro.html" target="_blank">👁 Ver como miembro</a>
-      <button class="sb-out" onclick="doLogout()">Cerrar sesión</button>
-    </div>
-  </aside>
-
-  <!-- ══ MAIN ══ -->
-  <main class="main">
-
-    <!-- DASHBOARD -->
-    <div class="sv active" id="sv-dashboard">
-      <div class="pg-title">Dashboard</div>
-      <div class="pg-sub" id="dash-date"></div>
-      <br>
-      <div class="stats">
-        <div class="sc"><div class="sc-l">Noticias</div><div class="sc-v" style="color:var(--teal)" id="ds-n">0</div></div>
-        <div class="sc"><div class="sc-l">Cursos</div><div class="sc-v" style="color:var(--blue)" id="ds-c">0</div></div>
-        <div class="sc"><div class="sc-l">Videos</div><div class="sc-v" style="color:var(--amber)" id="ds-v">0</div></div>
-        <div class="sc"><div class="sc-l">PDFs</div><div class="sc-v" style="color:var(--coral,#C62828)" id="ds-p">0</div></div>
-        <div class="sc"><div class="sc-l">Lives</div><div class="sc-v" style="color:var(--purple)" id="ds-l">0</div></div>
-      </div>
-      <div class="g2">
-        <div class="panel">
-          <div class="ph"><span class="pt">Publicaciones recientes</span></div>
-          <div id="dash-rec"><div style="color:var(--muted);font-size:13px">Cargando...</div></div>
-        </div>
-        <div class="panel">
-          <div class="ph"><span class="pt">Accesos rápidos</span></div>
-          <div style="display:flex;flex-direction:column;gap:8px">
-            <button class="btn-submit" style="width:100%;text-align:left" onclick="goSec('noticias',null)">📢 + Nueva noticia</button>
-            <button class="btn-submit" style="width:100%;text-align:left" onclick="goSec('cursos',null)">📚 + Nuevo curso</button>
-            <button class="btn-submit" style="width:100%;text-align:left" onclick="goSec('lives',null)">📺 + Programar live</button>
-            <button class="btn-submit" style="width:100%;text-align:left" onclick="goSec('videos',null)">🎬 + Nuevo video</button>
-            <button class="btn-submit" style="width:100%;text-align:left" onclick="goSec('pdfs',null)">📄 + Nuevo PDF</button>
+  <!-- NOTICIAS -->
+  <div class="sv" id="sv-noticias">
+    <div class="pg-title">📢 Noticias y novedades</div>
+    <div class="pg-sub">Aparecen en el inicio del dashboard de todos los miembros</div><br>
+    <div class="g2">
+      <div class="panel">
+        <div class="ph"><span class="pt">Nueva noticia</span></div>
+        <div class="fg"><div class="fl">Título</div><input class="fi" id="n-tit" placeholder="Ej: Nuevo video publicado"></div>
+        <div class="fg"><div class="fl">Descripción</div><textarea class="fi" id="n-body" placeholder="Detalle de la noticia..."></textarea></div>
+        <div class="frow" style="margin-bottom:12px">
+          <div><div class="fl">Emoji</div><input class="fi" id="n-em" value="📢" maxlength="4"></div>
+          <div><div class="fl">Color</div>
+            <select class="fi" id="n-col">
+              <option value="var(--prb)">🔵 Azul — Novedad</option>
+              <option value="#f5f3ff">🟣 Púrpura — Live</option>
+              <option value="var(--amb)">🟡 Ámbar — Importante</option>
+              <option value="var(--gnb)">🟢 Verde — Logro</option>
+            </select>
           </div>
         </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn-pub" onclick="save('noticias')">Publicar</button>
+          <button class="btn-sec" onclick="clr('n')">Limpiar</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="ph"><span class="pt">Publicadas</span><span style="font-size:12px;color:var(--mu)" id="cnt-n">0</span></div>
+        <div id="list-noticias"><div class="empty"><span>📭</span>Sin noticias.</div></div>
       </div>
     </div>
+  </div>
 
-    <!-- NOTICIAS -->
-    <div class="sv" id="sv-noticias">
-      <div class="pg-title">📢 Noticias y novedades</div>
-      <div class="pg-sub">Aparecen en el inicio de todos los miembros</div>
-      <br>
-      <div class="g2">
-        <div class="panel">
-          <div class="ph"><span class="pt">Nueva noticia</span></div>
-          <div class="fg">
-            <div><div class="fl">Título</div><input class="fi" id="n-tit" placeholder="Ej: Nuevo video publicado — Endodoncia molar"></div>
-            <div><div class="fl">Cuerpo / descripción</div><textarea class="fi" id="n-body" rows="3" placeholder="Detalle de la noticia para los miembros..."></textarea></div>
-            <div class="frow">
-              <div><div class="fl">Emoji</div><input class="fi" id="n-em" value="📢" maxlength="4"></div>
-              <div><div class="fl">Color de fondo</div>
-                <select class="fi" id="n-col">
-                  <option value="var(--tealb)">🟢 Verde — Novedad</option>
-                  <option value="var(--purpleb)">🟣 Púrpura — Live</option>
-                  <option value="var(--blueb)">🔵 Azul — Recurso</option>
-                  <option value="var(--amberb)">🟡 Ámbar — Importante</option>
-                </select>
-              </div>
-            </div>
-            <div style="display:flex;gap:8px">
-              <button class="btn-submit" onclick="saveItem('noticias')">Publicar</button>
-              <button class="btn-sec" onclick="clearF('n')">Limpiar</button>
-            </div>
+  <!-- CURSOS -->
+  <div class="sv" id="sv-cursos">
+    <div class="pg-title">📚 Biblioteca de cursos</div>
+    <div class="pg-sub">Los cursos se reproducen directamente dentro del dashboard del miembro</div><br>
+    <div class="g2">
+      <div class="panel">
+        <div class="ph"><span class="pt">Nuevo curso</span></div>
+        <div class="fg"><div class="fl">Título del curso</div><input class="fi" id="c-tit" placeholder="Ej: Endodoncia Avanzada"></div>
+        <div class="fg"><div class="fl">Descripción</div><textarea class="fi" id="c-desc" placeholder="¿Qué verán en este curso?"></textarea></div>
+        <div class="frow" style="margin-bottom:12px">
+          <div><div class="fl">Instructor</div><input class="fi" id="c-inst" placeholder="Dr. Juárez"></div>
+          <div><div class="fl">Duración</div><input class="fi" id="c-dur" placeholder="4 módulos"></div>
+        </div>
+        <div class="frow" style="margin-bottom:12px">
+          <div><div class="fl">Categoría</div>
+            <select class="fi" id="c-cat">
+              <option value="cirugia">Cirugía</option>
+              <option value="endodoncia">Endodoncia</option>
+              <option value="ortodoncia">Ortodoncia</option>
+              <option value="protesis">Prótesis</option>
+              <option value="otros">Otros</option>
+            </select>
+          </div>
+          <div><div class="fl">Badge</div>
+            <select class="fi" id="c-badge">
+              <option value="">Sin badge</option>
+              <option value="new">🆕 Nuevo</option>
+              <option value="free">🆓 Gratis</option>
+            </select>
           </div>
         </div>
-        <div class="panel">
-          <div class="ph"><span class="pt">Publicadas</span><span style="font-size:12px;color:var(--muted)" id="cnt-n">0 noticias</span></div>
-          <div id="list-noticias"><div class="empty"><span>📭</span>Sin noticias.</div></div>
+        <div class="fg"><div class="fl">Link Google Drive (video o carpeta)</div><input class="fi" id="c-link" placeholder="https://drive.google.com/file/d/... o /folders/..."></div>
+        <div class="fg"><div class="fl">Lo que aprenderán (uno por línea)</div><textarea class="fi" id="c-temario" placeholder="Técnicas de anestesia local&#10;Sindesmotomía y luxación&#10;Manejo posoperatorio" rows="4"></textarea></div>
+        <div class="frow" style="margin-bottom:12px">
+          <div><div class="fl">Emoji portada</div><input class="fi" id="c-em" value="📚" maxlength="4"></div>
+          <div><div class="fl">Progreso % inicial</div><input class="fi" type="number" id="c-prog" min="0" max="100" value="0"></div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn-pub" onclick="save('cursos')">Publicar curso</button>
+          <button class="btn-sec" onclick="clr('c')">Limpiar</button>
         </div>
       </div>
+      <div class="panel">
+        <div class="ph"><span class="pt">Publicados</span><span style="font-size:12px;color:var(--mu)" id="cnt-c">0 cursos</span></div>
+        <div id="list-cursos"><div class="empty"><span>📚</span>Sin cursos.</div></div>
+      </div>
     </div>
+  </div>
 
-    <!-- CURSOS -->
-    <div class="sv" id="sv-cursos">
-      <div class="pg-title">📚 Biblioteca de cursos</div>
-      <div class="pg-sub">Los cursos aparecen en la sección Biblioteca del dashboard del miembro</div>
-      <br>
-      <div class="g2">
-        <div class="panel">
-          <div class="ph"><span class="pt">Nuevo curso</span></div>
-          <div class="fg">
-            <div><div class="fl">Título del curso</div><input class="fi" id="c-tit" placeholder="Ej: Endodoncia Avanzada — Molares"></div>
-            <div><div class="fl">Descripción breve</div><input class="fi" id="c-desc" placeholder="Técnicas modernas con casos clínicos reales"></div>
-            <div class="frow">
-              <div><div class="fl">Instructor</div><input class="fi" id="c-inst" placeholder="Dr. Juárez"></div>
-              <div><div class="fl">Duración</div><input class="fi" id="c-dur" placeholder="4 módulos · 3 hrs"></div>
-            </div>
-            <div class="frow">
-              <div><div class="fl">Categoría</div>
-                <select class="fi" id="c-cat">
-                  <option value="endodoncia">Endodoncia</option>
-                  <option value="cirugia">Cirugía</option>
-                  <option value="ortodoncia">Ortodoncia</option>
-                  <option value="protesis">Prótesis</option>
-                  <option value="otros">Otros</option>
-                </select>
-              </div>
-              <div><div class="fl">Badge</div>
-                <select class="fi" id="c-badge">
-                  <option value="">Sin badge</option>
-                  <option value="new">🆕 Nuevo</option>
-                  <option value="free">🆓 Gratis</option>
-                  <option value="live">🔴 Live</option>
-                </select>
-              </div>
-            </div>
-            <div><div class="fl">Link Google Drive (video o carpeta)</div><input class="fi" id="c-link" placeholder="https://drive.google.com/file/d/..."></div>
-            <div class="frow">
-              <div><div class="fl">Emoji portada</div><input class="fi" id="c-em" value="📚" maxlength="4"></div>
-              <div><div class="fl">Progreso % (0-100)</div><input class="fi" type="number" id="c-prog" min="0" max="100" value="0"></div>
-            </div>
-            <div style="display:flex;gap:8px">
-              <button class="btn-submit" onclick="saveItem('cursos')">Publicar curso</button>
-              <button class="btn-sec" onclick="clearF('c')">Limpiar</button>
-            </div>
+  <!-- VIDEOS -->
+  <div class="sv" id="sv-videos">
+    <div class="pg-title">🎬 Videos de casos clínicos</div>
+    <div class="pg-sub">Links de Google Drive — se reproducen dentro del dashboard</div><br>
+    <div class="g2">
+      <div class="panel">
+        <div class="ph"><span class="pt">Nuevo video</span></div>
+        <div class="fg"><div class="fl">Título</div><input class="fi" id="v-tit" placeholder="Ej: Endodoncia molar — caso real"></div>
+        <div class="fg"><div class="fl">Link Google Drive (archivo .mp4)</div><input class="fi" id="v-link" placeholder="https://drive.google.com/file/d/..."></div>
+        <div class="frow" style="margin-bottom:12px">
+          <div><div class="fl">Mes</div><input class="fi" id="v-mes" placeholder="Abril 2026"></div>
+          <div><div class="fl">Duración</div><input class="fi" id="v-dur" placeholder="22 min"></div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn-pub" onclick="save('videos')">Publicar video</button>
+          <button class="btn-sec" onclick="clr('v')">Limpiar</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="ph"><span class="pt">Publicados</span><span style="font-size:12px;color:var(--mu)" id="cnt-v">0 videos</span></div>
+        <div id="list-videos"><div class="empty"><span>🎬</span>Sin videos.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PDFs -->
+  <div class="sv" id="sv-pdfs">
+    <div class="pg-title">📄 PDFs y recursos</div>
+    <div class="pg-sub">Alojados en Google Drive</div><br>
+    <div class="g2">
+      <div class="panel">
+        <div class="ph"><span class="pt">Nuevo PDF</span></div>
+        <div class="fg"><div class="fl">Título</div><input class="fi" id="p-tit" placeholder="Ej: Protocolo irrigación NaOCl"></div>
+        <div class="fg"><div class="fl">Link Google Drive</div><input class="fi" id="p-link" placeholder="https://drive.google.com/file/d/..."></div>
+        <div class="fg"><div class="fl">Mes</div><input class="fi" id="p-mes" placeholder="Abril 2026"></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn-pub" onclick="save('pdfs')">Publicar PDF</button>
+          <button class="btn-sec" onclick="clr('p')">Limpiar</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="ph"><span class="pt">Publicados</span><span style="font-size:12px;color:var(--mu)" id="cnt-p">0 PDFs</span></div>
+        <div id="list-pdfs"><div class="empty"><span>📄</span>Sin PDFs.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIVES -->
+  <div class="sv" id="sv-lives">
+    <div class="pg-title">📺 Lives y Webinars</div>
+    <div class="pg-sub">El live ACTIVO aparece en el countdown del dashboard de los miembros</div><br>
+    <div class="g2">
+      <div class="panel">
+        <div class="ph"><span class="pt">Programar live</span></div>
+        <div class="fg"><div class="fl">Título de la sesión</div><input class="fi" id="l-tit" placeholder="Ej: Q&A Endodoncia"></div>
+        <div class="fg"><div class="fl">Instructor</div><input class="fi" id="l-inst" placeholder="Dr. Juárez"></div>
+        <div class="fg"><div class="fl">Descripción</div><textarea class="fi" id="l-desc" placeholder="Sesión de preguntas y respuestas..."></textarea></div>
+        <div class="frow" style="margin-bottom:12px">
+          <div><div class="fl">Fecha y hora</div><input class="fi" type="datetime-local" id="l-fecha"></div>
+          <div><div class="fl">Estado</div>
+            <select class="fi" id="l-activo">
+              <option value="true">✅ Activo (aparece en countdown)</option>
+              <option value="false">⬛ Inactivo / Pasado</option>
+            </select>
           </div>
         </div>
-        <div class="panel">
-          <div class="ph"><span class="pt">Publicados</span><span style="font-size:12px;color:var(--muted)" id="cnt-c">0 cursos</span></div>
-          <div id="list-cursos"><div class="empty"><span>📚</span>Sin cursos.</div></div>
+        <div class="fg"><div class="fl">Link Google Meet / Zoom</div><input class="fi" id="l-link" placeholder="https://meet.google.com/..."></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn-pub" onclick="save('lives')">Programar live</button>
+          <button class="btn-sec" onclick="clr('l')">Limpiar</button>
         </div>
       </div>
-    </div>
-
-    <!-- VIDEOS -->
-    <div class="sv" id="sv-videos">
-      <div class="pg-title">🎬 Videos de casos clínicos</div>
-      <div class="pg-sub">Links de Google Drive — los miembros acceden directamente</div>
-      <br>
-      <div class="g2">
-        <div class="panel">
-          <div class="ph"><span class="pt">Nuevo video</span></div>
-          <div class="fg">
-            <div><div class="fl">Título del video</div><input class="fi" id="v-tit" placeholder="Ej: Endodoncia en molar — caso real completo"></div>
-            <div><div class="fl">Link Google Drive</div><input class="fi" id="v-link" placeholder="https://drive.google.com/file/d/..."></div>
-            <div class="frow">
-              <div><div class="fl">Mes de publicación</div><input class="fi" id="v-mes" placeholder="Abril 2026"></div>
-              <div><div class="fl">Duración</div><input class="fi" id="v-dur" placeholder="22 min"></div>
-            </div>
-            <div style="display:flex;gap:8px">
-              <button class="btn-submit" onclick="saveItem('videos')">Publicar video</button>
-              <button class="btn-sec" onclick="clearF('v')">Limpiar</button>
-            </div>
-          </div>
-        </div>
-        <div class="panel">
-          <div class="ph"><span class="pt">Publicados</span><span style="font-size:12px;color:var(--muted)" id="cnt-v">0 videos</span></div>
-          <div id="list-videos"><div class="empty"><span>🎬</span>Sin videos.</div></div>
-        </div>
+      <div class="panel">
+        <div class="ph"><span class="pt">Lives programados</span><span style="font-size:12px;color:var(--mu)" id="cnt-l">0 lives</span></div>
+        <div id="list-lives"><div class="empty"><span>📺</span>Sin lives.</div></div>
       </div>
     </div>
+  </div>
 
-    <!-- PDFs -->
-    <div class="sv" id="sv-pdfs">
-      <div class="pg-title">📄 PDFs y recursos clínicos</div>
-      <div class="pg-sub">Alojados en Google Drive</div>
-      <br>
-      <div class="g2">
-        <div class="panel">
-          <div class="ph"><span class="pt">Nuevo PDF</span></div>
-          <div class="fg">
-            <div><div class="fl">Título del PDF</div><input class="fi" id="p-tit" placeholder="Ej: Protocolo de irrigación NaOCl"></div>
-            <div><div class="fl">Link Google Drive</div><input class="fi" id="p-link" placeholder="https://drive.google.com/file/d/..."></div>
-            <div><div class="fl">Mes de publicación</div><input class="fi" id="p-mes" placeholder="Abril 2026"></div>
-            <div style="display:flex;gap:8px">
-              <button class="btn-submit" onclick="saveItem('pdfs')">Publicar PDF</button>
-              <button class="btn-sec" onclick="clearF('p')">Limpiar</button>
-            </div>
-          </div>
-        </div>
-        <div class="panel">
-          <div class="ph"><span class="pt">Publicados</span><span style="font-size:12px;color:var(--muted)" id="cnt-p">0 PDFs</span></div>
-          <div id="list-pdfs"><div class="empty"><span>📄</span>Sin PDFs.</div></div>
-        </div>
+  <!-- MIEMBROS -->
+  <div class="sv" id="sv-miembros">
+    <div class="pg-title">👥 Miembros del Club</div>
+    <div class="pg-sub">Gestiona los miembros registrados y su estado de suscripción</div><br>
+    <div class="panel">
+      <div class="ph"><span class="pt">Miembros registrados</span><span style="font-size:12px;color:var(--mu)" id="cnt-m">0 miembros</span></div>
+      <div style="overflow-x:auto">
+        <table class="mtbl">
+          <thead><tr><th>Nombre</th><th>Correo</th><th>Especialidad</th><th>Plan</th><th>Vence</th><th>Estado</th><th>Acción</th></tr></thead>
+          <tbody id="mtbody"><tr><td colspan="7" style="text-align:center;color:var(--mu);padding:2rem">Cargando miembros...</td></tr></tbody>
+        </table>
       </div>
     </div>
+  </div>
 
-    <!-- LIVES -->
-    <div class="sv" id="sv-lives">
-      <div class="pg-title">📺 Lives y Webinars</div>
-      <div class="pg-sub">El live ACTIVO aparece en el countdown del dashboard — solo puede haber uno activo a la vez</div>
-      <br>
-      <div class="g2">
-        <div class="panel">
-          <div class="ph"><span class="pt">Programar live</span></div>
-          <div class="fg">
-            <div><div class="fl">Título de la sesión</div><input class="fi" id="l-tit" placeholder="Ej: Q&amp;A Endodoncia · Casos clínicos"></div>
-            <div><div class="fl">Instructor / Speaker</div><input class="fi" id="l-inst" placeholder="Dr. Juárez"></div>
-            <div><div class="fl">Descripción para los miembros</div><textarea class="fi" id="l-desc" rows="2" placeholder="Sesión de preguntas y respuestas sobre casos clínicos de endodoncia..."></textarea></div>
-            <div class="frow">
-              <div>
-                <div class="fl">Fecha y hora exacta</div>
-                <input class="fi" type="datetime-local" id="l-fecha">
-                <div style="font-size:10px;color:var(--muted);margin-top:4px">El countdown se calcula automáticamente</div>
-              </div>
-              <div>
-                <div class="fl">Estado</div>
-                <select class="fi" id="l-activo">
-                  <option value="true">✅ Activo — aparece en countdown</option>
-                  <option value="false">⬛ Inactivo / Pasado</option>
-                </select>
-              </div>
-            </div>
-            <div><div class="fl">Link de acceso (Google Meet / Zoom)</div><input class="fi" id="l-link" placeholder="https://meet.google.com/xxx-yyy-zzz"></div>
-            <div style="display:flex;gap:8px">
-              <button class="btn-submit" onclick="saveItem('lives')">Programar live</button>
-              <button class="btn-sec" onclick="clearF('l')">Limpiar</button>
-            </div>
-          </div>
-        </div>
-        <div class="panel">
-          <div class="ph"><span class="pt">Lives programados</span><span style="font-size:12px;color:var(--muted)" id="cnt-l">0 lives</span></div>
-          <div id="list-lives"><div class="empty"><span>📺</span>Sin lives.</div></div>
-        </div>
-      </div>
-    </div>
-
-  </main>
+</main>
 </div>
 
 <script type="module">
-import { initializeApp }  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, collection, addDoc, deleteDoc, doc,
-         onSnapshot, orderBy, query, serverTimestamp }
-  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, orderBy, query, getDocs, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
-// ══ FIREBASE CONFIG ══════════════════════════════════════════
-const app = initializeApp({
-  apiKey:            "AIzaSyA3xYpORcvvcXrhNaXOBBBPm19mxdIcNsU",
-  authDomain:        "club-odonteck.firebaseapp.com",
-  projectId:         "club-odonteck",
-  storageBucket:     "club-odonteck.firebasestorage.app",
-  messagingSenderId: "306331582203",
-  appId:             "1:306331582203:web:7d70e51f0180528ddffa5e"
-});
+const app = initializeApp({ apiKey:"AIzaSyA3xYpORcvvcXrhNaXOBBBPm19mxdIcNsU", authDomain:"club-odonteck.firebaseapp.com", projectId:"club-odonteck", storageBucket:"club-odonteck.firebasestorage.app", messagingSenderId:"306331582203", appId:"1:306331582203:web:7d70e51f0180528ddffa5e" });
 const db = getFirestore(app);
-// ═════════════════════════════════════════════════════════════
 
-// ── CONTRASEÑA ADMIN ─────────────────────────────────────────
-// Cámbiala cuando quieras — solo vive en este archivo
 const ADMIN_PWD = "OdonTeck2026!";
 
-window.doLogin = function() {
-  const v = document.getElementById('pwd').value;
-  if (v === ADMIN_PWD) {
+window.doLogin = () => {
+  if (document.getElementById('pwd').value === ADMIN_PWD) {
     document.getElementById('loginScreen').classList.add('hidden');
     document.getElementById('appShell').style.display = 'grid';
     sessionStorage.setItem('oadmin','1');
@@ -420,177 +393,114 @@ window.doLogin = function() {
   } else {
     document.getElementById('lerr').classList.add('show');
     document.getElementById('pwd').value = '';
-    document.getElementById('pwd').focus();
   }
 };
+window.doLogout = () => { sessionStorage.removeItem('oadmin'); location.reload(); };
 
-window.doLogout = function() {
-  sessionStorage.removeItem('oadmin');
-  location.reload();
-};
-
-if (sessionStorage.getItem('oadmin') === '1') {
+if (sessionStorage.getItem('oadmin')==='1') {
   document.getElementById('loginScreen').classList.add('hidden');
   document.getElementById('appShell').style.display = 'grid';
   initApp();
 }
 
-// ── DATOS EN MEMORIA ─────────────────────────────────────────
-const DATA = { noticias:[], cursos:[], videos:[], pdfs:[], lives:[] };
+const DATA = { noticias:[], cursos:[], videos:[], pdfs:[], lives:[], miembros:[] };
 
 function initApp() {
-  const fecha = new Date();
-  document.getElementById('dash-date').textContent =
-    ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][fecha.getDay()] + ' ' +
-    fecha.getDate() + ' de ' +
-    ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'][fecha.getMonth()] +
-    ' de ' + fecha.getFullYear();
+  const h=new Date(), M=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'], D=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  document.getElementById('dash-date').textContent = D[h.getDay()]+' '+h.getDate()+' de '+M[h.getMonth()]+' de '+h.getFullYear();
 
   ['noticias','cursos','videos','pdfs','lives'].forEach(col => {
-    try {
-      onSnapshot(query(collection(db,col), orderBy('creadoEn','desc')), snap => {
-        DATA[col] = snap.docs.map(d=>({id:d.id,...d.data()}));
-        renderCol(col);
-        updateStats();
-      });
-    } catch(e) {
-      onSnapshot(collection(db,col), snap => {
-        DATA[col] = snap.docs.map(d=>({id:d.id,...d.data()}));
-        renderCol(col);
-        updateStats();
-      });
-    }
+    const q = ['lives','videos','pdfs','noticias'].includes(col) ? query(collection(db,col), orderBy('creadoEn','desc')) : collection(db,col);
+    onSnapshot(q, snap => { DATA[col]=snap.docs.map(d=>({id:d.id,...d.data()})); renderCol(col); updStats(); }, () => {
+      onSnapshot(collection(db,col), snap => { DATA[col]=snap.docs.map(d=>({id:d.id,...d.data()})); renderCol(col); updStats(); });
+    });
+  });
+
+  // Miembros
+  onSnapshot(collection(db,'miembros'), snap => {
+    DATA.miembros = snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderMiembros(DATA.miembros);
+    updStats();
   });
 }
 
-function updateStats() {
-  ['n','c','v','p','l'].forEach((k,i) => {
-    const cols = ['noticias','cursos','videos','pdfs','lives'];
-    const n = DATA[cols[i]].length;
-    document.getElementById('ds-'+k).textContent = n;
-    document.getElementById('nb-'+k).textContent = n;
-  });
-  // Contadores de sección
-  document.getElementById('cnt-n').textContent = DATA.noticias.length + ' noticias';
-  document.getElementById('cnt-c').textContent = DATA.cursos.length + ' cursos';
-  document.getElementById('cnt-v').textContent = DATA.videos.length + ' videos';
-  document.getElementById('cnt-p').textContent = DATA.pdfs.length + ' PDFs';
-  document.getElementById('cnt-l').textContent = DATA.lives.length + ' lives';
-  // Dashboard recientes
-  const rec = [...DATA.noticias, ...DATA.cursos, ...DATA.videos].slice(0,6);
-  document.getElementById('dash-rec').innerHTML = rec.length
-    ? rec.map(r=>`<div class="li-item"><div class="li-info"><div class="li-title">${esc(r.titulo||r.name||'—')}</div></div></div>`).join('')
-    : `<div class="empty"><span>📂</span>Sin publicaciones aún.</div>`;
+function updStats() {
+  ['n','c','v','p','l'].forEach((k,i)=>{const cols=['noticias','cursos','videos','pdfs','lives'];const n=DATA[cols[i]].length;document.getElementById('ds-'+k).textContent=n;document.getElementById('nb-'+['n','c','v','p','l'][i]).textContent=n;});
+  const nm=DATA.miembros.length;
+  document.getElementById('ds-m').textContent=nm;
+  document.getElementById('nb-m').textContent=nm;
+  document.getElementById('cnt-m').textContent=nm+' miembros';
+  const rec=[...DATA.noticias,...DATA.cursos,...DATA.videos].slice(0,5);
+  document.getElementById('dash-rec').innerHTML=rec.length?rec.map(r=>`<div class="li"><div class="li-info"><div class="li-t">${esc(r.titulo||'Sin título')}</div></div></div>`).join(''):`<div class="empty"><span>📂</span>Sin publicaciones.</div>`;
 }
 
 function renderCol(col) {
-  const el = document.getElementById('list-'+col);
-  const arr = DATA[col];
-  if (!arr.length) { el.innerHTML = `<div class="empty"><span>📭</span>Sin elementos.</div>`; return; }
-
-  el.innerHTML = arr.map(item => {
-    let meta = '';
-    if (col==='noticias') meta = item.fecha || '';
-    if (col==='cursos')   meta = (item.categoria||'') + (item.instructor?' · '+item.instructor:'');
-    if (col==='videos')   meta = item.mes || '';
-    if (col==='pdfs')     meta = item.mes || '';
-    if (col==='lives') {
-      const f = item.fechaISO ? new Date(item.fechaISO).toLocaleString('es-MX',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : '';
-      meta = (item.instructor||'') + ' · ' + f + (item.activo ? ' · ✅ Activo':'');
-    }
-    return `
-    <div class="li-item">
-      <div class="li-info">
-        <div class="li-title">${esc(item.titulo||'Sin título')}</div>
-        <div class="li-meta">${esc(meta)}</div>
-      </div>
-      <button class="btn-del" onclick="delItem('${col}','${item.id}')">Eliminar</button>
-    </div>`;
+  const el=document.getElementById('list-'+col); if(!el)return;
+  const arr=DATA[col];
+  document.getElementById('cnt-'+col[0]).textContent = arr.length + ({'noticias':' noticias','cursos':' cursos','videos':' videos','pdfs':' PDFs','lives':' lives'}[col]||'');
+  if(!arr.length){el.innerHTML=`<div class="empty"><span>📭</span>Sin elementos.</div>`;return;}
+  el.innerHTML=arr.map(item=>{
+    let meta='';
+    if(col==='noticias') meta=item.fecha||'';
+    if(col==='cursos')   meta=(item.categoria||'')+(item.instructor?' · '+item.instructor:'');
+    if(col==='videos')   meta=item.mes||'';
+    if(col==='pdfs')     meta=item.mes||'';
+    if(col==='lives')    meta=(item.instructor||'')+(item.fechaISO?' · '+new Date(item.fechaISO).toLocaleDateString('es-MX',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'')+(item.activo?' · ✅':'');
+    return `<div class="li"><div class="li-info"><div class="li-t">${esc(item.titulo||'—')}</div><div class="li-m">${esc(meta)}</div></div><button class="btn-del" onclick="del('${col}','${item.id}')">Eliminar</button></div>`;
   }).join('');
 }
 
-// ── SAVE ─────────────────────────────────────────────────────
-window.saveItem = async function(col) {
-  let data = {};
-  if (col==='noticias') {
-    const tit = gv('n-tit'), body = gv('n-body');
-    if (!tit) { alert('Escribe el título'); return; }
-    data = { titulo:tit, cuerpo:body, emoji:gv('n-em')||'📢', color:gv('n-col'),
-             fecha: new Date().toLocaleDateString('es-MX',{day:'numeric',month:'short',year:'numeric'}) };
-  }
-  if (col==='cursos') {
-    const tit = gv('c-tit'), link = gv('c-link');
-    if (!tit||!link) { alert('Escribe el título y el link'); return; }
-    const badge = gv('c-badge');
-    const badgeLabel = badge==='new'?'Nuevo':badge==='free'?'Gratis':badge==='live'?'Live':'';
-    data = { titulo:tit, descripcion:gv('c-desc'), instructor:gv('c-inst'), duracion:gv('c-dur'),
-             categoria:gv('c-cat'), badge, badgeLabel, link, emoji:gv('c-em')||'📚',
-             progreso:parseInt(gv('c-prog')||'0') };
-  }
-  if (col==='videos') {
-    const tit = gv('v-tit'), link = gv('v-link');
-    if (!tit||!link) { alert('Escribe el título y el link'); return; }
-    data = { titulo:tit, link, mes:gv('v-mes'), duracion:gv('v-dur') };
-  }
-  if (col==='pdfs') {
-    const tit = gv('p-tit'), link = gv('p-link');
-    if (!tit||!link) { alert('Escribe el título y el link'); return; }
-    data = { titulo:tit, link, mes:gv('p-mes') };
-  }
-  if (col==='lives') {
-    const tit = gv('l-tit'), fecha = gv('l-fecha'), link = gv('l-link');
-    if (!tit||!fecha||!link) { alert('Completa título, fecha y link'); return; }
-    data = { titulo:tit, instructor:gv('l-inst'), descripcion:gv('l-desc'),
-             fechaISO: fecha, activo: gv('l-activo')==='true', link };
-  }
-
-  try {
-    await addDoc(collection(db,col), { ...data, creadoEn: serverTimestamp() });
-    showToast('✓ ' + col.charAt(0).toUpperCase()+col.slice(1,col.length-1) + ' publicado');
-    clearF(col[0]==='n'?'n':col[0]==='c'&&col==='cursos'?'c':col[0]==='v'?'v':col[0]==='p'?'p':'l');
-  } catch(e) {
-    console.error(e);
-    showToast('❌ Error al guardar — revisa la consola');
-  }
-};
-
-// ── DELETE ────────────────────────────────────────────────────
-window.delItem = async function(col, id) {
-  if (!confirm('¿Eliminar este elemento? Esta acción no se puede deshacer.')) return;
-  try {
-    await deleteDoc(doc(db, col, id));
-    showToast('🗑 Eliminado');
-  } catch(e) { console.error(e); alert('Error al eliminar'); }
-};
-
-// ── UTILS ─────────────────────────────────────────────────────
-function gv(id) { return (document.getElementById(id)?.value||'').trim(); }
-function esc(s) { const d=document.createElement('div');d.textContent=s;return d.innerHTML; }
-
-window.clearF = function(p) {
-  document.querySelectorAll(`[id^="${p}-"]`).forEach(el => {
-    if (['INPUT','TEXTAREA'].includes(el.tagName)) { el.value = el.type==='number'?'0':''; }
-    else if (el.tagName==='SELECT') el.selectedIndex = 0;
-  });
-};
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2800);
+function renderMiembros(arr) {
+  const tb=document.getElementById('mtbody');
+  if(!arr.length){tb.innerHTML=`<tr><td colspan="7" style="text-align:center;color:var(--mu);padding:2rem">Sin miembros registrados.</td></tr>`;return;}
+  tb.innerHTML=arr.map(m=>{
+    const vence=m.planVence?new Date(m.planVence).toLocaleDateString('es-MX',{day:'numeric',month:'short',year:'numeric'}):'—';
+    const dias=m.planVence?Math.ceil((new Date(m.planVence)-new Date())/86400000):999;
+    let chip='', estado='';
+    if(m.planCancelado){chip='chip-can';estado='Cancelada';}
+    else if(dias>3){chip='chip-act';estado='Activa';}
+    else if(dias>-3){chip='chip-can';estado='Por vencer';}
+    else{chip='chip-exp';estado='Vencida';}
+    const planN={'mensual':'Mensual','anual':'Anual'}[m.planTipo]||'—';
+    const toggleLbl=m.planCancelado?'Reactivar':'Cancelar';
+    return `<tr>
+      <td style="font-weight:600">${esc(m.nombre||'—')}</td>
+      <td style="color:var(--mu);font-size:12px">${esc(m.email||'—')}</td>
+      <td style="color:var(--mu);font-size:12px">${esc(m.especialidad||'—')}</td>
+      <td><span class="chip chip-act">${planN}</span></td>
+      <td style="font-size:12px">${vence}</td>
+      <td><span class="chip ${chip}">${estado}</span></td>
+      <td><button onclick="toggleMiembro('${m.id}',${!!m.planCancelado})" style="font-size:11px;font-weight:600;color:${m.planCancelado?'var(--gn)':'var(--rd)'};background:${m.planCancelado?'var(--gnb)':'var(--rdb)'};padding:5px 10px;border-radius:7px">${toggleLbl}</button></td>
+    </tr>`;
+  }).join('');
 }
 
+window.toggleMiembro = async (id, wasCancelled) => {
+  await setDoc(doc(db,'miembros',id),{planCancelado:!wasCancelled},{merge:true});
+  showToast(wasCancelled?'✓ Membresía reactivada':'Membresía cancelada');
+};
+
+window.save = async (col) => {
+  let data={};
+  if(col==='noticias'){const t=gv('n-tit');if(!t){alert('Escribe el título');return;}data={titulo:t,cuerpo:gv('n-body'),emoji:gv('n-em')||'📢',color:gv('n-col'),fecha:new Date().toLocaleDateString('es-MX',{day:'numeric',month:'short',year:'numeric'})};}
+  if(col==='cursos'){const t=gv('c-tit'),l=gv('c-link');if(!t||!l){alert('Completa título y link');return;}const temario=gv('c-temario').split('\n').filter(x=>x.trim());const badge=gv('c-badge');data={titulo:t,descripcion:gv('c-desc'),instructor:gv('c-inst'),duracion:gv('c-dur'),categoria:gv('c-cat'),badge,badgeLabel:badge==='new'?'Nuevo':badge==='free'?'Gratis':'',link:l,emoji:gv('c-em')||'📚',progreso:parseInt(gv('c-prog')||'0'),temario};}
+  if(col==='videos'){const t=gv('v-tit'),l=gv('v-link');if(!t||!l){alert('Completa título y link');return;}data={titulo:t,link:l,mes:gv('v-mes'),duracion:gv('v-dur')};}
+  if(col==='pdfs'){const t=gv('p-tit'),l=gv('p-link');if(!t||!l){alert('Completa título y link');return;}data={titulo:t,link:l,mes:gv('p-mes')};}
+  if(col==='lives'){const t=gv('l-tit'),f=gv('l-fecha'),l=gv('l-link');if(!t||!f||!l){alert('Completa título, fecha y link');return;}data={titulo:t,instructor:gv('l-inst'),descripcion:gv('l-desc'),fechaISO:f,activo:gv('l-activo')==='true',link:l};}
+  try { await addDoc(collection(db,col),{...data,creadoEn:serverTimestamp()}); showToast('✓ Publicado'); clr(col[0]==='n'?'n':col[0]==='c'&&col==='cursos'?'c':col[0]==='v'?'v':col[0]==='p'?'p':'l'); }
+  catch(e){ console.error(e); showToast('❌ Error — revisa la consola'); }
+};
+
+window.del = async (col,id) => { if(!confirm('¿Eliminar?'))return; try{await deleteDoc(doc(db,col,id));showToast('🗑 Eliminado');}catch(e){alert('Error al eliminar');} };
+
+function gv(id){return(document.getElementById(id)?.value||'').trim();}
+window.clr = p => { document.querySelectorAll(`[id^="${p}-"]`).forEach(el=>{if(['INPUT','TEXTAREA'].includes(el.tagName)){el.value=el.type==='number'?'0':'';}else if(el.tagName==='SELECT')el.selectedIndex=0;}); };
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
+function esc(s){const d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML;}
 </script>
 
 <script>
-window.goSec = function(id, el) {
-  document.querySelectorAll('.sv').forEach(s=>s.classList.remove('active'));
-  document.getElementById('sv-'+id).classList.add('active');
-  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
-  if (el) el.classList.add('active');
-};
+window.go=(id,el)=>{document.querySelectorAll('.sv').forEach(s=>s.classList.remove('active'));document.getElementById('sv-'+id).classList.add('active');document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));if(el)el.classList.add('active');};
 </script>
-
 </body>
 </html>

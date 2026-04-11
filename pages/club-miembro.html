@@ -7,6 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>emailjs.init("vvcnoxJ84hCe8NS_D");</script>
   <style>
     :root{--pr:#005187;--pr2:#0c74c4;--prb:#eef4fa;--bg:#f5f7fb;--sur:#fff;--soft:#eef3f9;--tx:#0d1b2f;--mu:#5f6f86;--ln:#dbe4ef;--gn:#059669;--gnb:#ecfdf5;--am:#d97706;--amb:#fffbeb;--rd:#dc2626;--rdb:#fef2f2;--ra:16px;--rsm:12px;--rp:999px;--sh:0 8px 32px rgba(0,36,81,.09)}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -282,6 +284,39 @@
     .sk{background:linear-gradient(90deg,var(--ln) 25%,var(--soft) 50%,var(--ln) 75%);background-size:200% 100%;animation:sh 1.2s infinite;border-radius:8px}
     @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
     .sv{display:none}.sv.active{display:block}
+    /* LIVE EVENT CARDS */
+    .live-event-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+    .lec{border-radius:var(--ra);overflow:hidden;box-shadow:var(--sh);transition:transform .2s}
+    .lec:hover{transform:translateY(-3px)}
+    .lec-banner{background:var(--tx);padding:20px 22px 16px;position:relative;overflow:hidden}
+    .lec-banner.live-now{background:linear-gradient(135deg,var(--pr),var(--pr2))}
+    .lec-banner.pasado{opacity:.7}
+    .lec-status{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:3px 10px;border-radius:var(--rp);margin-bottom:10px}
+    .ls-proximo{background:rgba(255,255,255,.15);color:white}
+    .ls-live{background:#dc2626;color:white;animation:pls 1.2s infinite}
+    .ls-pasado{background:rgba(255,255,255,.08);color:rgba(255,255,255,.5)}
+    .lec-title{font-size:18px;font-weight:800;color:white;line-height:1.2;margin-bottom:4px}
+    .lec-instructor{font-size:12px;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:5px}
+    .lec-body{background:var(--sur);padding:16px 20px}
+    .lec-fecha{display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--soft);border-radius:10px;margin-bottom:10px}
+    .lec-fecha-icon{font-size:16px;flex-shrink:0}
+    .lec-fecha-text{font-size:13px;font-weight:600;color:var(--tx)}
+    .lec-fecha-sub{font-size:11px;color:var(--mu)}
+    .lec-desc{font-size:12px;color:var(--mu);line-height:1.5;margin-bottom:12px}
+    .lec-countdown{display:flex;gap:6px;margin-bottom:12px;justify-content:center}
+    .lec-cdu{text-align:center;background:var(--soft);border-radius:9px;padding:8px 10px;min-width:50px}
+    .lec-cdn{font-size:20px;font-weight:800;color:var(--pr);line-height:1}
+    .lec-cdl{font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:.04em}
+    .lec-cds{font-size:16px;font-weight:300;color:var(--mu);padding-top:10px}
+    .btn-lec{width:100%;padding:9px;border-radius:9px;font-size:13px;font-weight:700;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:7px}
+    .btn-lec-join{background:var(--pr);color:white}
+    .btn-lec-join:hover{background:var(--pr2)}
+    .btn-lec-cal{background:var(--soft);color:var(--pr);border:1px solid var(--prb)}
+    .btn-lec-dis{background:var(--soft);color:var(--mu);cursor:not-allowed}
+    .bib-mes{margin-bottom:18px}
+    .bib-mes-title{font-size:14px;font-weight:800;color:var(--tx);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+    .bib-mes-badge{font-size:11px;font-weight:700;color:var(--pr);background:var(--prb);padding:2px 9px;border-radius:var(--rp)}
+    .bib-items{display:flex;flex-direction:column;gap:6px}
     .empty{text-align:center;padding:2rem;color:var(--mu)}
     .empty span{display:block;font-size:26px;margin-bottom:5px}
     @keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
@@ -374,8 +409,7 @@
   </div>
   <div class="nav-s">
     <div class="nav-l">Biblioteca</div>
-    <div class="ni" onclick="go('bib',this)"><i class="fa-regular fa-calendar"></i>Abril 2026<span class="nbg ng">7</span></div>
-    <div class="ni" onclick="go('bib',this)"><i class="fa-regular fa-calendar"></i>Marzo 2026<span class="nbg ng">5</span></div>
+    <div id="bib-nav"><div class="ni" onclick="go('bib',this)"><i class="fa-regular fa-calendar"></i>Cargando...<span class="nbg nw">0</span></div></div>
   </div>
   <div class="nav-s">
     <div class="nav-l">Mi cuenta</div>
@@ -440,8 +474,7 @@
         </div>
         <div class="panel">
           <div class="ph"><span class="pt">Biblioteca por mes</span></div>
-          <div class="lrow"><div class="lname">Abril 2026</div><div class="lbdgs"><span class="lb" style="background:var(--prb);color:var(--pr)">4 videos</span><span class="lb" style="background:var(--rdb);color:var(--rd)">2 PDFs</span><span class="lb" style="background:var(--gnb);color:var(--gn)">1 live</span></div></div>
-          <div class="lrow"><div class="lname">Marzo 2026</div><div class="lbdgs"><span class="lb" style="background:var(--prb);color:var(--pr)">3 videos</span><span class="lb" style="background:var(--rdb);color:var(--rd)">2 PDFs</span></div></div>
+          <div id="bib-list"><div class="sk" style="height:44px;margin-bottom:7px"></div><div class="sk" style="height:44px"></div></div>
         </div>
       </div>
       <div class="rcol">
@@ -509,8 +542,13 @@
 
   <!-- LIVES -->
   <div class="sv" id="sv-lives">
-    <div class="panel"><div class="ph"><span class="pt">📺 Sesiones en vivo · cada 15 días</span></div>
-    <div id="lvlist"><div class="sk" style="height:68px;border-radius:11px"></div></div></div>
+    <div class="panel">
+      <div class="ph"><span class="pt">📺 Sesiones en vivo</span><span style="font-size:12px;color:var(--mu)">Webinars cada 15 días</span></div>
+      <div class="live-event-grid" id="lvlist">
+        <div class="sk" style="height:220px;border-radius:var(--ra)"></div>
+        <div class="sk" style="height:220px;border-radius:var(--ra)"></div>
+      </div>
+    </div>
   </div>
 
   <!-- PDFs -->
@@ -702,11 +740,11 @@ window.savePerfil=async()=>{if(!_uid)return;const nm=document.getElementById('pf
 
 // ── FIREBASE LISTENERS ─────────────────────────────────────────
 onSnapshot(query(collection(db,'noticias'),orderBy('creadoEn','desc'),limit(10)),snap=>{const a=snap.docs.map(d=>({id:d.id,...d.data()}));rNoticias(a);});
-onSnapshot(collection(db,'cursos'),snap=>{allCursos=snap.docs.map(d=>({id:d.id,...d.data()}));renderCursos(allCursos);const n=allCursos.length;document.getElementById('nb-c').textContent=n;document.getElementById('cnt-c').textContent=n+' cursos disponibles';buildRecent();});
+onSnapshot(collection(db,'cursos'),snap=>{allCursos=snap.docs.map(d=>({id:d.id,...d.data()}));renderCursos(allCursos);window.buildBiblioteca&&window.buildBiblioteca();const n=allCursos.length;document.getElementById('nb-c').textContent=n;document.getElementById('cnt-c').textContent=n+' cursos disponibles';buildRecent();});
 onSnapshot(query(collection(db,'lives'),where('activo','==',true),orderBy('fechaISO','asc'),limit(1)),snap=>{liveActivo=snap.empty?null:{id:snap.docs[0].id,...snap.docs[0].data()};liveActivo?setLive(liveActivo):setNoLive();});
 onSnapshot(query(collection(db,'lives'),orderBy('fechaISO','asc')),snap=>{rLives(snap.docs.map(d=>({id:d.id,...d.data()})));document.getElementById('a-l').textContent=snap.docs.filter(d=>d.data().activo).length;});
-onSnapshot(query(collection(db,'videos'),orderBy('creadoEn','desc')),snap=>{const a=snap.docs.map(d=>({id:d.id,...d.data(),tipo:'video'}));rVideos(a);['nb-v','a-v'].forEach(i=>document.getElementById(i).textContent=a.length);window._videos=a;buildRecent();});
-onSnapshot(query(collection(db,'pdfs'),orderBy('creadoEn','desc')),snap=>{const a=snap.docs.map(d=>({id:d.id,...d.data(),tipo:'pdf'}));rPdfs(a);['nb-p','a-p'].forEach(i=>document.getElementById(i).textContent=a.length);window._pdfs=a;buildRecent();});
+onSnapshot(query(collection(db,'videos'),orderBy('creadoEn','desc')),snap=>{const a=snap.docs.map(d=>({id:d.id,...d.data(),tipo:'video'}));rVideos(a);['nb-v','a-v'].forEach(i=>document.getElementById(i).textContent=a.length);window._videos=a;buildRecent();window.buildBiblioteca&&window.buildBiblioteca();});
+onSnapshot(query(collection(db,'pdfs'),orderBy('creadoEn','desc')),snap=>{const a=snap.docs.map(d=>({id:d.id,...d.data(),tipo:'pdf'}));rPdfs(a);['nb-p','a-p'].forEach(i=>document.getElementById(i).textContent=a.length);window._pdfs=a;buildRecent();window.buildBiblioteca&&window.buildBiblioteca();});
 
 function buildRecent(){
   const cursos=allCursos.map(c=>({...c,tipo:'curso',_ts:c.creadoEn?.toDate?.()?.getTime()||0}));
@@ -758,7 +796,60 @@ function calcProgreso(curso){
 
 function rVideos(arr){const el=document.getElementById('vlist');el.innerHTML=arr.length?arr.map(v=>`<div class="ci" onclick="openVideoSimple('${esc(v.link||'#')}','${esc(v.titulo)}')"><div class="cth" style="background:var(--prb)">🎬</div><div class="ci-i"><div class="ci-t">${esc(v.titulo)}</div><div class="ci-m">${v.mes||''} · ${v.duracion||'Video'}</div></div><span class="ctag tb"><i class="fa-solid fa-play" style="font-size:9px"></i> Ver</span></div>`).join(''):`<div class="empty"><span>🎬</span><p>Sin videos publicados.</p></div>`;}
 function rPdfs(arr){const el=document.getElementById('plist');el.innerHTML=arr.length?arr.map(p=>`<div class="ci" onclick="window.open('${esc(p.link||'#')}','_blank')"><div class="cth" style="background:var(--rdb)">📄</div><div class="ci-i"><div class="ci-t">${esc(p.titulo)}</div><div class="ci-m">${p.mes||''} · PDF</div></div><span class="ctag tg">Descargar</span></div>`).join(''):`<div class="empty"><span>📄</span><p>Sin PDFs.</p></div>`;}
-function rLives(arr){const el=document.getElementById('lvlist');if(!arr.length){el.innerHTML=`<div class="empty"><span>📺</span><p>Sin sesiones programadas.</p></div>`;return;}el.innerHTML=arr.map(l=>{const f=l.fechaISO?new Date(l.fechaISO).toLocaleString('es-MX',{weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}):'';return`<div class="nitem" onclick="window.open('${esc(l.link||'#')}','_blank')" style="cursor:pointer"><div class="nico" style="background:#f5f3ff">📺</div><div style="flex:1"><div class="ntit">${esc(l.titulo)}</div><div class="nbod">${esc(l.descripcion||'')}</div><div class="ndat">${esc(l.instructor||'')} · ${f}</div></div><span class="ctag" style="background:${l.activo?'#f5f3ff':'var(--soft)'};color:${l.activo?'#7c3aed':'var(--mu)'}">${l.activo?'Próximo':'Pasado'}</span></div>`;}).join('');}
+function rLives(arr){
+  const el=document.getElementById('lvlist');
+  document.getElementById('a-l').textContent=arr.filter(l=>l.activo).length;
+  if(!arr.length){el.innerHTML=`<div class="empty" style="grid-column:1/-1"><span>📺</span><p>Sin sesiones programadas. Los webinars son cada 15 días.</p></div>`;return;}
+  // Separar: activos primero, luego pasados
+  const activos=arr.filter(l=>l.activo||new Date(l.fechaISO)>new Date());
+  const pasados=arr.filter(l=>!l.activo&&new Date(l.fechaISO)<=new Date());
+  const sorted=[...activos,...pasados];
+  el.innerHTML=sorted.map(l=>{
+    const fecha=l.fechaISO?new Date(l.fechaISO):null;
+    const now=new Date();
+    const diff=fecha?fecha.getTime()-now.getTime():null;
+    const isPast=diff!==null&&diff<0;
+    const isLive=diff!==null&&diff<=0&&diff>-7200000;
+    const isProximo=diff!==null&&diff>0;
+    const diasSem=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+    const meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    const fechaStr=fecha?`${diasSem[fecha.getDay()]} ${fecha.getDate()} de ${meses[fecha.getMonth()]}`:'' ;
+    const horaStr=fecha?fecha.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}):'';
+    const statusCls=isLive?'ls-live':isPast?'ls-pasado':'ls-proximo';
+    const statusTxt=isLive?'🔴 EN VIVO AHORA':isPast?'Pasado':'Próximo';
+    const bannerCls=isLive?'live-now':isPast?'pasado':'';
+    // Countdown text para cards
+    let cdHtml='';
+    if(isProximo&&diff!==null){
+      const dias=Math.floor(diff/86400000);
+      const hrs=Math.floor((diff%86400000)/3600000);
+      const min=Math.floor((diff%3600000)/60000);
+      if(dias>0) cdHtml=`<div style="font-size:12px;color:var(--mu);margin-bottom:10px;text-align:center">Comienza en <b style="color:var(--pr)">${dias}d ${hrs}h ${min}m</b></div>`;
+      else cdHtml=`<div style="font-size:12px;color:var(--am);font-weight:700;margin-bottom:10px;text-align:center;background:var(--amb);padding:6px;border-radius:8px">⚡ Comienza en ${hrs}h ${min}m</div>`;
+    }
+    const btnHtml=isLive
+      ?`<button class="btn-lec btn-lec-join" onclick="window.open('${esc(l.link||'#')}','_blank')"><i class="fa-solid fa-play"></i> Unirme al live ahora</button>`
+      :isProximo
+        ?`<div style="display:flex;flex-direction:column;gap:7px"><button class="btn-lec btn-lec-cal" onclick="addLiveCal('${esc(l.titulo)}','${l.fechaISO||''}')"><i class="fa-regular fa-calendar-plus"></i> Agregar a calendario</button><button class="btn-lec btn-lec-join" onclick="window.open('${esc(l.link||'#')}','_blank')"><i class="fa-solid fa-link"></i> Ver enlace del live</button></div>`
+        :`<button class="btn-lec btn-lec-dis" disabled><i class="fa-solid fa-clock-rotate-left"></i> Sesión finalizada</button>`;
+    return`<div class="lec">
+      <div class="lec-banner ${bannerCls}">
+        <div class="lec-status ${statusCls}">${statusTxt}</div>
+        <div class="lec-title">${esc(l.titulo)}</div>
+        <div class="lec-instructor"><i class="fa-solid fa-user-doctor" style="font-size:11px"></i>${esc(l.instructor||'')}</div>
+      </div>
+      <div class="lec-body">
+        <div class="lec-fecha">
+          <div class="lec-fecha-icon">📅</div>
+          <div><div class="lec-fecha-text">${fechaStr}</div><div class="lec-fecha-sub">${horaStr} hrs</div></div>
+        </div>
+        ${l.descripcion?`<div class="lec-desc">${esc(l.descripcion)}</div>`:''}
+        ${cdHtml}
+        ${btnHtml}
+      </div>
+    </div>`;
+  }).join('');
+}
 
 // ── VISOR DE CURSO ─────────────────────────────────────────────
 let _cursoActual=null, _claseActual={mi:-1,ci:-1};
@@ -934,11 +1025,132 @@ window.openVideoSimple=function(link,titulo){
 };
 
 // ── LIVE COUNTDOWN ─────────────────────────────────────────────
-function setLive(live){window._lISO=live.fechaISO;window._lLink=live.link||'#';window._lTit=live.titulo;const f=new Date(live.fechaISO);document.getElementById('ltit').textContent=live.titulo;document.getElementById('ldoc').textContent=(live.instructor||'')+' · '+f.toLocaleString('es-MX',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});if(timerID)clearInterval(timerID);timerID=setInterval(tick,1000);tick();}
+function setLive(live){
+  window._lISO=live.fechaISO;window._lLink=live.link||'#';window._lTit=live.titulo;
+  window._liveData=live;
+  const f=new Date(live.fechaISO);
+  document.getElementById('ltit').textContent=live.titulo;
+  document.getElementById('ldoc').textContent=(live.instructor||'')+' · '+f.toLocaleString('es-MX',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+  document.getElementById('cdw').style.display='flex';
+  if(timerID)clearInterval(timerID);
+  timerID=setInterval(tick,1000);tick();
+}
 function setNoLive(){if(timerID)clearInterval(timerID);document.getElementById('ltag').innerHTML='<span class="ldot"></span> Sin sesión programada';document.getElementById('ltit').textContent='Próximo webinar';document.getElementById('ldoc').textContent='Sesiones cada 15 días';document.getElementById('cdw').style.display='none';const btn=document.getElementById('btnLv');btn.textContent='📢 Canal WA';btn.onclick=()=>window.open('https://whatsapp.com/channel/0029VbCQbyVISTkPMfD7hz0N','_blank');}
-function tick(){if(!window._lISO)return;const diff=new Date(window._lISO).getTime()-Date.now();const card=document.getElementById('lcard'),tag=document.getElementById('ltag'),btn=document.getElementById('btnLv');if(diff<=0){card.classList.add('ln');tag.className='ltag ln-tag';tag.innerHTML='<span class="ldot"></span> 🔴 EN VIVO AHORA';document.getElementById('cdw').style.display='none';btn.textContent='▶ Unirme';btn.onclick=()=>window.open(window._lLink,'_blank');clearInterval(timerID);return;}if(diff<=300000&&!alertShown){alertShown=true;card.classList.add('ls');tag.innerHTML='<span class="ldot"></span> ⚡ ¡5 min!';document.getElementById('alMsg').textContent='"'+(window._lTit||'Tu sesión')+'" comienza en menos de 5 minutos.';document.getElementById('alLnk').href=window._lLink;document.getElementById('lAl').classList.add('show');}const p=n=>String(n).padStart(2,'0');document.getElementById('cd-d').textContent=p(Math.floor(diff/86400000));document.getElementById('cd-h').textContent=p(Math.floor((diff%86400000)/3600000));document.getElementById('cd-m').textContent=p(Math.floor((diff%3600000)/60000));document.getElementById('cd-s').textContent=p(Math.floor((diff%60000)/1000));}
-window.lvClick=()=>{if(!window._lISO)return;const d=new Date(window._lISO),s=d.toISOString().replace(/[-:.]/g,'').slice(0,15)+'Z',e=new Date(d.getTime()+3600000).toISOString().replace(/[-:.]/g,'').slice(0,15)+'Z';window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(window._lTit||'Webinar OdonTeck')}&dates=${s}/${e}`),'_blank';};
+function tick(){
+  if(!window._lISO)return;
+  const diff=new Date(window._lISO).getTime()-Date.now();
+  const card=document.getElementById('lcard'),tag=document.getElementById('ltag'),btn=document.getElementById('btnLv');
+  if(diff<=0){
+    card.classList.add('ln');tag.className='ltag ln-tag';
+    tag.innerHTML='<span class="ldot"></span> 🔴 EN VIVO AHORA';
+    document.getElementById('cdw').style.display='none';
+    btn.textContent='▶ Unirme al live';btn.onclick=()=>window.open(window._lLink,'_blank');
+    clearInterval(timerID);return;
+  }
+  // Alerta en pantalla a los 5 min
+  if(diff<=300000&&!alertShown){
+    alertShown=true;card.classList.add('ls');
+    tag.innerHTML='<span class="ldot"></span> ⚡ ¡Comienza en 5 min!';
+    document.getElementById('alMsg').textContent='"'+(window._lTit||'Tu sesión')+'" comienza en menos de 5 minutos.';
+    document.getElementById('alLnk').href=window._lLink;
+    document.getElementById('lAl').classList.add('show');
+  }
+  // Email a los 10 min (600000ms) — solo una vez
+  if(diff<=600000&&diff>540000&&!window._emailSent10){
+    window._emailSent10=true;
+    enviarEmailLive();
+  }
+  const p=n=>String(n).padStart(2,'0');
+  document.getElementById('cd-d').textContent=p(Math.floor(diff/86400000));
+  document.getElementById('cd-h').textContent=p(Math.floor((diff%86400000)/3600000));
+  document.getElementById('cd-m').textContent=p(Math.floor((diff%3600000)/60000));
+  document.getElementById('cd-s').textContent=p(Math.floor((diff%60000)/1000));
+}
+window.lvClick=()=>{if(!window._lISO)return;addLiveCal(window._lTit,window._lISO);};
+window.addLiveCal=(titulo,iso)=>{if(!iso)return;const d=new Date(iso),s=d.toISOString().replace(/[-:.]/g,'').slice(0,15)+'Z',e=new Date(d.getTime()+3600000).toISOString().replace(/[-:.]/g,'').slice(0,15)+'Z';window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(titulo||'Webinar OdonTeck')}&dates=${s}/${e}`),'_blank';};
 window.fC=(cat,el)=>{document.querySelectorAll('#ctabs .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderCursos(cat==='todos'?allCursos:allCursos.filter(c=>c.categoria===cat));};
+
+// EMAILJS — notificación 10 min antes del live
+window.enviarEmailLive=async function(){
+  if(!window._user||!window._liveData)return;
+  const live=window._liveData;
+  const fecha=live.fechaISO?new Date(live.fechaISO).toLocaleString('es-MX',{weekday:'long',day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}):'';
+  try{
+    await emailjs.send('service_zjk3v2k','739vxym',{
+      to_email: window._user.email,
+      nombre: window._user.displayName||window._user.email.split('@')[0],
+      live_titulo: live.titulo||'Webinar OdonTeck',
+      live_instructor: live.instructor||'OdonTeck',
+      live_fecha: fecha,
+      live_descripcion: live.descripcion||'Sesión en vivo del Club Dental OdonTeck',
+      live_link: live.link||'#',
+      minutos_restantes: '10'
+    },'vvcnoxJ84hCe8NS_D');
+    console.log('📧 Email enviado a',window._user.email);
+  }catch(e){console.warn('EmailJS error:',e);}
+};
+
+// BIBLIOTECA DINÁMICA por mes
+window.buildBiblioteca=function(){
+  const todos=[
+    ...(window._videos||[]).map(v=>({...v,tipo:'video',_ts:v.creadoEn?.toDate?.()?.getTime()||0})),
+    ...(window._pdfs||[]).map(p=>({...p,tipo:'pdf',_ts:p.creadoEn?.toDate?.()?.getTime()||0})),
+    ...allCursos.map(c=>({...c,tipo:'curso',_ts:c.creadoEn?.toDate?.()?.getTime()||0}))
+  ];
+  // Agrupar por mes
+  const meses={};
+  const M=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  todos.forEach(item=>{
+    const d=item._ts?new Date(item._ts):new Date();
+    const key=`${M[d.getMonth()]} ${d.getFullYear()}`;
+    if(!meses[key])meses[key]=[];
+    meses[key].push(item);
+  });
+  // Renderizar
+  const el=document.getElementById('bib-list');
+  if(!el)return;
+  const keys=Object.keys(meses).sort((a,b)=>{
+    const da=new Date('01 '+a), db=new Date('01 '+b);
+    return db-da;
+  });
+  // Actualizar sidebar
+  const nav=document.getElementById('bib-nav');
+  if(nav){nav.innerHTML=keys.map(k=>`<div class="ni" onclick="go('bib',this)"><i class="fa-regular fa-calendar"></i>${k}<span class="nbg ng">${meses[k].length}</span></div>`).join('');}
+  if(!keys.length){el.innerHTML=`<div class="empty"><span>📂</span><p>Sin contenido publicado aún.</p></div>`;return;}
+  el.innerHTML=keys.map(mes=>{
+    const items=meses[mes];
+    const iconos={curso:'📚',video:'🎬',pdf:'📄'};
+    const tags={curso:'Curso',video:'Video',pdf:'PDF'};
+    const colores={curso:'var(--prb)',video:'var(--prb)',pdf:'var(--rdb)'};
+    const tc={curso:'tb',video:'tb',pdf:'tg'};
+    const cursosN=items.filter(i=>i.tipo==='curso').length;
+    const videosN=items.filter(i=>i.tipo==='video').length;
+    const pdfsN=items.filter(i=>i.tipo==='pdf').length;
+    return`<div class="lrow">
+      <div class="lname">${mes}</div>
+      <div class="lbdgs">
+        ${cursosN?`<span class="lb" style="background:var(--prb);color:var(--pr)">${cursosN} curso${cursosN!==1?'s':''}</span>`:''}
+        ${videosN?`<span class="lb" style="background:var(--prb);color:var(--pr)">${videosN} video${videosN!==1?'s':''}</span>`:''}
+        ${pdfsN?`<span class="lb" style="background:var(--rdb);color:var(--rd)">${pdfsN} PDF${pdfsN!==1?'s':''}</span>`:''}
+      </div>
+    </div>`;
+  }).join('');
+  // Sección biblioteca completa
+  const bibSec=document.getElementById('blist');
+  if(bibSec){
+    bibSec.innerHTML=keys.map(mes=>{
+      const items=meses[mes].sort((a,b)=>b._ts-a._ts);
+      const iconos={curso:'📚',video:'🎬',pdf:'📄'};
+      const tags={curso:'Curso',video:'Video',pdf:'PDF'};
+      const tc={curso:'tb',video:'tb',pdf:'tg'};
+      return`<div class="bib-mes">
+        <div class="bib-mes-title">${mes}<span class="bib-mes-badge">${items.length} elementos</span></div>
+        <div class="bib-items">${items.map(i=>`<div class="ci" onclick="${i.tipo==='curso'?`openCurso(${JSON.stringify(i).replace(/"/g,"'")})`:`window.open('${esc(i.link||'#')}','_blank')`}"><div class="cth" style="background:${i.tipo==='pdf'?'var(--rdb)':'var(--prb)'}">${iconos[i.tipo]||'📄'}</div><div class="ci-i"><div class="ci-t">${esc(i.titulo)}</div><div class="ci-m">${i.instructor||i.mes||''} · ${tags[i.tipo]||''}</div></div><span class="ctag ${tc[i.tipo]||'tb'}">${tags[i.tipo]||''}</span></div>`).join('')}</div>
+      </div>`;
+    }).join('');
+  }
+};
+
 function esc(s){const d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML;}
 </script>
 

@@ -73,30 +73,33 @@
     .mp-plan-chip{background:var(--surface-soft);border:1px solid var(--line);border-radius:12px;padding:12px 20px;text-align:center}
     .mp-plan-name{font-size:13px;color:var(--muted);font-weight:600}
     .mp-plan-price{font-size:26px;font-weight:900;color:var(--primary)}
-    .mp-btn{display:inline-flex;align-items:center;gap:10px;background:#009ee3;color:#fff;font-size:15px;font-weight:700;padding:14px 32px;border-radius:999px;border:none;cursor:pointer;font-family:'Inter',sans-serif;box-shadow:0 8px 22px rgba(0,158,227,.3);transition:.2s;text-decoration:none}
-    .mp-btn:hover{background:#0081c4;transform:translateY(-2px)}
-    .mp-btn svg{width:20px}
-    .mp-secure{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px}
-    .spinner{width:38px;height:38px;border:3px solid var(--line);border-top-color:#009ee3;border-radius:50%;animation:spin .8s linear infinite}
-    @keyframes spin{to{transform:rotate(360deg)}}
+    /* MODAL ESPERA PAGO */
+    .pay-waiting{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 28px;gap:16px;text-align:center}
+    .pay-waiting-icon{width:72px;height:72px;border-radius:50%;background:#e6f7ff;display:flex;align-items:center;justify-content:center;font-size:32px}
+    .pay-waiting-title{font-size:19px;font-weight:800;color:#0d1b2a}
+    .pay-waiting-sub{font-size:13px;color:#6b7280;max-width:300px;line-height:1.6}
+    .pay-waiting-steps{background:#f8fafc;border-radius:12px;padding:14px 18px;width:100%;text-align:left}
+    .pay-waiting-steps li{font-size:12px;color:#374151;padding:4px 0;list-style:none;display:flex;align-items:center;gap:8px}
+    .pay-waiting-steps li::before{content:'';width:6px;height:6px;border-radius:50%;background:#009ee3;flex-shrink:0}
+    .pay-reopen-btn{background:#009ee3;color:#fff;border:none;border-radius:999px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:8px;transition:.2s}
+    .pay-reopen-btn:hover{background:#0081c4}
+    .pay-done-btn{background:#ecfdf5;color:#059669;border:2px solid #a7f3d0;border-radius:999px;padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:.2s}
+    .pay-done-btn:hover{background:#d1fae5}
+    .pulse-dot{width:10px;height:10px;border-radius:50%;background:#009ee3;animation:pulse-anim 1.4s ease-in-out infinite}
+    @keyframes pulse-anim{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
 
-    /* MODAL MP */
+    /* MODAL OVERLAY */
     .mp-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
     .mp-modal-overlay.open{display:flex}
-    .mp-modal{background:#fff;border-radius:20px;width:100%;max-width:520px;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.25)}
-    .mp-modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #eee;flex-shrink:0}
+    .mp-modal{background:#fff;border-radius:20px;width:100%;max-width:460px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.25)}
+    .mp-modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #eee}
     .mp-modal-head-left{display:flex;align-items:center;gap:10px}
     .mp-modal-head img{width:32px;height:32px;border-radius:8px}
     .mp-modal-head-title{font-size:14px;font-weight:800;color:#0d1b2a}
     .mp-modal-head-sub{font-size:11px;color:#6b7280;margin-top:1px}
     .mp-modal-close{width:32px;height:32px;border-radius:50%;border:none;background:#f3f4f6;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:#6b7280;transition:.15s}
     .mp-modal-close:hover{background:#e5e7eb}
-    .mp-iframe-wrap{position:relative;flex:1;min-height:480px}
-    .mp-iframe-wrap iframe{width:100%;height:100%;border:none;display:block}
-    .mp-iframe-loading{position:absolute;inset:0;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;transition:opacity .3s}
-    .mp-iframe-loading.hide{opacity:0;pointer-events:none}
-    .mp-iframe-loading p{font-size:13px;color:#6b7280}
-    @media(max-width:580px){.mp-modal{max-height:100vh;border-radius:16px 16px 0 0;margin-top:auto;align-self:flex-end;width:100%}.mp-modal-overlay{padding:0;align-items:flex-end}}
+    @media(max-width:500px){.mp-modal{border-radius:16px 16px 0 0;align-self:flex-end;width:100%}.mp-modal-overlay{padding:0;align-items:flex-end}}
     .co-note{text-align:center;padding:12px;font-size:12px;color:var(--muted);background:var(--surface-soft);border-top:1px solid var(--line)}
     .co-note a{color:var(--primary);font-weight:600}
 
@@ -253,7 +256,7 @@
       </div>
     </div>
   </div>
-</div><!-- MODAL MERCADO PAGO -->
+</div><!-- MODAL ESPERA PAGO MP -->
 <div class="mp-modal-overlay" id="mp-modal-overlay" onclick="closeMpModal(event)">
   <div class="mp-modal">
     <div class="mp-modal-head">
@@ -261,18 +264,22 @@
         <img src="../assets/img/logo/logo.jpg" alt="OdonTeck"/>
         <div>
           <div class="mp-modal-head-title" id="modal-plan-title">Club Dental · Plan Mensual</div>
-          <div class="mp-modal-head-sub">Pago seguro por Mercado Pago</div>
+          <div class="mp-modal-head-sub" style="display:flex;align-items:center;gap:5px"><span class="pulse-dot"></span> Esperando tu pago...</div>
         </div>
       </div>
-      <button class="mp-modal-close" onclick="closeMpModal(null)" title="Cerrar">✕</button>
+      <button class="mp-modal-close" onclick="closeMpModal(null)">✕</button>
     </div>
-    <div class="mp-iframe-wrap">
-      <div class="mp-iframe-loading" id="mp-iframe-loading">
-        <div class="spinner"></div>
-        <p>Cargando checkout seguro...</p>
-      </div>
-      <iframe id="mp-iframe" src="" title="Pago Mercado Pago" allow="payment"
-        onload="document.getElementById('mp-iframe-loading').classList.add('hide')"></iframe>
+    <div class="pay-waiting">
+      <div class="pay-waiting-icon">💳</div>
+      <div class="pay-waiting-title">Completa tu pago en la ventana de MP</div>
+      <div class="pay-waiting-sub">Se abrió una ventana de Mercado Pago. Sigue los pasos ahí y regresa cuando termines.</div>
+      <ul class="pay-waiting-steps">
+        <li>Elige tu método de pago (tarjeta, OXXO, etc.)</li>
+        <li>Confirma tu suscripción de $<span id="modal-price-text">199</span>/mes</li>
+        <li>Regresa aquí y haz clic en "Ya pagué"</li>
+      </ul>
+      <button class="pay-reopen-btn" onclick="reopenMp()"><i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir ventana de nuevo</button>
+      <button class="pay-done-btn" onclick="location.href='club-miembro.html'">✓ Ya pagué — Ir al Club</button>
     </div>
   </div>
 </div>
@@ -369,13 +376,25 @@ function goCheckout(email) {
 }
 
 window.openMpModal = function() {
-  const overlay = document.getElementById('mp-modal-overlay');
-  const iframe  = document.getElementById('mp-iframe');
-  const loading = document.getElementById('mp-iframe-loading');
-  loading.classList.remove('hide');
-  iframe.src = _mpUrl;
-  overlay.classList.add('open');
+  const P = PLANS[selectedPlan] || PLANS.mensual;
+  document.getElementById('modal-plan-title').textContent = 'Club Dental · ' + P.name;
+  document.getElementById('modal-price-text').textContent = selectedPlan === 'anual' ? '1,788' : '199';
+  // Abrir MP en ventana popup
+  const w = 520, h = 700;
+  const left = (screen.width/2)-(w/2), top = (screen.height/2)-(h/2);
+  window._mpWin = window.open(_mpUrl, 'MercadoPago', `width=${w},height=${h},left=${left},top=${top},toolbar=0,location=0,scrollbars=1`);
+  // Mostrar modal de espera
+  document.getElementById('mp-modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
+};
+
+window.reopenMp = function() {
+  if (window._mpWin && !window._mpWin.closed) {
+    window._mpWin.focus();
+  } else {
+    const w=520,h=700,left=(screen.width/2)-(260),top=(screen.height/2)-(350);
+    window._mpWin = window.open(_mpUrl,'MercadoPago',`width=${w},height=${h},left=${left},top=${top},toolbar=0,location=0,scrollbars=1`);
+  }
 };
 
 window.closeMpModal = function(e) {

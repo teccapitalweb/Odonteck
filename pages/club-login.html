@@ -65,10 +65,19 @@
     .co-head{display:flex;align-items:center;gap:12px;padding:18px 24px;border-bottom:1px solid var(--line)}
     .co-head img{width:40px;height:40px;border-radius:10px;object-fit:cover}
     .co-title{font-size:16px;font-weight:800}.co-sub{font-size:12px;color:var(--muted);margin-top:1px}
-    .shopify-frame-wrap{position:relative;width:100%;height:680px}
-    .shopify-frame-wrap iframe{width:100%;height:100%;border:none;display:block}
-    .frame-loading{position:absolute;inset:0;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
-    .spinner{width:38px;height:38px;border:3px solid var(--line);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite}
+    .mp-redirect-box{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 30px;gap:18px;min-height:320px}
+    .mp-logo-wrap{width:72px;height:72px;border-radius:50%;background:#fff9f0;border:2px solid #ffe0b0;display:flex;align-items:center;justify-content:center}
+    .mp-logo-wrap svg{width:42px}
+    .mp-title{font-size:20px;font-weight:800;color:var(--text);text-align:center}
+    .mp-sub{font-size:14px;color:var(--muted);text-align:center;max-width:320px;line-height:1.6}
+    .mp-plan-chip{background:var(--surface-soft);border:1px solid var(--line);border-radius:12px;padding:12px 20px;text-align:center}
+    .mp-plan-name{font-size:13px;color:var(--muted);font-weight:600}
+    .mp-plan-price{font-size:26px;font-weight:900;color:var(--primary)}
+    .mp-btn{display:inline-flex;align-items:center;gap:10px;background:#009ee3;color:#fff;font-size:15px;font-weight:700;padding:14px 32px;border-radius:999px;border:none;cursor:pointer;font-family:'Inter',sans-serif;box-shadow:0 8px 22px rgba(0,158,227,.3);transition:.2s;text-decoration:none}
+    .mp-btn:hover{background:#0081c4;transform:translateY(-2px)}
+    .mp-btn svg{width:20px}
+    .mp-secure{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px}
+    .spinner{width:38px;height:38px;border:3px solid var(--line);border-top-color:#009ee3;border-radius:50%;animation:spin .8s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
     .co-note{text-align:center;padding:12px;font-size:12px;color:var(--muted);background:var(--surface-soft);border-top:1px solid var(--line)}
     .co-note a{color:var(--primary);font-weight:600}
@@ -201,13 +210,28 @@
         <img src="../assets/img/logo/logo.jpg" alt="OdonTeck"/>
         <div><div class="co-title">Completa tu membresía</div><div class="co-sub" id="co-sub-label">Club Dental OdonTeck</div></div>
       </div>
-      <div class="shopify-frame-wrap">
-        <div class="frame-loading" id="frame-loading"><div class="spinner"></div><p style="font-size:13px;color:var(--muted)">Cargando checkout seguro...</p></div>
-        <iframe id="shopify-frame" src="" title="Checkout OdonTeck" allowfullscreen onload="document.getElementById('frame-loading').style.display='none'"></iframe>
+      <div class="mp-redirect-box" id="mp-box">
+        <div class="mp-logo-wrap">
+          <svg viewBox="0 0 60 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M30 0C13.43 0 0 8.52 0 19c0 6.17 3.94 11.66 10.1 15.14L8.4 38l8.3-3.04C19.4 35.63 22.6 36 26 36h4c16.57 0 30-8.07 30-18C60 8.52 46.57 0 30 0z" fill="#009ee3"/>
+            <path d="M17 22l3-8 3 5 3-5 3 8" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M35 14h4a2 2 0 010 4h-4v4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="mp-title">Completa tu pago con Mercado Pago</div>
+        <div class="mp-sub">Tu cuenta fue creada. Ahora activa tu membresía con el pago seguro a través de Mercado Pago. La suscripción se renueva automáticamente.</div>
+        <div class="mp-plan-chip">
+          <div class="mp-plan-name" id="mp-plan-name">Plan Mensual</div>
+          <div class="mp-plan-price" id="mp-plan-price">$199/mes</div>
+        </div>
+        <a id="mp-btn" class="mp-btn" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm1 14.93V18h-2v-1.07A4 4 0 018.1 13H10a2 2 0 003.87-.67A2 2 0 0012 10a4 4 0 01-.93-7.93V1h2v1.07A4 4 0 0115.9 6H14a2 2 0 00-3.87.67A2 2 0 0012 9a4 4 0 01.93 7.93z"/></svg>
+          Pagar con Mercado Pago
+        </a>
+        <div class="mp-secure"><i class="fa-solid fa-lock" style="color:#009ee3"></i> Pago seguro · Cancela cuando quieras · Sin permanencia mínima</div>
       </div>
       <div class="co-note">
-        Pago 100% seguro · Sin permanencia · <a href="terminos.html" target="_blank">Términos</a>
-        &nbsp;·&nbsp; <small>¿Ya pagaste? <a href="club-miembro.html" id="skip-link">Ir al Club →</a></small>
+        <small>¿Ya pagaste? <a href="club-miembro.html" id="skip-link">Ir al Club →</a></small>
       </div>
     </div>
   </div>
@@ -230,10 +254,10 @@ const auth = getAuth(app);
 const db   = getFirestore(app);
 const gp   = new GoogleAuthProvider();
 
-// URLs Shopify reales
-const SHOPIFY_URLS = {
-  mensual: 'https://pfueck-wm.myshopify.com/products/membresia-mensual-club-dental-odonteck',
-  anual:   'https://pfueck-wm.myshopify.com/products/membresia-anual-club-dental-odonteck'
+// URLs MercadoPago suscripción
+const MP_URLS = {
+  mensual: 'https://www.mercadopago.com.mx/subscriptions/checkout?preapproval_plan_id=baf467f448624d33a32a4717856ec18c',
+  anual:   'https://www.mercadopago.com.mx/subscriptions/checkout?preapproval_plan_id=2527f33b10b44ddbbba432f1f7a258c2'
 };
 
 // Plan desde URL o selector
@@ -289,13 +313,16 @@ onAuthStateChanged(auth, async u => {
 
 function goCheckout(email) {
   window._inCO = true;
-  const P = PLANS[selectedPlan] || PLANS.mensual;
+  const P   = PLANS[selectedPlan] || PLANS.mensual;
+  const url = MP_URLS[selectedPlan] || MP_URLS.mensual;
   document.getElementById('step-auth').style.display = 'none';
   document.getElementById('step-co').style.display   = 'flex';
   document.getElementById('co-sub-label').textContent = P.label;
-  let url = SHOPIFY_URLS[selectedPlan] || SHOPIFY_URLS.mensual;
-  if (email) url += '?checkout[email]=' + encodeURIComponent(email);
-  document.getElementById('shopify-frame').src = url;
+  document.getElementById('mp-plan-name').textContent  = P.name;
+  document.getElementById('mp-plan-price').textContent = P.price;
+  // Agregar email al link de MP si está disponible
+  const mpUrl = email ? url + '&payer_email=' + encodeURIComponent(email) : url;
+  document.getElementById('mp-btn').href = mpUrl;
   window.scrollTo(0, 0);
 }
 

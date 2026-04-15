@@ -699,6 +699,12 @@ onAuthStateChanged(auth, async user => {
 
   if(data.planCancelado&&user.email!==ADMIN){document.getElementById('blockScreen').classList.add('show');return;}
 
+  // BLOQUEO: Si no tiene plan activo y no es admin → regresar a pagar
+  if(!data.planActivo && user.email!==ADMIN){
+    location.href='club-login.html?msg=pago_pendiente&plan='+(data.plan||'mensual');
+    return;
+  }
+
   // Perfil
   document.getElementById('pro').textContent=data.especialidad||'Miembro Club Dental';
   document.getElementById('pf-nm').value=data.nombre||'';

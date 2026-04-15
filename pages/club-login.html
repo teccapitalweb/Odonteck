@@ -251,9 +251,7 @@
         </button>
         <div class="mp-secure"><i class="fa-solid fa-lock" style="color:#009ee3"></i> Pago seguro · Cancela cuando quieras · Sin permanencia mínima</div>
       </div>
-      <div class="co-note">
-        <small>¿Ya pagaste? <a href="club-miembro.html" id="skip-link">Ir al Club →</a></small>
-      </div>
+      <div class="co-note" id="co-note-area"></div>
     </div>
   </div>
 </div><!-- MODAL ESPERA PAGO MP -->
@@ -279,7 +277,7 @@
         <li>Regresa aquí y haz clic en "Ya pagué"</li>
       </ul>
       <button class="pay-reopen-btn" onclick="reopenMp()"><i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir ventana de nuevo</button>
-      <button class="pay-done-btn" onclick="location.href='club-miembro.html'">✓ Ya pagué — Ir al Club</button>
+      <button class="pay-done-btn" onclick="verifyAndEnter()">✓ Ya pagué — Verificar y entrar</button>
     </div>
   </div>
 </div>
@@ -341,7 +339,49 @@ window.selPlan = function(p) {
   document.getElementById('ps-anual').classList.toggle('selected', p==='anual');
 };
 
-// Si es renovar y ya está logueado → ir directo al checkout SIN redirigir al dashboard
+window.verifyAndEnter = async function() {
+  const user = auth.currentUser;
+  if (!user) { msg('err','Inicia sesión primero'); return; }
+  const btn = document.querySelector('.pay-done-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Verificando...';
+  const snap = await getDoc(doc(db,'miembros',user.uid));
+  const data  = snap.exists() ? snap.data() : {};
+  if (data.planActivo) {
+    btn.textContent = '✓ ¡Pago confirmado! Entrando...';
+    setTimeout(() => location.href = 'club-miembro.html', 800);
+  } else {
+    btn.disabled = false;
+    btn.textContent = '✓ Ya pagué — Verificar y entrar';
+    // Mostrar nota de que aún no se detecta el pago
+    document.getElementById('co-note-area').innerHTML =
+      '<p style="color:#dc2626;font-size:12px;padding:10px;text-align:center">⚠️ Aún no detectamos tu pago. Si ya pagaste, espera unos segundos e intenta de nuevo.</p>';
+  }
+};
+
+// Si viene con msg=pago_pendiente (redirigido desde club-miembro sin plan activo)
+if (params.get('msg') === 'pago_pendiente') {
+  msg('err', '⚠️ Tu cuenta no tiene membresía activa. Completa tu pago para acceder.');
+}
+
+// Detectar regreso exitoso desde MercadoPago (back_url configurada con ?mp_status=approved)
+const mpStatus = params.get('collection_status') || params.get('mp_status');
+const preapprovalId = params.get('preapproval_id');
+if ((mpStatus === 'approved' || mpStatus === 'authorized') && preapprovalId) {
+  // MP confirmó el pago → activar plan en Firestore
+  onAuthStateChanged(auth, async u => {
+    if (!u) return;
+    await setDoc(doc(db,'miembros',u.uid), {
+      planActivo: true,
+      planCancelado: false,
+      planTipo: selectedPlan,
+      planInicio: new Date().toISOString(),
+      planVence: new Date(Date.now() + (selectedPlan==='anual'?365:30)*24*60*60*1000).toISOString(),
+      preapprovalId: preapprovalId
+    }, { merge: true });
+    location.href = 'club-miembro.html';
+  });
+}
 onAuthStateChanged(auth, async u => {
   if (!u) return; // No está logueado → mostrar form normal
   if (isRenovar) {
@@ -380,7 +420,7 @@ window.openMpModal = function() {
   document.getElementById('modal-plan-title').textContent = 'Club Dental · ' + P.name;
   document.getElementById('modal-price-text').textContent = selectedPlan === 'anual' ? '1,788' : '199';
   // Abrir MP en ventana popup
-  const w = 520, h = 700;
+  const w = 820, h = 720;
   const left = (screen.width/2)-(w/2), top = (screen.height/2)-(h/2);
   window._mpWin = window.open(_mpUrl, 'MercadoPago', `width=${w},height=${h},left=${left},top=${top},toolbar=0,location=0,scrollbars=1`);
   // Mostrar modal de espera

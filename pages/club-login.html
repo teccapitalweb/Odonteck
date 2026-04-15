@@ -79,6 +79,24 @@
     .mp-secure{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px}
     .spinner{width:38px;height:38px;border:3px solid var(--line);border-top-color:#009ee3;border-radius:50%;animation:spin .8s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* MODAL MP */
+    .mp-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
+    .mp-modal-overlay.open{display:flex}
+    .mp-modal{background:#fff;border-radius:20px;width:100%;max-width:520px;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.25)}
+    .mp-modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #eee;flex-shrink:0}
+    .mp-modal-head-left{display:flex;align-items:center;gap:10px}
+    .mp-modal-head img{width:32px;height:32px;border-radius:8px}
+    .mp-modal-head-title{font-size:14px;font-weight:800;color:#0d1b2a}
+    .mp-modal-head-sub{font-size:11px;color:#6b7280;margin-top:1px}
+    .mp-modal-close{width:32px;height:32px;border-radius:50%;border:none;background:#f3f4f6;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:#6b7280;transition:.15s}
+    .mp-modal-close:hover{background:#e5e7eb}
+    .mp-iframe-wrap{position:relative;flex:1;min-height:480px}
+    .mp-iframe-wrap iframe{width:100%;height:100%;border:none;display:block}
+    .mp-iframe-loading{position:absolute;inset:0;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;transition:opacity .3s}
+    .mp-iframe-loading.hide{opacity:0;pointer-events:none}
+    .mp-iframe-loading p{font-size:13px;color:#6b7280}
+    @media(max-width:580px){.mp-modal{max-height:100vh;border-radius:16px 16px 0 0;margin-top:auto;align-self:flex-end;width:100%}.mp-modal-overlay{padding:0;align-items:flex-end}}
     .co-note{text-align:center;padding:12px;font-size:12px;color:var(--muted);background:var(--surface-soft);border-top:1px solid var(--line)}
     .co-note a{color:var(--primary);font-weight:600}
 
@@ -224,10 +242,10 @@
           <div class="mp-plan-name" id="mp-plan-name">Plan Mensual</div>
           <div class="mp-plan-price" id="mp-plan-price">$199/mes</div>
         </div>
-        <a id="mp-btn" class="mp-btn" href="#" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm1 14.93V18h-2v-1.07A4 4 0 018.1 13H10a2 2 0 003.87-.67A2 2 0 0012 10a4 4 0 01-.93-7.93V1h2v1.07A4 4 0 0115.9 6H14a2 2 0 00-3.87.67A2 2 0 0012 9a4 4 0 01.93 7.93z"/></svg>
+        <button id="mp-btn" class="mp-btn" onclick="openMpModal()">
+          <i class="fa-solid fa-lock"></i>
           Pagar con Mercado Pago
-        </a>
+        </button>
         <div class="mp-secure"><i class="fa-solid fa-lock" style="color:#009ee3"></i> Pago seguro · Cancela cuando quieras · Sin permanencia mínima</div>
       </div>
       <div class="co-note">
@@ -235,7 +253,30 @@
       </div>
     </div>
   </div>
+</div><!-- MODAL MERCADO PAGO -->
+<div class="mp-modal-overlay" id="mp-modal-overlay" onclick="closeMpModal(event)">
+  <div class="mp-modal">
+    <div class="mp-modal-head">
+      <div class="mp-modal-head-left">
+        <img src="../assets/img/logo/logo.jpg" alt="OdonTeck"/>
+        <div>
+          <div class="mp-modal-head-title" id="modal-plan-title">Club Dental · Plan Mensual</div>
+          <div class="mp-modal-head-sub">Pago seguro por Mercado Pago</div>
+        </div>
+      </div>
+      <button class="mp-modal-close" onclick="closeMpModal(null)" title="Cerrar">✕</button>
+    </div>
+    <div class="mp-iframe-wrap">
+      <div class="mp-iframe-loading" id="mp-iframe-loading">
+        <div class="spinner"></div>
+        <p>Cargando checkout seguro...</p>
+      </div>
+      <iframe id="mp-iframe" src="" title="Pago Mercado Pago" allow="payment"
+        onload="document.getElementById('mp-iframe-loading').classList.add('hide')"></iframe>
+    </div>
+  </div>
 </div>
+
 </main>
 
 <footer class="site-footer">
@@ -311,20 +352,38 @@ onAuthStateChanged(auth, async u => {
   // Si no tiene plan activo → mostrar el form normalmente para que pague
 });
 
+let _mpUrl = '';
+
 function goCheckout(email) {
   window._inCO = true;
   const P   = PLANS[selectedPlan] || PLANS.mensual;
   const url = MP_URLS[selectedPlan] || MP_URLS.mensual;
   document.getElementById('step-auth').style.display = 'none';
   document.getElementById('step-co').style.display   = 'flex';
-  document.getElementById('co-sub-label').textContent = P.label;
+  document.getElementById('co-sub-label').textContent  = P.label;
   document.getElementById('mp-plan-name').textContent  = P.name;
   document.getElementById('mp-plan-price').textContent = P.price;
-  // Agregar email al link de MP si está disponible
-  const mpUrl = email ? url + '&payer_email=' + encodeURIComponent(email) : url;
-  document.getElementById('mp-btn').href = mpUrl;
+  document.getElementById('modal-plan-title').textContent = 'Club Dental · ' + P.name;
+  _mpUrl = email ? url + '&payer_email=' + encodeURIComponent(email) : url;
   window.scrollTo(0, 0);
 }
+
+window.openMpModal = function() {
+  const overlay = document.getElementById('mp-modal-overlay');
+  const iframe  = document.getElementById('mp-iframe');
+  const loading = document.getElementById('mp-iframe-loading');
+  loading.classList.remove('hide');
+  iframe.src = _mpUrl;
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeMpModal = function(e) {
+  if (e && e.target !== document.getElementById('mp-modal-overlay')) return;
+  document.getElementById('mp-modal-overlay').classList.remove('open');
+  document.getElementById('mp-iframe').src = '';
+  document.body.style.overflow = '';
+};
 
 // LOGIN — al iniciar sesión verificar si tiene plan, si no → checkout
 window.doLogin = async () => {

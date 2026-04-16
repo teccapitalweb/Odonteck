@@ -247,7 +247,7 @@
         </div>
         <button id="mp-btn" class="mp-btn" onclick="openMpModal()">
           <i class="fa-solid fa-lock"></i>
-          Pagar con Mercado Pago
+          Pagar con Shopify
         </button>
         <div class="mp-secure"><i class="fa-solid fa-lock" style="color:#009ee3"></i> Pago seguro · Cancela cuando quieras · Sin permanencia mínima</div>
       </div>
@@ -269,10 +269,10 @@
     </div>
     <div class="pay-waiting">
       <div class="pay-waiting-icon">💳</div>
-      <div class="pay-waiting-title">Completa tu pago en la ventana de MP</div>
-      <div class="pay-waiting-sub">Se abrió una ventana de Mercado Pago. Sigue los pasos ahí y regresa cuando termines.</div>
+      <div class="pay-waiting-title">Completa tu pago en la ventana de Shopify</div>
+      <div class="pay-waiting-sub">Se abrió una ventana de Shopify. Sigue los pasos ahí y regresa cuando termines.</div>
       <ul class="pay-waiting-steps">
-        <li>Elige tu método de pago (tarjeta, OXXO, etc.)</li>
+        <li>Elige tu método de pago (tarjeta, etc.)</li>
         <li>Confirma tu suscripción de $<span id="modal-price-text">199</span>/mes</li>
         <li>Regresa aquí y haz clic en "Ya pagué"</li>
       </ul>
@@ -300,10 +300,10 @@ const auth = getAuth(app);
 const db   = getFirestore(app);
 const gp   = new GoogleAuthProvider();
 
-// URLs MercadoPago suscripción — OdonTeck Club (app vinculada)
+// URLs Shopify suscripción — Club Dental OdonTeck
 const MP_URLS = {
-  mensual: 'https://www.mercadopago.com.mx/subscriptions/checkout?preapproval_plan_id=f1bc116df5ba4d6f9166861510819931',
-  anual:   'https://www.mercadopago.com.mx/subscriptions/checkout?preapproval_plan_id=777352b72688416297ea9f2f8310c8c3'
+  mensual: 'https://pfueck-wm.myshopify.com/products/membresia-mensual-club-dental-odonteck',
+  anual:   'https://pfueck-wm.myshopify.com/products/membresia-anual-club-dental-odonteck'
 };
 
 // Plan desde URL o selector

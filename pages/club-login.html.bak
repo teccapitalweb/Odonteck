@@ -65,41 +65,11 @@
     .co-head{display:flex;align-items:center;gap:12px;padding:18px 24px;border-bottom:1px solid var(--line)}
     .co-head img{width:40px;height:40px;border-radius:10px;object-fit:cover}
     .co-title{font-size:16px;font-weight:800}.co-sub{font-size:12px;color:var(--muted);margin-top:1px}
-    .mp-redirect-box{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 30px;gap:18px;min-height:320px}
-    .mp-logo-wrap{width:72px;height:72px;border-radius:50%;background:#fff9f0;border:2px solid #ffe0b0;display:flex;align-items:center;justify-content:center}
-    .mp-logo-wrap svg{width:42px}
-    .mp-title{font-size:20px;font-weight:800;color:var(--text);text-align:center}
-    .mp-sub{font-size:14px;color:var(--muted);text-align:center;max-width:320px;line-height:1.6}
-    .mp-plan-chip{background:var(--surface-soft);border:1px solid var(--line);border-radius:12px;padding:12px 20px;text-align:center}
-    .mp-plan-name{font-size:13px;color:var(--muted);font-weight:600}
-    .mp-plan-price{font-size:26px;font-weight:900;color:var(--primary)}
-    /* MODAL ESPERA PAGO */
-    .pay-waiting{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 28px;gap:16px;text-align:center}
-    .pay-waiting-icon{width:72px;height:72px;border-radius:50%;background:#e6f7ff;display:flex;align-items:center;justify-content:center;font-size:32px}
-    .pay-waiting-title{font-size:19px;font-weight:800;color:#0d1b2a}
-    .pay-waiting-sub{font-size:13px;color:#6b7280;max-width:300px;line-height:1.6}
-    .pay-waiting-steps{background:#f8fafc;border-radius:12px;padding:14px 18px;width:100%;text-align:left}
-    .pay-waiting-steps li{font-size:12px;color:#374151;padding:4px 0;list-style:none;display:flex;align-items:center;gap:8px}
-    .pay-waiting-steps li::before{content:'';width:6px;height:6px;border-radius:50%;background:#009ee3;flex-shrink:0}
-    .pay-reopen-btn{background:#009ee3;color:#fff;border:none;border-radius:999px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:8px;transition:.2s}
-    .pay-reopen-btn:hover{background:#0081c4}
-    .pay-done-btn{background:#ecfdf5;color:#059669;border:2px solid #a7f3d0;border-radius:999px;padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:.2s}
-    .pay-done-btn:hover{background:#d1fae5}
-    .pulse-dot{width:10px;height:10px;border-radius:50%;background:#009ee3;animation:pulse-anim 1.4s ease-in-out infinite}
-    @keyframes pulse-anim{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
-
-    /* MODAL OVERLAY */
-    .mp-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
-    .mp-modal-overlay.open{display:flex}
-    .mp-modal{background:#fff;border-radius:20px;width:100%;max-width:460px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.25)}
-    .mp-modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #eee}
-    .mp-modal-head-left{display:flex;align-items:center;gap:10px}
-    .mp-modal-head img{width:32px;height:32px;border-radius:8px}
-    .mp-modal-head-title{font-size:14px;font-weight:800;color:#0d1b2a}
-    .mp-modal-head-sub{font-size:11px;color:#6b7280;margin-top:1px}
-    .mp-modal-close{width:32px;height:32px;border-radius:50%;border:none;background:#f3f4f6;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:#6b7280;transition:.15s}
-    .mp-modal-close:hover{background:#e5e7eb}
-    @media(max-width:500px){.mp-modal{border-radius:16px 16px 0 0;align-self:flex-end;width:100%}.mp-modal-overlay{padding:0;align-items:flex-end}}
+    .shopify-frame-wrap{position:relative;width:100%;height:680px}
+    .shopify-frame-wrap iframe{width:100%;height:100%;border:none;display:block}
+    .frame-loading{position:absolute;inset:0;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+    .spinner{width:38px;height:38px;border:3px solid var(--line);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
     .co-note{text-align:center;padding:12px;font-size:12px;color:var(--muted);background:var(--surface-soft);border-top:1px solid var(--line)}
     .co-note a{color:var(--primary);font-weight:600}
 
@@ -231,56 +201,17 @@
         <img src="../assets/img/logo/logo.jpg" alt="OdonTeck"/>
         <div><div class="co-title">Completa tu membresía</div><div class="co-sub" id="co-sub-label">Club Dental OdonTeck</div></div>
       </div>
-      <div class="mp-redirect-box" id="mp-box">
-        <div class="mp-logo-wrap">
-          <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" width="42" height="42">
-            <path d="M30 5C16.2 5 5 16.2 5 30s11.2 25 25 25 25-11.2 25-25S43.8 5 30 5z" fill="#96BF48"/>
-            <path d="M38 22h-3c0-2.8-2.2-5-5-5s-5 2.2-5 5h-3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V24c0-1.1-.9-2-2-2zm-8 10c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3-10h-6c0-1.7 1.3-3 3-3s3 1.3 3 3z" fill="white"/>
-          </svg>
-        </div>
-        <div class="mp-title">Completa tu pago con Shopify</div>
-        <div class="mp-sub">Tu cuenta fue creada. Ahora activa tu membresía con el pago seguro a través de Shopify. La suscripción se renueva automáticamente.</div>
-        <div class="mp-plan-chip">
-          <div class="mp-plan-name" id="mp-plan-name">Plan Mensual</div>
-          <div class="mp-plan-price" id="mp-plan-price">$199/mes</div>
-        </div>
-        <button id="mp-btn" class="mp-btn" onclick="openMpModal()">
-          <i class="fa-solid fa-lock"></i>
-          Pagar con Shopify
-        </button>
-        <div class="mp-secure"><i class="fa-solid fa-lock" style="color:#009ee3"></i> Pago seguro · Cancela cuando quieras · Sin permanencia mínima</div>
+      <div class="shopify-frame-wrap">
+        <div class="frame-loading" id="frame-loading"><div class="spinner"></div><p style="font-size:13px;color:var(--muted)">Cargando checkout seguro...</p></div>
+        <iframe id="shopify-frame" src="" title="Checkout OdonTeck" allowfullscreen onload="document.getElementById('frame-loading').style.display='none'"></iframe>
       </div>
-      <div class="co-note" id="co-note-area"></div>
-    </div>
-  </div>
-</div><!-- MODAL ESPERA PAGO MP -->
-<div class="mp-modal-overlay" id="mp-modal-overlay" onclick="closeMpModal(event)">
-  <div class="mp-modal">
-    <div class="mp-modal-head">
-      <div class="mp-modal-head-left">
-        <img src="../assets/img/logo/logo.jpg" alt="OdonTeck"/>
-        <div>
-          <div class="mp-modal-head-title" id="modal-plan-title">Club Dental · Plan Mensual</div>
-          <div class="mp-modal-head-sub" style="display:flex;align-items:center;gap:5px"><span class="pulse-dot"></span> Esperando tu pago...</div>
-        </div>
+      <div class="co-note">
+        Pago 100% seguro · Sin permanencia · <a href="terminos.html" target="_blank">Términos</a>
+        &nbsp;·&nbsp; <small>¿Ya pagaste? <a href="club-miembro.html" id="skip-link">Ir al Club →</a></small>
       </div>
-      <button class="mp-modal-close" onclick="closeMpModal(null)">✕</button>
-    </div>
-    <div class="pay-waiting">
-      <div class="pay-waiting-icon">🎉</div>
-      <div class="pay-waiting-title">¡Ya casi estás dentro!</div>
-      <div class="pay-waiting-sub">Completa tu pago en la ventana de Shopify y luego ciérrala con la <strong>X</strong> para acceder a tu Club.</div>
-      <ul class="pay-waiting-steps">
-        <li>Ingresa tus datos de pago en la ventana de Shopify</li>
-        <li>Haz clic en <strong>"Pagar suscripción"</strong></li>
-        <li>Cierra la ventana con la <strong>X</strong> arriba a la derecha ↗</li>
-      </ul>
-      <button class="pay-reopen-btn" onclick="reopenMp()"><i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir ventana de Shopify</button>
-      <button class="pay-done-btn" onclick="verifyAndEnter()">✓ Ya pagué — Verificar y entrar</button>
     </div>
   </div>
 </div>
-
 </main>
 
 <footer class="site-footer">
@@ -289,7 +220,7 @@
 
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, doc, setDoc, getDoc, serverTimestamp, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
          GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, onAuthStateChanged }
   from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
@@ -299,21 +230,23 @@ const auth = getAuth(app);
 const db   = getFirestore(app);
 const gp   = new GoogleAuthProvider();
 
-// URLs Shopify — checkout directo con suscripción
+// URLs Shopify reales
 const SHOPIFY_URLS = {
-  mensual: 'https://pfueck-wm.myshopify.com/cart/45323282907190:1?selling_plan=auto',
-  anual:   'https://pfueck-wm.myshopify.com/cart/45323494785078:1?selling_plan=auto'
+  mensual: 'https://pfueck-wm.myshopify.com/products/membresia-mensual-club-dental-odonteck',
+  anual:   'https://pfueck-wm.myshopify.com/products/membresia-anual-club-dental-odonteck'
 };
 
-const params      = new URLSearchParams(location.search);
-let selectedPlan  = params.get('plan') || 'mensual';
-const isRenovar   = params.get('renovar') === '1';
+// Plan desde URL o selector
+const params = new URLSearchParams(location.search);
+let selectedPlan = params.get('plan') || 'mensual';
+const isRenovar  = params.get('renovar') === '1'; // Viene de "Renovar membresía"
 
 const PLANS = {
   mensual: { name:'Plan Mensual', desc:'Sin compromiso · Precio de fundador', price:'$199/mes', dias:30,  label:'Club Dental OdonTeck · Plan Mensual $199/mes' },
   anual:   { name:'Plan Anual',   desc:'40% OFF · Ahorras $1,200 al año',    price:'$1,788/año', dias:365, label:'Club Dental OdonTeck · Plan Anual $1,788/año' }
 };
 
+// Si viene con plan desde URL, mostrar chip. Si no, mostrar selector
 if (params.get('plan')) {
   showPlanChip(selectedPlan);
 } else {
@@ -336,112 +269,37 @@ window.selPlan = function(p) {
   document.getElementById('ps-anual').classList.toggle('selected', p==='anual');
 };
 
-// Si viene con msg=pago_pendiente
-if (params.get('msg') === 'pago_pendiente') {
-  msg('err', '⚠️ Tu cuenta no tiene membresía activa. Completa tu pago para acceder.');
-}
-
-// Auth state
+// Si es renovar y ya está logueado → ir directo al checkout SIN redirigir al dashboard
 onAuthStateChanged(auth, async u => {
-  if (!u) return;
-  if (isRenovar) { goCheckout(u.email); return; }
+  if (!u) return; // No está logueado → mostrar form normal
+  if (isRenovar) {
+    // Viene a renovar → abrir checkout directamente
+    goCheckout(u.email);
+    return;
+  }
+  // Está logueado y no es renovar → ver si tiene plan activo
   const snap = await getDoc(doc(db,'miembros',u.uid));
   const data = snap.exists() ? snap.data() : {};
   if (data.planActivo && !data.planCancelado) {
+    // Ya tiene plan activo → ir al dashboard
     location.href = 'club-miembro.html';
   }
+  // Si no tiene plan activo → mostrar el form normalmente para que pague
 });
 
 function goCheckout(email) {
-  const P   = PLANS[selectedPlan] || PLANS.mensual;
-  const url = SHOPIFY_URLS[selectedPlan] || SHOPIFY_URLS.mensual;
+  window._inCO = true;
+  const P = PLANS[selectedPlan] || PLANS.mensual;
   document.getElementById('step-auth').style.display = 'none';
   document.getElementById('step-co').style.display   = 'flex';
-  document.getElementById('co-sub-label').textContent  = P.label;
-  document.getElementById('mp-plan-name').textContent  = P.name;
-  document.getElementById('mp-plan-price').textContent = P.price;
-  document.getElementById('modal-plan-title').textContent = 'Club Dental · ' + P.name;
+  document.getElementById('co-sub-label').textContent = P.label;
+  let url = SHOPIFY_URLS[selectedPlan] || SHOPIFY_URLS.mensual;
+  if (email) url += '?checkout[email]=' + encodeURIComponent(email);
+  document.getElementById('shopify-frame').src = url;
   window.scrollTo(0, 0);
 }
 
-// Abrir ventana de Shopify
-window.openMpModal = function() {
-  const P   = PLANS[selectedPlan] || PLANS.mensual;
-  const url = SHOPIFY_URLS[selectedPlan] || SHOPIFY_URLS.mensual;
-  const user = auth.currentUser;
-  const finalUrl = user ? url + '&checkout[email]=' + encodeURIComponent(user.email) : url;
-
-  // Abrir en nueva pestaña (no popup — evita bloqueo del navegador)
-  window._mpWin = window.open(finalUrl, '_blank');
-  if (!window._mpWin) {
-    // Si también bloquea la pestaña, redirigir en la misma
-    location.href = finalUrl;
-    return;
-  }
-
-  document.getElementById('modal-plan-title').textContent = 'Club Dental · ' + P.name;
-  document.getElementById('modal-price-text').textContent = selectedPlan === 'anual' ? '1,788' : '199';
-  document.getElementById('mp-modal-overlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-
-  if (!user) return;
-  // Leer estado actual, solo reaccionar a cambio nuevo
-  let yaActivo = false;
-  getDoc(doc(db,'miembros',user.uid)).then(snap => {
-    yaActivo = snap.exists() && snap.data().planActivo === true;
-    const unsubscribe = onSnapshot(doc(db,'miembros',user.uid), s => {
-      const data = s.exists() ? s.data() : {};
-      if (!yaActivo && data.planActivo) {
-        unsubscribe();
-        if (window._mpWin && !window._mpWin.closed) window._mpWin.close();
-        document.getElementById('mp-modal-overlay').classList.remove('open');
-        document.body.style.overflow = '';
-        document.querySelector('.pay-waiting-title').textContent = '✅ ¡Pago confirmado!';
-        document.querySelector('.pay-waiting-sub').textContent = 'Redirigiendo a tu Club...';
-        setTimeout(() => location.href = 'club-miembro.html', 1500);
-      }
-    });
-  });
-};
-
-window.reopenMp = function() {
-  const url = SHOPIFY_URLS[selectedPlan] || SHOPIFY_URLS.mensual;
-  const user = auth.currentUser;
-  const finalUrl = user ? url + '&checkout[email]=' + encodeURIComponent(user.email) : url;
-  if (window._mpWin && !window._mpWin.closed) {
-    window._mpWin.focus();
-  } else {
-    const w=820,h=720,left=(screen.width/2)-(410),top=(screen.height/2)-(360);
-    window._mpWin = window.open(finalUrl,'Shopify',`width=${w},height=${h},left=${left},top=${top},toolbar=0,location=0,scrollbars=1`);
-  }
-};
-
-window.closeMpModal = function(e) {
-  if (e && e.target !== document.getElementById('mp-modal-overlay')) return;
-  document.getElementById('mp-modal-overlay').classList.remove('open');
-  document.body.style.overflow = '';
-};
-
-window.verifyAndEnter = async function() {
-  const user = auth.currentUser;
-  if (!user) { msg('err','Inicia sesión primero'); return; }
-  const btn = document.querySelector('.pay-done-btn');
-  btn.disabled = true;
-  btn.textContent = '⏳ Verificando...';
-  const snap = await getDoc(doc(db,'miembros',user.uid));
-  const data  = snap.exists() ? snap.data() : {};
-  if (data.planActivo) {
-    btn.textContent = '✓ ¡Pago confirmado! Entrando...';
-    setTimeout(() => location.href = 'club-miembro.html', 800);
-  } else {
-    btn.disabled = false;
-    btn.textContent = '✓ Ya pagué — Verificar y entrar';
-    document.getElementById('co-note-area').innerHTML =
-      '<p style="color:#dc2626;font-size:12px;padding:10px;text-align:center">⚠️ Aún no detectamos tu pago. Espera unos segundos e intenta de nuevo.</p>';
-  }
-};
-
-// LOGIN
+// LOGIN — al iniciar sesión verificar si tiene plan, si no → checkout
 window.doLogin = async () => {
   const em = v('li-em'), pw = v('li-pw');
   if (!em||!pw) { msg('err','Ingresa tu correo y contraseña'); return; }
@@ -451,6 +309,7 @@ window.doLogin = async () => {
     const snap = await getDoc(doc(db,'miembros',c.user.uid));
     const data = snap.exists() ? snap.data() : {};
     if (!data.planActivo || data.planCancelado) {
+      // Sin plan activo → checkout
       msg('ok','✓ Sesión iniciada. Completa tu pago...');
       setTimeout(()=>goCheckout(em), 700);
     } else {
@@ -460,7 +319,7 @@ window.doLogin = async () => {
   } catch(e) { msg('err', fe(e.code)); busy('btn-li', false); }
 };
 
-// REGISTRO
+// REGISTRO → siempre va al checkout
 window.doRegister = async () => {
   const nm=v('rg-nm'), em=v('rg-em'), ph=v('rg-ph'), sp=v('rg-sp'), pw=v('rg-pw');
   if (!nm||!em) { msg('err','Completa nombre y correo'); return; }
@@ -479,7 +338,7 @@ window.doRegister = async () => {
   } catch(e) { msg('err', fe(e.code)); busy('btn-rg', false); }
 };
 
-// GOOGLE
+// GOOGLE → si nuevo → checkout, si existe con plan → dashboard
 window.doGoogle = async () => {
   try {
     const r    = await signInWithPopup(auth, gp);
@@ -517,7 +376,6 @@ function msg(t,tx){
 }
 function busy(id,b){ const el=document.getElementById(id); el.disabled=b; if(b) el.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Un momento...'; }
 function fe(c){ return({'auth/user-not-found':'No existe cuenta con ese correo','auth/wrong-password':'Contraseña incorrecta','auth/email-already-in-use':'Ya existe una cuenta con ese correo','auth/weak-password':'Contraseña muy débil (mín. 8)','auth/invalid-email':'Correo inválido','auth/popup-closed-by-user':'Ventana cerrada, intenta de nuevo','auth/invalid-credential':'Credenciales inválidas','auth/network-request-failed':'Error de conexión — verifica tu internet'}[c]||'Error: '+c); }
-</script>
 </script>
 
 <script>

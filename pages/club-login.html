@@ -299,10 +299,10 @@ const auth = getAuth(app);
 const db   = getFirestore(app);
 const gp   = new GoogleAuthProvider();
 
-// URLs Shopify suscripción — Club Dental OdonTeck
+// URLs Shopify — checkout directo con suscripción seleccionada
 const MP_URLS = {
-  mensual: 'https://pfueck-wm.myshopify.com/products/membresia-mensual-club-dental-odonteck',
-  anual:   'https://pfueck-wm.myshopify.com/products/membresia-anual-club-dental-odonteck'
+  mensual: 'https://pfueck-wm.myshopify.com/cart/45323282907190:1?selling_plan=auto',
+  anual:   'https://pfueck-wm.myshopify.com/cart/45323494785078:1?selling_plan=auto'
 };
 
 // Plan desde URL o selector
@@ -410,7 +410,7 @@ function goCheckout(email) {
   document.getElementById('mp-plan-name').textContent  = P.name;
   document.getElementById('mp-plan-price').textContent = P.price;
   document.getElementById('modal-plan-title').textContent = 'Club Dental · ' + P.name;
-  _mpUrl = email ? url + '?checkout[email]=' + encodeURIComponent(email) : url;
+  _mpUrl = email ? url + '&checkout[email]=' + encodeURIComponent(email) : url;
   window.scrollTo(0, 0);
 }
 

@@ -289,7 +289,7 @@
 
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getFirestore, doc, setDoc, getDoc, serverTimestamp, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
          GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, onAuthStateChanged }
   from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
@@ -424,32 +424,22 @@ window.openMpModal = function() {
   document.getElementById('mp-modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 
-  // Monitorear cuando el popup se cierre
-  window._mpCheckInterval = setInterval(async () => {
-    if (!window._mpWin || window._mpWin.closed) {
-      clearInterval(window._mpCheckInterval);
-      // Popup cerrado — verificar con reintentos (webhook puede tardar unos segundos)
-      let intentos = 0;
-      const verificar = async () => {
-        intentos++;
-        const user = auth.currentUser;
-        if (!user) return;
-        const snap = await getDoc(doc(db,'miembros',user.uid));
-        const data = snap.exists() ? snap.data() : {};
-        if (data.planActivo) {
-          document.getElementById('mp-modal-overlay').classList.remove('open');
-          document.body.style.overflow = '';
-          document.querySelector('.pay-waiting-title').textContent = '✅ ¡Pago confirmado!';
-          document.querySelector('.pay-waiting-sub').textContent = 'Redirigiendo a tu Club...';
-          setTimeout(() => location.href = 'club-miembro.html', 1500);
-        } else if (intentos < 10) {
-          // Reintentar cada 3 segundos hasta 10 veces (30 seg total)
-          setTimeout(verificar, 3000);
-        }
-      };
-      setTimeout(verificar, 2000); // Primer intento a los 2 segundos
+  // Escuchar Firebase en tiempo real — se activa automáticamente cuando llega el webhook
+  const user = auth.currentUser;
+  if (!user) return;
+  const unsubscribe = onSnapshot(doc(db,'miembros',user.uid), (snap) => {
+    const data = snap.exists() ? snap.data() : {};
+    if (data.planActivo) {
+      unsubscribe(); // dejar de escuchar
+      if (window._mpWin && !window._mpWin.closed) window._mpWin.close();
+      document.getElementById('mp-modal-overlay').classList.remove('open');
+      document.body.style.overflow = '';
+      document.querySelector('.pay-waiting-title').textContent = '✅ ¡Pago confirmado!';
+      document.querySelector('.pay-waiting-sub').textContent = 'Redirigiendo a tu Club...';
+      setTimeout(() => location.href = 'club-miembro.html', 1500);
     }
-  }, 1500);
+  });
+};
 };
 
 window.reopenMp = function() {

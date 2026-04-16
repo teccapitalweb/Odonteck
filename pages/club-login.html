@@ -299,27 +299,22 @@ const auth = getAuth(app);
 const db   = getFirestore(app);
 const gp   = new GoogleAuthProvider();
 
-// URLs Shopify — checkout directo con suscripción
 const SHOPIFY_URLS = {
   mensual: 'https://pfueck-wm.myshopify.com/cart/45323282907190:1?selling_plan=auto',
   anual:   'https://pfueck-wm.myshopify.com/cart/45323494785078:1?selling_plan=auto'
 };
 
-const params      = new URLSearchParams(location.search);
-let selectedPlan  = params.get('plan') || 'mensual';
-const isRenovar   = params.get('renovar') === '1';
+const params     = new URLSearchParams(location.search);
+let selectedPlan = params.get('plan') || 'mensual';
+const isRenovar  = params.get('renovar') === '1';
 
 const PLANS = {
   mensual: { name:'Plan Mensual', desc:'Sin compromiso · Precio de fundador', price:'$199/mes', dias:30,  label:'Club Dental OdonTeck · Plan Mensual $199/mes' },
   anual:   { name:'Plan Anual',   desc:'40% OFF · Ahorras $1,200 al año',    price:'$1,788/año', dias:365, label:'Club Dental OdonTeck · Plan Anual $1,788/año' }
 };
 
-if (params.get('plan')) {
-  showPlanChip(selectedPlan);
-} else {
-  document.getElementById('planSelector').classList.add('show');
-  document.getElementById('lsub').textContent = 'Elige tu plan y regístrate';
-}
+if (params.get('plan')) { showPlanChip(selectedPlan); }
+else { document.getElementById('planSelector').classList.add('show'); document.getElementById('lsub').textContent = 'Elige tu plan y regístrate'; }
 
 function showPlanChip(p) {
   const P = PLANS[p];
@@ -336,66 +331,44 @@ window.selPlan = function(p) {
   document.getElementById('ps-anual').classList.toggle('selected', p==='anual');
 };
 
-// Si viene con msg=pago_pendiente
 if (params.get('msg') === 'pago_pendiente') {
   msg('err', '⚠️ Tu cuenta no tiene membresía activa. Completa tu pago para acceder.');
 }
 
-// Detectar regreso desde Shopify
-if (sessionStorage.getItem('odonteck_paying') === '1') {
-  sessionStorage.removeItem('odonteck_paying');
-  // Verificar si ya pagó
-  onAuthStateChanged(auth, async u => {
-    if (!u) return;
-    const snap = await getDoc(doc(db,'miembros',u.uid));
-    const data = snap.exists() ? snap.data() : {};
-    if (data.planActivo) {
-      location.href = 'club-miembro.html';
-    } else {
-      // No pagó aún — mostrar paso 2 con mensaje
-      goCheckout(u.email);
-      msg('err', '⚠️ No detectamos tu pago aún. Si ya pagaste, espera unos segundos.');
-    }
-  });
-}
-
-// Auth state
 onAuthStateChanged(auth, async u => {
   if (!u) return;
   if (isRenovar) { goCheckout(u.email); return; }
   const snap = await getDoc(doc(db,'miembros',u.uid));
   const data = snap.exists() ? snap.data() : {};
-  if (data.planActivo && !data.planCancelado) {
-    location.href = 'club-miembro.html';
-  }
+  if (data.planActivo && !data.planCancelado) { location.href = 'club-miembro.html'; }
 });
 
 function goCheckout(email) {
-  const P   = PLANS[selectedPlan] || PLANS.mensual;
-  const url = SHOPIFY_URLS[selectedPlan] || SHOPIFY_URLS.mensual;
+  const P = PLANS[selectedPlan] || PLANS.mensual;
   document.getElementById('step-auth').style.display = 'none';
   document.getElementById('step-co').style.display   = 'flex';
   document.getElementById('co-sub-label').textContent  = P.label;
   document.getElementById('mp-plan-name').textContent  = P.name;
   document.getElementById('mp-plan-price').textContent = P.price;
-  document.getElementById('modal-plan-title').textContent = 'Club Dental · ' + P.name;
+  const titleEl = document.getElementById('modal-plan-title');
+  if (titleEl) titleEl.textContent = 'Club Dental · ' + P.name;
   window.scrollTo(0, 0);
 }
 
-// Abrir ventana de Shopify
 window.openMpModal = function() {
-  const P   = PLANS[selectedPlan] || PLANS.mensual;
-  const url = SHOPIFY_URLS[selectedPlan] || SHOPIFY_URLS.mensual;
+  const P    = PLANS[selectedPlan] || PLANS.mensual;
+  const url  = SHOPIFY_URLS[selectedPlan] || SHOPIFY_URLS.mensual;
   const user = auth.currentUser;
   const finalUrl = user ? url + '&checkout[email]=' + encodeURIComponent(user.email) : url;
 
-  // POPUP — sincrónico, directo del click, sin async antes
+  // Abrir popup inmediatamente (sincrónico, dentro del click)
   const w = 820, h = 720;
   const left = Math.round((screen.width - w) / 2);
   const top  = Math.round((screen.height - h) / 2);
   window._mpWin = window.open(finalUrl, 'ShopifyCheckout',
     `width=${w},height=${h},left=${left},top=${top},scrollbars=yes,resizable=yes`);
 
+  // Mostrar modal de espera
   const titleEl = document.getElementById('modal-plan-title');
   const priceEl = document.getElementById('modal-price-text');
   const overlay = document.getElementById('mp-modal-overlay');
@@ -404,6 +377,7 @@ window.openMpModal = function() {
   if (overlay) { overlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
 
   if (!user) return;
+  // Solo escuchar cambios NUEVOS de planActivo
   let yaActivo = false;
   getDoc(doc(db,'miembros',user.uid)).then(snap => {
     yaActivo = snap.exists() && snap.data().planActivo === true;
@@ -413,7 +387,7 @@ window.openMpModal = function() {
         unsubscribe();
         if (window._mpWin && !window._mpWin.closed) window._mpWin.close();
         if (overlay) { overlay.classList.remove('open'); document.body.style.overflow = ''; }
-        const t = document.querySelector('.pay-waiting-title');
+        const t  = document.querySelector('.pay-waiting-title');
         const sb = document.querySelector('.pay-waiting-sub');
         if (t) t.textContent = '✅ ¡Pago confirmado!';
         if (sb) sb.textContent = 'Redirigiendo a tu Club...';
@@ -421,36 +395,16 @@ window.openMpModal = function() {
       }
     });
   });
-
-  if (!user) return;
-  // Leer estado actual, solo reaccionar a cambio nuevo
-  let yaActivo = false;
-  getDoc(doc(db,'miembros',user.uid)).then(snap => {
-    yaActivo = snap.exists() && snap.data().planActivo === true;
-    const unsubscribe = onSnapshot(doc(db,'miembros',user.uid), s => {
-      const data = s.exists() ? s.data() : {};
-      if (!yaActivo && data.planActivo) {
-        unsubscribe();
-        if (window._mpWin && !window._mpWin.closed) window._mpWin.close();
-        document.getElementById('mp-modal-overlay').classList.remove('open');
-        document.body.style.overflow = '';
-        document.querySelector('.pay-waiting-title').textContent = '✅ ¡Pago confirmado!';
-        document.querySelector('.pay-waiting-sub').textContent = 'Redirigiendo a tu Club...';
-        setTimeout(() => location.href = 'club-miembro.html', 1500);
-      }
-    });
-  });
 };
 
 window.reopenMp = function() {
-  const url = SHOPIFY_URLS[selectedPlan] || SHOPIFY_URLS.mensual;
+  const url  = SHOPIFY_URLS[selectedPlan] || SHOPIFY_URLS.mensual;
   const user = auth.currentUser;
   const finalUrl = user ? url + '&checkout[email]=' + encodeURIComponent(user.email) : url;
-  if (window._mpWin && !window._mpWin.closed) {
-    window._mpWin.focus();
-  } else {
-    const w=820,h=720,left=(screen.width/2)-(410),top=(screen.height/2)-(360);
-    window._mpWin = window.open(finalUrl,'Shopify',`width=${w},height=${h},left=${left},top=${top},toolbar=0,location=0,scrollbars=1`);
+  if (window._mpWin && !window._mpWin.closed) { window._mpWin.focus(); }
+  else {
+    const w=820,h=720,left=Math.round((screen.width-w)/2),top=Math.round((screen.height-h)/2);
+    window._mpWin = window.open(finalUrl,'ShopifyCheckout',`width=${w},height=${h},left=${left},top=${top},scrollbars=yes,resizable=yes`);
   }
 };
 
@@ -464,22 +418,19 @@ window.verifyAndEnter = async function() {
   const user = auth.currentUser;
   if (!user) { msg('err','Inicia sesión primero'); return; }
   const btn = document.querySelector('.pay-done-btn');
-  btn.disabled = true;
-  btn.textContent = '⏳ Verificando...';
+  btn.disabled = true; btn.textContent = '⏳ Verificando...';
   const snap = await getDoc(doc(db,'miembros',user.uid));
-  const data  = snap.exists() ? snap.data() : {};
+  const data = snap.exists() ? snap.data() : {};
   if (data.planActivo) {
     btn.textContent = '✓ ¡Pago confirmado! Entrando...';
     setTimeout(() => location.href = 'club-miembro.html', 800);
   } else {
-    btn.disabled = false;
-    btn.textContent = '✓ Ya pagué — Verificar y entrar';
-    document.getElementById('co-note-area').innerHTML =
-      '<p style="color:#dc2626;font-size:12px;padding:10px;text-align:center">⚠️ Aún no detectamos tu pago. Espera unos segundos e intenta de nuevo.</p>';
+    btn.disabled = false; btn.textContent = '✓ Ya pagué — Verificar y entrar';
+    const n = document.getElementById('co-note-area');
+    if (n) n.innerHTML = '<p style="color:#dc2626;font-size:12px;padding:10px;text-align:center">⚠️ Aún no detectamos tu pago. Espera unos segundos e intenta de nuevo.</p>';
   }
 };
 
-// LOGIN
 window.doLogin = async () => {
   const em = v('li-em'), pw = v('li-pw');
   if (!em||!pw) { msg('err','Ingresa tu correo y contraseña'); return; }
@@ -490,15 +441,14 @@ window.doLogin = async () => {
     const data = snap.exists() ? snap.data() : {};
     if (!data.planActivo || data.planCancelado) {
       msg('ok','✓ Sesión iniciada. Completa tu pago...');
-      setTimeout(()=>goCheckout(em), 700);
+      setTimeout(() => goCheckout(em), 700);
     } else {
       msg('ok','✓ Bienvenido de vuelta');
-      setTimeout(()=>location.href='club-miembro.html', 600);
+      setTimeout(() => location.href='club-miembro.html', 600);
     }
   } catch(e) { msg('err', fe(e.code)); busy('btn-li', false); }
 };
 
-// REGISTRO
 window.doRegister = async () => {
   const nm=v('rg-nm'), em=v('rg-em'), ph=v('rg-ph'), sp=v('rg-sp'), pw=v('rg-pw');
   if (!nm||!em) { msg('err','Completa nombre y correo'); return; }
@@ -509,15 +459,13 @@ window.doRegister = async () => {
     const c = await createUserWithEmailAndPassword(auth, em, pw);
     await setDoc(doc(db,'miembros',c.user.uid), {
       nombre:nm, email:em, telefono:ph, especialidad:sp,
-      plan:selectedPlan, planActivo:false, planCancelado:false,
-      creadoEn:serverTimestamp()
+      plan:selectedPlan, planActivo:false, planCancelado:false, creadoEn:serverTimestamp()
     });
     msg('ok','✓ Cuenta creada. Completando pago...');
-    setTimeout(()=>goCheckout(em), 700);
+    setTimeout(() => goCheckout(em), 700);
   } catch(e) { msg('err', fe(e.code)); busy('btn-rg', false); }
 };
 
-// GOOGLE
 window.doGoogle = async () => {
   try {
     const r    = await signInWithPopup(auth, gp);
@@ -529,14 +477,11 @@ window.doGoogle = async () => {
         planActivo:false, planCancelado:false, creadoEn:serverTimestamp()
       });
       msg('ok','✓ Cuenta Google creada. Completando pago...');
-      setTimeout(()=>goCheckout(r.user.email), 700);
+      setTimeout(() => goCheckout(r.user.email), 700);
     } else {
       const data = snap.data();
-      if (!data.planActivo || data.planCancelado) {
-        goCheckout(r.user.email);
-      } else {
-        location.href = 'club-miembro.html';
-      }
+      if (!data.planActivo || data.planCancelado) { goCheckout(r.user.email); }
+      else { location.href = 'club-miembro.html'; }
     }
   } catch(e) { msg('err', fe(e.code)); }
 };
@@ -548,13 +493,14 @@ window.doForgot = async () => {
   catch(e) { msg('err', fe(e.code)); }
 };
 
-function v(id){ return (document.getElementById(id)?.value||'').trim(); }
-function msg(t,tx){
-  ['mErr','mOk'].forEach(i=>document.getElementById(i).style.display='none');
-  const el=document.getElementById(t==='err'?'mErr':'mOk'); el.textContent=tx; el.style.display='block';
+function v(id) { return (document.getElementById(id)?.value||'').trim(); }
+function msg(t,tx) {
+  ['mErr','mOk'].forEach(i => document.getElementById(i).style.display='none');
+  const el = document.getElementById(t==='err'?'mErr':'mOk');
+  el.textContent = tx; el.style.display = 'block';
 }
-function busy(id,b){ const el=document.getElementById(id); el.disabled=b; if(b) el.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Un momento...'; }
-function fe(c){ return({'auth/user-not-found':'No existe cuenta con ese correo','auth/wrong-password':'Contraseña incorrecta','auth/email-already-in-use':'Ya existe una cuenta con ese correo','auth/weak-password':'Contraseña muy débil (mín. 8)','auth/invalid-email':'Correo inválido','auth/popup-closed-by-user':'Ventana cerrada, intenta de nuevo','auth/invalid-credential':'Credenciales inválidas','auth/network-request-failed':'Error de conexión — verifica tu internet'}[c]||'Error: '+c); }
+function busy(id,b) { const el=document.getElementById(id); el.disabled=b; if(b) el.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Un momento...'; }
+function fe(c) { return ({'auth/user-not-found':'No existe cuenta con ese correo','auth/wrong-password':'Contraseña incorrecta','auth/email-already-in-use':'Ya existe una cuenta con ese correo','auth/weak-password':'Contraseña muy débil (mín. 8)','auth/invalid-email':'Correo inválido','auth/popup-closed-by-user':'Ventana cerrada, intenta de nuevo','auth/invalid-credential':'Credenciales inválidas','auth/network-request-failed':'Error de conexión — verifica tu internet'}[c]||'Error: '+c); }
 </script>
 </script>
 

@@ -341,6 +341,24 @@ if (params.get('msg') === 'pago_pendiente') {
   msg('err', '⚠️ Tu cuenta no tiene membresía activa. Completa tu pago para acceder.');
 }
 
+// Detectar regreso desde Shopify
+if (sessionStorage.getItem('odonteck_paying') === '1') {
+  sessionStorage.removeItem('odonteck_paying');
+  // Verificar si ya pagó
+  onAuthStateChanged(auth, async u => {
+    if (!u) return;
+    const snap = await getDoc(doc(db,'miembros',u.uid));
+    const data = snap.exists() ? snap.data() : {};
+    if (data.planActivo) {
+      location.href = 'club-miembro.html';
+    } else {
+      // No pagó aún — mostrar paso 2 con mensaje
+      goCheckout(u.email);
+      msg('err', '⚠️ No detectamos tu pago aún. Si ya pagaste, espera unos segundos.');
+    }
+  });
+}
+
 // Auth state
 onAuthStateChanged(auth, async u => {
   if (!u) return;
@@ -371,18 +389,17 @@ window.openMpModal = function() {
   const user = auth.currentUser;
   const finalUrl = user ? url + '&checkout[email]=' + encodeURIComponent(user.email) : url;
 
-  // Abrir en nueva pestaña (no popup — evita bloqueo del navegador)
-  window._mpWin = window.open(finalUrl, '_blank');
-  if (!window._mpWin) {
-    // Si también bloquea la pestaña, redirigir en la misma
-    location.href = finalUrl;
-    return;
-  }
+  // Guardar estado en sessionStorage para detectar regreso
+  sessionStorage.setItem('odonteck_paying', '1');
+  sessionStorage.setItem('odonteck_plan', selectedPlan);
 
   document.getElementById('modal-plan-title').textContent = 'Club Dental · ' + P.name;
   document.getElementById('modal-price-text').textContent = selectedPlan === 'anual' ? '1,788' : '199';
   document.getElementById('mp-modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
+
+  // Redirigir a Shopify después de 1.5 segundos (usuario ve el modal primero)
+  setTimeout(() => { location.href = finalUrl; }, 1500);
 
   if (!user) return;
   // Leer estado actual, solo reaccionar a cambio nuevo

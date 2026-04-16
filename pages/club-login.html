@@ -393,12 +393,14 @@ window.openMpModal = function() {
   sessionStorage.setItem('odonteck_paying', '1');
   sessionStorage.setItem('odonteck_plan', selectedPlan);
 
-  document.getElementById('modal-plan-title').textContent = 'Club Dental · ' + P.name;
-  document.getElementById('modal-price-text').textContent = selectedPlan === 'anual' ? '1,788' : '199';
-  document.getElementById('mp-modal-overlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
+  const titleEl = document.getElementById('modal-plan-title');
+  const priceEl = document.getElementById('modal-price-text');
+  const overlay = document.getElementById('mp-modal-overlay');
+  if (titleEl) titleEl.textContent = 'Club Dental · ' + P.name;
+  if (priceEl) priceEl.textContent = selectedPlan === 'anual' ? '1,788' : '199';
+  if (overlay) { overlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
 
-  // Redirigir a Shopify después de 1.5 segundos (usuario ve el modal primero)
+  // Redirigir a Shopify después de 1.5 segundos
   setTimeout(() => { location.href = finalUrl; }, 1500);
 
   if (!user) return;

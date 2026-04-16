@@ -299,23 +299,21 @@ const auth = getAuth(app);
 const db   = getFirestore(app);
 const gp   = new GoogleAuthProvider();
 
-// URLs Shopify — checkout directo con suscripción seleccionada
-const MP_URLS = {
+// URLs Shopify — checkout directo con suscripción
+const SHOPIFY_URLS = {
   mensual: 'https://pfueck-wm.myshopify.com/cart/45323282907190:1?selling_plan=auto',
   anual:   'https://pfueck-wm.myshopify.com/cart/45323494785078:1?selling_plan=auto'
 };
 
-// Plan desde URL o selector
-const params = new URLSearchParams(location.search);
-let selectedPlan = params.get('plan') || 'mensual';
-const isRenovar  = params.get('renovar') === '1'; // Viene de "Renovar membresía"
+const params      = new URLSearchParams(location.search);
+let selectedPlan  = params.get('plan') || 'mensual';
+const isRenovar   = params.get('renovar') === '1';
 
 const PLANS = {
   mensual: { name:'Plan Mensual', desc:'Sin compromiso · Precio de fundador', price:'$199/mes', dias:30,  label:'Club Dental OdonTeck · Plan Mensual $199/mes' },
   anual:   { name:'Plan Anual',   desc:'40% OFF · Ahorras $1,200 al año',    price:'$1,788/año', dias:365, label:'Club Dental OdonTeck · Plan Anual $1,788/año' }
 };
 
-// Si viene con plan desde URL, mostrar chip. Si no, mostrar selector
 if (params.get('plan')) {
   showPlanChip(selectedPlan);
 } else {
@@ -338,108 +336,57 @@ window.selPlan = function(p) {
   document.getElementById('ps-anual').classList.toggle('selected', p==='anual');
 };
 
-window.verifyAndEnter = async function() {
-  const user = auth.currentUser;
-  if (!user) { msg('err','Inicia sesión primero'); return; }
-  const btn = document.querySelector('.pay-done-btn');
-  btn.disabled = true;
-  btn.textContent = '⏳ Verificando...';
-  const snap = await getDoc(doc(db,'miembros',user.uid));
-  const data  = snap.exists() ? snap.data() : {};
-  if (data.planActivo) {
-    btn.textContent = '✓ ¡Pago confirmado! Entrando...';
-    setTimeout(() => location.href = 'club-miembro.html', 800);
-  } else {
-    btn.disabled = false;
-    btn.textContent = '✓ Ya pagué — Verificar y entrar';
-    // Mostrar nota de que aún no se detecta el pago
-    document.getElementById('co-note-area').innerHTML =
-      '<p style="color:#dc2626;font-size:12px;padding:10px;text-align:center">⚠️ Aún no detectamos tu pago. Si ya pagaste, espera unos segundos e intenta de nuevo.</p>';
-  }
-};
-
-// Si viene con msg=pago_pendiente (redirigido desde club-miembro sin plan activo)
+// Si viene con msg=pago_pendiente
 if (params.get('msg') === 'pago_pendiente') {
   msg('err', '⚠️ Tu cuenta no tiene membresía activa. Completa tu pago para acceder.');
 }
 
-// Detectar regreso exitoso desde MercadoPago (back_url configurada con ?mp_status=approved)
-const mpStatus = params.get('collection_status') || params.get('mp_status');
-const preapprovalId = params.get('preapproval_id');
-if ((mpStatus === 'approved' || mpStatus === 'authorized') && preapprovalId) {
-  // MP confirmó el pago → activar plan en Firestore
-  onAuthStateChanged(auth, async u => {
-    if (!u) return;
-    await setDoc(doc(db,'miembros',u.uid), {
-      planActivo: true,
-      planCancelado: false,
-      planTipo: selectedPlan,
-      planInicio: new Date().toISOString(),
-      planVence: new Date(Date.now() + (selectedPlan==='anual'?365:30)*24*60*60*1000).toISOString(),
-      preapprovalId: preapprovalId
-    }, { merge: true });
-    location.href = 'club-miembro.html';
-  });
-}
+// Auth state
 onAuthStateChanged(auth, async u => {
-  if (!u) return; // No está logueado → mostrar form normal
-  if (isRenovar) {
-    // Viene a renovar → abrir checkout directamente
-    goCheckout(u.email);
-    return;
-  }
-  // Está logueado y no es renovar → ver si tiene plan activo
+  if (!u) return;
+  if (isRenovar) { goCheckout(u.email); return; }
   const snap = await getDoc(doc(db,'miembros',u.uid));
   const data = snap.exists() ? snap.data() : {};
   if (data.planActivo && !data.planCancelado) {
-    // Ya tiene plan activo → ir al dashboard
     location.href = 'club-miembro.html';
   }
-  // Si no tiene plan activo → mostrar el form normalmente para que pague
 });
 
-let _mpUrl = '';
-
 function goCheckout(email) {
-  window._inCO = true;
   const P   = PLANS[selectedPlan] || PLANS.mensual;
-  const url = MP_URLS[selectedPlan] || MP_URLS.mensual;
+  const url = SHOPIFY_URLS[selectedPlan] || SHOPIFY_URLS.mensual;
   document.getElementById('step-auth').style.display = 'none';
   document.getElementById('step-co').style.display   = 'flex';
   document.getElementById('co-sub-label').textContent  = P.label;
   document.getElementById('mp-plan-name').textContent  = P.name;
   document.getElementById('mp-plan-price').textContent = P.price;
   document.getElementById('modal-plan-title').textContent = 'Club Dental · ' + P.name;
-  _mpUrl = email ? url + '&checkout[email]=' + encodeURIComponent(email) : url;
   window.scrollTo(0, 0);
 }
 
+// Abrir ventana de Shopify
 window.openMpModal = function() {
   const P   = PLANS[selectedPlan] || PLANS.mensual;
-  const url = MP_URLS[selectedPlan] || MP_URLS.mensual;
+  const url = SHOPIFY_URLS[selectedPlan] || SHOPIFY_URLS.mensual;
   const user = auth.currentUser;
   const finalUrl = user ? url + '&checkout[email]=' + encodeURIComponent(user.email) : url;
-  _mpUrl = finalUrl;
 
   document.getElementById('modal-plan-title').textContent = 'Club Dental · ' + P.name;
   document.getElementById('modal-price-text').textContent = selectedPlan === 'anual' ? '1,788' : '199';
+
   const w = 820, h = 720;
   const left = (screen.width/2)-(w/2), top = (screen.height/2)-(h/2);
-  window._mpWin = window.open(_mpUrl, 'Shopify', `width=${w},height=${h},left=${left},top=${top},toolbar=0,location=0,scrollbars=1`);
+  window._mpWin = window.open(finalUrl, 'Shopify', `width=${w},height=${h},left=${left},top=${top},toolbar=0,location=0,scrollbars=1`);
   document.getElementById('mp-modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 
-  const user = auth.currentUser;
   if (!user) return;
-
-  // Leer estado ACTUAL primero, luego solo escuchar CAMBIOS nuevos
+  // Leer estado actual, solo reaccionar a cambio nuevo
   let yaActivo = false;
   getDoc(doc(db,'miembros',user.uid)).then(snap => {
     yaActivo = snap.exists() && snap.data().planActivo === true;
-    // Ahora escuchar cambios en tiempo real
-    const unsubscribe = onSnapshot(doc(db,'miembros',user.uid), (s) => {
+    const unsubscribe = onSnapshot(doc(db,'miembros',user.uid), s => {
       const data = s.exists() ? s.data() : {};
-      // Solo actuar si ANTES no estaba activo y AHORA sí
       if (!yaActivo && data.planActivo) {
         unsubscribe();
         if (window._mpWin && !window._mpWin.closed) window._mpWin.close();
@@ -454,22 +401,43 @@ window.openMpModal = function() {
 };
 
 window.reopenMp = function() {
+  const url = SHOPIFY_URLS[selectedPlan] || SHOPIFY_URLS.mensual;
+  const user = auth.currentUser;
+  const finalUrl = user ? url + '&checkout[email]=' + encodeURIComponent(user.email) : url;
   if (window._mpWin && !window._mpWin.closed) {
     window._mpWin.focus();
   } else {
-    const w=520,h=700,left=(screen.width/2)-(260),top=(screen.height/2)-(350);
-    window._mpWin = window.open(_mpUrl,'MercadoPago',`width=${w},height=${h},left=${left},top=${top},toolbar=0,location=0,scrollbars=1`);
+    const w=820,h=720,left=(screen.width/2)-(410),top=(screen.height/2)-(360);
+    window._mpWin = window.open(finalUrl,'Shopify',`width=${w},height=${h},left=${left},top=${top},toolbar=0,location=0,scrollbars=1`);
   }
 };
 
 window.closeMpModal = function(e) {
   if (e && e.target !== document.getElementById('mp-modal-overlay')) return;
   document.getElementById('mp-modal-overlay').classList.remove('open');
-  document.getElementById('mp-iframe').src = '';
   document.body.style.overflow = '';
 };
 
-// LOGIN — al iniciar sesión verificar si tiene plan, si no → checkout
+window.verifyAndEnter = async function() {
+  const user = auth.currentUser;
+  if (!user) { msg('err','Inicia sesión primero'); return; }
+  const btn = document.querySelector('.pay-done-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Verificando...';
+  const snap = await getDoc(doc(db,'miembros',user.uid));
+  const data  = snap.exists() ? snap.data() : {};
+  if (data.planActivo) {
+    btn.textContent = '✓ ¡Pago confirmado! Entrando...';
+    setTimeout(() => location.href = 'club-miembro.html', 800);
+  } else {
+    btn.disabled = false;
+    btn.textContent = '✓ Ya pagué — Verificar y entrar';
+    document.getElementById('co-note-area').innerHTML =
+      '<p style="color:#dc2626;font-size:12px;padding:10px;text-align:center">⚠️ Aún no detectamos tu pago. Espera unos segundos e intenta de nuevo.</p>';
+  }
+};
+
+// LOGIN
 window.doLogin = async () => {
   const em = v('li-em'), pw = v('li-pw');
   if (!em||!pw) { msg('err','Ingresa tu correo y contraseña'); return; }
@@ -479,7 +447,6 @@ window.doLogin = async () => {
     const snap = await getDoc(doc(db,'miembros',c.user.uid));
     const data = snap.exists() ? snap.data() : {};
     if (!data.planActivo || data.planCancelado) {
-      // Sin plan activo → checkout
       msg('ok','✓ Sesión iniciada. Completa tu pago...');
       setTimeout(()=>goCheckout(em), 700);
     } else {
@@ -489,7 +456,7 @@ window.doLogin = async () => {
   } catch(e) { msg('err', fe(e.code)); busy('btn-li', false); }
 };
 
-// REGISTRO → siempre va al checkout
+// REGISTRO
 window.doRegister = async () => {
   const nm=v('rg-nm'), em=v('rg-em'), ph=v('rg-ph'), sp=v('rg-sp'), pw=v('rg-pw');
   if (!nm||!em) { msg('err','Completa nombre y correo'); return; }
@@ -508,7 +475,7 @@ window.doRegister = async () => {
   } catch(e) { msg('err', fe(e.code)); busy('btn-rg', false); }
 };
 
-// GOOGLE → si nuevo → checkout, si existe con plan → dashboard
+// GOOGLE
 window.doGoogle = async () => {
   try {
     const r    = await signInWithPopup(auth, gp);
@@ -546,6 +513,7 @@ function msg(t,tx){
 }
 function busy(id,b){ const el=document.getElementById(id); el.disabled=b; if(b) el.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Un momento...'; }
 function fe(c){ return({'auth/user-not-found':'No existe cuenta con ese correo','auth/wrong-password':'Contraseña incorrecta','auth/email-already-in-use':'Ya existe una cuenta con ese correo','auth/weak-password':'Contraseña muy débil (mín. 8)','auth/invalid-email':'Correo inválido','auth/popup-closed-by-user':'Ventana cerrada, intenta de nuevo','auth/invalid-credential':'Credenciales inválidas','auth/network-request-failed':'Error de conexión — verifica tu internet'}[c]||'Error: '+c); }
+</script>
 </script>
 
 <script>

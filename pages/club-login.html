@@ -418,13 +418,31 @@ window.openMpModal = function() {
   const P = PLANS[selectedPlan] || PLANS.mensual;
   document.getElementById('modal-plan-title').textContent = 'Club Dental · ' + P.name;
   document.getElementById('modal-price-text').textContent = selectedPlan === 'anual' ? '1,788' : '199';
-  // Abrir MP en ventana popup
   const w = 820, h = 720;
   const left = (screen.width/2)-(w/2), top = (screen.height/2)-(h/2);
-  window._mpWin = window.open(_mpUrl, 'MercadoPago', `width=${w},height=${h},left=${left},top=${top},toolbar=0,location=0,scrollbars=1`);
-  // Mostrar modal de espera
+  window._mpWin = window.open(_mpUrl, 'Shopify', `width=${w},height=${h},left=${left},top=${top},toolbar=0,location=0,scrollbars=1`);
   document.getElementById('mp-modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
+
+  // Monitorear cuando el popup se cierre
+  window._mpCheckInterval = setInterval(async () => {
+    if (!window._mpWin || window._mpWin.closed) {
+      clearInterval(window._mpCheckInterval);
+      // Popup cerrado — verificar si pagó
+      const user = auth.currentUser;
+      if (!user) return;
+      const snap = await getDoc(doc(db,'miembros',user.uid));
+      const data = snap.exists() ? snap.data() : {};
+      if (data.planActivo) {
+        // ¡Pagó! Cerrar modal y redirigir al dashboard
+        document.getElementById('mp-modal-overlay').classList.remove('open');
+        document.body.style.overflow = '';
+        document.querySelector('.pay-waiting-title').textContent = '✅ ¡Pago confirmado!';
+        document.querySelector('.pay-waiting-sub').textContent = 'Redirigiendo a tu Club...';
+        setTimeout(() => location.href = 'club-miembro.html', 1500);
+      }
+    }
+  }, 1500);
 };
 
 window.reopenMp = function() {

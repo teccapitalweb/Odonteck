@@ -389,9 +389,12 @@ window.openMpModal = function() {
   const user = auth.currentUser;
   const finalUrl = user ? url + '&checkout[email]=' + encodeURIComponent(user.email) : url;
 
-  // Guardar estado en sessionStorage para detectar regreso
-  sessionStorage.setItem('odonteck_paying', '1');
-  sessionStorage.setItem('odonteck_plan', selectedPlan);
+  // POPUP — sincrónico, directo del click, sin async antes
+  const w = 820, h = 720;
+  const left = Math.round((screen.width - w) / 2);
+  const top  = Math.round((screen.height - h) / 2);
+  window._mpWin = window.open(finalUrl, 'ShopifyCheckout',
+    `width=${w},height=${h},left=${left},top=${top},scrollbars=yes,resizable=yes`);
 
   const titleEl = document.getElementById('modal-plan-title');
   const priceEl = document.getElementById('modal-price-text');
@@ -400,8 +403,24 @@ window.openMpModal = function() {
   if (priceEl) priceEl.textContent = selectedPlan === 'anual' ? '1,788' : '199';
   if (overlay) { overlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
 
-  // Redirigir a Shopify después de 1.5 segundos
-  setTimeout(() => { location.href = finalUrl; }, 1500);
+  if (!user) return;
+  let yaActivo = false;
+  getDoc(doc(db,'miembros',user.uid)).then(snap => {
+    yaActivo = snap.exists() && snap.data().planActivo === true;
+    const unsubscribe = onSnapshot(doc(db,'miembros',user.uid), s => {
+      const data = s.exists() ? s.data() : {};
+      if (!yaActivo && data.planActivo) {
+        unsubscribe();
+        if (window._mpWin && !window._mpWin.closed) window._mpWin.close();
+        if (overlay) { overlay.classList.remove('open'); document.body.style.overflow = ''; }
+        const t = document.querySelector('.pay-waiting-title');
+        const sb = document.querySelector('.pay-waiting-sub');
+        if (t) t.textContent = '✅ ¡Pago confirmado!';
+        if (sb) sb.textContent = 'Redirigiendo a tu Club...';
+        setTimeout(() => location.href = 'club-miembro.html', 1500);
+      }
+    });
+  });
 
   if (!user) return;
   // Leer estado actual, solo reaccionar a cambio nuevo

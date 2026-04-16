@@ -665,7 +665,24 @@ const auth = getAuth(app);
 const db   = getFirestore(app);
 const ADMIN = 'odontckconsul@gmail.com';
 
-let allCursos=[], liveActivo=null, alertShown=false, timerID=null;
+// Actualizar countdowns de lives en tiempo real
+setInterval(() => {
+  document.querySelectorAll('[data-target]').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    const diff = target - Date.now();
+    if (diff <= 0) { location.reload(); return; }
+    const dias = Math.floor(diff/86400000);
+    const hrs  = Math.floor((diff%86400000)/3600000);
+    const min  = Math.floor((diff%3600000)/60000);
+    const seg  = Math.floor((diff%60000)/1000);
+    const b = el.querySelector('b');
+    if (dias > 0) {
+      el.innerHTML = `Comienza en <b style="color:var(--pr)">${dias}d ${hrs}h ${min}m ${seg}s</b>`;
+    } else {
+      el.textContent = `⚡ Comienza en ${hrs}h ${min}m ${seg}s`;
+    }
+  });
+}, 1000);
 let _uid=null, _progresoData={};
 
 // ── AUTH ──────────────────────────────────────────────────────
@@ -842,8 +859,10 @@ function rLives(arr){
       const dias=Math.floor(diff/86400000);
       const hrs=Math.floor((diff%86400000)/3600000);
       const min=Math.floor((diff%3600000)/60000);
-      if(dias>0) cdHtml=`<div style="font-size:12px;color:var(--mu);margin-bottom:10px;text-align:center">Comienza en <b style="color:var(--pr)">${dias}d ${hrs}h ${min}m</b></div>`;
-      else cdHtml=`<div style="font-size:12px;color:var(--am);font-weight:700;margin-bottom:10px;text-align:center;background:var(--amb);padding:6px;border-radius:8px">⚡ Comienza en ${hrs}h ${min}m</div>`;
+      const seg=Math.floor((diff%60000)/1000);
+      const cdId='cd-'+fecha.getTime();
+      if(dias>0) cdHtml=`<div id="${cdId}" data-target="${fecha.getTime()}" style="font-size:12px;color:var(--mu);margin-bottom:10px;text-align:center">Comienza en <b style="color:var(--pr)">${dias}d ${hrs}h ${min}m ${seg}s</b></div>`;
+      else cdHtml=`<div id="${cdId}" data-target="${fecha.getTime()}" style="font-size:12px;color:var(--am);font-weight:700;margin-bottom:10px;text-align:center;background:var(--amb);padding:6px;border-radius:8px">⚡ Comienza en ${hrs}h ${min}m ${seg}s</div>`;
     }
     const btnHtml=isLive
       ?`<button class="btn-lec btn-lec-join" onclick="window.open('${esc(l.link||'#')}','_blank')"><i class="fa-solid fa-play"></i> Unirme al live ahora</button>`

@@ -424,20 +424,27 @@ window.openMpModal = function() {
   document.getElementById('mp-modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 
-  // Escuchar Firebase en tiempo real — se activa automáticamente cuando llega el webhook
   const user = auth.currentUser;
   if (!user) return;
-  const unsubscribe = onSnapshot(doc(db,'miembros',user.uid), (snap) => {
-    const data = snap.exists() ? snap.data() : {};
-    if (data.planActivo) {
-      unsubscribe(); // dejar de escuchar
-      if (window._mpWin && !window._mpWin.closed) window._mpWin.close();
-      document.getElementById('mp-modal-overlay').classList.remove('open');
-      document.body.style.overflow = '';
-      document.querySelector('.pay-waiting-title').textContent = '✅ ¡Pago confirmado!';
-      document.querySelector('.pay-waiting-sub').textContent = 'Redirigiendo a tu Club...';
-      setTimeout(() => location.href = 'club-miembro.html', 1500);
-    }
+
+  // Leer estado ACTUAL primero, luego solo escuchar CAMBIOS nuevos
+  let yaActivo = false;
+  getDoc(doc(db,'miembros',user.uid)).then(snap => {
+    yaActivo = snap.exists() && snap.data().planActivo === true;
+    // Ahora escuchar cambios en tiempo real
+    const unsubscribe = onSnapshot(doc(db,'miembros',user.uid), (s) => {
+      const data = s.exists() ? s.data() : {};
+      // Solo actuar si ANTES no estaba activo y AHORA sí
+      if (!yaActivo && data.planActivo) {
+        unsubscribe();
+        if (window._mpWin && !window._mpWin.closed) window._mpWin.close();
+        document.getElementById('mp-modal-overlay').classList.remove('open');
+        document.body.style.overflow = '';
+        document.querySelector('.pay-waiting-title').textContent = '✅ ¡Pago confirmado!';
+        document.querySelector('.pay-waiting-sub').textContent = 'Redirigiendo a tu Club...';
+        setTimeout(() => location.href = 'club-miembro.html', 1500);
+      }
+    });
   });
 };
 

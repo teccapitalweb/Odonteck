@@ -416,6 +416,12 @@ function goCheckout(email) {
 
 window.openMpModal = function() {
   const P = PLANS[selectedPlan] || PLANS.mensual;
+  // Asegurar que _mpUrl siempre tenga valor
+  if (!_mpUrl) {
+    const url = MP_URLS[selectedPlan] || MP_URLS.mensual;
+    const user = auth.currentUser;
+    _mpUrl = user ? url + '&checkout[email]=' + encodeURIComponent(user.email) : url;
+  }
   document.getElementById('modal-plan-title').textContent = 'Club Dental · ' + P.name;
   document.getElementById('modal-price-text').textContent = selectedPlan === 'anual' ? '1,788' : '199';
   const w = 820, h = 720;

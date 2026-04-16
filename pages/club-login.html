@@ -428,19 +428,26 @@ window.openMpModal = function() {
   window._mpCheckInterval = setInterval(async () => {
     if (!window._mpWin || window._mpWin.closed) {
       clearInterval(window._mpCheckInterval);
-      // Popup cerrado — verificar si pagó
-      const user = auth.currentUser;
-      if (!user) return;
-      const snap = await getDoc(doc(db,'miembros',user.uid));
-      const data = snap.exists() ? snap.data() : {};
-      if (data.planActivo) {
-        // ¡Pagó! Cerrar modal y redirigir al dashboard
-        document.getElementById('mp-modal-overlay').classList.remove('open');
-        document.body.style.overflow = '';
-        document.querySelector('.pay-waiting-title').textContent = '✅ ¡Pago confirmado!';
-        document.querySelector('.pay-waiting-sub').textContent = 'Redirigiendo a tu Club...';
-        setTimeout(() => location.href = 'club-miembro.html', 1500);
-      }
+      // Popup cerrado — verificar con reintentos (webhook puede tardar unos segundos)
+      let intentos = 0;
+      const verificar = async () => {
+        intentos++;
+        const user = auth.currentUser;
+        if (!user) return;
+        const snap = await getDoc(doc(db,'miembros',user.uid));
+        const data = snap.exists() ? snap.data() : {};
+        if (data.planActivo) {
+          document.getElementById('mp-modal-overlay').classList.remove('open');
+          document.body.style.overflow = '';
+          document.querySelector('.pay-waiting-title').textContent = '✅ ¡Pago confirmado!';
+          document.querySelector('.pay-waiting-sub').textContent = 'Redirigiendo a tu Club...';
+          setTimeout(() => location.href = 'club-miembro.html', 1500);
+        } else if (intentos < 10) {
+          // Reintentar cada 3 segundos hasta 10 veces (30 seg total)
+          setTimeout(verificar, 3000);
+        }
+      };
+      setTimeout(verificar, 2000); // Primer intento a los 2 segundos
     }
   }, 1500);
 };

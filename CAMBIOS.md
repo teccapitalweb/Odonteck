@@ -1,112 +1,127 @@
-# Cambios v1.5 — Drip Content (retención de usuarios)
+# Cambios v1.6 — Responsive mobile + Noticias 15 días
 
 **Archivo modificado:** `pages/club-miembro.html`
 
 **Lo que NO se tocó:**
-- Admin panel (sigue igual)
-- Backend / webhook (sigue igual)
-- Diseño, colores, tipografía
-- Firestore schema (no se añaden campos nuevos)
+- Admin panel
+- Backend
+- Firestore schema
+- Lógica de drip content v1.5
+- Sistema de logros v1.4
+- Funcionalidad en desktop (solo mejoras, no rompe nada)
 
 ---
 
-## 🎯 Qué hace
+## 📱 MEJORA 1 — Adaptación móvil
 
-Sistema de **contenido goteado** para retener usuarios del plan mensual.
+### Qué se optimizó para pantallas chicas (<700px):
 
-### Plan Mensual ($199)
-- **Día 0** (al pagar): solo 1 curso desbloqueado
-- **Cada 7 días**: se desbloquea 1 curso nuevo automáticamente
-- **9 cursos × 7 días = 63 días** (~2 meses de contenido)
-- Los cursos bloqueados se ven con 🔒 candado + texto "Se desbloquea en X días"
+**Header y saludo:**
+- Saludo más compacto (17px en móvil)
+- Píldora de racha 🔥 reducida
+- Campana de notificaciones más discreta
 
-### Plan Anual ($1,788)
-- **Acceso TOTAL** desde el día 1
-- Sin banner de drip, sin bloqueos
-- Premium real
+**Card "Continúa donde te quedaste":**
+- Layout compacto horizontal
+- Botón "Reanudar" más pequeño y alineado
+- Ya no se desborda ni se corta
 
-### Admin (email `odontckconsul@gmail.com`)
-- Acceso total siempre (tratado como anual)
+**Banner VIP de WhatsApp:**
+- Ícono ya no se corta (era el bug que viste)
+- Padding ajustado
+- Texto más legible
 
----
+**Grid de cursos:**
+- **2 columnas en móvil mediano** (antes era 1 — ahora se ve más catálogo)
+- 1 columna en pantallas muy chicas (iPhone SE)
+- Cards con imagen, título y botón adaptados
+- Candados 🔒 de cursos bloqueados más visibles
 
-## 📋 Orden de desbloqueo (básico → avanzado)
+**Noticias:**
+- Texto del cuerpo con truncado inteligente (3 líneas + "...")
+- Iconos más pequeños
+- Espaciado optimizado
 
-| Semana | Día | Curso | Nivel |
-|--------|-----|-------|-------|
-| 1 | 0 | Técnicas de Detartraje y Profilaxis | Básico |
-| 2 | 7 | Extracciones Simples | Básico |
-| 3 | 14 | Diagnóstico Pulpar (Urgencias) | Intermedio |
-| 4 | 21 | Restauración Dental en Niños | Intermedio |
-| 5 | 28 | Terapias Periodontales No Quirúrgicas | Intermedio |
-| 6 | 35 | Manejo Integral Endodóntico | Intermedio |
-| 7 | 42 | Reducción de Bolsas Periodontales | Avanzado |
-| 8 | 49 | Carillas Ultrafinas | Avanzado |
-| 9 | 56 | Rehabilitación sobre Implantes | Experto |
+**Logros:**
+- 3 columnas en móvil mediano
+- 2 columnas en pantallas muy chicas
+- Emojis y textos reducidos para mejor densidad
 
-**Si publicas cursos nuevos** que no estén en esa lista → van al final de la cola automáticamente (por fecha de creación).
+**Reproductor de video:**
+- **Pantalla completa en móvil** — antes tenía márgenes que hacían perder espacio
+- Videos se ven al 100% del ancho
 
----
+**Otros ajustes:**
+- Modal de cancelación adaptado
+- Sección perfil en 1 columna en móvil
+- Sección suscripción en 1 columna
+- Padding general reducido para aprovechar espacio
 
-## 🎨 Qué ve el usuario
-
-### Banner arriba de la biblioteca
-> 🔓 Llevas **3 de 9 cursos** desbloqueados · Próximo curso en 4 días
-
-### Card bloqueada
-- Imagen con filtro gris/oscurecido
-- Candado 🔒 en el centro
-- Texto "Se desbloquea en X días" o "el 23 de abril"
-- Botón "Próximamente" deshabilitado
-- Al hacer clic → toast discreto: "🔒 Se desbloquea en X días. ¡Mantén tu racha para acceder!"
-
-### Card desbloqueada
-- Igual que antes, sin cambios
+### Breakpoints:
+- `<800px`: Reproductor de cursos a pantalla completa
+- `<700px`: Todos los ajustes principales
+- `<400px`: Optimización extrema para pantallas pequeñas
 
 ---
 
-## 🔐 Seguridad del drip
+## 📰 MEJORA 2 — Noticias con auto-expiración de 15 días
 
-**Doble protección:**
-1. **Visual**: las cards bloqueadas se ven con candado
-2. **Funcional**: `openCurso()` verifica antes de abrir — aunque alguien haga click programáticamente, no pasa
+### Cómo funciona:
 
-**No es impenetrable al 100%:** un usuario técnico podría abrir DevTools y saltarse la validación JS (no hay enforcement en Firestore rules). Si en el futuro quieres cerrar esta puerta, habría que agregar reglas de Firestore que validen `planInicio` en el cliente. Pero para 99% de usuarios con la validación JS es suficiente.
+**Al cargar el dashboard:**
+1. Se traen todas las noticias de Firestore (como antes)
+2. Se aplica filtro: `si la noticia tiene más de 15 días, se oculta`
+3. Solo se muestran las noticias recientes
+4. Las viejas **siguen en Firestore** (no se borran)
 
----
+**Si no hay noticias recientes:**
+El mensaje cambia de *"Sin noticias aún"* a *"Sin noticias recientes"*.
 
-## ⚠️ Consideraciones importantes
+### Ventajas:
+- ✅ Feed siempre fresco
+- ✅ No tienes que borrar noticias manualmente
+- ✅ Los datos viejos quedan guardados (por si los quieres auditar desde el admin)
+- ✅ Si quieres "resucitar" una noticia, solo editas la fecha desde el admin
 
-### Para tu cuenta de testing
-Si tu cuenta tiene `planInicio` reciente (ej. hoy), verás solo 1 curso desbloqueado. Si tu email es el ADMIN (`odontckconsul@gmail.com`) → verás todos.
+### Cómo detecta la fecha:
+Usa el campo `creadoEn` de Firestore (que ya se genera automáticamente al publicar). Si por alguna razón una noticia no tiene `creadoEn` (legacy), se sigue mostrando.
 
-### Si alguien cancela y vuelve a pagar
-El `planInicio` se actualiza con el nuevo pago → el contador empieza de cero. Esto puede ser bueno (retiene de nuevo) o malo (el usuario reclamará que perdió cursos). **Decide tu política** y avísame si quieres que sea de otra forma.
-
-### Plan anual
-Detecta el campo `planTipo === 'anual'` de Firestore. Como el backend actual detecta el plan por el título del producto Shopify (`includes('anual')`), asegúrate de que el producto anual tenga la palabra "anual" en su nombre.
+### Para cambiar el intervalo:
+Si algún día quieres cambiarlo de 15 días a otro valor, busca esta línea en el código:
+```js
+const LIMITE_MS = 15 * 86400000; // 15 días
+```
+Y cambias el `15` por lo que quieras. Pero tú pediste fijo, así que queda así.
 
 ---
 
 ## 🚀 Cómo subirlo
 
-1. Descarga ZIP
-2. GitHub → repo `Odonteck` → carpeta `pages/`
-3. Click en `club-miembro.html` → lápiz ✏️
-4. Ctrl+A → Delete
-5. Copia todo el contenido del archivo del ZIP → pégalo
-6. Commit changes
-7. Listo (redeploy automático en 1-2 min)
+1. Descarga el ZIP
+2. Descomprime
+3. GitHub → `Odonteck` → `pages/` → `club-miembro.html`
+4. Lápiz ✏️ → Ctrl+A → Delete
+5. Abre el archivo del ZIP con Bloc de notas → Ctrl+A → Ctrl+C
+6. Pega en GitHub (Ctrl+V)
+7. Commit changes
+8. Espera 1-2 min
 
 ---
 
-## 🧪 Cómo probar después de subirlo
+## 🧪 Cómo probar después de subir
 
-1. Entra como miembro al dashboard
-2. Ve a "Biblioteca de cursos"
-3. Si tu `planInicio` es reciente verás:
-   - Solo 1-2 cursos desbloqueados
-   - El resto con candado 🔒 y "Se desbloquea en X días"
-   - Banner azul arriba con tu progreso
-4. Haz clic en un curso bloqueado → toast con mensaje
-5. Si eres admin → todos desbloqueados (banner oculto)
+**Mobile:**
+1. Abre el dashboard en tu celular (o Chrome DevTools modo mobile)
+2. Verifica:
+   - Saludo compacto y legible
+   - Card "Continúa" bien alineado
+   - 2 cursos por fila en el grid
+   - Cursos bloqueados con candado visible
+   - Banner VIP con ícono de WhatsApp completo
+3. Abre un curso → el video debe tomar toda la pantalla
+
+**Noticias 15 días:**
+1. Como miembro, ve a "Inicio"
+2. Las noticias publicadas en los últimos 15 días se ven
+3. Las más viejas desaparecen del feed
+4. Las viejas siguen en Firestore (puedes verlas desde el admin si vas a `Noticias`)

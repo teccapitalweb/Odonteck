@@ -454,6 +454,153 @@
     .drip-info-icon{width:36px;height:36px;background:var(--pr);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
     .drip-info b{color:var(--pr)}
     /* ═══════════════════════════════════════════════════════════ */
+    /* ═══════════════════════════════════════════════════════════
+       ═══ NUEVO v1.6 — Responsive mobile mejorado              ═══
+       ═══════════════════════════════════════════════════════════ */
+
+    /* ── Ajustes generales para móvil ── */
+    @media(max-width:700px){
+      /* Saludo más compacto */
+      .greeting{font-size:17px;line-height:1.2}
+      .tdate{font-size:11px}
+      .streak-pill{font-size:11px;padding:4px 10px}
+      .streak-pill .num{font-size:12px}
+
+      /* Main padding ajustado */
+      .main{padding:.9rem .75rem 90px;gap:.9rem}
+
+      /* Topbar con bell más cerca */
+      .topbar{gap:8px}
+
+      /* Panel padding reducido */
+      .panel{padding:.85rem}
+      .ph{margin-bottom:.7rem}
+      .pt{font-size:13px}
+
+      /* Card "Continúa donde te quedaste" móvil */
+      .continua-card{padding:.85rem 1rem;gap:10px;flex-wrap:nowrap}
+      .continua-icon{width:40px;height:40px;font-size:18px;border-radius:12px}
+      .continua-label{font-size:9px}
+      .continua-title{font-size:13px}
+      .continua-meta{font-size:10.5px}
+      .continua-btn{padding:7px 12px;font-size:11px;width:auto;margin-top:0;flex-shrink:0}
+
+      /* Banner VIP más compacto y sin cortarse el ícono */
+      .vip-banner{padding:.85rem 1rem;gap:10px;flex-wrap:wrap}
+      .vip-icon{width:38px;height:38px;font-size:18px;border-radius:10px;flex-shrink:0}
+      .vip-title{font-size:13px;line-height:1.25}
+      .vip-sub{font-size:11px;line-height:1.35;margin-top:2px}
+      .vip-banner .fa-whatsapp{font-size:18px!important}
+      .vip-banner > *:last-child{flex-shrink:0}
+
+      /* Renew bar compacto */
+      .renew-bar{padding:10px 12px;font-size:12px;flex-wrap:wrap}
+      .rb-txt{font-size:12px}
+      .btn-rn{padding:6px 14px;font-size:11.5px}
+
+      /* Noticias compactas */
+      .nitem{padding:10px}
+      .nico{width:32px;height:32px}
+      .nico span{font-size:14px!important}
+      .ntit{font-size:12.5px;line-height:1.3}
+      .nbod{font-size:11px;line-height:1.4;max-height:4.2em;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+      .ndat{font-size:10px}
+
+      /* Live card a la derecha ya no, va abajo */
+      .rcol{grid-template-columns:1fr!important;gap:.8rem}
+      .lcard{padding:1rem}
+      .ltit{font-size:15px}
+      .cdown{font-size:22px;padding:10px}
+      .cdown-block{min-width:auto;padding:8px 6px}
+      .cdown-n{font-size:18px}
+      .cdown-l{font-size:9px}
+
+      /* Banner descuento VIP compacto */
+      .dcard{padding:.9rem}
+      .dcard-pct{font-size:36px;line-height:1}
+      .dcard-txt{font-size:12px;line-height:1.3}
+
+      /* Certificado compacto */
+      .certcard{padding:.9rem}
+      .certcard-title{font-size:13px}
+      .certcard-sub{font-size:11px}
+
+      /* Tabs de filtros de cursos */
+      .tabs{gap:3px}
+      .tab{padding:5px 11px;font-size:11px}
+
+      /* Grid de cursos — 2 columnas en móvil mediano, 1 en chico */
+      .cgrid{grid-template-columns:repeat(2,1fr);gap:9px}
+      .cc-cover{height:95px}
+      .cc-cover span{font-size:32px!important}
+      .cc-body{padding:.55rem .65rem}
+      .cc-title{font-size:12px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.5em}
+      .cc-meta{font-size:10px}
+      .cc-stats{font-size:10px;gap:7px;margin-bottom:5px}
+      .cc-pl{font-size:9.5px}
+      .btn-cc{padding:6px;font-size:10.5px}
+
+      /* Lock overlay en móvil */
+      .cc-lock-icon{width:36px;height:36px;font-size:15px}
+      .cc-lock-days{font-size:9.5px;padding:2px 8px}
+      .cc-lock-date{font-size:9px}
+
+      /* Drip info banner compacto */
+      .drip-info{padding:10px 12px;font-size:11.5px;gap:9px}
+      .drip-info-icon{width:30px;height:30px;font-size:13px}
+
+      /* Biblioteca por mes */
+      #bib-list .bib-mes{padding:10px 12px;font-size:12.5px}
+
+      /* Panel de notificaciones tamaño pantalla casi completa */
+      #notifPanel{width:calc(100vw - 32px)!important;right:16px!important;max-width:340px}
+
+      /* Modal de cancelación móvil */
+      #cancelModal > div{padding:1.5rem 1.2rem!important}
+      #cancelModal h3{font-size:17px!important}
+
+      /* Sección PERFIL responsive */
+      #sv-perfil > div{grid-template-columns:1fr!important;gap:.9rem!important}
+      .prof-card{padding:1rem!important}
+      .prof-av{width:60px!important;height:60px!important;font-size:22px!important}
+      .prof-nm{font-size:16px!important}
+
+      /* Logros grid más compacto */
+      .logros-grid{grid-template-columns:repeat(3,1fr);gap:8px}
+      .logro{padding:10px 6px}
+      .logro-emoji{font-size:24px;margin-bottom:4px}
+      .logro-name{font-size:10px}
+      .logro-desc{font-size:8.5px;line-height:1.25}
+      .logro-fecha{font-size:8px}
+
+      /* Suscripción responsive */
+      #sv-suscripcion > div{grid-template-columns:1fr!important;gap:.9rem!important}
+
+      /* Topbar: la campana no queda muy arriba */
+      .nbbtn{width:30px;height:30px;border-radius:10px}
+
+      /* Banner cancelación arriba */
+      #cancelBanner{padding:10px 12px!important;font-size:11px!important;gap:8px!important}
+    }
+
+    /* Pantallas muy chicas (iPhone SE, etc) — una sola columna */
+    @media(max-width:400px){
+      .cgrid{grid-template-columns:1fr!important}
+      .cc-cover{height:115px}
+      .continua-card{flex-wrap:wrap}
+      .continua-btn{width:100%;justify-content:center;margin-top:6px}
+      .vip-banner{flex-direction:row}
+      .vip-text{min-width:0;flex:1}
+      .logros-grid{grid-template-columns:repeat(2,1fr)}
+    }
+
+    /* ═══ Reproductor de video en pantalla completa en móvil ═══ */
+    @media(max-width:800px){
+      .curso-overlay{padding:0}
+      .curso-box{border-radius:0;max-height:100vh;height:100vh}
+      .curso-video-wrap{border-radius:0}
+    }
+    /* ═══════════════════════════════════════════════════════════ */
   </style>
 </head>
 <body>
@@ -1398,10 +1545,25 @@ function rNoticias(arr){
   const el=document.getElementById('nlist');
   const panel=document.getElementById('notifList');
   const dot=document.getElementById('bellDot');
-  if(arr.length>0 && dot) dot.style.display='block';
-  const html=arr.length?arr.map(n=>`<div class="nitem"><div class="nico" style="background:${n.color||'var(--prb)'}"><span style="font-size:16px">${n.emoji||'📢'}</span></div><div><div class="ntit">${esc(n.titulo)}</div><div class="nbod">${esc(n.cuerpo||'')}</div><div class="ndat">${n.fecha||''}</div></div></div>`).join(''):`<div class="empty"><span>📭</span><p>Sin noticias aún.</p></div>`;
+  // ═══ NUEVO v1.6: Filtrar noticias más viejas de 15 días ═══
+  // Auto-expiración de noticias para mantener el feed fresco
+  const HOY = Date.now();
+  const LIMITE_MS = 15 * 86400000; // 15 días
+  const arrFiltrada = arr.filter(n => {
+    // Usar creadoEn (timestamp de Firestore) como fuente de verdad
+    let fechaCreacion = null;
+    if (n.creadoEn?.toDate) fechaCreacion = n.creadoEn.toDate().getTime();
+    else if (n.creadoEn?.seconds) fechaCreacion = n.creadoEn.seconds * 1000;
+    else if (typeof n.creadoEn === 'string') fechaCreacion = new Date(n.creadoEn).getTime();
+    // Si no hay creadoEn, se deja visible (noticias viejas sin timestamp)
+    if (!fechaCreacion) return true;
+    return (HOY - fechaCreacion) < LIMITE_MS;
+  });
+  // ═══════════════════════════════════════════════════════════
+  if(arrFiltrada.length>0 && dot) dot.style.display='block';
+  const html=arrFiltrada.length?arrFiltrada.map(n=>`<div class="nitem"><div class="nico" style="background:${n.color||'var(--prb)'}"><span style="font-size:16px">${n.emoji||'📢'}</span></div><div><div class="ntit">${esc(n.titulo)}</div><div class="nbod">${esc(n.cuerpo||'')}</div><div class="ndat">${n.fecha||''}</div></div></div>`).join(''):`<div class="empty"><span>📭</span><p>Sin noticias recientes.</p></div>`;
   if(el) el.innerHTML=html;
-  if(panel) panel.innerHTML=html || '<p style="padding:12px;font-size:13px;color:var(--mu)">Sin noticias aún.</p>';
+  if(panel) panel.innerHTML=html || '<p style="padding:12px;font-size:13px;color:var(--mu)">Sin noticias recientes.</p>';
 }
 window.toggleNotifPanel=function(){
   const p=document.getElementById('notifPanel');

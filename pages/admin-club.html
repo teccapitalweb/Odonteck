@@ -143,6 +143,53 @@
     .empty span{display:block;font-size:24px;margin-bottom:5px}
     @media(max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}.g2,.g2-asym{grid-template-columns:1fr}}
     @media(max-width:700px){.shell{grid-template-columns:1fr}.sb{display:none}.frow{grid-template-columns:1fr}}
+
+    /* ═══════════════════════════════════════════════════════════
+       ═══ NUEVO v1.4 — Filtros, CSV, editar, detalle miembro   ═══
+       ═══════════════════════════════════════════════════════════ */
+    .mtools{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+    .msearch{flex:1;min-width:200px;position:relative}
+    .msearch input{width:100%;padding:9px 12px 9px 34px;border:1.5px solid var(--ln);border-radius:10px;font-size:13px;background:var(--sur);outline:none;transition:border .2s}
+    .msearch input:focus{border-color:var(--pr)}
+    .msearch i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--mu);font-size:12px}
+    .mfilters{display:flex;gap:5px;flex-wrap:wrap}
+    .mfbtn{padding:7px 12px;background:var(--sur);border:1.5px solid var(--ln);border-radius:var(--rp);font-size:12px;font-weight:600;color:var(--mu);cursor:pointer;transition:all .15s;white-space:nowrap}
+    .mfbtn:hover{border-color:var(--pr);color:var(--pr)}
+    .mfbtn.active{background:var(--pr);color:white;border-color:var(--pr)}
+    .mfbtn .cnt{margin-left:4px;font-size:10px;opacity:.85}
+    .btn-csv{padding:8px 14px;background:var(--gnb);color:var(--gn);border:1px solid #a7f3d0;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s;white-space:nowrap}
+    .btn-csv:hover{background:#d1fae5}
+    .mrow{cursor:pointer;transition:background .15s}
+    .mrow:hover td{background:var(--soft)!important}
+
+    /* Botón editar en items */
+    .btn-edit{padding:5px 11px;background:var(--prb);color:var(--pr);border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;margin-right:5px}
+    .btn-edit:hover{background:#cce3f4}
+
+    /* Banner "Editando" */
+    .editing-bar{background:var(--amb);border:1px solid #fcd34d;border-radius:10px;padding:9px 13px;margin-bottom:12px;display:none;align-items:center;gap:10px;font-size:12px}
+    .editing-bar.show{display:flex}
+    .editing-bar b{color:var(--am)}
+    .editing-bar button{margin-left:auto;padding:5px 11px;background:#fff;border:1px solid #fcd34d;color:var(--am);border-radius:8px;font-size:11px;font-weight:700;cursor:pointer}
+
+    /* Modal detalle miembro */
+    .mmodal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9998;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
+    .mmodal.show{display:flex}
+    .mmbox{background:var(--sur);border-radius:var(--ra);max-width:540px;width:100%;max-height:88vh;overflow-y:auto}
+    .mmh{padding:1.3rem 1.5rem;border-bottom:1px solid var(--ln);display:flex;align-items:center;gap:13px}
+    .mmav{width:48px;height:48px;border-radius:50%;background:var(--pr);color:white;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;flex-shrink:0}
+    .mmnm{font-size:16px;font-weight:800;line-height:1.2}
+    .mmem{font-size:12px;color:var(--mu);margin-top:2px}
+    .mmx{margin-left:auto;width:30px;height:30px;border-radius:8px;background:var(--soft);border:none;cursor:pointer;font-size:15px;color:var(--mu)}
+    .mmx:hover{background:var(--ln)}
+    .mmc{padding:1.2rem 1.5rem;display:flex;flex-direction:column;gap:14px}
+    .mmrow{display:flex;justify-content:space-between;padding:10px 12px;background:var(--soft);border-radius:10px;font-size:13px}
+    .mmrow .k{color:var(--mu);font-weight:600}
+    .mmrow .v{font-weight:700;text-align:right}
+    .mmsec{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.04em;margin-top:8px}
+    .mmpay{display:flex;justify-content:space-between;padding:7px 11px;font-size:12px;background:var(--soft);border-radius:8px;margin-bottom:4px}
+    .mmpay b{color:var(--gn)}
+    /* ═══════════════════════════════════════════════════════════ */
   </style>
 </head>
 <body>
@@ -383,12 +430,46 @@
     <div class="pg-sub">Gestiona los miembros y su estado de suscripción</div><br>
     <div class="panel">
       <div class="ph"><span class="pt">Miembros registrados</span><span style="font-size:12px;color:var(--mu)" id="cnt-miembros">0</span></div>
+
+      <!-- ═══ NUEVO v1.4: Herramientas de búsqueda y filtros ═══ -->
+      <div class="mtools">
+        <div class="msearch">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="mSearch" placeholder="Buscar por nombre o email..." oninput="aplicarFiltrosMiembros()">
+        </div>
+        <button class="btn-csv" onclick="exportarCSVMiembros()"><i class="fa-solid fa-download"></i> Exportar CSV</button>
+      </div>
+      <div class="mfilters" id="mFilters">
+        <button class="mfbtn active" data-f="todos" onclick="setFiltroMiembros('todos',this)">Todos <span class="cnt" id="fcn-todos">0</span></button>
+        <button class="mfbtn" data-f="activos" onclick="setFiltroMiembros('activos',this)">✓ Activos <span class="cnt" id="fcn-activos">0</span></button>
+        <button class="mfbtn" data-f="porvencer" onclick="setFiltroMiembros('porvencer',this)">⚠️ Por vencer <span class="cnt" id="fcn-porvencer">0</span></button>
+        <button class="mfbtn" data-f="cancelados" onclick="setFiltroMiembros('cancelados',this)">✗ Cancelados <span class="cnt" id="fcn-cancelados">0</span></button>
+        <button class="mfbtn" data-f="vencidos" onclick="setFiltroMiembros('vencidos',this)">⛔ Vencidos <span class="cnt" id="fcn-vencidos">0</span></button>
+      </div>
+      <br>
+      <!-- ═══════════════════════════════════════════════════════ -->
+
       <div style="overflow-x:auto">
         <table class="mtbl">
-          <thead><tr><th>Nombre</th><th>Correo</th><th>Especialidad</th><th>Plan</th><th>Vence</th><th>Estado</th><th>Acción</th></tr></thead>
+          <thead><tr><th>Nombre</th><th>Correo</th><th>Plan</th><th>Vence</th><th>🔥 Racha</th><th>Estado</th><th>Acción</th></tr></thead>
           <tbody id="mtbody"><tr><td colspan="7" style="text-align:center;color:var(--mu);padding:2rem">Cargando...</td></tr></tbody>
         </table>
       </div>
+    </div>
+  </div>
+
+  <!-- ═══ NUEVO v1.4: Modal de detalle de miembro ═══ -->
+  <div class="mmodal" id="mmModal" onclick="if(event.target===this)cerrarModalMiembro()">
+    <div class="mmbox">
+      <div class="mmh">
+        <div class="mmav" id="mm-av">—</div>
+        <div>
+          <div class="mmnm" id="mm-nm">—</div>
+          <div class="mmem" id="mm-em">—</div>
+        </div>
+        <button class="mmx" onclick="cerrarModalMiembro()">✕</button>
+      </div>
+      <div class="mmc" id="mm-content"></div>
     </div>
   </div>
 
@@ -433,7 +514,10 @@ function initApp() {
   });
   onSnapshot(collection(db,'miembros'), snap => {
     DATA.miembros=snap.docs.map(d=>({id:d.id,...d.data()}));
-    renderMiembros(DATA.miembros); updStats();
+    // ═══ NUEVO v1.4: aplicar filtros y contadores ═══
+    actualizarContadoresFiltros();
+    aplicarFiltrosMiembros();
+    updStats();
   });
 }
 
@@ -465,9 +549,139 @@ function renderCol(col) {
     if(col==='videos')meta=item.mes||'';
     if(col==='pdfs')meta=item.mes||'';
     if(col==='lives')meta=(item.instructor||'')+(item.fechaISO?' · '+new Date(item.fechaISO).toLocaleDateString('es-MX',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'')+( item.activo?' · ✅':'');
-    return `<div class="li"><div class="li-info"><div class="li-t">${esc(item.titulo||'—')}</div><div class="li-m">${esc(meta)}</div></div><button class="btn-del" onclick="delItem('${col}','${item.id}')">Eliminar</button></div>`;
+    // ═══ NUEVO v1.4: botón editar ═══
+    const editBtn = col==='cursos' ? '' : `<button class="btn-edit" onclick="editItem('${col}','${item.id}')"><i class="fa-solid fa-pen"></i> Editar</button>`;
+    return `<div class="li"><div class="li-info"><div class="li-t">${esc(item.titulo||'—')}</div><div class="li-m">${esc(meta)}</div></div><div style="display:flex;gap:0;align-items:center">${editBtn}<button class="btn-del" onclick="delItem('${col}','${item.id}')">Eliminar</button></div></div>`;
   }).join('');
 }
+
+// ═══════════════════════════════════════════════════════════════
+// ═══ NUEVO v1.4 — Filtros, búsqueda, CSV y detalle de miembro ═══
+// ═══════════════════════════════════════════════════════════════
+let _filtroMiembros = 'todos';
+
+function clasificarMiembro(m) {
+  const dias = m.planVence ? Math.ceil((new Date(m.planVence)-new Date())/86400000) : 999;
+  if (m.planCancelado) return 'cancelados';
+  if (dias <= -3)       return 'vencidos';
+  if (dias <= 7)        return 'porvencer';
+  return 'activos';
+}
+
+window.setFiltroMiembros = function(f, btn) {
+  _filtroMiembros = f;
+  document.querySelectorAll('#mFilters .mfbtn').forEach(b=>b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  aplicarFiltrosMiembros();
+};
+
+window.aplicarFiltrosMiembros = function() {
+  const arr = DATA.miembros || [];
+  const q = (document.getElementById('mSearch')?.value || '').toLowerCase().trim();
+  let filtrados = arr;
+  if (_filtroMiembros !== 'todos') {
+    filtrados = filtrados.filter(m => clasificarMiembro(m) === _filtroMiembros);
+  }
+  if (q) {
+    filtrados = filtrados.filter(m =>
+      (m.nombre||'').toLowerCase().includes(q) ||
+      (m.email ||'').toLowerCase().includes(q)
+    );
+  }
+  renderMiembros(filtrados);
+};
+
+function actualizarContadoresFiltros() {
+  const arr = DATA.miembros || [];
+  const cats = { todos: arr.length, activos:0, porvencer:0, cancelados:0, vencidos:0 };
+  arr.forEach(m => cats[clasificarMiembro(m)]++);
+  Object.entries(cats).forEach(([k,v]) => {
+    const el = document.getElementById('fcn-'+k);
+    if (el) el.textContent = v;
+  });
+}
+
+window.exportarCSVMiembros = function() {
+  const arr = DATA.miembros || [];
+  if (!arr.length) { alert('No hay miembros para exportar'); return; }
+  const headers = ['Nombre','Email','Teléfono','Especialidad','Plan','Inicio','Vence','Racha días','Estado','Monto último pago','Shopify Order ID'];
+  const rows = arr.map(m => {
+    const dias = m.planVence ? Math.ceil((new Date(m.planVence)-new Date())/86400000) : 999;
+    let estado = 'Activa';
+    if (m.planCancelado) estado = 'Cancelada';
+    else if (dias <= -3) estado = 'Vencida';
+    else if (dias <= 0)  estado = 'Tolerancia';
+    else if (dias <= 7)  estado = 'Por vencer';
+    const planN = ({mensual:'Mensual',anual:'Anual'}[m.planTipo])||'—';
+    return [
+      m.nombre||'', m.email||'', m.telefono||'', m.especialidad||'', planN,
+      m.planInicio ? new Date(m.planInicio).toLocaleDateString('es-MX') : '',
+      m.planVence  ? new Date(m.planVence).toLocaleDateString('es-MX')  : '',
+      m.rachaDias || 0, estado,
+      m.monto || '', m.shopifyOrderId || ''
+    ];
+  });
+  const csv = [headers, ...rows].map(r =>
+    r.map(cell => {
+      const s = String(cell).replace(/"/g,'""');
+      return /[",\n]/.test(s) ? `"${s}"` : s;
+    }).join(',')
+  ).join('\n');
+  const blob = new Blob(['\ufeff'+csv], { type:'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `miembros-odonteck-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('✓ CSV descargado');
+};
+
+window.verDetalleMiembro = function(id) {
+  const m = DATA.miembros.find(x => x.id === id);
+  if (!m) return;
+  const ini = (m.nombre||m.email||'—').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+  document.getElementById('mm-av').textContent = ini;
+  document.getElementById('mm-nm').textContent = m.nombre || '—';
+  document.getElementById('mm-em').textContent = m.email || '—';
+
+  const dias = m.planVence ? Math.ceil((new Date(m.planVence)-new Date())/86400000) : 0;
+  const planN = ({mensual:'Plan Mensual',anual:'Plan Anual'}[m.planTipo])||'—';
+  const inicioStr = m.planInicio ? new Date(m.planInicio).toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'}) : '—';
+  const venceStr  = m.planVence  ? new Date(m.planVence).toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'})  : '—';
+
+  let html = '';
+  html += `<div class="mmrow"><span class="k">Plan</span><span class="v">${esc(planN)}</span></div>`;
+  html += `<div class="mmrow"><span class="k">Inicio</span><span class="v">${inicioStr}</span></div>`;
+  html += `<div class="mmrow"><span class="k">Vence</span><span class="v">${venceStr}${dias>0?` <span style="color:var(--mu);font-weight:400">(en ${dias} días)</span>`:''}</span></div>`;
+  html += `<div class="mmrow"><span class="k">🔥 Racha</span><span class="v">${m.rachaDias||0} día${(m.rachaDias||0)!==1?'s':''}</span></div>`;
+  if (m.telefono)     html += `<div class="mmrow"><span class="k">Teléfono</span><span class="v">${esc(m.telefono)}</span></div>`;
+  if (m.especialidad) html += `<div class="mmrow"><span class="k">Especialidad</span><span class="v">${esc(m.especialidad)}</span></div>`;
+  if (m.ultimaClase)  html += `<div class="mmrow"><span class="k">Última clase</span><span class="v" style="font-size:11px">${esc(m.ultimaClase.tituloClase||'—')}</span></div>`;
+
+  // Historial de pagos
+  if (m.pagos && m.pagos.length) {
+    html += `<div class="mmsec">📋 Historial de pagos (${m.pagos.length})</div>`;
+    html += m.pagos.slice().reverse().map(p => {
+      const f = p.fecha ? new Date(p.fecha).toLocaleDateString('es-MX',{day:'numeric',month:'short',year:'numeric'}) : '—';
+      return `<div class="mmpay"><span>${f} · ${esc(p.plan||'—')}</span><b>$${p.monto||0}</b></div>`;
+    }).join('');
+  }
+
+  // Logros desbloqueados
+  if (m.logrosDesbloqueados && m.logrosDesbloqueados.length) {
+    html += `<div class="mmsec">🏅 Logros desbloqueados</div>`;
+    html += `<div style="font-size:12px;color:var(--mu)">${m.logrosDesbloqueados.length} de 6 logros</div>`;
+  }
+
+  document.getElementById('mm-content').innerHTML = html;
+  document.getElementById('mmModal').classList.add('show');
+};
+
+window.cerrarModalMiembro = function() {
+  document.getElementById('mmModal').classList.remove('show');
+};
+// ═══════════════════════════════════════════════════════════════
 
 function renderMiembros(arr) {
   const tb=document.getElementById('mtbody');
@@ -477,17 +691,20 @@ function renderMiembros(arr) {
     const dias=m.planVence?Math.ceil((new Date(m.planVence)-new Date())/86400000):999;
     let chip='chip-act',estado='Activa';
     if(m.planCancelado){chip='chip-can';estado='Cancelada';}
-    else if(dias<=0&&dias>-3){chip='chip-can';estado='Tolerancia';}
     else if(dias<=-3){chip='chip-exp';estado='Vencida';}
+    else if(dias<=0){chip='chip-can';estado='Tolerancia';}
+    else if(dias<=7){chip='chip-can';estado='Por vencer';}
     const planN={'mensual':'Mensual','anual':'Anual'}[m.planTipo]||'—';
-    return `<tr>
+    const racha = m.rachaDias || 0;
+    const rachaEmoji = racha >= 7 ? '🔥' : racha >= 1 ? '✨' : '·';
+    return `<tr class="mrow" onclick="verDetalleMiembro('${m.id}')">
       <td style="font-weight:600">${esc(m.nombre||'—')}</td>
       <td style="color:var(--mu);font-size:12px">${esc(m.email||'—')}</td>
-      <td style="color:var(--mu);font-size:12px">${esc(m.especialidad||'—')}</td>
       <td><span class="chip chip-act">${planN}</span></td>
       <td style="font-size:12px">${vence}</td>
+      <td style="font-size:12px;text-align:center">${rachaEmoji} ${racha}</td>
       <td><span class="chip ${chip}">${estado}</span></td>
-      <td><button onclick="toggleMiembro('${m.id}',${!!m.planCancelado})" style="font-size:11px;font-weight:700;color:${m.planCancelado?'var(--gn)':'var(--rd)'};background:${m.planCancelado?'var(--gnb)':'var(--rdb)'};padding:5px 10px;border-radius:7px;border:none;cursor:pointer">${m.planCancelado?'Reactivar':'Cancelar'}</button></td>
+      <td onclick="event.stopPropagation()"><button onclick="toggleMiembro('${m.id}',${!!m.planCancelado})" style="font-size:11px;font-weight:700;color:${m.planCancelado?'var(--gn)':'var(--rd)'};background:${m.planCancelado?'var(--gnb)':'var(--rdb)'};padding:5px 10px;border-radius:7px;border:none;cursor:pointer">${m.planCancelado?'Reactivar':'Cancelar'}</button></td>
     </tr>`;
   }).join('');
 }
@@ -497,6 +714,75 @@ window.toggleMiembro = async (id, wasCancelled) => {
   showToast(wasCancelled?'✓ Membresía reactivada':'Membresía cancelada');
 };
 
+// ═══ NUEVO v1.4: Soporte de edición ═══
+let _editMode = null; // {col, id} cuando se está editando
+
+window.editItem = function(col, id) {
+  const item = (DATA[col]||[]).find(x => x.id === id);
+  if (!item) { alert('Item no encontrado'); return; }
+  _editMode = { col, id };
+
+  // Ir a la sección y llenar el form
+  const sectionMap = { noticias:'noticias', cursos:'cursos', videos:'videos', pdfs:'pdfs', lives:'lives' };
+  const target = sectionMap[col];
+  if (target) {
+    document.querySelectorAll('.sv').forEach(s=>s.classList.remove('active'));
+    document.getElementById('sv-'+target).classList.add('active');
+    document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+    document.querySelector(`.ni[onclick*="'${target}'"]`)?.classList.add('active');
+  }
+
+  // Llenar campos según columna
+  const setV = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+
+  if (col === 'noticias') {
+    setV('n-tit', item.titulo); setV('n-body', item.cuerpo); setV('n-em', item.emoji);
+    const col0 = document.getElementById('n-col'); if (col0 && item.color) col0.value = item.color;
+  }
+  if (col === 'videos') {
+    setV('v-tit', item.titulo); setV('v-link', item.link); setV('v-mes', item.mes); setV('v-dur', item.duracion);
+  }
+  if (col === 'pdfs') {
+    setV('p-tit', item.titulo); setV('p-link', item.link); setV('p-mes', item.mes);
+  }
+  if (col === 'lives') {
+    setV('l-tit', item.titulo); setV('l-inst', item.instructor); setV('l-desc', item.descripcion);
+    setV('l-fecha', item.fechaISO); setV('l-link', item.link);
+    const act = document.getElementById('l-activo'); if (act) act.value = item.activo ? 'true' : 'false';
+  }
+
+  mostrarBannerEdicion(col, item.titulo);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+function mostrarBannerEdicion(col, titulo) {
+  // Crear o actualizar el banner de "Estás editando..."
+  let bar = document.getElementById('editingBar-'+col);
+  if (!bar) {
+    const sv = document.getElementById('sv-'+col);
+    if (!sv) return;
+    bar = document.createElement('div');
+    bar.id = 'editingBar-'+col;
+    bar.className = 'editing-bar';
+    sv.insertBefore(bar, sv.firstChild.nextSibling);
+  }
+  bar.innerHTML = `<i class="fa-solid fa-pen"></i> Editando: <b>${esc(titulo||'—')}</b> <button onclick="cancelarEdicion()">Cancelar edición</button>`;
+  bar.classList.add('show');
+}
+
+window.cancelarEdicion = function() {
+  if (!_editMode) return;
+  const col = _editMode.col;
+  _editMode = null;
+  const bar = document.getElementById('editingBar-'+col);
+  if (bar) bar.classList.remove('show');
+  // Limpiar formulario
+  const prefixMap = { noticias:'n', cursos:'c', videos:'v', pdfs:'p', lives:'l' };
+  const p = prefixMap[col];
+  if (p && window.clr) window.clr(p);
+};
+// ═══════════════════════════════════════════════════════════════
+
 // ── SAVE SIMPLE (noticias, videos, pdfs, lives) ────────────────
 window.saveSimple = async (col) => {
   let data={};
@@ -504,7 +790,18 @@ window.saveSimple = async (col) => {
   if(col==='videos'){const t=gv('v-tit'),l=gv('v-link');if(!t||!l){alert('Completa título y link');return;}data={titulo:t,link:l,mes:gv('v-mes'),duracion:gv('v-dur')};}
   if(col==='pdfs'){const t=gv('p-tit'),l=gv('p-link');if(!t||!l){alert('Completa título y link');return;}data={titulo:t,link:l,mes:gv('p-mes')};}
   if(col==='lives'){const t=gv('l-tit'),f=gv('l-fecha'),l=gv('l-link');if(!t||!f||!l){alert('Completa título, fecha y link');return;}data={titulo:t,instructor:gv('l-inst'),descripcion:gv('l-desc'),fechaISO:f,activo:gv('l-activo')==='true',link:l};}
-  try{await addDoc(collection(db,col),{...data,creadoEn:serverTimestamp()});showToast('✓ Publicado');clr(col[0]==='n'?'n':col[0]==='v'?'v':col[0]==='p'?'p':'l');}
+  try{
+    // ═══ NUEVO v1.4: si está editando, hace UPDATE en vez de CREATE ═══
+    if (_editMode && _editMode.col === col) {
+      await setDoc(doc(db,col,_editMode.id), data, { merge:true });
+      showToast('✓ Actualizado');
+      cancelarEdicion();
+    } else {
+      await addDoc(collection(db,col),{...data,creadoEn:serverTimestamp()});
+      showToast('✓ Publicado');
+    }
+    clr(col[0]==='n'?'n':col[0]==='v'?'v':col[0]==='p'?'p':'l');
+  }
   catch(e){console.error(e);showToast('❌ Error');}
 };
 

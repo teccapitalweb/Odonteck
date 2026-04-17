@@ -332,6 +332,28 @@
 </head>
 <body>
 
+<!-- MODAL CANCELACIÓN -->
+<div id="cancelModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)">
+  <div style="background:#fff;border-radius:16px;max-width:420px;width:100%;padding:32px 28px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.25)">
+    <div style="width:52px;height:52px;border-radius:50%;background:#fef2f2;border:2px solid #fecaca;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:22px">⚠️</div>
+    <h3 style="font-size:18px;font-weight:800;color:#0d1b2a;margin-bottom:8px">¿Cancelar tu membresía?</h3>
+    <p style="font-size:14px;color:#6b7280;margin-bottom:16px">Esta acción desactivará el cobro automático.</p>
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:12px;margin-bottom:20px;font-size:13px;color:#166534">
+      ✓ <strong>Tus datos están seguros</strong> — seguirás teniendo acceso hasta que termine el período pagado.
+    </div>
+    <div style="display:flex;gap:10px">
+      <button onclick="document.getElementById('cancelModal').style.display='none'" style="flex:1;padding:12px;border-radius:9px;border:1.5px solid #e5e7eb;background:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">Mantener membresía</button>
+      <button onclick="confirmarCancelacion()" style="flex:1;padding:12px;border-radius:9px;border:none;background:#dc2626;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">Sí, cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- BANNER CANCELADO -->
+<div id="cancelBanner" style="display:none;background:#92400e;color:#fff;padding:12px 20px;text-align:center;font-size:13px;font-weight:600;position:fixed;top:0;left:0;right:0;z-index:8500">
+  ⚠️ Tu membresía está cancelada. Tienes acceso hasta <span id="bannerFecha">—</span>.
+  <a onclick="renovarDesdeBloqueo()" style="color:#fcd34d;cursor:pointer;margin-left:8px;font-weight:800;text-decoration:underline">Reactivar membresía →</a>
+</div>
+
 <!-- BLOCK SCREEN -->
 <div class="block-screen" id="blockScreen">
   <div class="bs-icon" id="bs-icon">🔒</div>
@@ -720,7 +742,23 @@ onAuthStateChanged(auth, async user => {
   // Cargar progreso guardado
   _progresoData = data.progresoCursos || {};
 
-  if(data.planCancelado&&user.email!==ADMIN){document.getElementById('blockScreen').classList.add('show');return;}
+  if(data.planCancelado && user.email!==ADMIN){
+    // Verificar si aún tiene acceso por el período pagado
+    const vence = data.planVence ? new Date(data.planVence) : null;
+    const ahora = new Date();
+    if(vence && vence > ahora){
+      // Aún tiene acceso — mostrar banner naranja
+      const fechaStr = vence.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'});
+      document.getElementById('bannerFecha').textContent = fechaStr;
+      document.getElementById('cancelBanner').style.display = 'block';
+      // Ajustar padding del body para el banner
+      document.body.style.paddingTop = '44px';
+    } else {
+      // Ya venció — bloquear acceso
+      document.getElementById('blockScreen').classList.add('show');
+      return;
+    }
+  }
 
   // BLOQUEO: Si no tiene plan activo y no es admin → regresar a pagar
   if(!data.planActivo && user.email!==ADMIN){
@@ -763,12 +801,29 @@ onAuthStateChanged(auth, async user => {
 });
 
 window.cancelarSub=async()=>{
-  if(!confirm('¿Estás seguro de cancelar tu membresía? Perderás el acceso al contenido del Club Dental.'))return;
+  document.getElementById('cancelModal').style.display='flex';
+};
+window.confirmarCancelacion=async()=>{
+  document.getElementById('cancelModal').style.display='none';
   if(!_uid)return;
-  await setDoc(doc(db,'miembros',_uid),{planCancelado:true},{merge:true});
-  document.getElementById('bs-title').textContent='Membresía cancelada';
-  document.getElementById('bs-sub').textContent='Tu membresía ha sido cancelada. Renueva para volver a acceder a todo el contenido.';
-  document.getElementById('blockScreen').classList.add('show');
+  try{
+    await setDoc(doc(db,'miembros',_uid),{planCancelado:true},{merge:true});
+    const snap = await getDoc(doc(db,'miembros',_uid));
+    const data = snap.exists() ? snap.data() : {};
+    const vence = data.planVence ? new Date(data.planVence) : null;
+    if(vence && vence > new Date()){
+      const fechaStr = vence.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'});
+      document.getElementById('bannerFecha').textContent = fechaStr;
+      document.getElementById('cancelBanner').style.display = 'block';
+      document.body.style.paddingTop = '44px';
+      const btn = document.getElementById('btnCancel');
+      if(btn){ btn.textContent='🔄 Reactivar membresía'; btn.onclick=()=>renovarDesdeBloqueo(); }
+    } else {
+      document.getElementById('bs-title').textContent='Membresía cancelada';
+      document.getElementById('bs-sub').textContent='Tu membresía ha sido cancelada. Renueva para volver a acceder al contenido.';
+      document.getElementById('blockScreen').classList.add('show');
+    }
+  }catch(e){ alert('Error: '+e.message); }
 };
 window.renovarDesdeBloqueo=function(){
   // Abrir checkout SIN cerrar sesión — el plan en URL para que sepa qué checkout abrir

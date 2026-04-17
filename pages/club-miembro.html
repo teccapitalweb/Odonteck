@@ -137,7 +137,7 @@
 
     /* MAIN */
     .main{display:flex;flex-direction:column;gap:1.3rem;padding:1.75rem 1.75rem 3rem;background:var(--bg)}
-    .topbar{display:flex;align-items:flex-start;justify-content:space-between}
+    .topbar{display:flex;align-items:flex-start;justify-content:space-between;position:relative}
     .greeting{font-size:20px;font-weight:800;color:var(--tx);line-height:1.1}
     .greeting em{color:var(--pr);font-style:normal}
     .tdate{font-size:12px;color:var(--mu);margin-top:3px}
@@ -470,7 +470,11 @@
       <div class="greeting">Bienvenido, <em id="uGr">...</em></div>
       <div class="tdate" id="fhoy"></div>
     </div>
-    <button class="nbbtn"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><div class="ndot"></div></button>
+    <button class="nbbtn" id="bellBtn" onclick="toggleNotifPanel()"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><div class="ndot" id="bellDot"></div></button>
+    <div id="notifPanel" style="display:none;position:absolute;top:48px;right:0;width:300px;background:var(--bg);border:1px solid var(--ln);border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.12);z-index:999;overflow:hidden">
+      <div style="padding:12px 16px;border-bottom:1px solid var(--ln);font-weight:700;font-size:13px">🔔 Noticias y novedades</div>
+      <div id="notifList" style="max-height:280px;overflow-y:auto;padding:8px"></div>
+    </div>
   </div>
 
   <div class="renew-bar" id="renewBar">
@@ -850,7 +854,29 @@ function buildRecent(){
 }
 
 // ── RENDERS ───────────────────────────────────────────────────
-function rNoticias(arr){const el=document.getElementById('nlist');if(!arr.length){el.innerHTML=`<div class="empty"><span>📭</span><p>Sin noticias aún.</p></div>`;return;}el.innerHTML=arr.map(n=>`<div class="nitem"><div class="nico" style="background:${n.color||'var(--prb)'}">${n.emoji||'📢'}</div><div><div class="ntit">${esc(n.titulo)}</div><div class="nbod">${esc(n.cuerpo||'')}</div><div class="ndat">${n.fecha||''}</div></div></div>`).join('');}
+function rNoticias(arr){
+  const el=document.getElementById('nlist');
+  const panel=document.getElementById('notifList');
+  const dot=document.getElementById('bellDot');
+  if(arr.length>0 && dot) dot.style.display='block';
+  const html=arr.length?arr.map(n=>`<div class="nitem"><div class="nico" style="background:${n.color||'var(--prb)'}"><span style="font-size:16px">${n.emoji||'📢'}</span></div><div><div class="ntit">${esc(n.titulo)}</div><div class="nbod">${esc(n.cuerpo||'')}</div><div class="ndat">${n.fecha||''}</div></div></div>`).join(''):`<div class="empty"><span>📭</span><p>Sin noticias aún.</p></div>`;
+  if(el) el.innerHTML=html;
+  if(panel) panel.innerHTML=html || '<p style="padding:12px;font-size:13px;color:var(--mu)">Sin noticias aún.</p>';
+}
+window.toggleNotifPanel=function(){
+  const p=document.getElementById('notifPanel');
+  p.style.display=p.style.display==='none'?'block':'none';
+  if(p.style.display==='block'){
+    const dot=document.getElementById('bellDot');
+    if(dot) dot.style.display='none';
+    document.addEventListener('click',function close(e){
+      if(!document.getElementById('bellBtn').contains(e.target)&&!p.contains(e.target)){
+        p.style.display='none';
+        document.removeEventListener('click',close);
+      }
+    });
+  }
+};
 
 function rRecent(arr){const el=document.getElementById('reclist');if(!arr.length){el.innerHTML=`<div class="empty"><span>📂</span><p>Aún no hay contenido.</p></div>`;return;}const icons={curso:'📚',video:'🎬',pdf:'📄'},tags={curso:'Curso',video:'Video',pdf:'PDF'},clrs={curso:'var(--prb)',video:'var(--prb)',pdf:'var(--rdb)'},tc={curso:'tb',video:'tb',pdf:'tg'};el.innerHTML=arr.map(i=>`<div class="ci" onclick="${i.tipo==='curso'?`openCurso(${JSON.stringify(i).replace(/"/g,"'")})`:`window.open('${esc(i.link||'#')}','_blank')`}"><div class="cth" style="background:${clrs[i.tipo]||'var(--prb)'}">${icons[i.tipo]||'📄'}</div><div class="ci-i"><div class="ci-t">${esc(i.titulo)}</div><div class="ci-m">${i.instructor||i.mes||''} · ${tags[i.tipo]||''}</div></div><span class="ctag ${tc[i.tipo]||'tb'}">Nuevo</span></div>`).join('');}
 
@@ -863,12 +889,14 @@ function renderCursos(arr){
     const pct=prog.pct;
     const btn=pct===100?'🏆 Completado':pct>0?'▶ Continuar':'▶ Comenzar curso';
     const cJ=JSON.stringify(c).replace(/"/g,"'");
+    const coverBg=!c.imagen?'background:linear-gradient(135deg,var(--pr),var(--pr2));display:flex;align-items:center;justify-content:center;':'';
     return `<div class="cc" onclick="openCurso(${cJ})">
-      <div class="cc-cover">
+      <div class="cc-cover" style="${coverBg}">
         ${c.imagen?`<img src="${c.imagen}" alt="">`:''}
-        ${badge}<span class="cc-em">${c.emoji||'📚'}</span>
+        ${!c.imagen?`<span style="font-size:48px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.2))">${c.emoji||'🦷'}</span>`:''}
+        ${badge}${c.imagen?`<span class="cc-em">${c.emoji||'📚'}</span>`:''}
         <div class="cc-prog-strip" style="width:${pct}%"></div>
-      </div>
+      </div></div>
       <div class="cc-body">
         <div class="cc-title">${esc(c.titulo)}</div>
         <div class="cc-meta">${esc(c.instructor||'')} · ${esc(c.duracion||'')}</div>

@@ -665,7 +665,10 @@ const auth = getAuth(app);
 const db   = getFirestore(app);
 const ADMIN = 'odontckconsul@gmail.com';
 
-// Actualizar countdowns de lives en tiempo real
+let _uid=null, _progresoData={};
+let allCursos=[], liveActivo=null, alertShown=false, timerID=null;
+
+// Actualizar countdowns de lives en tiempo real (después de declaraciones)
 setInterval(() => {
   document.querySelectorAll('[data-target]').forEach(el => {
     const target = parseInt(el.dataset.target);
@@ -682,7 +685,6 @@ setInterval(() => {
     }
   });
 }, 1000);
-let _uid=null, _progresoData={};
 
 // ── AUTH ──────────────────────────────────────────────────────
 onAuthStateChanged(auth, async user => {

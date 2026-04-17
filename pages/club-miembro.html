@@ -32,10 +32,9 @@
     .btn-al{display:block;margin-top:8px;padding:6px;background:var(--pr);color:white;font-size:11px;font-weight:700;border-radius:7px;text-align:center}
 
     /* ══ MODAL CURSO (pantalla completa tipo Platzi) ══ */
-    .curso-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:8000;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
+    .curso-overlay{position:fixed;inset:0;background:var(--bg);z-index:8000;display:none;flex-direction:column;overflow-y:auto}
     .curso-overlay.show{display:flex}
-    .curso-topbar{background:var(--tx);padding:12px 20px;display:flex;align-items:center;gap:16px;border-radius:16px 16px 0 0;flex-shrink:0}
-    .curso-modal-box{background:var(--bg);border-radius:16px;width:100%;max-width:1100px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+    .curso-topbar{background:var(--tx);padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:10;flex-shrink:0}
     .curso-back{color:rgba(255,255,255,.7);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:color .15s}
     .curso-back:hover{color:white}
     .curso-topbar-title{font-size:14px;font-weight:700;color:white;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -43,7 +42,7 @@
     .curso-progress-fill{height:100%;background:var(--pr2);border-radius:var(--rp);transition:width .3s}
     .curso-progress-txt{font-size:11px;color:rgba(255,255,255,.5);white-space:nowrap}
 
-    .curso-layout{display:grid;grid-template-columns:1fr 300px;flex:1;min-height:0;max-height:calc(90vh - 52px);overflow:hidden}
+    .curso-layout{display:grid;grid-template-columns:1fr 340px;flex:1;min-height:0}
 
     /* Panel izquierdo: reproductor + info */
     .curso-left{display:flex;flex-direction:column;overflow-y:auto}
@@ -346,8 +345,7 @@
 </div>
 
 <!-- ══ VISOR DE CURSO (pantalla completa) ══ -->
-<div class="curso-overlay" id="cursoOverlay" onclick="if(event.target===this)closeCurso()">
-  <div class="curso-modal-box">
+<div class="curso-overlay" id="cursoOverlay">
   <div class="curso-topbar">
     <div class="curso-back" onclick="closeCurso()"><i class="fa-solid fa-arrow-left"></i> Mis cursos</div>
     <div class="curso-topbar-title" id="co-title">—</div>
@@ -391,8 +389,10 @@
       </div>
       <div id="cr-modulos"></div>
     </div>
-  </div><!-- /curso-modal-box -->
-</div><!-- /cursoOverlay -->
+  </div>
+</div>
+
+<div class="shell">
 <!-- SIDEBAR -->
 <aside class="sb">
   <div class="sb-logo">

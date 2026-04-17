@@ -1,127 +1,115 @@
-# Cambios v1.6 — Responsive mobile + Noticias 15 días
+# Cambios v1.7 — Responsive fixes del sitio público
 
-**Archivo modificado:** `pages/club-miembro.html`
+**Archivo modificado:** `styles.css` (solo al FINAL, sin tocar código existente)
 
-**Lo que NO se tocó:**
-- Admin panel
-- Backend
-- Firestore schema
-- Lógica de drip content v1.5
-- Sistema de logros v1.4
-- Funcionalidad en desktop (solo mejoras, no rompe nada)
-
----
-
-## 📱 MEJORA 1 — Adaptación móvil
-
-### Qué se optimizó para pantallas chicas (<700px):
-
-**Header y saludo:**
-- Saludo más compacto (17px en móvil)
-- Píldora de racha 🔥 reducida
-- Campana de notificaciones más discreta
-
-**Card "Continúa donde te quedaste":**
-- Layout compacto horizontal
-- Botón "Reanudar" más pequeño y alineado
-- Ya no se desborda ni se corta
-
-**Banner VIP de WhatsApp:**
-- Ícono ya no se corta (era el bug que viste)
-- Padding ajustado
-- Texto más legible
-
-**Grid de cursos:**
-- **2 columnas en móvil mediano** (antes era 1 — ahora se ve más catálogo)
-- 1 columna en pantallas muy chicas (iPhone SE)
-- Cards con imagen, título y botón adaptados
-- Candados 🔒 de cursos bloqueados más visibles
-
-**Noticias:**
-- Texto del cuerpo con truncado inteligente (3 líneas + "...")
-- Iconos más pequeños
-- Espaciado optimizado
-
-**Logros:**
-- 3 columnas en móvil mediano
-- 2 columnas en pantallas muy chicas
-- Emojis y textos reducidos para mejor densidad
-
-**Reproductor de video:**
-- **Pantalla completa en móvil** — antes tenía márgenes que hacían perder espacio
-- Videos se ven al 100% del ancho
-
-**Otros ajustes:**
-- Modal de cancelación adaptado
-- Sección perfil en 1 columna en móvil
-- Sección suscripción en 1 columna
-- Padding general reducido para aprovechar espacio
-
-### Breakpoints:
-- `<800px`: Reproductor de cursos a pantalla completa
-- `<700px`: Todos los ajustes principales
-- `<400px`: Optimización extrema para pantallas pequeñas
+**Archivos NO tocados:**
+- `index.html`
+- `pages/cursos.html`, `pages/servicios.html`, `pages/nosotros.html`, `pages/galeria.html`, `pages/contacto.html`
+- `pages/privacidad.html`, `pages/terminos.html`, `pages/club.html`, `pages/club-login.html`
+- `script.js`, `data.js`
+- Todo lo del Club Dental (admin-club, club-miembro)
+- Imágenes, contenido, colores, estructura
 
 ---
 
-## 📰 MEJORA 2 — Noticias con auto-expiración de 15 días
+## 🎯 El problema que arreglamos
 
-### Cómo funciona:
+En móvil el título hero *"Una propuesta educativa diseñada para elevar tu nivel clínico."* se veía así:
 
-**Al cargar el dashboard:**
-1. Se traen todas las noticias de Firestore (como antes)
-2. Se aplica filtro: `si la noticia tiene más de 15 días, se oculta`
-3. Solo se muestran las noticias recientes
-4. Las viejas **siguen en Firestore** (no se borran)
-
-**Si no hay noticias recientes:**
-El mensaje cambia de *"Sin noticias aún"* a *"Sin noticias recientes"*.
-
-### Ventajas:
-- ✅ Feed siempre fresco
-- ✅ No tienes que borrar noticias manualmente
-- ✅ Los datos viejos quedan guardados (por si los quieres auditar desde el admin)
-- ✅ Si quieres "resucitar" una noticia, solo editas la fecha desde el admin
-
-### Cómo detecta la fecha:
-Usa el campo `creadoEn` de Firestore (que ya se genera automáticamente al publicar). Si por alguna razón una noticia no tiene `creadoEn` (legacy), se sigue mostrando.
-
-### Para cambiar el intervalo:
-Si algún día quieres cambiarlo de 15 días a otro valor, busca esta línea en el código:
-```js
-const LIMITE_MS = 15 * 86400000; // 15 días
 ```
-Y cambias el `15` por lo que quieras. Pero tú pediste fijo, así que queda así.
+Una
+propuesta
+educativa
+diseñada para
+elevar tu nivel
+clínico.
+```
+
+**La causa:** La regla original del CSS tenía `font-size: clamp(2.7rem, 12vw, 4rem)` — ese **12vw** es desproporcionado. En una pantalla de 400px eso da letras de 48px, casi ingobernables.
+
+Además, un `max-width: 10.5ch` en el h1 forzaba a que se partiera en muchas líneas.
+
+---
+
+## 🔧 Qué se corrigió
+
+### Desktop (pantallas >1100px)
+- `max-width` del h1 ampliado de `10.5ch` → `16ch` (título más horizontal, más respirado)
+- Tamaño reducido a clamp realista
+- Padding navbar más cómodo
+
+### Tablet (1100px - 821px)
+- Título con `clamp(2.2rem, 5.6vw, 3.6rem)` — simétrico en pantallas medianas
+
+### Mobile mediano (<820px) — **EL FIX PRINCIPAL**
+- Font-size bajado de `12vw` a `8vw` con tope en 2.8rem
+- Line-height ajustado a 1.08 para compactar
+- Padding lateral reducido para aprovechar ancho
+- Botones hero más cómodos (flex: 1, min-width 140px)
+- **Floating socials** (FB/IG/WA) movidos un poco para no chocar con scroll-top
+- Socials más pequeños (44px en vez de 52px)
+
+### Mobile pequeño (<560px)
+- Título `clamp(1.75rem, 7.5vw, 2.4rem)` — perfecto en iPhone SE
+- Botones altura 46px (más cómodo al tap)
+- Stats cards compactos
+- Brand del nav compacto
+- CTA final con padding adaptado
+
+### Mobile muy pequeño (<380px)
+- Título aún más pequeño
+- Se oculta el tagline del nav para dar aire
+
+---
+
+## 🎨 Lo que NO se cambió
+
+- ✅ Paleta de colores (`--primary: #005187` y todos los demás)
+- ✅ Tipografía (Inter)
+- ✅ Estructura HTML de todas las páginas
+- ✅ Textos y copys
+- ✅ Imágenes
+- ✅ Iconos flotantes en la derecha (quedaron ahí, solo más pequeños en móvil)
+- ✅ Funcionalidad JS (hamburger, carruseles, modales, scroll-top)
 
 ---
 
 ## 🚀 Cómo subirlo
 
+Es **SÚPER fácil** — solo reemplazas 1 archivo.
+
 1. Descarga el ZIP
-2. Descomprime
-3. GitHub → `Odonteck` → `pages/` → `club-miembro.html`
-4. Lápiz ✏️ → Ctrl+A → Delete
-5. Abre el archivo del ZIP con Bloc de notas → Ctrl+A → Ctrl+C
+2. Descomprime → obtienes `styles.css`
+3. GitHub → repo **`Odonteck`** → click en `styles.css` en la raíz
+4. Ícono del lápiz ✏️ → Ctrl+A → Delete
+5. Abre el `styles.css` del ZIP con Bloc de notas → Ctrl+A → Ctrl+C
 6. Pega en GitHub (Ctrl+V)
-7. Commit changes
-8. Espera 1-2 min
+7. **Commit changes**
+8. Espera 1-2 min y ya
 
 ---
 
-## 🧪 Cómo probar después de subir
+## 🧪 Cómo probar
 
-**Mobile:**
-1. Abre el dashboard en tu celular (o Chrome DevTools modo mobile)
-2. Verifica:
-   - Saludo compacto y legible
-   - Card "Continúa" bien alineado
-   - 2 cursos por fila en el grid
-   - Cursos bloqueados con candado visible
-   - Banner VIP con ícono de WhatsApp completo
-3. Abre un curso → el video debe tomar toda la pantalla
+### Mobile
+1. Abre `odonteckconsulting.com` en tu celular
+2. El título ahora se ve en 2-3 líneas máximo
+3. Los botones llenan mejor el ancho
+4. Los iconos flotantes no chocan con nada
+5. Navega a Cursos, Servicios, Nosotros, Galería, Contacto — todas heredan los mismos estilos responsive
 
-**Noticias 15 días:**
-1. Como miembro, ve a "Inicio"
-2. Las noticias publicadas en los últimos 15 días se ven
-3. Las más viejas desaparecen del feed
-4. Las viejas siguen en Firestore (puedes verlas desde el admin si vas a `Noticias`)
+### Desktop
+1. Abre en navegador
+2. El hero se ve más respirado, con el título en menos líneas
+3. Redimensiona la ventana — observa cómo se adapta suavemente
+
+---
+
+## ⚠️ Si no te gusta algún ajuste
+
+Todo el bloque nuevo está al FINAL del archivo con el comentario:
+```css
+/* ═══ NUEVO v1.7 — Responsive fixes ═══ */
+```
+
+Si quieres revertir algo específico, puedes editar solo ese bloque sin afectar el resto del CSS original.

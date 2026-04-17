@@ -670,12 +670,11 @@ setInterval(() => {
   document.querySelectorAll('[data-target]').forEach(el => {
     const target = parseInt(el.dataset.target);
     const diff = target - Date.now();
-    if (diff <= 0) { location.reload(); return; }
+    if (diff <= 0) { el.style.display='none'; return; }
     const dias = Math.floor(diff/86400000);
     const hrs  = Math.floor((diff%86400000)/3600000);
     const min  = Math.floor((diff%3600000)/60000);
     const seg  = Math.floor((diff%60000)/1000);
-    const b = el.querySelector('b');
     if (dias > 0) {
       el.innerHTML = `Comienza en <b style="color:var(--pr)">${dias}d ${hrs}h ${min}m ${seg}s</b>`;
     } else {

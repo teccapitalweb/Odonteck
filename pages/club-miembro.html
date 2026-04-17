@@ -435,6 +435,24 @@
     @media(max-width:600px){.logro-toast{top:12px;right:12px;left:12px;max-width:none;transform:translateY(-200px)}.logro-toast.show{transform:translateY(0)}}
     /* ═══════════════════════════════════════════════════════════ */
 
+    /* ═══════════════════════════════════════════════════════════
+       ═══ NUEVO v1.5 — Drip content (cursos desbloqueables)    ═══
+       ═══════════════════════════════════════════════════════════ */
+    .cc.locked{position:relative;cursor:not-allowed;opacity:.78}
+    .cc.locked:hover{transform:none;box-shadow:none}
+    .cc.locked .cc-cover{filter:grayscale(.7) brightness(.75)}
+    .cc.locked .cc-cover::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,27,47,.55) 0%,rgba(13,27,47,.75) 100%);z-index:2}
+    .cc-lock-overlay{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10px;color:#fff}
+    .cc-lock-icon{width:44px;height:44px;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.35);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:6px;backdrop-filter:blur(4px)}
+    .cc-lock-days{font-size:11px;font-weight:700;background:rgba(255,255,255,.22);padding:3px 10px;border-radius:var(--rp);backdrop-filter:blur(4px);white-space:nowrap}
+    .cc-lock-date{font-size:10px;opacity:.85;margin-top:4px}
+    .btn-cc.locked{background:var(--soft);color:var(--mu);cursor:not-allowed;pointer-events:none}
+    .btn-cc.locked:hover{background:var(--soft);transform:none}
+
+    /* Banner informativo arriba de la biblioteca */
+    .drip-info{background:linear-gradient(135deg,var(--prb) 0%,#e0f2fe 100%);border:1px solid #bae6fd;border-radius:var(--ra);padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px;font-size:12.5px;color:var(--tx)}
+    .drip-info-icon{width:36px;height:36px;background:var(--pr);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+    .drip-info b{color:var(--pr)}
     /* ═══════════════════════════════════════════════════════════ */
   </style>
 </head>
@@ -676,6 +694,12 @@
   <div class="sv" id="sv-cursos">
     <div class="panel">
       <div class="ph"><span class="pt">📚 Biblioteca de cursos</span><span class="pa" id="cnt-c">Cargando...</span></div>
+      <!-- ═══ NUEVO v1.5: Banner informativo drip content ═══ -->
+      <div class="drip-info" id="dripInfo" style="display:none">
+        <div class="drip-info-icon">🔓</div>
+        <div id="dripInfoText">—</div>
+      </div>
+      <!-- ═══════════════════════════════════════════════════ -->
       <div class="tabs" id="ctabs">
         <div class="tab active" onclick="fC('todos',this)">Todos</div>
         <div class="tab" onclick="fC('cirugia',this)">Cirugía</div>
@@ -825,6 +849,135 @@ const ADMIN = 'odontckconsul@gmail.com';
 
 let _uid=null, _progresoData={};
 let allCursos=[], liveActivo=null, alertShown=false, timerID=null;
+
+// ═══════════════════════════════════════════════════════════════
+// ═══ NUEVO v1.5 — Sistema de Drip Content                    ═══
+// ═══════════════════════════════════════════════════════════════
+// Plan mensual: 1 curso disponible día 0, luego 1 curso cada 7 días
+// Plan anual: acceso total desde día 1 (sin drip)
+// Orden fijo de desbloqueo por título (de básico → avanzado)
+
+const DRIP_DIAS_INTERVALO = 7; // días entre desbloqueos
+
+// Orden fijo: básico → intermedio → avanzado
+// Match por palabras clave del título. Si se publica un curso nuevo que no está aquí,
+// va al final de la cola automáticamente (por fecha de creación).
+const DRIP_ORDEN_TITULOS = [
+  'detartraje',                // Semana 1 - básico
+  'extracciones simples',      // Semana 2 - básico
+  'diagnóstico pulpar',        // Semana 3 - urgencias
+  'restauración dental en niños', // Semana 4 - básico operatoria
+  'terapias periodontales',    // Semana 5 - intermedio
+  'manejo integral del tratamiento endodóntico', // Semana 6 - intermedio
+  'reducción de bolsas periodontales', // Semana 7 - avanzado
+  'carillas ultrafinas',       // Semana 8 - estética avanzada
+  'rehabilitación sobre implantes' // Semana 9 - experto
+];
+
+// Guarda el planTipo y planInicio del usuario actual para calcular drip
+let _planInfo = { tipo: 'mensual', inicio: null };
+
+// Ordena los cursos según DRIP_ORDEN_TITULOS (los que no matchean van al final por fecha)
+function ordenarCursosParaDrip(cursos) {
+  const indexOf = c => {
+    const t = (c.titulo || '').toLowerCase();
+    const idx = DRIP_ORDEN_TITULOS.findIndex(key => t.includes(key));
+    return idx === -1 ? 9999 : idx;
+  };
+  return [...cursos].sort((a, b) => {
+    const ia = indexOf(a), ib = indexOf(b);
+    if (ia !== ib) return ia - ib;
+    // Desempate por fecha de creación (más viejo primero)
+    const ta = a.creadoEn?.toDate?.()?.getTime() || 0;
+    const tb = b.creadoEn?.toDate?.()?.getTime() || 0;
+    return ta - tb;
+  });
+}
+
+// Calcula cuántos cursos están desbloqueados según el plan
+function cursosDesbloqueadosCount(planTipo, planInicio, totalCursos) {
+  if (planTipo === 'anual') return totalCursos; // Anual: todo desbloqueado
+  if (!planInicio) return 1;                     // Sin fecha: solo el primero
+  const inicio = new Date(planInicio);
+  const ahora = new Date();
+  const diasDesdePago = Math.floor((ahora - inicio) / 86400000);
+  const desbloqueados = 1 + Math.floor(diasDesdePago / DRIP_DIAS_INTERVALO);
+  return Math.min(desbloqueados, totalCursos);
+}
+
+// Calcula cuándo se desbloquea el curso en posición N (0-indexed)
+function fechaDesbloqueo(planInicio, posicion) {
+  if (!planInicio) return null;
+  const inicio = new Date(planInicio);
+  const fecha = new Date(inicio.getTime() + (posicion * DRIP_DIAS_INTERVALO * 86400000));
+  return fecha;
+}
+
+// Formatea "Se desbloquea en X días" o "el Y de Z"
+function textoDesbloqueo(fecha) {
+  if (!fecha) return 'Se desbloquea pronto';
+  const ahora = new Date();
+  const diffMs = fecha - ahora;
+  const dias = Math.ceil(diffMs / 86400000);
+  if (dias <= 0) return 'Ya disponible';
+  if (dias === 1) return 'Se desbloquea mañana';
+  if (dias <= 7) return `Se desbloquea en ${dias} días`;
+  return `Se desbloquea el ${fecha.toLocaleDateString('es-MX', { day:'numeric', month:'short' })}`;
+}
+
+// Enriquece cursos con info de desbloqueo según el plan del usuario
+function enriquecerCursosConDrip(cursos) {
+  const ordenados = ordenarCursosParaDrip(cursos);
+  const total = ordenados.length;
+  const desbloqueados = cursosDesbloqueadosCount(_planInfo.tipo, _planInfo.inicio, total);
+
+  return ordenados.map((c, idx) => {
+    const estaDesbloqueado = idx < desbloqueados;
+    let fechaDesb = null, textoDesb = '';
+    if (!estaDesbloqueado) {
+      fechaDesb = fechaDesbloqueo(_planInfo.inicio, idx);
+      textoDesb = textoDesbloqueo(fechaDesb);
+    }
+    return {
+      ...c,
+      _drip: {
+        posicion: idx,
+        desbloqueado: estaDesbloqueado,
+        fechaDesbloqueo: fechaDesb,
+        textoDesbloqueo: textoDesb
+      }
+    };
+  });
+}
+
+// Actualiza el banner informativo en la parte superior de cursos
+function actualizarBannerDrip() {
+  const banner = document.getElementById('dripInfo');
+  const texto  = document.getElementById('dripInfoText');
+  if (!banner || !texto) return;
+
+  if (_planInfo.tipo === 'anual') {
+    // Plan anual: ocultar banner (tiene todo)
+    banner.style.display = 'none';
+    return;
+  }
+
+  const total = allCursos.length;
+  if (!total) { banner.style.display = 'none'; return; }
+
+  const desbloqueados = cursosDesbloqueadosCount('mensual', _planInfo.inicio, total);
+  const faltantes = total - desbloqueados;
+
+  if (faltantes === 0) {
+    texto.innerHTML = `¡Tienes acceso a <b>todos los ${total} cursos</b> del club! 🎉`;
+  } else {
+    const proximaFecha = fechaDesbloqueo(_planInfo.inicio, desbloqueados);
+    const diasProx = proximaFecha ? Math.ceil((proximaFecha - new Date()) / 86400000) : 7;
+    texto.innerHTML = `Llevas <b>${desbloqueados} de ${total} cursos</b> desbloqueados · Próximo curso ${diasProx <= 1 ? 'mañana' : `en ${diasProx} días`} 🔓`;
+  }
+  banner.style.display = 'flex';
+}
+// ═══════════════════════════════════════════════════════════════
 
 // ═══════════════════════════════════════════════════════════════
 // ═══ NUEVO v1.3 — MEJORAS ENGAGEMENT                         ═══
@@ -1166,6 +1319,13 @@ onAuthStateChanged(auth, async user => {
   document.getElementById('s-plan').textContent=pName;
   document.getElementById('s-inicio').textContent=pIni?pIni.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'}):'—';
 
+  // ═══ NUEVO v1.5: Setup drip content según el plan ═══
+  _planInfo.tipo   = user.email === ADMIN ? 'anual' : pTipo; // Admin siempre ve todo
+  _planInfo.inicio = data.planInicio || null;
+  // Re-renderizar cursos con la info correcta del plan
+  if (allCursos.length) { renderCursos(allCursos); actualizarBannerDrip(); }
+  // ═══════════════════════════════════════════════════
+
   if(user.email===ADMIN){document.getElementById('sbpv').textContent='Acceso permanente';document.getElementById('subLbl').textContent='Fundador';document.getElementById('s-vence').textContent='Permanente';document.getElementById('s-estado').textContent='✓ Activo';document.getElementById('btnCancel').style.display='none';return;}
 
   if(pVence){
@@ -1263,13 +1423,45 @@ function rRecent(arr){const el=document.getElementById('reclist');if(!arr.length
 function renderCursos(arr){
   const el=document.getElementById('cgrid');if(!el)return;
   if(!arr.length){el.innerHTML=`<div class="empty" style="grid-column:1/-1"><span>📚</span><p>Los cursos aparecerán aquí cuando se publiquen.</p></div>`;return;}
-  el.innerHTML=arr.map(c=>{
+  // ═══ NUEVO v1.5: enriquecer con info de drip ═══
+  const enriquecidos = enriquecerCursosConDrip(arr);
+  actualizarBannerDrip();
+  el.innerHTML=enriquecidos.map(c=>{
     const badge=c.badge?`<span class="cc-badge cb-${c.badge}">${c.badgeLabel||c.badge}</span>`:'';
     const prog=calcProgreso(c);
     const pct=prog.pct;
     const btn=pct===100?'🏆 Completado':pct>0?'▶ Continuar':'▶ Comenzar curso';
     const cJ=JSON.stringify(c).replace(/"/g,"'");
     const coverBg=!c.imagen?'background:linear-gradient(135deg,var(--pr),var(--pr2));display:flex;align-items:center;justify-content:center;':'';
+    const bloqueado = !c._drip.desbloqueado;
+    // ═══ NUEVO v1.5: render card bloqueada ═══
+    if (bloqueado) {
+      const fechaStr = c._drip.fechaDesbloqueo
+        ? c._drip.fechaDesbloqueo.toLocaleDateString('es-MX',{day:'numeric',month:'short'})
+        : '';
+      return `<div class="cc locked" onclick="mostrarInfoBloqueado('${esc(c._drip.textoDesbloqueo)}')">
+        <div class="cc-cover" style="${coverBg}">
+          ${c.imagen?`<img src="${c.imagen}" alt="">`:''}
+          ${!c.imagen?`<span style="font-size:48px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.2))">${c.emoji||'🦷'}</span>`:''}
+          <div class="cc-lock-overlay">
+            <div class="cc-lock-icon"><i class="fa-solid fa-lock"></i></div>
+            <div class="cc-lock-days">${c._drip.textoDesbloqueo}</div>
+            ${fechaStr?`<div class="cc-lock-date">${fechaStr}</div>`:''}
+          </div>
+        </div>
+        <div class="cc-body">
+          <div class="cc-title">${esc(c.titulo)}</div>
+          <div class="cc-meta">${esc(c.instructor||'')} · ${esc(c.duracion||'')}</div>
+          <div class="cc-stats">
+            <span><i class="fa-solid fa-layer-group" style="font-size:10px"></i>${c.totalModulos||0} módulos</span>
+            <span><i class="fa-solid fa-play-circle" style="font-size:10px"></i>${c.totalClases||0} clases</span>
+          </div>
+          <div class="cc-pl">🔒 ${c._drip.textoDesbloqueo}</div>
+          <button class="btn-cc locked"><i class="fa-solid fa-lock"></i> Próximamente</button>
+        </div>
+      </div>`;
+    }
+    // ═══ Render normal (curso disponible) ═══
     return `<div class="cc" onclick="openCurso(${cJ})">
       <div class="cc-cover" style="${coverBg}">
         ${c.imagen?`<img src="${c.imagen}" alt="">`:''}
@@ -1290,6 +1482,17 @@ function renderCursos(arr){
     </div>`;
   }).join('');
 }
+
+// ═══ NUEVO v1.5: Mensaje al hacer clic en curso bloqueado ═══
+window.mostrarInfoBloqueado = function(texto) {
+  // Toast nativo discreto
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--tx);color:#fff;padding:12px 22px;border-radius:var(--rp);font-size:13px;font-weight:600;z-index:10000;box-shadow:0 8px 30px rgba(0,0,0,.25);opacity:0;transition:opacity .3s';
+  t.innerHTML = `🔒 ${texto}. ¡Mantén tu racha para acceder!`;
+  document.body.appendChild(t);
+  setTimeout(() => t.style.opacity = '1', 50);
+  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 2800);
+};
 
 function calcProgreso(curso){
   const p=_progresoData[curso.id]||{};
@@ -1362,6 +1565,20 @@ let _cursoActual=null, _claseActual={mi:-1,ci:-1};
 
 window.openCurso = function(c) {
   if(typeof c==='string')c=JSON.parse(c.replace(/'/g,'"'));
+  // ═══ NUEVO v1.5: Verificar que el curso no esté bloqueado por drip ═══
+  // Hacemos re-check fresco, no confiamos en el _drip del card (por si pasó tiempo)
+  if (_planInfo.tipo === 'mensual' && _planInfo.inicio && allCursos.length) {
+    const ordenados = ordenarCursosParaDrip(allCursos);
+    const total = ordenados.length;
+    const desbloqueados = cursosDesbloqueadosCount('mensual', _planInfo.inicio, total);
+    const posicion = ordenados.findIndex(x => x.id === c.id);
+    if (posicion >= 0 && posicion >= desbloqueados) {
+      const fecha = fechaDesbloqueo(_planInfo.inicio, posicion);
+      const texto = textoDesbloqueo(fecha);
+      if (window.mostrarInfoBloqueado) window.mostrarInfoBloqueado(texto);
+      return;
+    }
+  }
   _cursoActual=c;
   const prog=calcProgreso(c);
   document.getElementById('co-title').textContent=c.titulo||'Curso';

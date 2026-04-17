@@ -1,155 +1,112 @@
-# Cambios v1.4 — Gestión de miembros + Logros
+# Cambios v1.5 — Drip Content (retención de usuarios)
 
-**Archivos modificados:**
-- `pages/admin-club.html` → mejoras en gestión de miembros y botón editar
-- `pages/club-miembro.html` → sistema de logros/badges
+**Archivo modificado:** `pages/club-miembro.html`
 
-**Lo que NO se tocó:** Paleta de colores, tipografía (Inter + #005187), estructura, funcionalidad existente.
-
----
-
-## 🎯 PARTE 1 — ADMIN (`pages/admin-club.html`)
-
-### 🔍 Buscador y filtros en Miembros
-- Input para buscar por **nombre o email**
-- 5 filtros con contadores automáticos:
-  - **Todos** — todos los miembros
-  - **Activos** — plan vigente y más de 7 días restantes
-  - **Por vencer** — plan vence en ≤7 días
-  - **Cancelados** — miembros que cancelaron
-  - **Vencidos** — ya pasaron los 3 días de tolerancia
-
-### 📊 Exportar CSV
-Botón verde que descarga un CSV con **11 columnas**: Nombre, Email, Teléfono, Especialidad, Plan, Inicio, Vence, Racha, Estado, Monto último pago, Shopify Order ID.
-
-Nombre del archivo: `miembros-odonteck-YYYY-MM-DD.csv`
-
-### 🔥 Columna Racha
-Se ve la racha de cada miembro (el campo que creamos en v1.3). Emoji cambia según racha:
-- 0 días → `·`
-- 1-6 días → `✨`
-- 7+ días → `🔥`
-
-### 👤 Modal de detalle del miembro
-Click en cualquier fila → modal con:
-- Plan, fecha inicio, fecha vencimiento (con "en X días")
-- Racha actual
-- Teléfono y especialidad (si los tiene)
-- Última clase abierta
-- **Historial completo de pagos** con fechas y montos
-- Cantidad de logros desbloqueados
-
-### ✏️ Botón Editar en items
-En noticias, videos, PDFs y lives aparece botón **Editar** junto al de Eliminar:
-- Click → carga los datos en el formulario de esa sección
-- Banner naranja "Editando: [título]" con botón Cancelar
-- Al guardar, hace UPDATE en lugar de CREATE (mantiene el ID y la fecha de creación)
-
-**Nota:** Cursos no tienen botón editar todavía porque tienen estructura compleja de módulos. Si lo necesitas, podemos agregarlo después.
+**Lo que NO se tocó:**
+- Admin panel (sigue igual)
+- Backend / webhook (sigue igual)
+- Diseño, colores, tipografía
+- Firestore schema (no se añaden campos nuevos)
 
 ---
 
-## 🏅 PARTE 2 — CLUB MIEMBRO (`pages/club-miembro.html`)
+## 🎯 Qué hace
 
-### 🎮 Sistema de logros (6 logros)
+Sistema de **contenido goteado** para retener usuarios del plan mensual.
 
-| Emoji | Nombre | Cómo se desbloquea |
-|-------|--------|---------------------|
-| 🎯 | **Primer paso** | Abrir la primera clase |
-| 🔥 | **Semana perfecta** | Alcanzar 7 días de racha |
-| 📚 | **Estudioso** | Completar 10 clases |
-| 🏆 | **Maestro** | Completar un curso al 100% |
-| 🌟 | **Leyenda** | Alcanzar 30 días de racha |
-| 📅 | **Constante** | Completar 50 clases |
+### Plan Mensual ($199)
+- **Día 0** (al pagar): solo 1 curso desbloqueado
+- **Cada 7 días**: se desbloquea 1 curso nuevo automáticamente
+- **9 cursos × 7 días = 63 días** (~2 meses de contenido)
+- Los cursos bloqueados se ven con 🔒 candado + texto "Se desbloquea en X días"
 
-### 🎉 Toast animado al desbloquear
-Cuando el doctor desbloquea uno:
-- Toast dorado aparece arriba a la derecha con animación de rebote
-- Emoji gigante girando
-- "¡Logro desbloqueado!" + nombre + descripción
-- Se dispara confeti breve
-- Se queda 2.4 segundos y desaparece solo
+### Plan Anual ($1,788)
+- **Acceso TOTAL** desde el día 1
+- Sin banner de drip, sin bloqueos
+- Premium real
 
-### 🏅 Sección "Mis logros" en el Perfil
-En la pestaña Perfil aparece:
-- Grid con los 6 badges
-- **Desbloqueados:** fondo dorado, emoji a todo color, fecha de desbloqueo
-- **Bloqueados:** grises con candado 🔒
-- Barra de progreso: "X de 6 desbloqueados"
+### Admin (email `odontckconsul@gmail.com`)
+- Acceso total siempre (tratado como anual)
 
 ---
 
-## 📊 Datos nuevos en Firestore
+## 📋 Orden de desbloqueo (básico → avanzado)
 
-Nuevos campos en `miembros/{uid}`:
+| Semana | Día | Curso | Nivel |
+|--------|-----|-------|-------|
+| 1 | 0 | Técnicas de Detartraje y Profilaxis | Básico |
+| 2 | 7 | Extracciones Simples | Básico |
+| 3 | 14 | Diagnóstico Pulpar (Urgencias) | Intermedio |
+| 4 | 21 | Restauración Dental en Niños | Intermedio |
+| 5 | 28 | Terapias Periodontales No Quirúrgicas | Intermedio |
+| 6 | 35 | Manejo Integral Endodóntico | Intermedio |
+| 7 | 42 | Reducción de Bolsas Periodontales | Avanzado |
+| 8 | 49 | Carillas Ultrafinas | Avanzado |
+| 9 | 56 | Rehabilitación sobre Implantes | Experto |
 
-```js
-{
-  // ...campos existentes intactos...
-
-  // v1.3 (ya estaban)
-  rachaDias: 12,
-  ultimoAcceso: "2026-04-16",
-  ultimaClase: { ... },
-
-  // v1.4 NUEVOS
-  logrosDesbloqueados: ['primer_paso', 'semana_perfecta'],
-  logrosFechas: {
-    'primer_paso': '2026-04-16T14:22:00.000Z',
-    'semana_perfecta': '2026-04-23T09:15:00.000Z'
-  },
-  clasesCompletadas: 15,   // contador global de clases marcadas completas
-  cursosCompletados: 2     // contador global de cursos al 100%
-}
-```
-
-**Si no existen** (miembros viejos) → se inicializan en 0/vacío y todo funciona normal.
+**Si publicas cursos nuevos** que no estén en esa lista → van al final de la cola automáticamente (por fecha de creación).
 
 ---
 
-## ⚠️ Importante
+## 🎨 Qué ve el usuario
 
-- **Zero cambios destructivos.** Todo lo existente sigue funcionando igual.
-- **Campos viejos intactos** (`planActivo`, `planVence`, `progresoCursos`, etc.)
-- **Sin librerías externas.** Todo es CSS/JS puro.
-- Los cambios están marcados con `═══ NUEVO v1.4 ═══` en el código.
+### Banner arriba de la biblioteca
+> 🔓 Llevas **3 de 9 cursos** desbloqueados · Próximo curso en 4 días
+
+### Card bloqueada
+- Imagen con filtro gris/oscurecido
+- Candado 🔒 en el centro
+- Texto "Se desbloquea en X días" o "el 23 de abril"
+- Botón "Próximamente" deshabilitado
+- Al hacer clic → toast discreto: "🔒 Se desbloquea en X días. ¡Mantén tu racha para acceder!"
+
+### Card desbloqueada
+- Igual que antes, sin cambios
+
+---
+
+## 🔐 Seguridad del drip
+
+**Doble protección:**
+1. **Visual**: las cards bloqueadas se ven con candado
+2. **Funcional**: `openCurso()` verifica antes de abrir — aunque alguien haga click programáticamente, no pasa
+
+**No es impenetrable al 100%:** un usuario técnico podría abrir DevTools y saltarse la validación JS (no hay enforcement en Firestore rules). Si en el futuro quieres cerrar esta puerta, habría que agregar reglas de Firestore que validen `planInicio` en el cliente. Pero para 99% de usuarios con la validación JS es suficiente.
+
+---
+
+## ⚠️ Consideraciones importantes
+
+### Para tu cuenta de testing
+Si tu cuenta tiene `planInicio` reciente (ej. hoy), verás solo 1 curso desbloqueado. Si tu email es el ADMIN (`odontckconsul@gmail.com`) → verás todos.
+
+### Si alguien cancela y vuelve a pagar
+El `planInicio` se actualiza con el nuevo pago → el contador empieza de cero. Esto puede ser bueno (retiene de nuevo) o malo (el usuario reclamará que perdió cursos). **Decide tu política** y avísame si quieres que sea de otra forma.
+
+### Plan anual
+Detecta el campo `planTipo === 'anual'` de Firestore. Como el backend actual detecta el plan por el título del producto Shopify (`includes('anual')`), asegúrate de que el producto anual tenga la palabra "anual" en su nombre.
 
 ---
 
 ## 🚀 Cómo subirlo
 
-### Opción A — Reemplazar los 2 archivos
-
-1. Descarga el ZIP y descomprime
+1. Descarga ZIP
 2. GitHub → repo `Odonteck` → carpeta `pages/`
-3. Borra o sobrescribe `admin-club.html` y `club-miembro.html`
-4. Sube los 2 archivos nuevos del ZIP (dentro de la carpeta `pages/`)
-5. Commit & push
-6. GitHub Pages redeploya solo en 1-2 minutos
-
-### Opción B — Editar uno por uno
-
-1. Abre `pages/admin-club.html` en GitHub → ícono lápiz ✏️
-2. Selecciona todo (Ctrl+A) → pega el nuevo contenido
-3. Commit
-4. Mismo proceso con `pages/club-miembro.html`
+3. Click en `club-miembro.html` → lápiz ✏️
+4. Ctrl+A → Delete
+5. Copia todo el contenido del archivo del ZIP → pégalo
+6. Commit changes
+7. Listo (redeploy automático en 1-2 min)
 
 ---
 
-## 🧪 Cómo probar
+## 🧪 Cómo probar después de subirlo
 
-### Admin
-- Entra al panel admin
-- Ve a pestaña "Miembros"
-- Prueba buscador escribiendo un email parcial
-- Haz clic en los filtros y mira cómo cambian los contadores
-- Click en un miembro → se abre el modal con su detalle
-- Click en "Exportar CSV" → descarga el archivo
-- Ve a Noticias, haz clic en "Editar" sobre alguna → verifica que el form se llene y que al guardar se actualice en lugar de duplicarse
-
-### Club miembro
-- Entra como miembro
-- Ve a pestaña "Mi perfil"
-- Deberías ver la sección "🏅 Mis logros" con algunos ya desbloqueados (según tu actividad)
-- Marca una clase como completada → confeti + si es la décima → toast "¡Estudioso desbloqueado!"
-- Si llevas 7+ días entrando → al entrar hoy, toast "¡Semana perfecta!"
+1. Entra como miembro al dashboard
+2. Ve a "Biblioteca de cursos"
+3. Si tu `planInicio` es reciente verás:
+   - Solo 1-2 cursos desbloqueados
+   - El resto con candado 🔒 y "Se desbloquea en X días"
+   - Banner azul arriba con tu progreso
+4. Haz clic en un curso bloqueado → toast con mensaje
+5. Si eres admin → todos desbloqueados (banner oculto)

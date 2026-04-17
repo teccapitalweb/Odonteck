@@ -326,8 +326,17 @@
     .empty span{display:block;font-size:26px;margin-bottom:5px}
     @keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
     @media(max-width:1100px){.g2{grid-template-columns:1fr}.rcol{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.curso-layout{grid-template-columns:1fr}}
-    @media(max-width:800px){.shell{grid-template-columns:1fr}.sb{display:none}.main{padding:1.2rem}}
+    @media(max-width:800px){.shell{grid-template-columns:1fr}.sb{display:none}.main{padding:1rem 0.8rem 80px}}
     @media(max-width:500px){.rcol{grid-template-columns:1fr!important}.cgrid{grid-template-columns:1fr}.curso-right{display:none}}
+
+    /* ── BOTTOM NAV MÓVIL ── */
+    .mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--tx);z-index:7000;padding:6px 0 env(safe-area-inset-bottom);border-top:1px solid rgba(255,255,255,.1)}
+    .mob-nav-inner{display:grid;grid-template-columns:repeat(5,1fr)}
+    .mob-nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;background:none;border:none;cursor:pointer;font-family:inherit;color:rgba(255,255,255,.5);font-size:9px;font-weight:600;letter-spacing:.03em;transition:.15s}
+    .mob-nav-btn i{font-size:17px}
+    .mob-nav-btn.active{color:#fff}
+    .mob-nav-btn.active i{color:var(--pr-light, #7dd3fc)}
+    @media(max-width:800px){.mob-nav{display:block}}
   </style>
 </head>
 <body>
@@ -1282,8 +1291,30 @@ function esc(s){const d=document.createElement('div');d.textContent=String(s||''
 
 <script>
 window.go=(id,el)=>{document.querySelectorAll('.sv').forEach(s=>s.classList.remove('active'));document.getElementById('sv-'+id).classList.add('active');document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));if(el)el.classList.add('active');};
+window.setMobActive=(el)=>{document.querySelectorAll('.mob-nav-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');};
 const M=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],D=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],h=new Date();
 document.getElementById('fhoy').textContent=D[h.getDay()]+' '+h.getDate()+' de '+M[h.getMonth()]+', '+h.getFullYear();
 </script>
+<!-- BOTTOM NAV MÓVIL -->
+<nav class="mob-nav">
+  <div class="mob-nav-inner">
+    <button class="mob-nav-btn active" onclick="go('inicio',this);setMobActive(this)">
+      <i class="fa-solid fa-house"></i>Inicio
+    </button>
+    <button class="mob-nav-btn" onclick="go('cursos',this);setMobActive(this)">
+      <i class="fa-solid fa-book-open"></i>Cursos
+    </button>
+    <button class="mob-nav-btn" onclick="go('lives',this);setMobActive(this)">
+      <i class="fa-regular fa-circle-dot"></i>Lives
+    </button>
+    <button class="mob-nav-btn" onclick="go('videos',this);setMobActive(this)">
+      <i class="fa-solid fa-video"></i>Videos
+    </button>
+    <button class="mob-nav-btn" onclick="go('pdfs',this);setMobActive(this)">
+      <i class="fa-solid fa-file-pdf"></i>PDFs
+    </button>
+  </div>
+</nav>
+
 </body>
 </html>

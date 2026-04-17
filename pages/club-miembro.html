@@ -32,9 +32,14 @@
     .btn-al{display:block;margin-top:8px;padding:6px;background:var(--pr);color:white;font-size:11px;font-weight:700;border-radius:7px;text-align:center}
 
     /* ══ MODAL CURSO (pantalla completa tipo Platzi) ══ */
-    .curso-overlay{position:fixed;inset:0;background:var(--bg);z-index:8000;display:none;flex-direction:column;overflow-y:auto}
+    .curso-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:8000;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
     .curso-overlay.show{display:flex}
-    .curso-topbar{background:var(--tx);padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:10;flex-shrink:0}
+    .curso-topbar{background:var(--pr);padding:14px 20px;display:flex;align-items:center;gap:16px;flex-shrink:0;border-radius:12px 12px 0 0}
+    .curso-back{color:#fff!important}
+    .curso-topbar-title{color:#fff!important}
+    .curso-layout{display:grid;grid-template-columns:280px 1fr;width:min(1100px,95vw);max-height:88vh;border-radius:0 0 12px 12px;overflow:hidden;background:var(--bg);box-shadow:0 25px 60px rgba(0,0,0,.5)}
+    .curso-left{display:flex;flex-direction:column;overflow-y:auto;order:2}
+    .curso-right{border-left:none;border-right:1px solid var(--ln);background:var(--sur);overflow-y:auto;display:flex;flex-direction:column;order:1}
     .curso-back{color:rgba(255,255,255,.7);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:color .15s}
     .curso-back:hover{color:white}
     .curso-topbar-title{font-size:14px;font-weight:700;color:white;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -345,7 +350,8 @@
 </div>
 
 <!-- ══ VISOR DE CURSO (pantalla completa) ══ -->
-<div class="curso-overlay" id="cursoOverlay">
+<div class="curso-overlay" id="cursoOverlay" onclick="if(event.target===this)closeCurso()">
+  <div style="width:min(1100px,95vw);display:flex;flex-direction:column;max-height:88vh">
   <div class="curso-topbar">
     <div class="curso-back" onclick="closeCurso()"><i class="fa-solid fa-arrow-left"></i> Mis cursos</div>
     <div class="curso-topbar-title" id="co-title">—</div>
@@ -389,8 +395,8 @@
       </div>
       <div id="cr-modulos"></div>
     </div>
-  </div>
-</div>
+  </div><!-- /wrapper -->
+</div><!-- /cursoOverlay -->
 
 <div class="shell">
 <!-- SIDEBAR -->

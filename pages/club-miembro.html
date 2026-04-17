@@ -688,13 +688,6 @@
 </main>
 </div>
 
-<!-- WA FLOTANTE -->
-<a href="https://wa.me/5212381479365?text=Hola%2C%20soy%20miembro%20del%20Club%20Dental" target="_blank"
-   style="position:fixed;bottom:20px;right:20px;z-index:6000;background:#16a34a;border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(22,163,74,.36);transition:transform .2s"
-   onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.138.563 4.14 1.535 5.874L0 24l6.29-1.508A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.814 9.814 0 01-5.058-1.4l-.361-.214-3.735.896.944-3.653-.235-.374A9.817 9.817 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
-</a>
-
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getFirestore, collection, onSnapshot, orderBy, query, where, limit, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
@@ -1292,6 +1285,9 @@ function esc(s){const d=document.createElement('div');d.textContent=String(s||''
 <script>
 window.go=(id,el)=>{document.querySelectorAll('.sv').forEach(s=>s.classList.remove('active'));document.getElementById('sv-'+id).classList.add('active');document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));if(el)el.classList.add('active');};
 window.setMobActive=(el)=>{document.querySelectorAll('.mob-nav-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');};
+window.setMobActiveById=(id)=>{document.querySelectorAll('.mob-nav-btn').forEach(b=>b.classList.remove('active'));};
+window.toggleMobMenu=(el)=>{const m=document.getElementById('mobMenu');m.style.display=m.style.display==='none'?'block':'none';setMobActive(el);};
+window.closeMobMenu=()=>{document.getElementById('mobMenu').style.display='none';};
 const M=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],D=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],h=new Date();
 document.getElementById('fhoy').textContent=D[h.getDay()]+' '+h.getDate()+' de '+M[h.getMonth()]+', '+h.getFullYear();
 </script>
@@ -1310,11 +1306,27 @@ document.getElementById('fhoy').textContent=D[h.getDay()]+' '+h.getDate()+' de '
     <button class="mob-nav-btn" onclick="go('videos',this);setMobActive(this)">
       <i class="fa-solid fa-video"></i>Videos
     </button>
-    <button class="mob-nav-btn" onclick="go('pdfs',this);setMobActive(this)">
-      <i class="fa-solid fa-file-pdf"></i>PDFs
+    <button class="mob-nav-btn" onclick="toggleMobMenu(this)">
+      <i class="fa-solid fa-ellipsis"></i>Más
     </button>
   </div>
 </nav>
+
+<!-- MENÚ MÁS (móvil) -->
+<div id="mobMenu" style="display:none;position:fixed;bottom:65px;left:0;right:0;background:var(--tx);z-index:6999;border-top:1px solid rgba(255,255,255,.1);padding:8px 0">
+  <button onclick="go('perfil',null);closeMobMenu();setMobActiveById('perfil')" style="width:100%;display:flex;align-items:center;gap:14px;padding:14px 20px;background:none;border:none;color:rgba(255,255,255,.85);font-size:14px;font-family:inherit;cursor:pointer;text-align:left">
+    <i class="fa-regular fa-user" style="width:20px;font-size:16px"></i> Mi perfil
+  </button>
+  <button onclick="go('suscripcion',null);closeMobMenu();setMobActiveById('suscripcion')" style="width:100%;display:flex;align-items:center;gap:14px;padding:14px 20px;background:none;border:none;color:rgba(255,255,255,.85);font-size:14px;font-family:inherit;cursor:pointer;text-align:left">
+    <i class="fa-solid fa-crown" style="width:20px;font-size:16px"></i> Suscripción
+  </button>
+  <button onclick="go('config',null);closeMobMenu();setMobActiveById('config')" style="width:100%;display:flex;align-items:center;gap:14px;padding:14px 20px;background:none;border:none;color:rgba(255,255,255,.85);font-size:14px;font-family:inherit;cursor:pointer;text-align:left">
+    <i class="fa-solid fa-sliders" style="width:20px;font-size:16px"></i> Configuración
+  </button>
+  <button onclick="doLogout()" style="width:100%;display:flex;align-items:center;gap:14px;padding:14px 20px;background:none;border:none;color:rgba(255,100,100,.8);font-size:14px;font-family:inherit;cursor:pointer;text-align:left;border-top:1px solid rgba(255,255,255,.07)">
+    <i class="fa-solid fa-right-from-bracket" style="width:20px;font-size:16px"></i> Cerrar sesión
+  </button>
+</div>
 
 </body>
 </html>

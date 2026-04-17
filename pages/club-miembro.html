@@ -402,6 +402,39 @@
     .streak-mini{margin-top:8px;padding:8px 11px;background:rgba(255,255,255,.05);border-radius:10px;font-size:11px;color:rgba(255,255,255,.75);display:flex;align-items:center;gap:7px}
     .streak-mini .num{font-weight:800;color:#fff}
 
+    /* ═══════════════════════════════════════════════════════════
+       ═══ NUEVO v1.4 — Sistema de logros (badges)              ═══
+       ═══════════════════════════════════════════════════════════ */
+    .logros-wrap{display:flex;flex-direction:column;gap:14px}
+    .logros-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+    .logros-prog-wrap{height:6px;background:var(--soft);border-radius:var(--rp);overflow:hidden;margin-top:6px}
+    .logros-prog-fill{height:100%;background:linear-gradient(90deg,var(--pr) 0%,#ffb800 50%,#f59e0b 100%);transition:width .6s cubic-bezier(.4,0,.2,1);border-radius:var(--rp)}
+    .logros-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px}
+    .logro{background:var(--soft);border:1px solid var(--ln);border-radius:var(--ra);padding:14px 10px;text-align:center;position:relative;transition:transform .2s,box-shadow .2s;cursor:default;overflow:hidden}
+    .logro:hover{transform:translateY(-2px)}
+    .logro.unlocked{background:linear-gradient(135deg,#fffbeb 0%,#fef3c7 100%);border-color:#fcd34d;box-shadow:0 4px 14px rgba(245,158,11,.18)}
+    .logro.unlocked:hover{box-shadow:0 8px 22px rgba(245,158,11,.28)}
+    .logro-emoji{font-size:30px;margin-bottom:6px;display:block;filter:grayscale(1);opacity:.38;transition:filter .4s,opacity .4s,transform .4s}
+    .logro.unlocked .logro-emoji{filter:none;opacity:1;animation:logroReveal .6s cubic-bezier(.175,.885,.32,1.275)}
+    @keyframes logroReveal{0%{transform:scale(.3) rotate(-20deg);opacity:0}60%{transform:scale(1.15) rotate(5deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+    .logro-name{font-size:11px;font-weight:700;color:var(--tx);line-height:1.2;margin-bottom:2px}
+    .logro.locked .logro-name{color:var(--mu)}
+    .logro-desc{font-size:9.5px;color:var(--mu);line-height:1.3;margin-top:3px}
+    .logro-fecha{font-size:9px;color:var(--am);font-weight:700;margin-top:4px}
+    .logro-lock{position:absolute;top:6px;right:6px;font-size:9px;color:var(--mu);opacity:.5}
+    .logro.unlocked .logro-lock{display:none}
+
+    /* Toast de logro desbloqueado */
+    .logro-toast{position:fixed;top:20px;right:20px;background:linear-gradient(135deg,#fffbeb 0%,#fef3c7 100%);border:1.5px solid #fcd34d;border-radius:var(--ra);padding:14px 18px 14px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 10px 30px rgba(245,158,11,.3);z-index:10001;transform:translateX(400px);transition:transform .5s cubic-bezier(.175,.885,.32,1.275);max-width:340px}
+    .logro-toast.show{transform:translateX(0)}
+    .logro-toast-emoji{font-size:34px;flex-shrink:0;animation:bounceIn .7s cubic-bezier(.175,.885,.32,1.275)}
+    @keyframes bounceIn{0%{transform:scale(0) rotate(-180deg)}60%{transform:scale(1.2) rotate(10deg)}100%{transform:scale(1) rotate(0)}}
+    .logro-toast-label{font-size:10px;font-weight:800;color:#b45309;text-transform:uppercase;letter-spacing:.06em;margin-bottom:1px}
+    .logro-toast-name{font-size:14px;font-weight:800;color:#78350f;line-height:1.2}
+    .logro-toast-desc{font-size:11px;color:#92400e;margin-top:2px}
+    @media(max-width:600px){.logro-toast{top:12px;right:12px;left:12px;max-width:none;transform:translateY(-200px)}.logro-toast.show{transform:translateY(0)}}
+    /* ═══════════════════════════════════════════════════════════ */
+
     /* ═══════════════════════════════════════════════════════════ */
   </style>
 </head>
@@ -709,6 +742,17 @@
             <div style="background:var(--soft);border-radius:11px;padding:12px"><div style="font-size:20px;font-weight:800;color:var(--gn)" id="a-l">0</div><div style="font-size:11px;color:var(--mu)">Lives</div></div>
           </div>
         </div>
+        <!-- ═══ NUEVO v1.4: Sistema de logros ═══ -->
+        <div class="panel">
+          <div class="logros-header">
+            <span class="pt">🏅 Mis logros</span>
+            <span style="font-size:12px;color:var(--mu);font-weight:600"><span id="logros-cnt">0</span> de <span id="logros-total">6</span> desbloqueados</span>
+          </div>
+          <div class="logros-prog-wrap"><div class="logros-prog-fill" id="logros-prog" style="width:0%"></div></div>
+          <br>
+          <div class="logros-grid" id="logros-grid"></div>
+        </div>
+        <!-- ═══════════════════════════════════════ -->
         <div class="panel">
           <div class="ph"><span class="pt">🔐 Seguridad</span></div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 11px;background:var(--soft);border-radius:11px">
@@ -834,6 +878,8 @@ async function actualizarRacha(uid, data) {
     if (racha >= 7) pill.classList.add('hot');
     pill.style.display = 'inline-flex';
   }
+  // ═══ NUEVO v1.4: si se desbloqueó logro de racha, verificar ═══
+  if (racha >= 7) setTimeout(() => refrescarYVerificarLogros(), 600);
   return racha;
 }
 
@@ -904,6 +950,119 @@ window.lanzarConfeti = function() {
   document.body.appendChild(layer);
   setTimeout(() => layer.remove(), 4200);
 };
+
+// ═══════════════════════════════════════════════════════════════
+// ═══ NUEVO v1.4 — Sistema de logros                          ═══
+// ═══════════════════════════════════════════════════════════════
+const LOGROS = [
+  { id: 'primer_paso',      emoji: '🎯', nombre: 'Primer paso',      desc: 'Abre tu primera clase' },
+  { id: 'semana_perfecta',  emoji: '🔥', nombre: 'Semana perfecta',  desc: '7 días de racha seguidos' },
+  { id: 'estudioso',        emoji: '📚', nombre: 'Estudioso',        desc: 'Completa 10 clases' },
+  { id: 'maestro',          emoji: '🏆', nombre: 'Maestro',          desc: 'Completa un curso al 100%' },
+  { id: 'leyenda',          emoji: '🌟', nombre: 'Leyenda',          desc: '30 días de racha' },
+  { id: 'constante',        emoji: '📅', nombre: 'Constante',        desc: '50 clases completadas' }
+];
+
+// Chequea cuáles logros debe desbloquear basado en la data del miembro.
+// Devuelve array de logros que se acaban de desbloquear (para mostrar toast).
+async function verificarLogros(data) {
+  if (!_uid) return [];
+  const yaDesbloqueados = new Set(data.logrosDesbloqueados || []);
+  const nuevos = [];
+
+  const shouldUnlock = {
+    primer_paso:     !!data.ultimaClase,
+    semana_perfecta: (data.rachaDias || 0) >= 7,
+    estudioso:       (data.clasesCompletadas || 0) >= 10,
+    maestro:         (data.cursosCompletados || 0) >= 1,
+    leyenda:         (data.rachaDias || 0) >= 30,
+    constante:       (data.clasesCompletadas || 0) >= 50
+  };
+
+  LOGROS.forEach(l => {
+    if (shouldUnlock[l.id] && !yaDesbloqueados.has(l.id)) {
+      yaDesbloqueados.add(l.id);
+      nuevos.push({ ...l, fechaISO: new Date().toISOString() });
+    }
+  });
+
+  if (nuevos.length) {
+    try {
+      const desbloqueadosArr = Array.from(yaDesbloqueados);
+      const fechasMap = data.logrosFechas || {};
+      nuevos.forEach(l => { fechasMap[l.id] = l.fechaISO; });
+      await setDoc(doc(db,'miembros',_uid),{
+        logrosDesbloqueados: desbloqueadosArr,
+        logrosFechas: fechasMap
+      },{ merge:true });
+      // Mostrar toasts uno por uno con delay
+      nuevos.forEach((l, idx) => setTimeout(() => mostrarToastLogro(l), idx * 2600));
+      // Re-render el grid
+      const merged = { ...data, logrosDesbloqueados: desbloqueadosArr, logrosFechas: fechasMap };
+      renderLogros(merged);
+    } catch(e){ console.warn('Error guardando logros:', e.message); }
+  }
+
+  return nuevos;
+}
+
+function mostrarToastLogro(logro) {
+  const el = document.createElement('div');
+  el.className = 'logro-toast';
+  el.innerHTML = `
+    <div class="logro-toast-emoji">${logro.emoji}</div>
+    <div>
+      <div class="logro-toast-label">¡Logro desbloqueado!</div>
+      <div class="logro-toast-name">${logro.nombre}</div>
+      <div class="logro-toast-desc">${logro.desc}</div>
+    </div>
+  `;
+  document.body.appendChild(el);
+  setTimeout(() => el.classList.add('show'), 50);
+  setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 500); }, 2400);
+  // Confeti breve también
+  if (window.lanzarConfeti) window.lanzarConfeti();
+}
+
+function renderLogros(data) {
+  const grid = document.getElementById('logros-grid');
+  if (!grid) return;
+  const desbloqueados = new Set(data.logrosDesbloqueados || []);
+  const fechas = data.logrosFechas || {};
+
+  grid.innerHTML = LOGROS.map(l => {
+    const unlocked = desbloqueados.has(l.id);
+    const fechaStr = unlocked && fechas[l.id]
+      ? new Date(fechas[l.id]).toLocaleDateString('es-MX',{day:'numeric',month:'short'})
+      : '';
+    return `
+      <div class="logro ${unlocked ? 'unlocked' : 'locked'}" title="${l.desc}">
+        ${unlocked ? '' : '<i class="fa-solid fa-lock logro-lock"></i>'}
+        <span class="logro-emoji">${l.emoji}</span>
+        <div class="logro-name">${l.nombre}</div>
+        <div class="logro-desc">${l.desc}</div>
+        ${fechaStr ? `<div class="logro-fecha">✓ ${fechaStr}</div>` : ''}
+      </div>
+    `;
+  }).join('');
+
+  const cnt = desbloqueados.size;
+  document.getElementById('logros-cnt').textContent = cnt;
+  document.getElementById('logros-total').textContent = LOGROS.length;
+  document.getElementById('logros-prog').style.width = (cnt / LOGROS.length * 100) + '%';
+}
+
+// Función helper que se llama cada vez que cambia algo — lee data fresca y verifica
+async function refrescarYVerificarLogros() {
+  if (!_uid) return;
+  try {
+    const snap = await getDoc(doc(db,'miembros',_uid));
+    const data = snap.exists() ? snap.data() : {};
+    renderLogros(data);
+    await verificarLogros(data);
+  } catch(e){ console.warn('No se pudo refrescar logros:', e.message); }
+}
+// ═══════════════════════════════════════════════════════════════
 // ═══════════════════════════════════════════════════════════════
 
 // Actualizar countdowns de lives en tiempo real (después de declaraciones)
@@ -962,6 +1121,9 @@ onAuthStateChanged(auth, async user => {
   actualizarRacha(user.uid, data); // asincrónico, no bloquea
   // Mostrar "Continúa donde te quedaste" cuando los cursos terminen de cargar
   setTimeout(() => mostrarContinuar(data), 400);
+  // ═══ NUEVO v1.4: Renderizar logros y verificar si hay nuevos ═══
+  renderLogros(data);
+  verificarLogros(data);
   // ═══════════════════════════════════════════════════════
 
   if(data.planCancelado && user.email!==ADMIN){
@@ -1297,6 +1459,8 @@ window.seleccionarClase=function(mi,ci){
 
   // ═══ NUEVO v1.3: Guardar "Continúa donde te quedaste" ═══
   guardarUltimaClase(_cursoActual.id, mi, ci, _cursoActual.titulo || _cursoActual.nombre || 'Curso', clase.nombre || 'Clase');
+  // ═══ NUEVO v1.4: verificar logro "primer_paso" ═══
+  setTimeout(() => refrescarYVerificarLogros(), 800);
 };
 
 function hayClaseSiguiente(mi,ci){
@@ -1317,6 +1481,12 @@ window.marcarClaseCompleta=async function(){
   if(!_cursoActual||!_uid)return;
   const{mi,ci}=_claseActual;
   if(!_progresoData[_cursoActual.id])_progresoData[_cursoActual.id]={};
+
+  // ═══ NUEVO v1.4: detectar si esta clase ya estaba completada antes ═══
+  const yaEstaba = _progresoData[_cursoActual.id][`${mi}-${ci}`] === true;
+  const progAntes = calcProgreso(_cursoActual);
+  const cursoYaEstabaCompleto = progAntes.pct === 100;
+
   _progresoData[_cursoActual.id][`${mi}-${ci}`]=true;
   await setDoc(doc(db,'miembros',_uid),{progresoCursos:_progresoData},{merge:true});
   const prog=calcProgreso(_cursoActual);
@@ -1329,6 +1499,23 @@ window.marcarClaseCompleta=async function(){
   // ═══ NUEVO v1.3: Confeti al completar clase + curso ═══
   if(window.lanzarConfeti)window.lanzarConfeti();
   if(prog.pct===100){setTimeout(()=>{if(window.lanzarConfeti)window.lanzarConfeti();alert('🏆 ¡Felicitaciones! Completaste el curso "'+_cursoActual.titulo+'"');},300);}
+
+  // ═══ NUEVO v1.4: Incrementar contadores + verificar logros ═══
+  if (!yaEstaba) {
+    try {
+      const snap = await getDoc(doc(db,'miembros',_uid));
+      const cur = snap.exists() ? snap.data() : {};
+      const nuevoCC = (cur.clasesCompletadas || 0) + 1;
+      const nuevoCursos = (!cursoYaEstabaCompleto && prog.pct === 100)
+        ? (cur.cursosCompletados || 0) + 1
+        : (cur.cursosCompletados || 0);
+      await setDoc(doc(db,'miembros',_uid),{
+        clasesCompletadas: nuevoCC,
+        cursosCompletados: nuevoCursos
+      },{ merge:true });
+      setTimeout(() => refrescarYVerificarLogros(), 500);
+    } catch(e){ console.warn('Error contadores:', e.message); }
+  }
 };
 
 function actualizarBarraProgreso(prog){

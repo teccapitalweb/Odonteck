@@ -1,0 +1,19 @@
+{
+  "name": "OdonTeck · Panel VIP",
+  "short_name": "OdonTeck VIP",
+  "description": "Capacitación odontológica, cursos y certificación con folio oficial OdonTeck.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0B1018",
+  "theme_color": "#0B1018",
+  "lang": "es-MX",
+  "dir": "ltr",
+  "categories": ["education", "medical", "productivity"],
+  "icons": [
+    { "src": "assets/odonteck-favicon.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/odonteck-apple-touch.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/odonteck-apple-touch.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

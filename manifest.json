@@ -12,8 +12,8 @@
   "dir": "ltr",
   "categories": ["education", "medical", "productivity"],
   "icons": [
-    { "src": "assets/odonteck-favicon.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "assets/odonteck-apple-touch.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "assets/odonteck-apple-touch.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    { "src": "assets/img/odonteck-favicon.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/img/odonteck-apple-touch.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/img/odonteck-apple-touch.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }

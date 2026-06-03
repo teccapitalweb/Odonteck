@@ -343,6 +343,31 @@ body{display:block}
   .auth-main{padding:24px 18px}
   .wrap .brand{display:block}
 }
+
+/* ═══ MODO OSCURO FUTURISTA · glow azul OdonTeck (solo night, no afecta día) ═══ */
+:root[data-theme="night"]{ --primary-glow:rgba(91,146,200,0.55); }
+:root[data-theme="night"] .btn{
+  box-shadow:0 0 26px rgba(91,146,200,0.55),0 10px 30px rgba(91,146,200,0.40),inset 0 1px 0 rgba(255,255,255,.18);
+}
+:root[data-theme="night"] .btn:hover:not(:disabled){
+  box-shadow:0 0 40px rgba(91,146,200,0.78),0 16px 42px rgba(91,146,200,0.50),inset 0 1px 0 rgba(255,255,255,.22);
+}
+:root[data-theme="night"] .brand__logo{
+  border:1px solid rgba(91,146,200,0.45);
+  box-shadow:0 0 30px rgba(91,146,200,0.55),0 12px 32px rgba(0,0,0,.35);
+}
+:root[data-theme="night"] .brand__logo::before{ opacity:.7; filter:blur(12px); }
+:root[data-theme="night"] .brand__logo svg{ filter:drop-shadow(0 0 7px rgba(127,176,232,0.85)); }
+:root[data-theme="night"] .tab.is-active{
+  box-shadow:0 0 22px rgba(91,146,200,0.55),0 4px 14px rgba(91,146,200,0.40),inset 0 1px 0 rgba(255,255,255,.18);
+}
+:root[data-theme="night"] .input:focus{
+  box-shadow:0 0 0 4px var(--primary-glow),0 0 24px rgba(91,146,200,0.42);
+}
+:root[data-theme="night"] .card{
+  border-color:rgba(91,146,200,0.20);
+  box-shadow:0 0 70px rgba(91,146,200,0.13),var(--shadow-card);
+}
 </style>
 </head>
 <body>

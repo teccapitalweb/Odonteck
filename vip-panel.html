@@ -3088,6 +3088,104 @@ button.dir-det__row{background:var(--surface-2);border:1px solid var(--border-2)
 .kpi-card:hover,.widget:hover{ transform:translateY(-3px); }
 .brand__logo{background:#fff !important;overflow:hidden;}
 .brand__logo img{width:100%;height:100%;object-fit:contain;display:block;border-radius:inherit;}
+
+/* ===== Herramienta embebida: Anestésico ===== */
+.tdent-ane{--line:var(--border-2);--line-2:var(--border-strong);--glow:var(--primary-glow);--amber:var(--warning);--ok:var(--highlight);--field-shadow:none;background:transparent;padding:0;color:var(--text);}
+.tdent-ane *{box-sizing:border-box;margin:0;padding:0}
+.tdent-ane{font-family:'Inter',-apple-system,system-ui,sans-serif;color:var(--text);
+  min-height:0;padding:0;transition:background .3s,color .3s;-webkit-font-smoothing:antialiased}
+.tdent-ane .wrap{max-width:540px;margin:0 auto}
+.tdent-ane .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.tdent-ane .brand{display:flex;align-items:center;gap:11px}
+.tdent-ane .brand__logo{width:44px;height:44px;border-radius:13px;background:linear-gradient(135deg,#5B92C8,#6FB8B0);
+  display:flex;align-items:center;justify-content:center;box-shadow:0 0 34px var(--glow)}
+.tdent-ane .brand__logo svg{width:27px;height:27px}
+.tdent-ane .brand__t{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:16px;letter-spacing:-.2px}
+.tdent-ane .brand__s{font-size:11px;color:var(--text-3);letter-spacing:.3px}
+.tdent-ane .toggle{background:var(--surface);border:1px solid var(--line);color:var(--text-2);border-radius:11px;
+  height:40px;padding:0 13px;font-size:12.5px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:7px;
+  font-family:inherit;transition:background .2s,border-color .2s,transform .15s}
+.tdent-ane .toggle:hover{border-color:var(--line-2);transform:translateY(-1px)}
+.tdent-ane .toggle svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2}
+.tdent-ane .card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;margin-bottom:16px}
+.tdent-ane .h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:21px;font-weight:700;margin-bottom:6px;letter-spacing:-.3px}
+.tdent-ane .sub{font-size:13px;color:var(--text-2);line-height:1.55;margin-bottom:22px}
+.tdent-ane label{display:block;font-size:12px;color:var(--text-2);margin:0 0 8px;font-weight:500;letter-spacing:.1px}
+.tdent-ane .field{margin-bottom:18px}
+.tdent-ane .control{position:relative}
+.tdent-ane .control svg.ic{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:17px;height:17px;
+  stroke:var(--text-3);fill:none;stroke-width:2;pointer-events:none;transition:stroke .2s}
+.tdent-ane input{width:100%;background:var(--surface-2);border:1px solid var(--line);border-radius:13px;
+  padding:14px 15px;color:var(--text);font-size:15px;font-family:inherit;font-weight:500;
+  box-shadow:var(--field-shadow);transition:border-color .18s,box-shadow .18s,background .2s;appearance:none;-webkit-appearance:none}
+.tdent-ane .control.has-ic input{padding-left:42px}
+.tdent-ane input::placeholder{color:var(--text-3);font-weight:400}
+.tdent-ane input:hover{border-color:var(--line-2)}
+.tdent-ane input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px var(--glow);background:var(--surface)}
+.tdent-ane .control:focus-within svg.ic{stroke:var(--primary)}
+.tdent-ane input[type=number]{-moz-appearance:textfield}
+.tdent-ane input[type=number]::-webkit-outer-spin-button, .tdent-ane input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.tdent-ane .suffix{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--text-3);font-weight:500;pointer-events:none}
+.tdent-ane /* ═══════ DROPDOWN PREMIUM (custom) ═══════ */
+.dd{position:relative}
+.tdent-ane .dd__trigger{width:100%;display:flex;align-items:center;gap:11px;background:var(--surface-2);
+  border:1px solid var(--line);border-radius:13px;padding:13px 15px;cursor:pointer;font-family:inherit;
+  color:var(--text);font-size:15px;font-weight:500;text-align:left;box-shadow:var(--field-shadow);
+  transition:border-color .18s,box-shadow .18s,background .2s}
+.tdent-ane .dd__trigger:hover{border-color:var(--line-2)}
+.tdent-ane .dd.open .dd__trigger{border-color:var(--primary);box-shadow:0 0 0 4px var(--glow);background:var(--surface)}
+.tdent-ane .dd__lead{width:30px;height:30px;flex-shrink:0;border-radius:9px;display:flex;align-items:center;justify-content:center;
+  background:color-mix(in srgb,var(--primary) 16%,transparent)}
+.tdent-ane .dd__lead svg{width:16px;height:16px;stroke:var(--primary);fill:none;stroke-width:2}
+.tdent-ane .dd__value{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tdent-ane .dd__chev{width:18px;height:18px;flex-shrink:0;stroke:var(--text-3);fill:none;stroke-width:2;transition:transform .3s cubic-bezier(.16,1,.3,1)}
+.tdent-ane .dd.open .dd__chev{transform:rotate(180deg);stroke:var(--primary)}
+.tdent-ane .dd__panel{position:absolute;top:calc(100% + 9px);left:0;right:0;z-index:60;
+  background:var(--glass);-webkit-backdrop-filter:blur(22px) saturate(150%);backdrop-filter:blur(22px) saturate(150%);
+  border:1px solid var(--line-2);border-radius:18px;padding:7px;box-shadow:var(--pop-shadow);
+  max-height:340px;overflow-y:auto;
+  opacity:0;visibility:hidden;transform:translateY(-10px) scale(.97);transform-origin:top center;
+  transition:opacity .2s ease,transform .28s cubic-bezier(.16,1,.3,1),visibility .28s}
+.tdent-ane .dd.open .dd__panel{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+.tdent-ane .dd__opt{display:flex;align-items:center;gap:12px;height:52px;padding:0 12px;border-radius:12px;cursor:pointer;
+  color:var(--text-2);position:relative;transition:background .15s,color .15s}
+.tdent-ane .dd__opt + .dd__opt{margin-top:2px}
+.tdent-ane .dd__opt:hover{background:var(--surface-3);color:var(--text)}
+.tdent-ane .dd__dot{width:30px;height:30px;flex-shrink:0;border-radius:9px;display:flex;align-items:center;justify-content:center;
+  background:color-mix(in srgb,var(--primary) 12%,transparent)}
+.tdent-ane .dd__dot svg{width:15px;height:15px;stroke:var(--primary);fill:none;stroke-width:2}
+.tdent-ane .dd__txt{flex:1;font-size:14px;font-weight:500;line-height:1.2}
+.tdent-ane .dd__txt small{display:block;font-size:11px;color:var(--text-3);font-weight:400;margin-top:2px}
+.tdent-ane .dd__check{width:18px;height:18px;flex-shrink:0;stroke:var(--primary);fill:none;stroke-width:2.4;opacity:0;transform:scale(.6);transition:.2s}
+.tdent-ane .dd__opt.sel{background:color-mix(in srgb,var(--primary) 13%,transparent);color:var(--text)}
+.tdent-ane .dd__opt.sel .dd__check{opacity:1;transform:scale(1)}
+.tdent-ane .dd.open .dd__opt{animation:optIn-ane .32s cubic-bezier(.16,1,.3,1) backwards}
+@keyframes optIn-ane{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.tdent-ane .dd__panel::-webkit-scrollbar{width:8px}
+.tdent-ane .dd__panel::-webkit-scrollbar-track{background:transparent}
+.tdent-ane .dd__panel::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:10px;border:2px solid transparent;background-clip:content-box}
+.tdent-ane .dd__panel::-webkit-scrollbar-thumb:hover{background:var(--text-3);background-clip:content-box}
+.tdent-ane .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tdent-ane .seg{display:flex;gap:5px;background:var(--surface-2);padding:5px;border-radius:13px;border:1px solid var(--line)}
+.tdent-ane .seg button{flex:1;background:transparent;border:none;color:var(--text-3);padding:10px;border-radius:9px;
+  font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:.18s}
+.tdent-ane .seg button:hover:not(.on){color:var(--text-2)}
+.tdent-ane .seg button.on{background:var(--primary);color:#fff;box-shadow:0 2px 10px var(--glow)}
+.tdent-ane .result{background:linear-gradient(135deg,var(--primary),var(--primary-deep));border-radius:18px;padding:22px;
+  color:#fff;text-align:center;box-shadow:0 0 46px var(--glow);margin-top:6px}
+.tdent-ane .result__big{font-family:'Plus Jakarta Sans',sans-serif;font-size:46px;font-weight:800;line-height:1;letter-spacing:-1.5px;transition:transform .25s cubic-bezier(.16,1,.3,1)}
+.tdent-ane .result__big.pop{transform:scale(1.12)}
+.tdent-ane .result__lbl{font-size:13px;opacity:.92;margin-top:6px;font-weight:500}
+.tdent-ane .result__sub{font-size:12px;opacity:.88;margin-top:12px;border-top:1px solid rgba(255,255,255,.25);padding-top:11px;line-height:1.5}
+.tdent-ane .mini{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:13px}
+.tdent-ane .mini div{background:var(--surface-2);border:1px solid var(--line);border-radius:13px;padding:13px;text-align:center}
+.tdent-ane .mini b{font-family:'Plus Jakarta Sans',sans-serif;font-size:21px;font-weight:700;display:block;color:var(--primary)}
+.tdent-ane .mini span{font-size:11px;color:var(--text-3)}
+.tdent-ane .warn{display:flex;gap:10px;background:color-mix(in srgb,var(--danger) 11%,transparent);
+  border:1px solid color-mix(in srgb,var(--danger) 30%,transparent);border-radius:14px;padding:14px;margin-top:16px}
+.tdent-ane .warn svg{flex-shrink:0;width:18px;height:18px;stroke:var(--danger);fill:none;stroke-width:2;margin-top:1px}
+.tdent-ane .warn p{font-size:12px;color:var(--text-2);line-height:1.55}
+.tdent-ane .foot{font-size:11px;color:var(--text-3);text-align:center;line-height:1.6;margin-top:10px}
 </style>
 </head>
 <body style="visibility:hidden">
@@ -6367,10 +6465,7 @@ const Sections = (function(){
   }
   window.__cargarCursosFirestore = cargarCursosFirestore;
 
-  const certificados = [
-    {id:'cert1',cursoId:'c4',titulo:'NOM-001-STPS · Edificios, locales e instalaciones',folio:'OdonTeck-2026-48201',emitido:'2026-04-18',horas:8,area:'Seguridad',instructor:'Ing. Roberto Méndez',calificacion:96},
-    {id:'cert2',cursoId:'c5',titulo:'Lean Manufacturing para supervisores',folio:'OdonTeck-2026-37154',emitido:'2026-03-22',horas:16,area:'Calidad',instructor:'Ing. María López',calificacion:92}
-  ];
+  const certificados = []; // legado · los certificados reales salen de getCertificadosReales()
 
   const niveles = [
     {id:1,nombre:'Aprendiz',desde:0,hasta:200},
@@ -6473,7 +6568,7 @@ const Sections = (function(){
   window.__getWebinars = function() { return webinars; };
   window.__webinarsReady = function() { return _webinarsLoaded; };
 
-  const usuario = {nombre:'Invitado',xp:450,racha:7,diasActivos:23};
+  const usuario = {nombre:'Invitado',xp:0,racha:0,diasActivos:0};
 
   /* HELPERS */
   function pad(n){return String(n).padStart(2,'0')}
@@ -7022,7 +7117,7 @@ const Sections = (function(){
     const certs = await getCertificadosReales();
     const totalHoras = certs.reduce((s,c)=>s + (c.horas || 0), 0);
     const areas = [...new Set(certs.map(c=>c.area))].length;
-    const nombreUsuario = (window.UserState?.displayName || 'Ingeniero').split(' ').slice(0,2).join(' ');
+    const nombreUsuario = (window.UserState?.displayName || 'Doctor(a)').split(' ').slice(0,2).join(' ');
 
     // Empty state profesional cuando NO hay certificados (estado normal de usuario nuevo)
     if (certs.length === 0) {
@@ -7045,7 +7140,7 @@ const Sections = (function(){
             </div>
             <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;letter-spacing:-.6px;line-height:1.2;margin-bottom:10px;">Aún no tienes certificados emitidos</h2>
             <p style="font-size:14px;color:var(--text-2);line-height:1.6;max-width:480px;margin:0 auto 24px;">
-              Para emitir tu primer certificado oficial OdonTeck, <strong style="color:var(--text);">activa tu membresía VIP</strong> y completa el 100% de las clases de cualquiera de nuestros 12 cursos de ingeniería industrial.
+              Para emitir tu primer certificado oficial OdonTeck, <strong style="color:var(--text);">activa tu membresía VIP</strong> y completa el 100% de las clases de cualquiera de nuestros cursos de odontología.
             </p>
             <div style="display:flex;flex-direction:column;gap:10px;align-items:center;max-width:380px;margin:0 auto 24px;text-align:left;">
               <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text-2);width:100%;"><span style="color:var(--primary);font-size:18px;flex-shrink:0;">✓</span><span>Folio único <code style="font-family:'JetBrains Mono',monospace;background:var(--surface-3);padding:2px 6px;border-radius:4px;font-size:11px;color:var(--primary);">OdonTeck-2026-XXXXXX</code></span></div>
@@ -7462,14 +7557,46 @@ const Sections = (function(){
   }
 
   /* ============================ LOGROS ============================ */
-  function renderLogros(container){
+  async function renderLogros(container){
+    container.innerHTML = '<div class="fade-up" style="padding:64px 24px;text-align:center;color:var(--text-2);font-size:14px;">Cargando tus logros…</div>';
+    // ── Progreso REAL del usuario ──
+    const prog = (typeof getProgreso==='function') ? getProgreso() : {};
+    const completados = (typeof cursos!=='undefined' && Array.isArray(cursos)) ? cursos.filter(c=>{const p=prog[c.id];return p&&p.completado;}) : [];
+    let certs=[]; try{ certs = await getCertificadosReales(); }catch(e){}
+    const totalHoras = certs.reduce((s,c)=>s+(c.horas||0),0);
+    const areas = new Set(certs.map(c=>c.area)).size;
+    const esVIP = window.UserState?.modo === 'vip';
+    // Días activos y racha REALES (tracking local por usuario)
+    const dkey='odt_dias_'+(window.UserState?.uid||window.UserState?.modo||'guest');
+    let dias=[]; try{ dias=JSON.parse(localStorage.getItem(dkey)||'[]'); }catch(e){}
+    const hoy=new Date().toISOString().slice(0,10);
+    if(!dias.includes(hoy)){ dias.push(hoy); dias=dias.slice(-400); try{localStorage.setItem(dkey,JSON.stringify(dias));}catch(e){} }
+    const diasSet=new Set(dias);
+    let racha=0, dd=new Date(); for(;;){ const s=dd.toISOString().slice(0,10); if(diasSet.has(s)){racha++;dd.setDate(dd.getDate()-1);}else break; }
+    // ── Evaluación REAL de cada logro (los no medibles aún quedan bloqueados) ──
+    function unlocked(l){ switch(l.id){
+      case 'l1': return completados.length>=1;
+      case 'l3': return completados.length>=5;
+      case 'l5': return certs.length>=1;
+      case 'l6': return racha>=30;
+      case 'l17': return esVIP;
+      case 'l22': return racha>=7;
+      case 'l23': return racha>=30;
+      case 'l24': return totalHoras>=100;
+      case 'l25': return areas>=3;
+      case 'l26': return completados.length>=20;
+      default: return false;
+    } }
+    logros.forEach(l=>{ l.unlock = unlocked(l) ? 'real' : null; });
+    usuario.xp = logros.filter(l=>l.unlock).reduce((s,l)=>s+l.xp,0);
+    usuario.racha = racha; usuario.diasActivos = dias.length;
     const nivelActual=getNivel(usuario.xp);
     const pct=Math.round(((usuario.xp-nivelActual.desde)/(nivelActual.hasta-nivelActual.desde))*100);
     const xpRest=nivelActual.hasta-usuario.xp;
     const proxNivel=niveles[nivelActual.id]?.nombre||'Maestro';
     const ganados=logros.filter(l=>l.unlock).length;
     const totalXp=logros.filter(l=>l.unlock).reduce((s,l)=>s+l.xp,0);
-    const cats=['Seguridad','Logística','Calidad','Comunidad','Maestría'];
+    const cats=['Clínica','Especialización','Excelencia','Comunidad','Maestría'];
     container.innerHTML=`
       <div class="fade-up">
         <div class="sec-hero">
@@ -10453,10 +10580,87 @@ function init(){
   Theme.init();applyGreeting();initCountdown();initNav();
   loadProfileFromLS();
   injectSupportFAB();
-  /* === Herramientas dentales OdonTeck (iframes aislados) === */
+  var ANE_HTML="<div class=\"card\">\n    <div class=\"h1\">Calculadora de anest\u00e9sico local</div>\n    <div class=\"sub\">Calcula la dosis m\u00e1xima segura y el n\u00famero de cartuchos seg\u00fan el peso del paciente. Cartucho est\u00e1ndar de 1.8 mL.</div>\n\n    <div class=\"field\">\n      <label>Anest\u00e9sico</label>\n      <div class=\"dd\" id=\"ane-dd\">\n        <button class=\"dd__trigger\" id=\"ane-ddTrigger\" type=\"button\" aria-haspopup=\"listbox\" aria-expanded=\"false\">\n          <span class=\"dd__lead\"><svg viewBox=\"0 0 24 24\"><path d=\"M12 2s5 6 5 11a5 5 0 0 1-10 0c0-5 5-11 5-11z\"/></svg></span>\n          <span class=\"dd__value\" id=\"ane-ddValue\">\u2014</span>\n          <svg class=\"dd__chev\" viewBox=\"0 0 24 24\"><path d=\"M6 9l6 6 6-6\"/></svg>\n        </button>\n        <div class=\"dd__panel\" id=\"ane-ddPanel\" role=\"listbox\"></div>\n      </div>\n    </div>\n\n    <div class=\"row\">\n      <div class=\"field\">\n        <label>Peso del paciente</label>\n        <div class=\"control has-ic\">\n          <svg class=\"ic\" viewBox=\"0 0 24 24\"><path d=\"M12 3a3 3 0 0 0-2.83 2H5a2 2 0 0 0-2 2l-1 11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2l-1-11a2 2 0 0 0-2-2h-4.17A3 3 0 0 0 12 3z\"/></svg>\n          <input id=\"ane-peso\" type=\"number\" inputmode=\"decimal\" min=\"1\" max=\"200\" placeholder=\"70\" value=\"70\">\n          <span class=\"suffix\">kg</span>\n        </div>\n      </div>\n      <div class=\"field\">\n        <label>Paciente</label>\n        <div class=\"seg\">\n          <button data-tipo=\"adulto\" class=\"on\">Adulto</button>\n          <button data-tipo=\"pediatrico\">Pedi\u00e1trico</button>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"result\">\n      <div class=\"result__big\" id=\"ane-rCart\">\u2014</div>\n      <div class=\"result__lbl\">cartuchos m\u00e1ximo</div>\n      <div class=\"result__sub\" id=\"ane-rSub\">Ingresa el peso y el anest\u00e9sico</div>\n    </div>\n\n    <div class=\"mini\">\n      <div><b id=\"ane-rDosis\">\u2014</b><span>dosis m\u00e1x (mg)</span></div>\n      <div><b id=\"ane-rVol\">\u2014</b><span>volumen m\u00e1x (mL)</span></div>\n    </div>\n\n    <div class=\"warn\">\n      <svg viewBox=\"0 0 24 24\"><path d=\"M12 9v4M12 17h.01M10.3 3.9l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3L13.7 4a2 2 0 0 0-3.4 0z\"/></svg>\n      <p id=\"ane-warnTxt\">Herramienta de apoyo cl\u00ednico. No sustituye tu criterio profesional ni la ficha t\u00e9cnica del fabricante. Ajusta la dosis seg\u00fan el estado del paciente (hep\u00e1tico, card\u00edaco, renal, embarazo) y usa siempre la dosis m\u00ednima eficaz.</p>\n    </div>\n  </div>\n\n  <div class=\"foot\">Dosis m\u00e1ximas con vasoconstrictor seg\u00fan fichas t\u00e9cnicas (CIMA/AEMPS) y literatura odontol\u00f3gica \u00b7 OdonTeck Consulting Group</div>";
+/* === Herramienta embebida: Anestésico (nativa, hereda tema del panel) === */
+function initToolAne(){
+var ANESTESICOS = {
+  lido2:  {nombre:'Lidocaína 2%',        det:'con epinefrina · 36 mg/cartucho', conc:2,   mgkg:7.0, tope:500},
+  arti4:  {nombre:'Articaína 4%',        det:'con epinefrina · 72 mg/cartucho', conc:4,   mgkg:7.0, tope:500},
+  mepi3:  {nombre:'Mepivacaína 3%',      det:'sin vasoconstrictor · 54 mg/cartucho', conc:3, mgkg:6.6, tope:400},
+  mepi2:  {nombre:'Mepivacaína 2%',      det:'con epinefrina · 36 mg/cartucho', conc:2,   mgkg:6.6, tope:400},
+  prilo4: {nombre:'Prilocaína 4%',       det:'72 mg/cartucho', conc:4, mgkg:8.0, tope:600},
+  bupi05: {nombre:'Bupivacaína 0.5%',    det:'con epinefrina · larga duración · 9 mg/cartucho', conc:0.5, mgkg:1.3, tope:90}
+};
+var ML_CARTUCHO = 1.8, tipo = 'adulto', selKey = 'lido2';
+var DROP = '<svg viewBox="0 0 24 24"><path d="M12 2s5 6 5 11a5 5 0 0 1-10 0c0-5 5-11 5-11z"/></svg>';
+var dd = document.getElementById('ane-dd'), trigger = document.getElementById('ane-ddTrigger'),
+    panel = document.getElementById('ane-ddPanel'), valueEl = document.getElementById('ane-ddValue');
+
+// construir opciones
+var keys = Object.keys(ANESTESICOS);
+keys.forEach(function(k,i){
+  var a = ANESTESICOS[k];
+  var o = document.createElement('div');
+  o.className = 'dd__opt'; o.setAttribute('role','option'); o.dataset.k = k;
+  o.style.animationDelay = (i*28)+'ms';
+  o.innerHTML = '<span class="dd__dot">'+DROP+'</span>'
+    + '<span class="dd__txt">'+a.nombre+'<small>'+a.det+'</small></span>'
+    + '<svg class="dd__check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>';
+  o.addEventListener('click', function(){ elegir(k); cerrar(); });
+  panel.appendChild(o);
+});
+
+function elegir(k){
+  selKey = k;
+  valueEl.textContent = ANESTESICOS[k].nombre;
+  panel.querySelectorAll('.dd__opt').forEach(function(el){ el.classList.toggle('sel', el.dataset.k===k); });
+  calcular();
+}
+function abrir(){ dd.classList.add('open'); trigger.setAttribute('aria-expanded','true'); }
+function cerrar(){ dd.classList.remove('open'); trigger.setAttribute('aria-expanded','false'); }
+trigger.addEventListener('click', function(e){ e.stopPropagation(); dd.classList.contains('open')?cerrar():abrir(); });
+document.addEventListener('click', function(e){ if(!dd.contains(e.target)) cerrar(); });
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') cerrar(); });
+
+function mgPorCartucho(a){ return a.conc * 10 * ML_CARTUCHO; }
+function pop(el){ el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
+function calcular(){
+  var a=ANESTESICOS[selKey], peso=parseFloat(document.getElementById('ane-peso').value);
+  var rCart=document.getElementById('ane-rCart'), rSub=document.getElementById('ane-rSub'),
+      rDosis=document.getElementById('ane-rDosis'), rVol=document.getElementById('ane-rVol');
+  if(!peso||peso<=0){ rCart.textContent='—'; rSub.textContent='Ingresa un peso válido'; rDosis.textContent='—'; rVol.textContent='—'; return; }
+  var porPeso=a.mgkg*peso, dosisMax=Math.min(porPeso,a.tope), topeAplica=porPeso>a.tope;
+  var mgCart=mgPorCartucho(a), cartuchos=Math.floor(dosisMax/mgCart), volMax=dosisMax/(a.conc*10);
+  rCart.textContent=cartuchos; rDosis.textContent=Math.round(dosisMax); rVol.textContent=volMax.toFixed(1);
+  pop(rCart);
+  rSub.textContent=a.mgkg+' mg/kg × '+peso+' kg = '+Math.round(porPeso)+' mg'
+    +(topeAplica?' · limitado al tope de '+a.tope+' mg':'')+' · '+mgCart+' mg/cartucho';
+  var w=document.getElementById('ane-warnTxt');
+  w.textContent = (tipo==='pediatrico')
+    ? 'PEDIÁTRICO: extrema la precaución. En niños usa muy por debajo del máximo y nunca excedas la dosis ponderal. No sustituye tu criterio ni la ficha técnica. Considera peso real, edad y estado de salud.'
+    : 'Herramienta de apoyo clínico. No sustituye tu criterio profesional ni la ficha técnica del fabricante. Ajusta la dosis según el estado del paciente (hepático, cardíaco, renal, embarazo) y usa siempre la dosis mínima eficaz.';
+}
+document.getElementById('ane-peso').addEventListener('input', calcular);
+document.querySelectorAll('.seg button').forEach(function(b){
+  b.addEventListener('click', function(){
+    document.querySelectorAll('.seg button').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on'); tipo=b.dataset.tipo; calcular();
+  });
+});
+var SUN='<path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/><circle cx="12" cy="12" r="4"/>';
+var MOON='<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+
+elegir('lido2');
+}
+if(window.Sections && Sections.renderers){
+  Sections.renderers['tool-anestesico']=function(dyn){
+    dyn.innerHTML='<div class="fade-up tdent-ane">'+ANE_HTML+'</div>';
+    try{ initToolAne(); }catch(e){ console.warn('initToolAne',e); }
+  };
+}
+/* === Herramientas dentales OdonTeck (iframes aislados) === */
 (function(){
   var TD=[
-    {s:'anestesico',f:'tools/herramienta-anestesico.html',t:'Calculadora de anestésico local',d:'Dosis máxima y número de cartuchos según peso y tipo de anestésico.',ic:'i-shield-check'},
     {s:'prescripcion',f:'tools/herramienta-prescripcion.html',t:'Calculadora de prescripción',d:'Analgésicos y antibióticos con dosis ajustada por peso del paciente.',ic:'i-news'},
     {s:'odontograma',f:'tools/herramienta-odontograma.html',t:'Odontograma digital',d:'Registro dental en notación FDI, con cotización opcional y PDF.',ic:'i-tools'},
     {s:'cotizador',f:'tools/herramienta-cotizador.html',t:'Cotizador de tratamientos',d:'Cotizaciones formales en PDF con folio, vigencia y anticipo.',ic:'i-credit-card'},

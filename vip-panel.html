@@ -6395,7 +6395,7 @@ const Sections = (function(){
         folio, uid, nombre,
         cursoId: curso.id,
         curso: curso.titulo || '',
-        area: curso.area || 'Ingeniería Industrial',
+        area: curso.area || 'Odontología General',
         horas: curso.horas || 0,
         sesiones,
         instructor: curso.instructor || 'Equipo OdonTeck',
@@ -6420,7 +6420,7 @@ const Sections = (function(){
     const nombre = window.UserState?.nombre || window.UserState?.displayName || (window.UserState?.email||'').split('@')[0] || 'Usuario VIP';
     // Objeto certificado real (mismos campos que en la sección Certificados)
     const certObj = {
-      id: curso.id, titulo: curso.titulo, area: curso.area || 'Ingeniería Industrial',
+      id: curso.id, titulo: curso.titulo, area: curso.area || 'Odontología General',
       horas: curso.horas || 0, sesiones: (curso.sesiones && curso.sesiones.length) || 0,
       folio, emitido: fecha, instructor: curso.instructor || 'Equipo OdonTeck'
     };

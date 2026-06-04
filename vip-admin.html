@@ -1293,48 +1293,9 @@ const Modal={
    DATOS SEED (después → Firestore)
    ========================================================= */
 const SEED={
-  cursos:[
-    {id:'c1',titulo:'NOM-019-STPS · Comisiones de seguridad e higiene',area:'Seguridad',nivel:'Intermedio',instructor:'Ing. Roberto Méndez',horas:12,modulos:8,activo:true,inscritos:184},
-    {id:'c2',titulo:'Indicadores logísticos: OTIF, Fill Rate y rotación',area:'Logística',nivel:'Avanzado',instructor:'Ing. Carlos Vidal',horas:10,modulos:6,activo:true,inscritos:96},
-    {id:'c3',titulo:'Mantenimiento productivo total (TPM)',area:'Mantenimiento',nivel:'Intermedio',instructor:'Ing. Patricia Solís',horas:14,modulos:9,activo:true,inscritos:67},
-    {id:'c4',titulo:'NOM-001-STPS · Edificios, locales e instalaciones',area:'Seguridad',nivel:'Básico',instructor:'Ing. Roberto Méndez',horas:8,modulos:5,activo:true,inscritos:240},
-    {id:'c5',titulo:'Lean Manufacturing para supervisores',area:'Calidad',nivel:'Intermedio',instructor:'Ing. María López',horas:16,modulos:10,activo:true,inscritos:312},
-    {id:'c6',titulo:'NOM-029-STPS · Trabajos eléctricos seguros',area:'Seguridad',nivel:'Avanzado',instructor:'Ing. Roberto Méndez',horas:18,modulos:11,activo:true,inscritos:45},
-    {id:'c7',titulo:'Six Sigma Green Belt',area:'Calidad',nivel:'Avanzado',instructor:'Ing. María López',horas:40,modulos:24,activo:true,inscritos:28},
-    {id:'c8',titulo:'WMS y gestión de almacenes 4.0',area:'Logística',nivel:'Intermedio',instructor:'Ing. Carlos Vidal',horas:12,modulos:8,activo:true,inscritos:54},
-    {id:'c9',titulo:'ISO 45001 · Sistema de gestión SST',area:'Seguridad',nivel:'Avanzado',instructor:'Ing. Patricia Solís',horas:24,modulos:14,activo:false,inscritos:0},
-    {id:'c10',titulo:'Análisis modal de fallos (AMEF)',area:'Calidad',nivel:'Intermedio',instructor:'Ing. María López',horas:10,modulos:7,activo:true,inscritos:39},
-    {id:'c11',titulo:'Supervisión efectiva en planta',area:'Mantenimiento',nivel:'Básico',instructor:'Ing. Patricia Solís',horas:14,modulos:10,activo:true,inscritos:71},
-    {id:'c12',titulo:'NOM-035-STPS · Factores de riesgo psicosocial',area:'Seguridad',nivel:'Intermedio',instructor:'Ing. Roberto Méndez',horas:10,modulos:6,activo:true,inscritos:158}
-  ],
-  webinars:[
-    {id:'w1',titulo:'OEE: optimización de líneas de producción',instructor:'Ing. María López',fecha:'2026-05-28T19:00:00',duracion:90,area:'Calidad',link:'https://meet.odonteckconsulting.com/oee-mayo28',publicado:true,registrados:84},
-    {id:'w2',titulo:'NOM-035 en la práctica',instructor:'Ing. Roberto Méndez',fecha:'2026-06-03T19:00:00',duracion:75,area:'Seguridad',link:'https://meet.odonteckconsulting.com/nom035-junio3',publicado:true,registrados:52},
-    {id:'w3',titulo:'OTIF: cómo medirlo cuando tu sistema no lo calcula',instructor:'Ing. Carlos Vidal',fecha:'2026-06-10T19:00:00',duracion:60,area:'Logística',link:'',publicado:false,registrados:0}
-  ],
-  pdfs:[
-    {id:'p1',titulo:'Plantilla de Matriz IPER en Excel',cat:'Seguridad industrial',paginas:14,size:'2.4 MB',publicado:true,descargas:184},
-    {id:'p2',titulo:'NOM-035-STPS · Cuestionario completo',cat:'Seguridad industrial',paginas:22,size:'1.8 MB',publicado:true,descargas:412},
-    {id:'p3',titulo:'Guía OEE: cálculo y mejora paso a paso',cat:'Calidad',paginas:32,size:'4.1 MB',publicado:true,descargas:67},
-    {id:'p4',titulo:'Checklist auditoría 5S en planta',cat:'Calidad',paginas:8,size:'820 KB',publicado:true,descargas:128},
-    {id:'p5',titulo:'Formato ATS · Análisis de Trabajo Seguro',cat:'Seguridad industrial',paginas:6,size:'480 KB',publicado:true,descargas:96},
-    {id:'p6',titulo:'Indicadores logísticos · Excel con Power Query',cat:'Logística',paginas:18,size:'3.6 MB',publicado:true,descargas:54},
-    {id:'p7',titulo:'NOM-019-STPS · Acta de constitución',cat:'Seguridad industrial',paginas:4,size:'320 KB',publicado:true,descargas:210},
-    {id:'p8',titulo:'Procedimiento LOTO',cat:'Seguridad industrial',paginas:12,size:'1.5 MB',publicado:false,descargas:0},
-    {id:'p9',titulo:'Plantilla AMEF de proceso (FMEA)',cat:'Calidad',paginas:6,size:'540 KB',publicado:true,descargas:42}
-  ],
   certificados:[
     {id:'cert1',estudiante:'Carlos Méndez',email:'carlos.mendez@email.com',curso:'NOM-001-STPS · Edificios, locales e instalaciones',folio:'OdonTeck-2026-48201',emitido:'2026-04-18',horas:8,calificacion:96,enviado:true},
     {id:'cert2',estudiante:'María Hernández',email:'maria.hernandez@email.com',curso:'Lean Manufacturing para supervisores',folio:'OdonTeck-2026-37154',emitido:'2026-03-22',horas:16,calificacion:92,enviado:true}
-  ],
-  miembros:[
-    {id:'m1',nombre:'Carlos Méndez Aguilar',email:'carlos.mendez@email.com',plan:'Anual',inicio:'2026-03-15',renovacion:'2027-03-15',activo:true,cursos:7},
-    {id:'m2',nombre:'María Hernández López',email:'maria.hernandez@email.com',plan:'Anual',inicio:'2026-02-20',renovacion:'2027-02-20',activo:true,cursos:5},
-    {id:'m3',nombre:'Roberto Aguilar Pérez',email:'r.aguilar@email.com',plan:'Mensual',inicio:'2026-05-10',renovacion:'2026-06-10',activo:true,cursos:2},
-    {id:'m4',nombre:'Patricia Solís García',email:'p.solis@email.com',plan:'Anual',inicio:'2026-01-08',renovacion:'2027-01-08',activo:true,cursos:9},
-    {id:'m5',nombre:'Jorge Rivera Castro',email:'j.rivera@email.com',plan:'Mensual',inicio:'2026-04-01',renovacion:'2026-05-01',activo:false,cursos:1},
-    {id:'m6',nombre:'Ana López Méndez',email:'a.lopez@email.com',plan:'Anual',inicio:'2026-03-30',renovacion:'2027-03-30',activo:true,cursos:4},
-    {id:'m7',nombre:'Fernando Castro Ortiz',email:'f.castro@email.com',plan:'Mensual',inicio:'2026-05-18',renovacion:'2026-06-18',activo:true,cursos:1}
   ],
   noticias:[
     {id:'n1',titulo:'STPS publica actualización de la NOM-019 sobre comisiones de seguridad e higiene',cat:'Seguridad',fuente:'El Economista',fecha:'Hoy',color:'#5B92C8'},
@@ -3783,7 +3744,7 @@ const Pages={
       }));
     }
     function certModal(){
-      const cursosOpts=SEED.cursos.filter(c=>c.activo).map(c=>`<option>${c.titulo}</option>`).join('');
+      const cursosOpts=(window.AdminStore?.cursos||[]).filter(c=>c.activo!==false).map(c=>`<option>${c.titulo}</option>`).join('');
       const folio='OdonTeck-2026-'+String(Math.floor(10000+Math.random()*89999));
       const body=`
         <div class="form-grid">
@@ -4366,7 +4327,7 @@ const Pages={
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
             <div class="mb-action-btn__body">
               <div class="mb-action-btn__title">Cancelar suscripción</div>
-              <div class="mb-action-btn__sub">Detiene cobros de Stripe automáticamente</div>
+              <div class="mb-action-btn__sub">Desactiva el acceso del miembro al instante</div>
             </div>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="color:var(--text-3);"><polyline points="9 18 15 12 9 6"/></svg>
           </button>
@@ -4379,7 +4340,7 @@ const Pages={
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
           <div class="mb-action-btn__body">
             <div class="mb-action-btn__title">Eliminar miembro</div>
-            <div class="mb-action-btn__sub">Borra de Firestore y Firebase Auth · irreversible</div>
+            <div class="mb-action-btn__sub">Borra su registro del directorio de miembros · irreversible</div>
           </div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="color:var(--text-3);"><polyline points="9 18 15 12 9 6"/></svg>
         </button>

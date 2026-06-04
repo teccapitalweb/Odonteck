@@ -2480,8 +2480,8 @@ const Pages={
     const areasExistentes = store?.ready
       ? Array.from(new Set(store.cursos.map(c => c.area).filter(Boolean)))
       : [];
-    const areasEstandar = ['Calidad','Seguridad','Logística','Mantenimiento','Producción','Energía','Medio Ambiente','Operaciones','Gestión','Finanzas','Administrativo'];
-    const areas = Array.from(new Set([...areasEstandar, ...areasExistentes])).sort();
+    const areasEstandar = ['Odontología General','Odontología Preventiva','Odontopediatría','Ortodoncia','Endodoncia','Periodoncia','Cirugía Oral','Implantología','Rehabilitación Oral','Operatoria Dental','Odontología Estética','Prótesis Dental','Radiología Oral','Patología Oral','Oclusión y ATM'];
+    const areas = Array.from(new Set([...areasEstandar, ...areasExistentes]));
 
     const c = esEdicion ? curso : {};
     const horasAuto = (c.sesiones?.length) || 0;

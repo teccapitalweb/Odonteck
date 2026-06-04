@@ -1685,7 +1685,7 @@ const Pages={
 
               <div>
                 <label for="notif-desc" style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-3);font-weight:700;display:block;margin-bottom:6px;">Descripción <span style="color:var(--primary);">*</span></label>
-                <textarea id="notif-desc" maxlength="180" rows="3" placeholder="Ej: Únete este viernes 18:00 a la sesión de OEE con Ing. María López" style="
+                <textarea id="notif-desc" maxlength="180" rows="3" placeholder="Ej: Únete este viernes 18:00 a la clase en vivo de Estética dental con la Dra. Ana Martínez" style="
                   width:100%;padding:11px 14px;border-radius:10px;
                   background:var(--surface-2);border:1px solid var(--border-2);
                   color:var(--text);font-size:13.5px;font-family:inherit;
@@ -2522,7 +2522,7 @@ const Pages={
       <div class="form-grid">
         <div class="form-field form-field--full">
           <label class="label" for="cf-titulo">Título del curso *</label>
-          <input type="text" class="input" id="cf-titulo" maxlength="120" value="${(c.titulo || '').replace(/"/g,'&quot;')}" placeholder="Ej: Kaizen · Innovación continua" required>
+          <input type="text" class="input" id="cf-titulo" maxlength="120" value="${(c.titulo || '').replace(/"/g,'&quot;')}" placeholder="Ej: Carillas ultrafinas · diseño de sonrisa" required>
         </div>
 
         <div class="form-field form-field--full">
@@ -2546,7 +2546,7 @@ const Pages={
         </div>
         <div class="form-field">
           <label class="label" for="cf-instructor">Instructor</label>
-          <input type="text" class="input" id="cf-instructor" value="${(c.instructor || '').replace(/"/g,'&quot;')}" placeholder="Ej: Ing. María López">
+          <input type="text" class="input" id="cf-instructor" value="${(c.instructor || '').replace(/"/g,'&quot;')}" placeholder="Ej: Dra. Ana Martínez">
         </div>
 
         <div class="form-field">
@@ -2718,7 +2718,7 @@ const Pages={
       <div style="display:flex;gap:8px;align-items:flex-start;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:10px;">
         <span style="background:color-mix(in srgb,#3B82F6 14%,transparent);color:#3B82F6;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;letter-spacing:.6px;padding:5px 8px;border-radius:6px;flex-shrink:0;margin-top:4px;white-space:nowrap;">MAT ${idx + 1}</span>
         <div style="flex:1;display:flex;flex-direction:column;gap:6px;min-width:0;">
-          <input type="text" class="input" placeholder="Título (ej. Guía OEE.pdf)" value="${(m.titulo || '').replace(/"/g,'&quot;')}" data-mat-idx="${idx}" data-mat-campo="titulo" style="font-size:13px;padding:8px 11px;">
+          <input type="text" class="input" placeholder="Título (ej. Guía de cementado.pdf)" value="${(m.titulo || '').replace(/"/g,'&quot;')}" data-mat-idx="${idx}" data-mat-campo="titulo" style="font-size:13px;padding:8px 11px;">
           <input type="url" class="input" placeholder="URL de descarga (Google Drive, etc.)" value="${(m.url || '').replace(/"/g,'&quot;')}" data-mat-idx="${idx}" data-mat-campo="url" style="font-size:13px;padding:8px 11px;">
           <label style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text-2);cursor:pointer;margin-top:2px;">
             <input type="checkbox" data-mat-idx="${idx}" data-mat-siempre="1" ${m.disponibleSiempre ? 'checked' : ''} style="cursor:pointer;">
@@ -3192,7 +3192,7 @@ const Pages={
       <div class="form-grid">
         <div class="form-field form-field--full">
           <label class="label" for="wf-titulo">Título de la clase *</label>
-          <input type="text" class="input" id="wf-titulo" maxlength="120" value="${(wb.titulo || '').replace(/"/g,'&quot;')}" placeholder="Ej: OEE: optimización de líneas de producción" required>
+          <input type="text" class="input" id="wf-titulo" maxlength="120" value="${(wb.titulo || '').replace(/"/g,'&quot;')}" placeholder="Ej: Manejo del paciente en odontopediatría" required>
         </div>
 
         <div class="form-field form-field--full">
@@ -3202,7 +3202,7 @@ const Pages={
 
         <div class="form-field">
           <label class="label" for="wf-instructor">Instructor *</label>
-          <input type="text" class="input" id="wf-instructor" value="${(wb.instructor || '').replace(/"/g,'&quot;')}" placeholder="Ej: Ing. María López" required>
+          <input type="text" class="input" id="wf-instructor" value="${(wb.instructor || '').replace(/"/g,'&quot;')}" placeholder="Ej: Dra. Ana Martínez" required>
         </div>
 
         <div class="form-field">
@@ -3650,7 +3650,7 @@ const Pages={
 
         <div class="form-field form-field--full">
           <label class="label" for="mf-titulo">Título del material *</label>
-          <input type="text" class="input" id="mf-titulo" maxlength="120" value="${(mat.titulo || '').replace(/"/g,'&quot;')}" placeholder="Ej: Plantilla Matriz IPER.xlsx" required>
+          <input type="text" class="input" id="mf-titulo" maxlength="120" value="${(mat.titulo || '').replace(/"/g,'&quot;')}" placeholder="Ej: Protocolo de blanqueamiento.pdf" required>
         </div>
 
         <div class="form-field form-field--full">

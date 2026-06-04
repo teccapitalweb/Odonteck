@@ -1171,6 +1171,14 @@ body::after{
   .tool-section__actions .btn{flex:1}
 }
 /* Paywall dentro de herramientas (resultado bloqueado para no-VIP) */
+.toolframe{display:flex;flex-direction:column;gap:16px}
+.toolframe__head{display:flex;align-items:center;gap:14px}
+.toolframe__ic{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--primary-deep));display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 0 26px color-mix(in srgb,var(--primary) 45%,transparent);flex-shrink:0}
+.toolframe__ic .ic{width:24px;height:24px}
+.toolframe__title{font-size:20px;font-weight:700;letter-spacing:-.3px;margin:0}
+.toolframe__sub{font-size:13px;color:var(--text-2);margin:2px 0 0;line-height:1.5}
+.toolframe__wrap{width:100%;border-radius:18px;overflow:hidden;border:1px solid var(--border-2);background:var(--surface)}
+.toolframe__frame{width:100%;min-height:620px;border:0;display:block;background:transparent}
 .tool-paywall{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px;padding:36px 24px;flex:1}
 .tool-paywall__ic{width:64px;height:64px;border-radius:18px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,color-mix(in srgb,var(--primary) 18%,transparent),color-mix(in srgb,var(--highlight) 14%,transparent));color:var(--primary);border:1px solid color-mix(in srgb,var(--primary) 28%,transparent)}
 .tool-paywall__ic .ic{width:30px;height:30px}
@@ -2603,6 +2611,7 @@ button.dir-det__row{background:var(--surface-2);border:1px solid var(--border-2)
   transition:all .25s;
   flex-shrink:0;
 }
+.nivel-step__icon .ic{width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:2}
 .nivel-step.is-done .nivel-step__icon{
   background:linear-gradient(135deg,var(--primary),var(--primary-deep));
   border-color:var(--primary);
@@ -2823,7 +2832,7 @@ button.dir-det__row{background:var(--surface-2);border:1px solid var(--border-2)
   /* Nivel path mobile (compactar 5 steps) */
   .nivel-path{padding:18px 14px}
   .nivel-path__track{gap:4px}
-  .nivel-step__icon{width:48px;height:48px;font-size:20px}
+  .nivel-step__icon{width:48px;height:48px;font-size:20px}.nivel-step__icon .ic{width:22px;height:22px}
   .nivel-step__name{font-size:10.5px}
   .nivel-step__xp{font-size:8.5px}
   .nivel-path__track::before,.nivel-path__track::after{top:24px}
@@ -3349,7 +3358,7 @@ window.__showWelcomeSplash = function(opts) {
     titulo = `Bienvenido al <em>club VIP Anual</em>`;
     desc = `${nombre}, te uniste por todo un año a la comunidad odontológica más activa de México. Esto es tuyo:`;
   } else {
-    icono = '⚙️';
+    icono = '⭐';
     kicker = '¡MEMBRESÍA VIP ACTIVA!';
     titulo = `Bienvenido al <em>club VIP Mensual</em>`;
     desc = `${nombre}, ya eres parte de la comunidad odontológica más activa de México. Esto es tuyo:`;
@@ -3400,7 +3409,7 @@ window.__showWelcomeSplash = function(opts) {
         <div class="splash-film__dots" id="splash-dots"></div>
         <button class="splash-bnv__btn splash-film__next" id="splash-next">Siguiente →</button>
       </div>
-      <div class="splash-bnv__foot">Cualquier duda · <a href="https://wa.me/5212211832603" target="_blank" rel="noopener">WhatsApp +52 221 183 2603</a></div>
+      <div class="splash-bnv__foot">Cualquier duda · <a href="https://www.odonteckconsulting.com" target="_blank" rel="noopener">contáctanos</a></div>
     </div>
   `;
   document.body.appendChild(splash);
@@ -3586,11 +3595,11 @@ window.__setDisplayName = async (nombre) => {
 
     <div class="nav-section">
       <div class="nav-label">Herramientas pro</div>
-      <a class="nav-item" data-tool="iper"><svg class="ic"><use href="#i-shield-check"/></svg>Matriz IPER</a>
-      <a class="nav-item" data-tool="oee"><svg class="ic"><use href="#i-gauge"/></svg>Calculadora OEE</a>
-      <a class="nav-item" data-tool="ats"><svg class="ic"><use href="#i-clipboard-check"/></svg>Generador ATS</a>
-      <a class="nav-item" data-tool="noms"><svg class="ic"><use href="#i-book-2"/></svg>Tabla NOM-STPS</a>
-      <a class="nav-item" data-tool="logistica"><svg class="ic"><use href="#i-chart-bar"/></svg>Indicadores log.</a>
+      <a class="nav-item" data-tool="anestesico"><svg class="ic"><use href="#i-shield-check"/></svg>Anestésico</a>
+      <a class="nav-item" data-tool="prescripcion"><svg class="ic"><use href="#i-news"/></svg>Prescripción</a>
+      <a class="nav-item" data-tool="odontograma"><svg class="ic"><use href="#i-tools"/></svg>Odontograma</a>
+      <a class="nav-item" data-tool="cotizador"><svg class="ic"><use href="#i-credit-card"/></svg>Cotizador</a>
+      <a class="nav-item" data-tool="plan"><svg class="ic"><use href="#i-clipboard-check"/></svg>Plan de tratamiento</a>
     </div>
 
     <div class="nav-section">
@@ -3638,7 +3647,7 @@ window.__setDisplayName = async (nombre) => {
       <section class="banner fade-up">
         <div class="banner__info">
           <span class="banner__eyebrow"><span class="banner__eyebrow__dot"></span><span id="greeting-label">En vivo</span><span class="banner__version">v.2026.05</span></span>
-          <h1 class="banner__title" id="hero-title">Buenas tardes, ingeniero</h1>
+          <h1 class="banner__title" id="hero-title">Hola de nuevo</h1>
           <p class="banner__sub">Tu acceso a cursos premium, herramientas clínicas pro y la comunidad odontológica más activa de México.</p>
         </div>
         <div class="banner__stats">
@@ -3678,8 +3687,8 @@ window.__setDisplayName = async (nombre) => {
 
     <div class="widget widget--wa">
       <div class="widget__label"><svg class="ic"><use href="#i-whatsapp"/></svg>Comunidad OdonTeck</div>
-      <div class="widget__count">486<span style="font-size:13px; opacity:.6; font-weight:500"> miembros</span></div>
-      <div class="widget__count-sub">Ingenieros activos compartiendo casos reales</div>
+      <div class="widget__count" style="font-size:19px;line-height:1.25;">Comunidad<span style="font-size:12.5px; opacity:.6; font-weight:500; display:block;">dental OdonTeck</span></div>
+      <div class="widget__count-sub">Conecta con colegas y comparte casos clínicos</div>
       <button class="btn btn--wa btn--block btn--sm" id="btn-wa"><svg class="ic"><use href="#i-whatsapp"/></svg>Abrir grupo</button>
     </div>
 
@@ -3768,10 +3777,11 @@ window.__setDisplayName = async (nombre) => {
 
       <div class="mobile-drawer__section">
         <div class="mobile-drawer__label">Herramientas pro</div>
-        <a class="mobile-drawer__item" data-tool="iper"><svg class="ic"><use href="#i-shield-check"/></svg>Matriz IPER</a>
-        <a class="mobile-drawer__item" data-tool="oee"><svg class="ic"><use href="#i-gauge"/></svg>Calculadora OEE</a>
-        <a class="mobile-drawer__item" data-tool="ats"><svg class="ic"><use href="#i-tools"/></svg>Generador ATS</a>
-        <a class="mobile-drawer__item" data-tool="noms"><svg class="ic"><use href="#i-news"/></svg>Tabla NOM-STPS</a>
+        <a class="mobile-drawer__item" data-tool="anestesico"><svg class="ic"><use href="#i-shield-check"/></svg>Anestésico</a>
+        <a class="mobile-drawer__item" data-tool="prescripcion"><svg class="ic"><use href="#i-news"/></svg>Prescripción</a>
+        <a class="mobile-drawer__item" data-tool="odontograma"><svg class="ic"><use href="#i-tools"/></svg>Odontograma</a>
+        <a class="mobile-drawer__item" data-tool="cotizador"><svg class="ic"><use href="#i-credit-card"/></svg>Cotizador</a>
+        <a class="mobile-drawer__item" data-tool="plan"><svg class="ic"><use href="#i-clipboard-check"/></svg>Plan de tratamiento</a>
       </div>
 
       <div class="mobile-drawer__section">
@@ -3805,7 +3815,7 @@ function applyGreeting(){
   const h=new Date().getHours();
   const greet=h<12?'Buen día':h<19?'Buenas tardes':'Buenas noches';
   const eyebrow=h<12?'Modo enfoque · Mañana':h<19?'Modo enfoque · Tarde':'Modo enfoque · Noche';
-  const t=document.getElementById('hero-title');if(t)t.textContent=greet+', ingeniero';
+  const t=document.getElementById('hero-title');if(t)t.textContent=greet+', colega';
   const l=document.getElementById('greeting-label');if(l)l.textContent=eyebrow;
 }
 
@@ -3952,11 +3962,11 @@ function openToolPlaceholder(slug,name,desc,icon,detail){
 }
 
 const Tools={
-  iper:{open(){IPERTool.open();}},
-  oee:{open(){OEETool.open();}},
-  ats:{open(){navigateToSection('tool-ats');}},
-  noms:{open(){navigateToSection('tool-noms');}},
-  logistica:{open(){navigateToSection('tool-logistica');}}
+  anestesico:{open(){navigateToSection('tool-anestesico');}},
+  prescripcion:{open(){navigateToSection('tool-prescripcion');}},
+  odontograma:{open(){navigateToSection('tool-odontograma');}},
+  cotizador:{open(){navigateToSection('tool-cotizador');}},
+  plan:{open(){navigateToSection('tool-plan');}}
 };
 
 /* =========================================================
@@ -5811,16 +5821,16 @@ const Sections = (function(){
     'Mantenimiento':'i-tools'
   };
   const COLOR_CAT = {
-    'Seguridad':'#5B92C8',
-    'Logística':'#3B82F6',
-    'Calidad':'#10B981',
+    'Clínica':'#5B92C8',
+    'Especialización':'#3B82F6',
+    'Excelencia':'#10B981',
     'Comunidad':'#A855F7',
     'Maestría':'#6FB8B0'
   };
   const ICON_CAT = {
-    'Seguridad':'i-shield-check',
-    'Logística':'i-chart-bar',
-    'Calidad':'i-gauge',
+    'Clínica':'i-shield-check',
+    'Especialización':'i-gauge',
+    'Excelencia':'i-trophy',
     'Comunidad':'i-messages',
     'Maestría':'i-crown'
   };
@@ -6463,7 +6473,7 @@ const Sections = (function(){
   window.__getWebinars = function() { return webinars; };
   window.__webinarsReady = function() { return _webinarsLoaded; };
 
-  const usuario = {nombre:'Ingeniero',xp:450,racha:7,diasActivos:23};
+  const usuario = {nombre:'Invitado',xp:450,racha:7,diasActivos:23};
 
   /* HELPERS */
   function pad(n){return String(n).padStart(2,'0')}
@@ -6589,7 +6599,7 @@ const Sections = (function(){
         <div class="empty-state__icon"><svg class="ic ic--xl"><use href="#i-book"/></svg></div>
         <h3>Aún no hay cursos publicados</h3>
         <p>Estamos preparando los primeros cursos de OdonTeck. Apenas se publiquen, los verás aquí. Síguenos en WhatsApp para enterarte primero.</p>
-        <a class="btn btn--ghost" href="https://wa.me/5212211832603" target="_blank" rel="noopener" data-bypass-paywall="true" style="margin-top:14px;"><svg class="ic"><use href="#i-whatsapp"/></svg>Avísame por WhatsApp</a>
+        <a class="btn btn--ghost" href="https://www.odonteckconsulting.com" target="_blank" rel="noopener" data-bypass-paywall="true" style="margin-top:14px;"><svg class="ic"><use href="#i-whatsapp"/></svg>Avísame por WhatsApp</a>
       </div>`;
       return;
     }
@@ -6969,7 +6979,7 @@ const Sections = (function(){
       // No-VIP: el directorio es exclusivo VIP. En vez de pedirle algo que no puede hacer,
       // lo invitamos a hacerse miembro. El botón lleva a Suscripción.
       setTxt('com-title', 'Únete a la comunidad VIP');
-      setTxt('com-sub', 'Al ser miembro, crea tu tarjeta en el Directorio VIP y participa en el foro con cientos de ingenieros.');
+      setTxt('com-sub', 'Al ser miembro, crea tu tarjeta en el Directorio VIP y participa en el foro con otros odontólogos.');
       setTxt('com-pct', '');
       setBar('com-bar', 0);
       if (comBtn) { comBtn.textContent = 'Hazte VIP'; comBtn.setAttribute('data-section', 'suscripcion'); }
@@ -7488,12 +7498,12 @@ const Sections = (function(){
           <div class="nivel-path__title">Tu camino de aprendiz a maestro</div>
           <div class="nivel-path__track">
             ${niveles.map((n,idx)=>{
-              const emojis=['🦺','⚙️','📐','🏭','🎖️'];
+              const iconos=['i-user','i-tools','i-shield-check','i-trophy','i-crown'];
               const isCurrent=n.id===nivelActual.id;
               const isDone=n.id<nivelActual.id;
               const cls=isCurrent?'is-current':isDone?'is-done':'is-locked';
               return `<div class="nivel-step ${cls}">
-                <div class="nivel-step__icon">${emojis[idx]||'·'}</div>
+                <div class="nivel-step__icon">${iconos[idx]?`<svg class="ic"><use href="#${iconos[idx]}"/></svg>`:'·'}</div>
                 <div class="nivel-step__name">${n.nombre}</div>
                 <div class="nivel-step__xp">${isCurrent?'TÚ':n.desde+'+ XP'}</div>
               </div>`;
@@ -8924,13 +8934,7 @@ const Sections = (function(){
         <section class="wa-hero">
           <div class="wa-hero__icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.05 4.91A9.816 9.816 0 0 0 12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01zm-7.01 15.24c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.264 8.264 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24 2.2 0 4.27.86 5.82 2.42a8.183 8.183 0 0 1 2.41 5.83c.02 4.54-3.68 8.23-8.22 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43s.17-.25.25-.41c.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18s-.22-.16-.47-.28z"/></svg></div>
           <h2 class="wa-hero__title">Únete al canal oficial</h2>
-          <p class="wa-hero__sub">486 miembros activos · ingenieros, técnicos y responsables de seguridad compartiendo casos reales todos los días.</p>
-
-          <div class="wa-stats">
-            <div class="wa-stat"><div class="wa-stat__num">486</div><div class="wa-stat__lbl">Miembros</div></div>
-            <div class="wa-stat"><div class="wa-stat__num">24</div><div class="wa-stat__lbl">Mensajes/día</div></div>
-            <div class="wa-stat"><div class="wa-stat__num">98%</div><div class="wa-stat__lbl">Activos</div></div>
-          </div>
+          <p class="wa-hero__sub">Una comunidad de odontólogos compartiendo casos clínicos y resolviendo dudas todos los días.</p>
 
           <div style="position:relative;z-index:1;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
             <button class="btn btn--wa" id="btn-wa-canal-open"><svg class="ic"><use href="#i-whatsapp"/></svg>Abrir grupo</button>
@@ -8946,7 +8950,7 @@ const Sections = (function(){
           </div>
           <div class="wa-rule">
             <div class="wa-rule__check"><svg class="ic"><use href="#i-check"/></svg></div>
-            <div class="wa-rule__text"><strong>Comparte casos reales.</strong> Si compartes un caso de planta o pregunta técnica, da contexto: sector, tamaño, qué pasó.</div>
+            <div class="wa-rule__text"><strong>Comparte casos reales.</strong> Si compartes un caso clínico o pregunta técnica, da contexto: sector, tamaño, qué pasó.</div>
           </div>
           <div class="wa-rule">
             <div class="wa-rule__check"><svg class="ic"><use href="#i-check"/></svg></div>
@@ -9651,11 +9655,11 @@ const Sections = (function(){
 // ═══════════════════════════════════════════════════════════════════
 const OdonTeck_CONTACT = {
   // Número único de contacto (vendedora · soporte · descuento · director)
-  whatsapp: '5212211832603',  // +52 221 183 2603
+  whatsapp: '',  // PENDIENTE: número real OdonTeck (Britney lo comparte)
   // Canal de difusión oficial
-  canal: 'https://whatsapp.com/channel/0029VbBP1NL1iUxYcsyoNE3c',
+  canal: '',  // PENDIENTE: canal real OdonTeck (Britney lo comparte mañana)
   // Zoom de la próxima clase (muestra · sustituir por el real al confirmar webinar)
-  zoom: 'https://zoom.us/j/85234567890?pwd=OdonTeck2026OEE',
+  zoom: '',  // PENDIENTE: link Zoom real al confirmar webinar
   // Sitio público
   sitio: 'https://www.odonteckconsulting.com',
 
@@ -9673,7 +9677,7 @@ const OdonTeck_CONTACT = {
     return '✉️ Hola, soy miembro VIP de OdonTeck y me gustaría contactar con la dirección. Mi consulta es:\n\n';
   },
   shareInvitacion() {
-    const txt = '⭐ Conoce OdonTeck · OdonTeck Consulting Group.\n\nCursos online de seguridad industrial, NOM-STPS, calidad y logística con certificación oficial.\n\nÚnete al canal: '+this.canal+'\nSitio: '+this.sitio;
+    const txt = '⭐ Conoce OdonTeck · OdonTeck Consulting Group.\n\nCursos online de odontología con certificación oficial.\n\nÚnete al canal: '+this.canal+'\nSitio: '+this.sitio;
     return `https://wa.me/?text=${encodeURIComponent(txt)}`;
   }
 };
@@ -9737,7 +9741,7 @@ window.__maybeAskName = function(){
     const pareceEmail = actual && (actual.toLowerCase() === emailPart.toLowerCase());
     const sinApellido = actual && !actual.includes(' ');
     const tieneNumeros = /\d/.test(actual);
-    const esGenerico = !actual || ['ingeniero','usuario vip','usuario'].includes(actual.toLowerCase());
+    const esGenerico = !actual || ['ingeniero','colega','invitado','doctor','usuario vip','usuario'].includes(actual.toLowerCase());
     const sugerido = (pareceEmail || esGenerico) ? '' : actual;
 
     const ov = document.createElement('div');
@@ -10173,7 +10177,7 @@ function getReferralCode(){
 function openReferralModal(){
   const code=getReferralCode();
   const refLink=OdonTeck_CONTACT.sitio+'/?ref='+code;
-  const shareTxt=`🦺 Conoce OdonTeck · cursos de ingeniería industrial y seguridad con certificación oficial.\n\nUsa mi código ${code} y obtén un descuento especial.\n\nMás info: ${refLink}`;
+  const shareTxt=`Conoce OdonTeck · cursos de odontología con certificación oficial.\n\nUsa mi código ${code} y obtén un descuento especial.\n\nMás info: ${refLink}`;
   Modal.open({
     id:'referral',
     title:'Tu código de referidos',
@@ -10282,7 +10286,7 @@ function initNav(){
         cerrarDrawerMovil();
       }
       // Herramientas con sección propia (se abren dentro del panel, no como popup)
-      const toolSections = { iper:'tool-iper', oee:'tool-oee', ats:'tool-ats', logistica:'tool-logistica', noms:'tool-noms' };
+      const toolSections = { anestesico:'tool-anestesico', prescripcion:'tool-prescripcion', odontograma:'tool-odontograma', cotizador:'tool-cotizador', plan:'tool-plan' };
       if(it.dataset.tool){
         if(toolSections[it.dataset.tool]){ navigateToSection(toolSections[it.dataset.tool]); return; }
         if(Tools[it.dataset.tool]){ Tools[it.dataset.tool].open(); return; }
@@ -10449,7 +10453,32 @@ function init(){
   Theme.init();applyGreeting();initCountdown();initNav();
   loadProfileFromLS();
   injectSupportFAB();
-  window.Modal=Modal;window.Tools=Tools;window.Toast=Toast;window.navigateToSection=navigateToSection;
+  /* === Herramientas dentales OdonTeck (iframes aislados) === */
+(function(){
+  var TD=[
+    {s:'anestesico',f:'tools/herramienta-anestesico.html',t:'Calculadora de anestésico local',d:'Dosis máxima y número de cartuchos según peso y tipo de anestésico.',ic:'i-shield-check'},
+    {s:'prescripcion',f:'tools/herramienta-prescripcion.html',t:'Calculadora de prescripción',d:'Analgésicos y antibióticos con dosis ajustada por peso del paciente.',ic:'i-news'},
+    {s:'odontograma',f:'tools/herramienta-odontograma.html',t:'Odontograma digital',d:'Registro dental en notación FDI, con cotización opcional y PDF.',ic:'i-tools'},
+    {s:'cotizador',f:'tools/herramienta-cotizador.html',t:'Cotizador de tratamientos',d:'Cotizaciones formales en PDF con folio, vigencia y anticipo.',ic:'i-credit-card'},
+    {s:'plan',f:'tools/herramienta-plan.html',t:'Plan de tratamiento por fases',d:'Plan por etapas con duracion, estado, costo y linea de tiempo.',ic:'i-clipboard-check'}
+  ];
+  function tema(){ return document.documentElement.getAttribute('data-theme')||'night'; }
+  TD.forEach(function(T){
+    Sections.renderers['tool-'+T.s]=function(dyn){
+      dyn.innerHTML='<div class="toolframe fade-up">'
+        +'<div class="toolframe__head"><div class="toolframe__ic"><svg class="ic"><use href="#'+T.ic+'"/></svg></div>'
+        +'<div><h2 class="toolframe__title">'+T.t+'</h2><p class="toolframe__sub">'+T.d+'</p></div></div>'
+        +'<div class="toolframe__wrap"><iframe class="toolframe__frame" id="tf-'+T.s+'" src="'+T.f+'?theme='+tema()+'" title="'+T.t+'" loading="lazy" scrolling="no"></iframe></div></div>';
+    };
+  });
+  window.addEventListener('message',function(e){
+    if(e.data && e.data.odtTool && e.data.slug){
+      var fr=document.getElementById('tf-'+e.data.slug);
+      if(fr && e.data.h) fr.style.height=(e.data.h+8)+'px';
+    }
+  });
+})();
+window.Modal=Modal;window.Tools=Tools;window.Toast=Toast;window.navigateToSection=navigateToSection;
   window.openReferralModal=openReferralModal;
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
@@ -10541,9 +10570,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       if (S.modo === 'invitado') {
         heroTitle.textContent = 'Estás explorando OdonTeck VIP';
       } else if (S.modo === 'sin-membresia') {
-        heroTitle.textContent = `${part}, ${S.displayName?.split(' ')[0]||'ingeniero'}`;
+        heroTitle.textContent = `${part}, ${S.displayName?.split(' ')[0]||'colega'}`;
       } else {
-        heroTitle.textContent = `${part}, ${S.displayName?.split(' ')[0]||'ingeniero'}`;
+        heroTitle.textContent = `${part}, ${S.displayName?.split(' ')[0]||'colega'}`;
       }
     }
 

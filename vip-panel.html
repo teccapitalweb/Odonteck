@@ -3377,6 +3377,28 @@ button.dir-det__row{background:var(--surface-2);border:1px solid var(--border-2)
 .plan-tool .btn--ghost{background:var(--surface-2);color:var(--text-2);border:1px solid var(--line)}
 .plan-tool .btn--ghost:hover{border-color:var(--line-2);color:var(--text)}
 .plan-tool .foot{font-size:11px;color:var(--text-3);text-align:center;line-height:1.6;margin-top:10px}
+
+/* ===== Ajustes MOBILE para Herramientas Pro (no afecta desktop) ===== */
+@media(max-width:560px){
+  .thx-card{padding:18px 16px}
+  .thx-total-final{padding:14px 16px}
+  .thx-total-final strong{font-size:22px}
+  .odo-tool .qprice{width:96px}
+  .odo-tool .qsub{width:64px;font-size:11.5px}
+  .odo-tool .qrow{gap:7px}
+  .odo-tool .teeth{-webkit-overflow-scrolling:touch;padding:14px 8px}
+  .odo-tool .tooth__svg{width:23px;height:23px}
+  .odo-tool .quad{gap:2px}
+  .odo-tool .quad + .quad{margin-left:9px;padding-left:9px}
+  .plan-tool .cwrap{width:96px}
+  .plan-tool .mwrap{min-width:120px}
+}
+@media(max-width:400px){
+  .thx-card{padding:16px 13px}
+  .odo-tool .qprice{width:84px}
+  .odo-tool .qrow .qcount{display:none}
+  .thx-itrow{grid-template-columns:1fr 48px 92px 38px;gap:6px}
+}
 </style>
 </head>
 <body style="visibility:hidden">
@@ -4339,6 +4361,15 @@ function toolRequiereVIP(nombreHerramienta){
   }
   return false;
 }
+
+function toolLockHTML(sub){
+  return '<div class="tool-paywall" style="grid-column:1/-1;background:var(--surface);border:1px solid var(--border);border-radius:20px;margin:0">'
+    +'<div class="tool-paywall__ic"><svg class="ic"><use href="#i-crown"/></svg></div>'
+    +'<h3>Resultado disponible para miembros VIP</h3>'
+    +'<p>'+(sub||'Captura los datos que necesites. Para ver el resultado, activa tu membres\u00eda VIP.')+'</p>'
+    +'<button class="btn btn--accent" onclick="navigateToSection(\'suscripcion\')">Hazte VIP</button></div>';
+}
+window.toolLockHTML=toolLockHTML;
 
 const IPERTool = (function(){
   const STORAGE_KEY = 'odonteck:iper:current';
@@ -10800,6 +10831,7 @@ if(typeof Sections!=='undefined' && Sections.renderers){
       var res=document.getElementById('aneRes'),warn=document.getElementById('aneWarn');
       var peso=parseFloat(st.peso);
       if(st.idx<0||!peso||peso<=0){res.style.display='none';warn.style.display='none';return;}
+      if(!toolEsVIP()){res.style.display='';res.innerHTML=toolLockHTML('Captura el anest\u00e9sico y el peso. Para ver la dosis y los cartuchos, activa tu membres\u00eda VIP.');warn.style.display='none';return;}
       var a=ANEST[st.idx],dp=a.mgkg*peso,dmax=Math.min(dp,a.tope),cart=Math.floor(dmax/a.cart),vol=cart*1.8;
       document.getElementById('aneCart').textContent=cart;
       document.getElementById('aneDosis').innerHTML=Math.round(dmax)+'<span class="kpi-card__value-sub">mg</span>';
@@ -10839,7 +10871,7 @@ if(typeof Sections!=='undefined' && Sections.renderers){
       +'<div class="thx-grid2"><div class="thx-field"><label class="thx-label">Tipo de paciente</label><div class="thx-seg" id="preSeg"><button class="thx-seg__btn on" type="button" data-t="adulto">Adulto</button><button class="thx-seg__btn" type="button" data-t="pediatrico">Pedi\u00e1trico</button></div></div>'
       +'<div class="thx-field" id="prePesoField" style="display:none"><label class="thx-label">Peso del ni\u00f1o (kg)</label><input class="thx-input" type="number" id="prePeso" inputmode="decimal" min="1" placeholder="Ej. 18"></div></div>'
       +'<div class="thx-note thx-note--warn"><svg viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg><span id="preWarnTxt"></span></div></div>'
-      +'<div class="kpi-grid"><div class="kpi-card"><div class="kpi-card__label">Dosis recomendada</div><div class="kpi-card__value is-text" id="preBig">\u2014</div><div class="kpi-card__value-sub" id="preLbl" style="display:block;margin:8px 0 0;font-size:13px"></div></div>'
+      +'<div class="kpi-grid" id="preRes"><div class="kpi-card"><div class="kpi-card__label">Dosis recomendada</div><div class="kpi-card__value is-text" id="preBig">\u2014</div><div class="kpi-card__value-sub" id="preLbl" style="display:block;margin:8px 0 0;font-size:13px"></div></div>'
       +'<div class="kpi-card"><div class="kpi-card__label">Duraci\u00f3n</div><div class="kpi-card__value is-text" id="preDur">\u2014</div></div>'
       +'<div class="kpi-card"><div class="kpi-card__label">M\u00e1ximo por d\u00eda</div><div class="kpi-card__value is-text" id="preMax">\u2014</div></div></div>'
       +'<div class="thx-note"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span id="preSub"></span></div></div>';
@@ -10857,6 +10889,8 @@ if(typeof Sections!=='undefined' && Sections.renderers){
     function r1(n){return Math.round(n);}
     function render(){
       var f=FARMACOS[st.key];
+      var _r=document.getElementById('preRes');
+      if(_r && !toolEsVIP()){_r.innerHTML=toolLockHTML('Elige el medicamento y el tipo de paciente. Para ver la dosis calculada, activa tu membres\u00eda VIP.');var _n=document.getElementById('preSub');if(_n&&_n.parentNode)_n.parentNode.style.display='none';return;}
       var big=document.getElementById('preBig'),lbl=document.getElementById('preLbl'),sub=document.getElementById('preSub'),dur=document.getElementById('preDur'),mx=document.getElementById('preMax');
       document.getElementById('preWarnTxt').textContent=(f.grupo==='Antibiótico')
         ? 'Dosis de referencia (apoyo clínico). No sustituye tu criterio ni la ficha técnica. Verifica alergias (penicilina), interacciones, función renal/hepática y embarazo. Antibiótico solo con indicación y tras eliminar el foco. '+f.nota
@@ -10937,7 +10971,7 @@ document.getElementById('cot-btnClear').addEventListener('click',function(){
 });
 
 // ---------- PDF formal ----------
-document.getElementById('cot-btnPdf').addEventListener('click',function(){
+document.getElementById('cot-btnPdf').addEventListener('click',function(){ if(!toolRequiereVIP('el Cotizador')) return;
   var valid=items.filter(function(it){ return (it.nombre||'').trim() && (it.precio||0)>0; });
   if(!valid.length){ alert('Agrega al menos un tratamiento con nombre y precio.'); return; }
   var jsPDF=window.jspdf.jsPDF; var doc=new jsPDF({unit:'mm',format:'a4'});
@@ -11151,7 +11185,7 @@ function renderCotizacion(){
       +'<span class="qsub" data-sub="'+x.k+'">'+fmtMXN(p*n)+'</span></div>';
   });
   if(!any){ body.innerHTML='<div class="qempty">Marca tratamientos en el odontograma para cotizarlos.</div>'; return; }
-  rows+='<div class="qtotal"><span class="t1">Total estimado</span><span class="t2" id="qTotal">'+fmtMXN(totalCotiz())+'</span></div>';
+  rows+='<div class="qtotal"><span class="t1">Total estimado</span><span class="t2" id="odo-qTotal">'+fmtMXN(totalCotiz())+'</span></div>';
   body.innerHTML=rows;
   body.querySelectorAll('.qprice input').forEach(function(inp){
     inp.addEventListener('input',function(){
@@ -11176,7 +11210,7 @@ document.getElementById('odo-btnClear').addEventListener('click',function(){
 
 // ---------- PDF (dibujado desde cero) ----------
 function condName(k){ for(var i=0;i<CONDICIONES.length;i++) if(CONDICIONES[i].k===k) return CONDICIONES[i]; return null; }
-document.getElementById('odo-btnPdf').addEventListener('click',function(){
+document.getElementById('odo-btnPdf').addEventListener('click',function(){ if(!toolRequiereVIP('el Odontograma')) return;
   var jsPDF=window.jspdf.jsPDF; var doc=new jsPDF({unit:'mm',format:'a4'});
   var W=210, mx=16, y=18;
   // encabezado
@@ -11389,7 +11423,7 @@ document.getElementById('plan-btnClear').addEventListener('click',function(){
 
 function fdate(v){ if(!v)return''; var p=v.split('-'); return p[2]+'/'+p[1]+'/'+p[0]; }
 
-document.getElementById('plan-btnPdf').addEventListener('click',function(){
+document.getElementById('plan-btnPdf').addEventListener('click',function(){ if(!toolRequiereVIP('el Plan de Tratamiento')) return;
   var valid=fases.filter(function(f){ return (f.titulo||'').trim()||f.pasos.some(function(p){return (p.texto||'').trim();}); });
   if(!valid.length){ alert('Agrega al menos una fase con título o pasos.'); return; }
   var jsPDF=window.jspdf.jsPDF; var doc=new jsPDF({unit:'mm',format:'a4'});

@@ -7847,12 +7847,18 @@ const Sections = (function(){
           <div class="nivel-path__title">Tu camino de aprendiz a maestro</div>
           <div class="nivel-path__track">
             ${niveles.map((n,idx)=>{
-              const iconos=['i-user','i-tools','i-shield-check','i-trophy','i-crown'];
+              const iconosNivel=[
+                '<svg class="ic" viewBox="0 0 24 24"><path d="M12 4.5c-3.3 0-5.5 1.9-5.5 4.8 0 2.4 .9 4 1.6 6.5 .4 1.6 .6 3.4 1.6 3.4 .9 0 1-1.5 1.4-3 .2-.9 .4-1.7 .9-1.7s.7 .8 .9 1.7c.4 1.5 .5 3 1.4 3 1 0 1.2-1.8 1.6-3.4 .7-2.5 1.6-4.1 1.6-6.5 0-2.9-2.2-4.8-5.5-4.8z"/></svg>',
+                '<svg class="ic" viewBox="0 0 24 24"><circle cx="9" cy="8" r="4.3"/><path d="M12 11.2 19 18.6"/></svg>',
+                '<svg class="ic" viewBox="0 0 24 24"><path d="M10 6.6c-2.6 0-4.3 1.5-4.3 3.7 0 1.9 .7 3.1 1.3 5 .3 1.2 .5 2.7 1.3 2.7 .7 0 .8-1.2 1.1-2.4 .15-.7 .3-1.3 .7-1.3s.55 .6 .7 1.3c.3 1.2 .4 2.4 1.1 2.4 .8 0 1-1.5 1.3-2.7 .2-.7 .45-1.4 .6-2.2"/><path d="M17.6 3.8l.75 1.95 1.95 .75-1.95 .75-.75 1.95-.75-1.95-1.95-.75 1.95-.75z"/></svg>',
+                '<svg class="ic" viewBox="0 0 24 24"><path d="M4 8.6l3.6 3.2L12 5.6l4.4 6.2L20 8.6l-1.4 9.4H5.4z"/><path d="M5.6 18h12.8"/></svg>',
+                '<svg class="ic" viewBox="0 0 24 24"><path d="M12 10.2c-2.4 0-4 1.4-4 3.5 0 1.8 .7 3 1.2 4.6 .3 1.1 .5 2.4 1.2 2.4 .65 0 .7-1.1 1-2.2 .15-.7 .3-1.2 .6-1.2s.45 .5 .6 1.2c.3 1.1 .35 2.2 1 2.2 .7 0 .9-1.3 1.2-2.4 .5-1.6 1.2-2.8 1.2-4.6 0-2.1-1.6-3.5-4-3.5z"/><path d="M6.6 6.4l2 1.7L12 3.6l3.4 4.5 2-1.7-1 4.9H7.6z"/></svg>'
+              ];
               const isCurrent=n.id===nivelActual.id;
               const isDone=n.id<nivelActual.id;
               const cls=isCurrent?'is-current':isDone?'is-done':'is-locked';
               return `<div class="nivel-step ${cls}">
-                <div class="nivel-step__icon">${iconos[idx]?`<svg class="ic"><use href="#${iconos[idx]}"/></svg>`:'·'}</div>
+                <div class="nivel-step__icon">${iconosNivel[idx]||'·'}</div>
                 <div class="nivel-step__name">${n.nombre}</div>
                 <div class="nivel-step__xp">${isCurrent?'TÚ':n.desde+'+ XP'}</div>
               </div>`;

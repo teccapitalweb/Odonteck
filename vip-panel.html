@@ -3889,6 +3889,9 @@ window.__setDisplayName = async (nombre) => {
 <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"/></symbol>
 <symbol id="i-messages" viewBox="0 0 24 24"><path d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10"/><path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2"/></symbol>
 <symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"/></symbol>
+<symbol id="i-instagram" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+<symbol id="i-badge" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10.5" r="2"/><path d="M5.5 16.5c0-1.9 1.7-2.8 3.5-2.8s3.5 .9 3.5 2.8"/><line x1="15" y1="9" x2="18" y2="9"/><line x1="15" y1="13" x2="18" y2="13"/></symbol>
 <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/></symbol>
 <symbol id="i-credit-card" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 10h18"/></symbol>
 <symbol id="i-bell" viewBox="0 0 24 24"><path d="M10 5a2 2 0 0 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6"/><path d="M9 17v1a3 3 0 0 0 6 0v-1"/></symbol>
@@ -8489,7 +8492,7 @@ const Sections = (function(){
   // 📇 DIRECTORIO VIP · cada miembro arma su tarjeta profesional
   // Firestore: colección `directorio/{uid}` · foto base64 optimizada
   // ═══════════════════════════════════════════════════════════════
-  const SECTORES = ['Odontología General','Ortodoncia','Endodoncia','Periodoncia','Implantología','Odontopediatría','Cirugía Oral y Maxilofacial','Rehabilitación Oral','Odontología Estética','Estudiante'];
+  const SECTORES = ['Odontología General','Odontología Preventiva','Odontopediatría','Ortodoncia','Endodoncia','Periodoncia','Cirugía Oral','Implantología','Rehabilitación Oral','Operatoria Dental','Odontología Estética','Prótesis Dental','Radiología Oral','Patología Oral','Oclusión y ATM'];
   let _dirUnsub = null;
   window.__dirCleanup = function(){ try{ if(typeof _dirUnsub==='function'){ _dirUnsub(); _dirUnsub=null; } }catch(e){} };
   window.__dirEditar = function(){ return dirEditarMiTarjeta(); };
@@ -8612,7 +8615,7 @@ const Sections = (function(){
         <div class="dir-bar">
           <div class="dir-search">
             <svg class="ic"><use href="#i-search"/></svg>
-            <input type="text" id="dir-buscar" placeholder="Buscar por nombre, empresa o puesto…">
+            <input type="text" id="dir-buscar" placeholder="Buscar por nombre, clínica o especialidad…">
           </div>
           ${esVip?`<button class="btn btn--accent" id="dir-mi-tarjeta"><svg class="ic"><use href="#i-edit"/></svg>Mi tarjeta</button>`:''}
         </div>
@@ -8663,7 +8666,7 @@ const Sections = (function(){
     let cards = _dirCards.slice();
     if (_dirFiltroSector!=='todos') cards = cards.filter(c=>c.sector===_dirFiltroSector);
     if (_dirBusqueda) cards = cards.filter(c=>{
-      const blob = ((c.nombre||'')+' '+(c.empresa||'')+' '+(c.puesto||'')+' '+(c.sector||'')).toLowerCase();
+      const blob = ((c.nombre||'')+' '+(c.empresa||'')+' '+(c.puesto||'')+' '+(c.sector||'')+' '+(c.ubicacion||'')).toLowerCase();
       return blob.includes(_dirBusqueda);
     });
     if (!cards.length){
@@ -8681,6 +8684,7 @@ const Sections = (function(){
       if (c.email) contactos.push(`<button class="dir-cta dir-cta--mail" data-email="${escapeHtml(c.email)}" title="Copiar correo: ${escapeHtml(c.email)}"><svg class="ic"><use href="#i-mail"/></svg></button>`);
       if (c.linkedin) contactos.push(`<a class="dir-cta dir-cta--li" href="${c.linkedin.startsWith('http')?c.linkedin:'https://'+c.linkedin}" target="_blank" rel="noopener" title="LinkedIn"><svg class="ic"><use href="#i-linkedin"/></svg></a>`);
       if (c.web) contactos.push(`<a class="dir-cta" href="${c.web.startsWith('http')?c.web:'https://'+c.web}" target="_blank" rel="noopener" title="Sitio web"><svg class="ic"><use href="#i-link"/></svg></a>`);
+      if (c.instagram) contactos.push(`<a class="dir-cta" href="https://instagram.com/${(c.instagram||'').replace(/^@+/,'')}" target="_blank" rel="noopener" title="Instagram"><svg class="ic"><use href="#i-instagram"/></svg></a>`);
       const esMia = c.id===uid;
       return `
       <article class="dir-card${esMia?' dir-card--mia':''}" data-dircard="${c.id}">
@@ -8692,6 +8696,7 @@ const Sections = (function(){
           <div class="dir-card__name">${escapeHtml(c.nombre||'Miembro VIP')}</div>
           ${c.puesto?`<div class="dir-card__puesto">${escapeHtml(c.puesto)}</div>`:''}
           ${c.empresa?`<div class="dir-card__empresa"><svg class="ic"><use href="#i-briefcase"/></svg>${escapeHtml(c.empresa)}</div>`:''}
+          ${c.ubicacion?`<div class="dir-card__empresa"><svg class="ic"><use href="#i-pin"/></svg>${escapeHtml(c.ubicacion)}</div>`:''}
           ${c.sector?`<span class="dir-card__sector">${escapeHtml(c.sector)}</span>`:''}
           ${c.bio?`<div class="dir-card__bio">${escapeHtml(c.bio)}</div>`:''}
           ${contactos.length?`<div class="dir-card__ctas">${contactos.join('')}</div>`:'<div class="dir-card__sincontacto">Sin datos de contacto</div>'}
@@ -8736,6 +8741,8 @@ const Sections = (function(){
           <div class="dir-det__name">${escapeHtml(c.nombre||'Miembro VIP')}</div>
           ${c.puesto?`<div class="dir-det__puesto">${escapeHtml(c.puesto)}</div>`:''}
           ${c.empresa?`<div class="dir-det__empresa"><svg class="ic"><use href="#i-briefcase"/></svg>${escapeHtml(c.empresa)}</div>`:''}
+          ${c.ubicacion?`<div class="dir-det__empresa"><svg class="ic"><use href="#i-pin"/></svg>${escapeHtml(c.ubicacion)}</div>`:''}
+          ${(c.cedula&&c.cedulaVisible)?`<div class="dir-det__empresa"><svg class="ic"><use href="#i-badge"/></svg>Cédula profesional ${escapeHtml(c.cedula)}</div>`:''}
           ${c.sector?`<span class="dir-det__sector">${escapeHtml(c.sector)}</span>`:''}
         </div>
         ${c.bio?`<div class="dir-det__bio">${escapeHtml(c.bio)}</div>`:''}
@@ -8747,8 +8754,9 @@ const Sections = (function(){
            </button>`:''}
           ${row('i-linkedin','LinkedIn',c.linkedin, c.linkedin?(c.linkedin.startsWith('http')?c.linkedin:'https://'+c.linkedin):'', 'dir-det__row--li')}
           ${row('i-link','Sitio web',c.web, c.web?(c.web.startsWith('http')?c.web:'https://'+c.web):'')}
+          ${row('i-instagram','Instagram',c.instagram?('@'+c.instagram.replace(/^@+/,'')):'', c.instagram?('https://instagram.com/'+c.instagram.replace(/^@+/,'')):'')}
         </div>
-        ${(!c.whatsapp&&!c.email&&!c.linkedin&&!c.web)?'<div class="dir-det__sincontacto">Este miembro no agregó datos de contacto.</div>':''}
+        ${(!c.whatsapp&&!c.email&&!c.linkedin&&!c.web&&!c.instagram)?'<div class="dir-det__sincontacto">Este miembro no agregó datos de contacto.</div>':''}
       </div>
     `;
     const footer = document.createElement('div');
@@ -8791,9 +8799,11 @@ const Sections = (function(){
         <input class="dir-form__in" id="dirf-nombre" maxlength="50" value="${(data.nombre||window.UserState?.nombre||'').replace(/"/g,'&quot;')}" placeholder="Ej. Felipe Estrada Ramírez">
         <label class="dir-form__lbl">Puesto / cargo</label>
         <input class="dir-form__in" id="dirf-puesto" maxlength="60" value="${(data.puesto||'').replace(/"/g,'&quot;')}" placeholder="Ej. Ortodoncista">
-        <label class="dir-form__lbl">Empresa</label>
-        <input class="dir-form__in" id="dirf-empresa" maxlength="60" value="${(data.empresa||'').replace(/"/g,'&quot;')}" placeholder="Ej. Grupo Industrial del Bajío">
-        <label class="dir-form__lbl">Sector</label>
+        <label class="dir-form__lbl">Clínica / Consultorio</label>
+        <input class="dir-form__in" id="dirf-empresa" maxlength="60" value="${(data.empresa||'').replace(/"/g,'&quot;')}" placeholder="Ej. Clínica Dental Integral">
+        <label class="dir-form__lbl">Ubicación profesional <span class="dir-form__opt">(opcional)</span></label>
+        <input class="dir-form__in" id="dirf-ubicacion" maxlength="60" value="${(data.ubicacion||'').replace(/"/g,'&quot;')}" placeholder="Ej. Puebla, Puebla">
+        <label class="dir-form__lbl">Especialidad</label>
         <select class="dir-form__in" id="dirf-sector">
           <option value="">Selecciona…</option>
           ${SECTORES.map(s=>`<option value="${s}" ${data.sector===s?'selected':''}>${s}</option>`).join('')}
@@ -8809,6 +8819,12 @@ const Sections = (function(){
         <input class="dir-form__in" id="dirf-linkedin" maxlength="120" value="${(data.linkedin||'').replace(/"/g,'&quot;')}" placeholder="linkedin.com/in/tu-perfil">
         <label class="dir-form__lbl">Sitio web</label>
         <input class="dir-form__in" id="dirf-web" maxlength="120" value="${(data.web||'').replace(/"/g,'&quot;')}" placeholder="tusitio.com">
+        <label class="dir-form__lbl">Instagram profesional</label>
+        <input class="dir-form__in" id="dirf-instagram" maxlength="60" value="${(data.instagram||'').replace(/"/g,'&quot;')}" placeholder="@drjuanperez">
+        <div class="dir-form__sep">Cédula profesional <span class="dir-form__opt">(opcional)</span></div>
+        <label class="dir-form__lbl">Cédula profesional</label>
+        <input class="dir-form__in" id="dirf-cedula" maxlength="20" value="${(data.cedula||'').replace(/"/g,'&quot;')}" placeholder="12345678">
+        <label class="dir-form__check"><input type="checkbox" id="dirf-cedula-visible" ${data.cedulaVisible?'checked':''}> Mostrar cédula en el directorio</label>
         <label class="dir-form__check"><input type="checkbox" id="dirf-visible" ${data.visible!==false?'checked':''}> Mostrar mi tarjeta en el directorio</label>
       </div>
     `;
@@ -8845,6 +8861,10 @@ const Sections = (function(){
         email: document.getElementById('dirf-email').value.trim(),
         linkedin: document.getElementById('dirf-linkedin').value.trim(),
         web: document.getElementById('dirf-web').value.trim(),
+        instagram: document.getElementById('dirf-instagram').value.trim().replace(/^@+/,''),
+        ubicacion: document.getElementById('dirf-ubicacion').value.trim(),
+        cedula: document.getElementById('dirf-cedula').value.trim(),
+        cedulaVisible: document.getElementById('dirf-cedula-visible').checked,
         visible: document.getElementById('dirf-visible').checked,
         color: dirColorFor(uid),
         updatedAt: fs.serverTimestamp()

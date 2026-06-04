@@ -6552,78 +6552,31 @@ const Sections = (function(){
     });
   });
 
-  // ─── Portadas automáticas · URLs Unsplash VERIFICADAS al 100% ───
-  // 8 URLs reales · industriales · sin retail
-  const PORTADAS_CURSOS = {
-    'diseño de sonrisa': 'https://images.unsplash.com/photo-1677026010083-78ec7f1b84ed?w=900&auto=format&fit=crop&q=80',
-    'carilla':           'https://images.unsplash.com/photo-1677026010083-78ec7f1b84ed?w=900&auto=format&fit=crop&q=80',
-    'blanqueamiento':    'https://images.unsplash.com/photo-1677026010083-78ec7f1b84ed?w=900&auto=format&fit=crop&q=80',
-    'blanqueo':          'https://images.unsplash.com/photo-1677026010083-78ec7f1b84ed?w=900&auto=format&fit=crop&q=80',
-    'estétic':           'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=900&auto=format&fit=crop&q=80',
-    'estetic':           'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=900&auto=format&fit=crop&q=80',
-    'sonrisa':           'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=900&auto=format&fit=crop&q=80',
-    'ortodonc':          'https://images.unsplash.com/photo-1489278353717-f64c6ee8a4d2?w=900&auto=format&fit=crop&q=80',
-    'brackets':          'https://images.unsplash.com/photo-1489278353717-f64c6ee8a4d2?w=900&auto=format&fit=crop&q=80',
-    'alineador':         'https://images.unsplash.com/photo-1489278353717-f64c6ee8a4d2?w=900&auto=format&fit=crop&q=80',
-    'ortodoncia':        'https://images.unsplash.com/photo-1489278353717-f64c6ee8a4d2?w=900&auto=format&fit=crop&q=80',
-    'implant':           'https://images.unsplash.com/photo-1643660527076-119422ded068?w=900&auto=format&fit=crop&q=80',
-    'cirug':             'https://images.unsplash.com/photo-1643660527076-119422ded068?w=900&auto=format&fit=crop&q=80',
-    'exodonc':           'https://images.unsplash.com/photo-1643660527076-119422ded068?w=900&auto=format&fit=crop&q=80',
-    'extracc':           'https://images.unsplash.com/photo-1643660527076-119422ded068?w=900&auto=format&fit=crop&q=80',
-    'injerto':           'https://images.unsplash.com/photo-1643660527076-119422ded068?w=900&auto=format&fit=crop&q=80',
-    'endodon':           'https://images.unsplash.com/photo-1657470179447-0f5aa16daa91?w=900&auto=format&fit=crop&q=80',
-    'conducto':          'https://images.unsplash.com/photo-1657470179447-0f5aa16daa91?w=900&auto=format&fit=crop&q=80',
-    'periodon':          'https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?w=900&auto=format&fit=crop&q=80',
-    'encía':             'https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?w=900&auto=format&fit=crop&q=80',
-    'encia':             'https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?w=900&auto=format&fit=crop&q=80',
-    'gingiv':            'https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?w=900&auto=format&fit=crop&q=80',
-    'odontopedia':       'https://images.unsplash.com/photo-1657470179447-0f5aa16daa91?w=900&auto=format&fit=crop&q=80',
-    'pediátr':           'https://images.unsplash.com/photo-1657470179447-0f5aa16daa91?w=900&auto=format&fit=crop&q=80',
-    'pediatr':           'https://images.unsplash.com/photo-1657470179447-0f5aa16daa91?w=900&auto=format&fit=crop&q=80',
-    'infantil':          'https://images.unsplash.com/photo-1657470179447-0f5aa16daa91?w=900&auto=format&fit=crop&q=80',
-    'niñ':               'https://images.unsplash.com/photo-1657470179447-0f5aa16daa91?w=900&auto=format&fit=crop&q=80',
-    'rehabilitac':       'https://images.unsplash.com/photo-1643660527098-559f89e45a92?w=900&auto=format&fit=crop&q=80',
-    'prótesis':          'https://images.unsplash.com/photo-1643660527098-559f89e45a92?w=900&auto=format&fit=crop&q=80',
-    'protesis':          'https://images.unsplash.com/photo-1643660527098-559f89e45a92?w=900&auto=format&fit=crop&q=80',
-    'corona':            'https://images.unsplash.com/photo-1643660527098-559f89e45a92?w=900&auto=format&fit=crop&q=80',
-    'puente':            'https://images.unsplash.com/photo-1643660527098-559f89e45a92?w=900&auto=format&fit=crop&q=80',
-    'operatoria':        'https://images.unsplash.com/photo-1657470179447-0f5aa16daa91?w=900&auto=format&fit=crop&q=80',
-    'resina':            'https://images.unsplash.com/photo-1657470179447-0f5aa16daa91?w=900&auto=format&fit=crop&q=80',
-    'restaurac':         'https://images.unsplash.com/photo-1657470179447-0f5aa16daa91?w=900&auto=format&fit=crop&q=80',
-    'incrustac':         'https://images.unsplash.com/photo-1657470179447-0f5aa16daa91?w=900&auto=format&fit=crop&q=80',
-    'radiolog':          'https://images.unsplash.com/photo-1643660527098-559f89e45a92?w=900&auto=format&fit=crop&q=80',
-    'radiograf':         'https://images.unsplash.com/photo-1643660527098-559f89e45a92?w=900&auto=format&fit=crop&q=80',
-    'rayos x':           'https://images.unsplash.com/photo-1643660527098-559f89e45a92?w=900&auto=format&fit=crop&q=80',
-    'imagenolog':        'https://images.unsplash.com/photo-1643660527098-559f89e45a92?w=900&auto=format&fit=crop&q=80',
-    'tomograf':          'https://images.unsplash.com/photo-1643660527098-559f89e45a92?w=900&auto=format&fit=crop&q=80',
-    'patolog':           'https://images.unsplash.com/photo-1728342057953-94bfad8f0e7e?w=900&auto=format&fit=crop&q=80',
-    'oclus':             'https://images.unsplash.com/photo-1728342057953-94bfad8f0e7e?w=900&auto=format&fit=crop&q=80',
-    'atm':               'https://images.unsplash.com/photo-1728342057953-94bfad8f0e7e?w=900&auto=format&fit=crop&q=80',
-    'bruxismo':          'https://images.unsplash.com/photo-1728342057953-94bfad8f0e7e?w=900&auto=format&fit=crop&q=80',
-    'preventiv':         'https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?w=900&auto=format&fit=crop&q=80',
-    'profilaxis':        'https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?w=900&auto=format&fit=crop&q=80',
-    'limpieza':          'https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?w=900&auto=format&fit=crop&q=80',
-    'higiene':           'https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?w=900&auto=format&fit=crop&q=80',
-    'fluor':             'https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?w=900&auto=format&fit=crop&q=80',
-    'instrumental':      'https://images.unsplash.com/photo-1606811856475-5e6fcdc6e509?w=900&auto=format&fit=crop&q=80',
-    'material':          'https://images.unsplash.com/photo-1606811856475-5e6fcdc6e509?w=900&auto=format&fit=crop&q=80',
-    'odontolog':         'https://images.unsplash.com/photo-1728342057953-94bfad8f0e7e?w=900&auto=format&fit=crop&q=80',
-    'dental':            'https://images.unsplash.com/photo-1728342057953-94bfad8f0e7e?w=900&auto=format&fit=crop&q=80',
-    'bucal':             'https://images.unsplash.com/photo-1728342057953-94bfad8f0e7e?w=900&auto=format&fit=crop&q=80',
-    'oral':              'https://images.unsplash.com/photo-1728342057953-94bfad8f0e7e?w=900&auto=format&fit=crop&q=80',
-    'diente':            'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=900&auto=format&fit=crop&q=80',
+  // ─── Portadas automáticas · pools dentales (Unsplash libres) con rotación para evitar repetición ───
+  const _IMG = id => `https://images.unsplash.com/photo-${id}?w=900&auto=format&fit=crop&q=80`;
+  const PORTADA_POOLS = {
+    estetica: ['1677026010083-78ec7f1b84ed','1606811971618-4486d14f3f99','1489278353717-f64c6ee8a4d2'].map(_IMG),
+    cirugia:  ['1643660527076-119422ded068','1600170311833-c2cf5280ce49','1606811856475-5e6fcdc6e509'].map(_IMG),
+    clinico:  ['1657470179447-0f5aa16daa91','1606811841689-23dfddce3e95','1643660527098-559f89e45a92','1629909613654-28e377c37b09'].map(_IMG),
+    general:  ['1598256989800-fe5f95da9787','1629909615184-74f495363b67','1704455306251-b4634215d98f','1616391182219-e080b4d1043a','1629909614456-6b1c5c94cecc','1728342057953-94bfad8f0e7e','1643660526741-094639fbe53a'].map(_IMG)
   };
-
-  // Portada por defecto (planta industrial moderna · verificada)
-  const PORTADA_DEFAULT = 'https://images.unsplash.com/photo-1629909614456-6b1c5c94cecc?w=900&auto=format&fit=crop&q=80';
-
+  const PORTADA_TEMAS = [
+    ['estetica',['estétic','estetic','sonrisa','carilla','blanqueamiento','blanqueo','diseño de sonrisa','diente']],
+    ['cirugia',['implant','cirug','exodonc','extracc','injerto']],
+    ['clinico',['endodon','conducto','periodon','encía','encia','gingiv','operatoria','resina','restaurac','incrustac','preventiv','profilaxis','limpieza','higiene','fluor','odontopedia','pediátr','pediatr','infantil','niñ']],
+    ['general',['radiolog','radiograf','rayos x','imagenolog','tomograf','prótesis','protesis','rehabilitac','corona','puente','patolog','oclus','atm','bruxismo','odontolog','dental','bucal','oral']]
+  ];
+  const PORTADA_DEFAULT = _IMG('1629909614456-6b1c5c94cecc');
+  let _portadaIdx = {};
+  function _resetPortadas(){ _portadaIdx = {}; }
   function getPortadaCurso(curso){
     if (curso.portada) return curso.portada;
     const titulo = (curso.titulo || '').toLowerCase();
-    for (const [keyword, url] of Object.entries(PORTADAS_CURSOS)) {
-      if (titulo.includes(keyword)) return url;
-    }
-    return PORTADA_DEFAULT;
+    let tema = 'general';
+    for (const [tm, kws] of PORTADA_TEMAS){ if (kws.some(k => titulo.includes(k))){ tema = tm; break; } }
+    const pool = PORTADA_POOLS[tema];
+    const i = _portadaIdx[tema] || 0; _portadaIdx[tema] = i + 1;
+    return pool[i % pool.length];
   }
 
   // ─── Cargar cursos desde Firestore ───
@@ -6636,6 +6589,7 @@ const Sections = (function(){
       if (!db || !fs) throw new Error('Firestore no inicializado');
       const q = fs.query(fs.collection(db, 'cursos'), fs.orderBy('orden', 'asc'));
       const snap = await fs.getDocs(q);
+      _resetPortadas();
       cursos = snap.docs.map((d, i) => {
         const data = d.data();
         return {

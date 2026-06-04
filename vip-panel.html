@@ -3347,12 +3347,12 @@ window.__showWelcomeSplash = function(opts) {
     icono = '⭐';
     kicker = '¡BIENVENIDO AL CLUB VIP!';
     titulo = `Bienvenido al <em>club VIP Anual</em>`;
-    desc = `${nombre}, te uniste por todo un año a la comunidad de ingenieros industriales más activa de México. Esto es tuyo:`;
+    desc = `${nombre}, te uniste por todo un año a la comunidad odontológica más activa de México. Esto es tuyo:`;
   } else {
     icono = '⚙️';
     kicker = '¡MEMBRESÍA VIP ACTIVA!';
     titulo = `Bienvenido al <em>club VIP Mensual</em>`;
-    desc = `${nombre}, ya eres parte de la comunidad de ingenieros industriales más activa de México. Esto es tuyo:`;
+    desc = `${nombre}, ya eres parte de la comunidad odontológica más activa de México. Esto es tuyo:`;
   }
 
   // ── Recorrido "película" · los beneficios del panel ──
@@ -3360,7 +3360,7 @@ window.__showWelcomeSplash = function(opts) {
     { ic:'📚', t:'Cursos premium',   d:'Catálogo completo con clases reales que se desbloquean a tu ritmo.' },
     { ic:'🎥', t:'Clases en vivo',   d:'Webinars con expertos y acceso a las grabaciones cuando quieras.' },
     { ic:'📂', t:'PDFs y material',  d:'Plantillas, formatos y recursos descargables listos para usar.' },
-    { ic:'🛠️', t:'Herramientas pro', d:'IPER, OEE, generador de ATS y tablas NOM-STPS a la mano.' },
+    { ic:'🛠️', t:'Herramientas pro', d:'Anestésico, prescripción, odontograma, cotizador y plan de tratamiento.' },
     { ic:'🎓', t:'Certificados',     d:'Con folio oficial OdonTeck para respaldar lo que aprendes.' }
   ];
 
@@ -3639,7 +3639,7 @@ window.__setDisplayName = async (nombre) => {
         <div class="banner__info">
           <span class="banner__eyebrow"><span class="banner__eyebrow__dot"></span><span id="greeting-label">En vivo</span><span class="banner__version">v.2026.05</span></span>
           <h1 class="banner__title" id="hero-title">Buenas tardes, ingeniero</h1>
-          <p class="banner__sub">Tu acceso a cursos premium, herramientas pro de seguridad y la comunidad de ingeniería industrial más activa de México.</p>
+          <p class="banner__sub">Tu acceso a cursos premium, herramientas clínicas pro y la comunidad odontológica más activa de México.</p>
         </div>
         <div class="banner__stats">
           <div class="banner__stat" data-section="cursos" style="cursor:pointer"><div class="banner__stat-lbl">Cursos</div><div class="banner__stat-val">12</div></div>
@@ -3717,7 +3717,7 @@ window.__setDisplayName = async (nombre) => {
     <div class="widget widget--cert">
       <div class="widget__label"><svg class="ic"><use href="#i-users"/></svg>Tu presencia en la comunidad</div>
       <div class="widget__title" id="com-title">Crea tu tarjeta profesional</div>
-      <div class="widget__count-sub" id="com-sub">Aparece en el Directorio VIP y haz networking con otros ingenieros.</div>
+      <div class="widget__count-sub" id="com-sub">Aparece en el Directorio VIP y haz networking con otros odontólogos.</div>
       <div class="activity-row" style="margin-top:4px;">
         <div class="activity-row__bar" style="height:6px;"><div class="activity-row__bar-fill activity-row__bar-fill--orange" id="com-bar" style="width:0%"></div></div>
         <span class="activity-row__count" id="com-pct">0%</span>
@@ -4241,7 +4241,7 @@ const IPERTool = (function(){
         <div class="iper-form">
           <div class="iper-form__field iper-form__field--full">
             <label class="iper-form__label">Empresa o centro de trabajo</label>
-            <input type="text" class="input" id="iper-empresa" value="${state.setup.empresa.replace(/"/g,'&quot;')}" placeholder="Ej: Industrias del Centro SA de CV">
+            <input type="text" class="input" id="iper-empresa" value="${state.setup.empresa.replace(/"/g,'&quot;')}" placeholder="Ej: Clínica Dental Sonríe de CV">
           </div>
           <div class="iper-form__field">
             <label class="iper-form__label">Área evaluada</label>
@@ -5116,7 +5116,7 @@ const ATSTool = (function(){
         <div class="ats-form">
           <div class="ats-form__field ats-form__field--full">
             <label class="ats-label">Empresa o centro de trabajo</label>
-            <input type="text" class="input" id="ats-empresa" value="${state.setup.empresa.replace(/"/g,'&quot;')}" placeholder="Ej: Industrias del Centro SA de CV">
+            <input type="text" class="input" id="ats-empresa" value="${state.setup.empresa.replace(/"/g,'&quot;')}" placeholder="Ej: Clínica Dental Sonríe de CV">
           </div>
           <div class="ats-form__field">
             <label class="ats-label">Área</label>
@@ -6371,33 +6371,34 @@ const Sections = (function(){
   ];
 
   const logros = [
-    {id:'l1',cat:'Seguridad',nombre:'Primer paso',desc:'Completaste tu primer curso de seguridad',xp:50,unlock:'2026-04-18',criterio:'Termina 1 curso del área Seguridad'},
-    {id:'l2',cat:'Seguridad',nombre:'Defensor STPS',desc:'Completaste 3 NOMs de la STPS',xp:150,unlock:null,criterio:'Termina 3 cursos NOM-STPS'},
-    {id:'l3',cat:'Seguridad',nombre:'Casco de oro',desc:'Completaste 5 cursos de seguridad básica',xp:300,unlock:null,criterio:'Termina los 5 cursos básicos del área Seguridad'},
-    {id:'l4',cat:'Seguridad',nombre:'IPER experto',desc:'Generaste 20 matrices IPER',xp:200,unlock:null,criterio:'Crea 20 matrices IPER en la herramienta pro'},
-    {id:'l5',cat:'Seguridad',nombre:'Cero accidentes',desc:'Calificación 100 en un curso de seguridad',xp:100,unlock:null,criterio:'Saca 100 en cualquier curso de Seguridad'},
-    {id:'l6',cat:'Seguridad',nombre:'Guardián 24/7',desc:'Racha de 30 días aprendiendo seguridad',xp:250,unlock:null,criterio:'Estudia Seguridad 30 días seguidos'},
-    {id:'l7',cat:'Logística',nombre:'OTIF perfecto',desc:'Completaste el curso de indicadores logísticos',xp:120,unlock:null,criterio:'Termina "Indicadores logísticos: OTIF…"'},
-    {id:'l8',cat:'Logística',nombre:'Master del almacén',desc:'Completaste WMS y gestión de almacenes',xp:150,unlock:null,criterio:'Termina "WMS y gestión de almacenes 4.0"'},
-    {id:'l9',cat:'Logística',nombre:'KPI master',desc:'Calculaste 50 indicadores logísticos',xp:200,unlock:null,criterio:'Usa la herramienta Indicadores 50 veces'},
-    {id:'l10',cat:'Logística',nombre:'Cadena perfecta',desc:'Completaste todos los cursos de Logística',xp:400,unlock:null,criterio:'Termina los 5 cursos del área Logística'},
-    {id:'l11',cat:'Logística',nombre:'Tiempo es oro',desc:'Optimizaste 10 procesos medibles',xp:180,unlock:null,criterio:'Genera 10 reportes de mejora'},
-    {id:'l12',cat:'Calidad',nombre:'Lean adopter',desc:'Completaste Lean Manufacturing',xp:120,unlock:'2026-03-22',criterio:'Termina "Lean Manufacturing para supervisores"'},
-    {id:'l13',cat:'Calidad',nombre:'Six Sigma green',desc:'Obtuviste tu certificación Green Belt',xp:500,unlock:null,criterio:'Termina "Six Sigma Green Belt"'},
-    {id:'l14',cat:'Calidad',nombre:'AMEF master',desc:'Generaste 15 análisis AMEF completos',xp:200,unlock:null,criterio:'Completa 15 AMEFs en la plataforma'},
-    {id:'l15',cat:'Calidad',nombre:'OEE world-class',desc:'Alcanzaste >85% OEE',xp:300,unlock:null,criterio:'Usa la calculadora OEE y supera 85%'},
-    {id:'l16',cat:'Calidad',nombre:'Cero defectos',desc:'Implementaste 5 mejoras de calidad',xp:250,unlock:null,criterio:'Documenta 5 acciones de mejora'},
+    {id:'l1',cat:'Clínica',nombre:'Primer paso',desc:'Completaste tu primer curso clínico',xp:50,unlock:'2026-04-18',criterio:'Termina 1 curso del área Clínica'},
+    {id:'l2',cat:'Clínica',nombre:'Bioseguridad total',desc:'Dominaste control de infecciones y esterilización',xp:150,unlock:null,criterio:'Termina el módulo de bioseguridad'},
+    {id:'l3',cat:'Clínica',nombre:'Sonrisa de oro',desc:'Completaste 5 cursos de odontología clínica',xp:300,unlock:null,criterio:'Termina 5 cursos del área Clínica'},
+    {id:'l4',cat:'Clínica',nombre:'Maestro del odontograma',desc:'Registraste 20 odontogramas',xp:200,unlock:null,criterio:'Crea 20 odontogramas en la herramienta pro'},
+    {id:'l5',cat:'Clínica',nombre:'Diagnóstico perfecto',desc:'Calificación 100 en un curso clínico',xp:100,unlock:null,criterio:'Saca 100 en cualquier curso de Clínica'},
+    {id:'l6',cat:'Clínica',nombre:'Guardián de la sonrisa',desc:'Racha de 30 días aprendiendo',xp:250,unlock:null,criterio:'Estudia 30 días seguidos'},
+    {id:'l7',cat:'Especialización',nombre:'Ortodoncia inicial',desc:'Completaste el curso de ortodoncia',xp:120,unlock:null,criterio:'Termina el curso de Ortodoncia'},
+    {id:'l8',cat:'Especialización',nombre:'Endodoncia dominada',desc:'Completaste el curso de endodoncia',xp:150,unlock:null,criterio:'Termina el curso de Endodoncia'},
+    {id:'l9',cat:'Especialización',nombre:'Implantólogo',desc:'Completaste el curso de implantología',xp:200,unlock:null,criterio:'Termina el curso de Implantología'},
+    {id:'l10',cat:'Especialización',nombre:'Especialista integral',desc:'Completaste todas las especialidades',xp:400,unlock:null,criterio:'Termina los cursos de todas las especialidades'},
+    {id:'l11',cat:'Especialización',nombre:'Odontopediatra',desc:'Completaste el curso de odontopediatría',xp:180,unlock:null,criterio:'Termina el curso de Odontopediatría'},
+    {id:'l12',cat:'Excelencia',nombre:'Estética dental',desc:'Completaste odontología estética',xp:120,unlock:'2026-03-22',criterio:'Termina "Odontología estética"'},
+    {id:'l13',cat:'Excelencia',nombre:'Rehabilitación oral',desc:'Completaste rehabilitación y prótesis',xp:500,unlock:null,criterio:'Termina "Rehabilitación oral avanzada"'},
+    {id:'l14',cat:'Excelencia',nombre:'Plan maestro',desc:'Generaste 15 planes de tratamiento',xp:200,unlock:null,criterio:'Crea 15 planes de tratamiento'},
+    {id:'l15',cat:'Excelencia',nombre:'Cotizador pro',desc:'Generaste 30 cotizaciones',xp:300,unlock:null,criterio:'Genera 30 cotizaciones con la herramienta'},
+    {id:'l16',cat:'Excelencia',nombre:'Cero complicaciones',desc:'Documentaste 5 casos de éxito',xp:250,unlock:null,criterio:'Documenta 5 casos clínicos'},
     {id:'l17',cat:'Comunidad',nombre:'Bienvenido al club',desc:'Te uniste al Club VIP OdonTeck',xp:30,unlock:'2026-03-15',criterio:'Activa tu membresía VIP'},
     {id:'l18',cat:'Comunidad',nombre:'Voz del foro',desc:'Publicaste 10 mensajes en el foro VIP',xp:100,unlock:null,criterio:'Crea 10 posts en el foro'},
-    {id:'l19',cat:'Comunidad',nombre:'Ayudador',desc:'Recibiste 25 likes en respuestas',xp:150,unlock:null,criterio:'Ayuda y consigue 25 likes'},
+    {id:'l19',cat:'Comunidad',nombre:'Colega solidario',desc:'Recibiste 25 likes en respuestas',xp:150,unlock:null,criterio:'Ayuda y consigue 25 likes'},
     {id:'l20',cat:'Comunidad',nombre:'Presente en vivo',desc:'Asististe a 5 clases en vivo',xp:200,unlock:null,criterio:'Conéctate a 5 webinars en vivo'},
     {id:'l21',cat:'Comunidad',nombre:'Embajador OdonTeck',desc:'Invitaste a 3 colegas',xp:300,unlock:null,criterio:'Refiere a 3 personas que se registren'},
     {id:'l22',cat:'Maestría',nombre:'Estudiante constante',desc:'Racha de 7 días aprendiendo',xp:70,unlock:'2026-05-19',criterio:'Aprende 7 días seguidos'},
-    {id:'l23',cat:'Maestría',nombre:'Estudiante de hierro',desc:'Racha de 30 días aprendiendo',xp:300,unlock:null,criterio:'Aprende 30 días seguidos'},
-    {id:'l24',cat:'Maestría',nombre:'Maratonista',desc:'Acumulaste 100 horas de estudio',xp:400,unlock:null,criterio:'Acumula 100 horas totales'},
+    {id:'l23',cat:'Maestría',nombre:'Disciplina de hierro',desc:'Racha de 30 días aprendiendo',xp:300,unlock:null,criterio:'Aprende 30 días seguidos'},
+    {id:'l24',cat:'Maestría',nombre:'Maratonista clínico',desc:'Acumulaste 100 horas de estudio',xp:400,unlock:null,criterio:'Acumula 100 horas totales'},
     {id:'l25',cat:'Maestría',nombre:'Tres áreas dominadas',desc:'Certificados en 3 áreas distintas',xp:350,unlock:null,criterio:'Obtén certificados en 3 áreas distintas'},
     {id:'l26',cat:'Maestría',nombre:'Maestro OdonTeck',desc:'Completaste 20 cursos. Una leyenda.',xp:1000,unlock:null,criterio:'Termina 20 cursos del catálogo'}
   ];
+
 
   // ⚡ Webinars: ahora se cargan de Firestore (col `webinars`)
   // Antes era hardcoded · ahora vacío al iniciar, se llena con cargarWebinarsFirestore()
@@ -6998,7 +6999,7 @@ const Sections = (function(){
       if (comBtn) comBtn.textContent = 'Ver mi tarjeta';
     } else {
       setTxt('com-title', 'Crea tu tarjeta profesional');
-      setTxt('com-sub', 'Aparece en el Directorio VIP y haz networking con otros ingenieros.');
+      setTxt('com-sub', 'Aparece en el Directorio VIP y haz networking con otros odontólogos.');
       setTxt('com-pct', '0%');
       setBar('com-bar', 0);
       if (comBtn) comBtn.textContent = 'Crear mi tarjeta';
@@ -7579,7 +7580,7 @@ const Sections = (function(){
           <div class="sec-hero">
             <span class="sec-hero__eyebrow">Aprende en directo</span>
             <h1 class="sec-hero__title">Clases en vivo</h1>
-            <p class="sec-hero__sub">Sesiones en directo con ingenieros y especialistas del sector industrial. Pregunta en vivo, las grabaciones quedan disponibles.</p>
+            <p class="sec-hero__sub">Sesiones en directo con odontólogos y especialistas del sector dental. Pregunta en vivo, las grabaciones quedan disponibles.</p>
           </div>
           <div style="text-align:center;padding:60px 24px;background:var(--surface-2);border:1px dashed var(--border-2);border-radius:14px;margin-top:18px;">
             <div style="width:64px;height:64px;border-radius:50%;background:color-mix(in srgb, var(--primary) 12%, transparent);color:var(--primary);display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px;">
@@ -7603,7 +7604,7 @@ const Sections = (function(){
         <div class="sec-hero">
           <span class="sec-hero__eyebrow">Aprende en directo</span>
           <h1 class="sec-hero__title">Clases en vivo</h1>
-          <p class="sec-hero__sub">Sesiones en directo con ingenieros y especialistas del sector industrial. Pregunta en vivo, las grabaciones quedan disponibles.</p>
+          <p class="sec-hero__sub">Sesiones en directo con odontólogos y especialistas del sector dental. Pregunta en vivo, las grabaciones quedan disponibles.</p>
         </div>
         ${prox?renderProxHero(prox):''}
         <div class="tabs">
@@ -8144,7 +8145,7 @@ const Sections = (function(){
   // 📇 DIRECTORIO VIP · cada miembro arma su tarjeta profesional
   // Firestore: colección `directorio/{uid}` · foto base64 optimizada
   // ═══════════════════════════════════════════════════════════════
-  const SECTORES = ['Seguridad Industrial','Calidad','Producción','Logística','Mantenimiento','Recursos Humanos','Medio Ambiente','Consultoría','Docencia','Otro'];
+  const SECTORES = ['Odontología General','Ortodoncia','Endodoncia','Periodoncia','Implantología','Odontopediatría','Cirugía Oral y Maxilofacial','Rehabilitación Oral','Odontología Estética','Estudiante'];
   let _dirUnsub = null;
   window.__dirCleanup = function(){ try{ if(typeof _dirUnsub==='function'){ _dirUnsub(); _dirUnsub=null; } }catch(e){} };
   window.__dirEditar = function(){ return dirEditarMiTarjeta(); };
@@ -8261,7 +8262,7 @@ const Sections = (function(){
         <div class="sec-hero">
           <span class="sec-hero__eyebrow">Networking profesional</span>
           <h1 class="sec-hero__title">Directorio VIP</h1>
-          <p class="sec-hero__sub">Conecta con la comunidad OdonTeck. Crea tu tarjeta profesional y descubre a otros ingenieros y especialistas del sector.</p>
+          <p class="sec-hero__sub">Conecta con la comunidad OdonTeck. Crea tu tarjeta profesional y descubre a otros odontólogos y especialistas del sector dental.</p>
         </div>
 
         <div class="dir-bar">
@@ -8445,7 +8446,7 @@ const Sections = (function(){
         <label class="dir-form__lbl">Nombre completo</label>
         <input class="dir-form__in" id="dirf-nombre" maxlength="50" value="${(data.nombre||window.UserState?.nombre||'').replace(/"/g,'&quot;')}" placeholder="Ej. Felipe Estrada Ramírez">
         <label class="dir-form__lbl">Puesto / cargo</label>
-        <input class="dir-form__in" id="dirf-puesto" maxlength="60" value="${(data.puesto||'').replace(/"/g,'&quot;')}" placeholder="Ej. Jefe de Seguridad Industrial">
+        <input class="dir-form__in" id="dirf-puesto" maxlength="60" value="${(data.puesto||'').replace(/"/g,'&quot;')}" placeholder="Ej. Ortodoncista">
         <label class="dir-form__lbl">Empresa</label>
         <input class="dir-form__in" id="dirf-empresa" maxlength="60" value="${(data.empresa||'').replace(/"/g,'&quot;')}" placeholder="Ej. Grupo Industrial del Bajío">
         <label class="dir-form__lbl">Sector</label>
@@ -8586,7 +8587,7 @@ const Sections = (function(){
         <div class="sec-hero">
           <span class="sec-hero__eyebrow">Comunidad activa</span>
           <h1 class="sec-hero__title">Foro VIP</h1>
-          <p class="sec-hero__sub">Comparte casos de planta, haz preguntas y conecta con la comunidad OdonTeck. Publica texto e imágenes, comenta y reacciona.</p>
+          <p class="sec-hero__sub">Comparte casos clínicos, haz preguntas y conecta con la comunidad OdonTeck. Publica texto e imágenes, comenta y reacciona.</p>
         </div>
 
         <div class="foro-aviso">
@@ -8917,7 +8918,7 @@ const Sections = (function(){
         <div class="sec-hero">
           <span class="sec-hero__eyebrow">Comunidad WhatsApp</span>
           <h1 class="sec-hero__title">Canal WhatsApp OdonTeck</h1>
-          <p class="sec-hero__sub">Únete a nuestra comunidad de ingenieros industriales. Recibe alertas de nuevos cursos, noticias de la STPS, casos de planta y networking.</p>
+          <p class="sec-hero__sub">Únete a nuestra comunidad de odontólogos. Recibe alertas de nuevos cursos, novedades del sector dental, casos clínicos y networking.</p>
         </div>
 
         <section class="wa-hero">
@@ -8996,7 +8997,7 @@ const Sections = (function(){
             <div class="perfil-field" data-field="email" data-readonly="1"><span class="perfil-field__lbl">Email</span><span class="perfil-field__val">${_em}</span><button class="perfil-field__edit"><svg class="ic"><use href="#i-tools"/></svg></button></div>
             <div class="perfil-field" data-field="whatsapp"><span class="perfil-field__lbl">WhatsApp</span><span class="perfil-field__val">+52 238 ··· ··43</span><button class="perfil-field__edit"><svg class="ic"><use href="#i-tools"/></svg></button></div>
             <div class="perfil-field" data-field="empresa"><span class="perfil-field__lbl">Empresa</span><span class="perfil-field__val">—</span><button class="perfil-field__edit"><svg class="ic"><use href="#i-tools"/></svg></button></div>
-            <div class="perfil-field" data-field="especialidad"><span class="perfil-field__lbl">Especialidad</span><span class="perfil-field__val">Seguridad industrial</span><button class="perfil-field__edit"><svg class="ic"><use href="#i-tools"/></svg></button></div>
+            <div class="perfil-field" data-field="especialidad"><span class="perfil-field__lbl">Especialidad</span><span class="perfil-field__val">Odontología general</span><button class="perfil-field__edit"><svg class="ic"><use href="#i-tools"/></svg></button></div>
           </div>
 
           <div class="perfil-card">
@@ -9828,7 +9829,7 @@ function openEditField(field){
     return;
   }
   const labels={nombre:'Nombre completo',whatsapp:'WhatsApp',empresa:'Empresa donde trabajas',especialidad:'Especialidad / área'};
-  const placeholders={nombre:'Ej: Ing. Juan Pérez',whatsapp:'+52 238 123 4567',empresa:'Ej: Industrias del Centro SA',especialidad:'Ej: Seguridad industrial'};
+  const placeholders={nombre:'Ej: Ing. Juan Pérez',whatsapp:'+52 238 123 4567',empresa:'Ej: Clínica Dental Sonríe',especialidad:'Ej: Ortodoncia'};
   const currentVal=wrap.querySelector('.perfil-field__val').textContent.trim();
   const cleanVal=(currentVal==='—'||currentVal.includes('···'))?'':currentVal;
   const subt = field==='nombre'

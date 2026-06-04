@@ -4717,15 +4717,24 @@ const Pages={
   // ─── Llamadas reales al webhook Railway ───
   async _llamarActivar(uid, plan, durationDays, esRegalo) {
     try {
-      const token = await Pages._getAuthToken();
-      const res = await fetch(`${Pages._webhookUrl}/admin/activar-manual`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-        body: JSON.stringify({ uid, plan, durationDays, esRegalo: !!esRegalo })
+      const fb = window._fb;
+      if (!fb || !fb.db || !fb.doc || !fb.updateDoc) return { ok:false, error:'Firestore no listo' };
+      const ahora = new Date();
+      const expira = new Date(ahora.getTime() + durationDays * 86400 * 1000);
+      const expiraTS = fb.Timestamp ? fb.Timestamp.fromDate(expira) : expira;
+      const adminEmail = (window.__currentUser?.email || (window.UserState && window.UserState.email) || '').toLowerCase();
+      await fb.updateDoc(fb.doc(fb.db, 'miembros', uid), {
+        activa: true,
+        activo: true,
+        plan: plan,
+        esRegalo: !!esRegalo,
+        expiraEn: expiraTS,
+        fechaFinAcceso: expiraTS,
+        cancelacionProgramada: false,
+        fechaActivacionManual: fb.serverTimestamp ? fb.serverTimestamp() : ahora,
+        activadoPor: adminEmail || 'admin'
       });
-      const data = await res.json();
-      if (!res.ok) return { ok: false, error: data.error || res.statusText };
-      return { ok: true, data };
+      return { ok: true };
     } catch (e) {
       return { ok: false, error: e.message };
     }
@@ -4733,15 +4742,21 @@ const Pages={
 
   async _llamarCancelar(uid, atPeriodEnd) {
     try {
-      const token = await Pages._getAuthToken();
-      const res = await fetch(`${Pages._webhookUrl}/admin/cancelar-stripe`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-        body: JSON.stringify({ uid, atPeriodEnd })
-      });
-      const data = await res.json();
-      if (!res.ok) return { ok: false, error: data.error || res.statusText };
-      return { ok: true, data };
+      const fb = window._fb;
+      if (!fb || !fb.db || !fb.doc || !fb.updateDoc) return { ok:false, error:'Firestore no listo' };
+      if (atPeriodEnd) {
+        // Programar: el acceso sigue hasta expirar, solo se marca la cancelación
+        await fb.updateDoc(fb.doc(fb.db, 'miembros', uid), { cancelacionProgramada: true });
+      } else {
+        // Cortar el acceso de inmediato
+        const ahoraTS = fb.Timestamp ? fb.Timestamp.fromDate(new Date()) : new Date();
+        await fb.updateDoc(fb.doc(fb.db, 'miembros', uid), {
+          activa: false, activo: false,
+          expiraEn: ahoraTS, fechaFinAcceso: ahoraTS,
+          cancelacionProgramada: false
+        });
+      }
+      return { ok: true };
     } catch (e) {
       return { ok: false, error: e.message };
     }
@@ -4749,15 +4764,10 @@ const Pages={
 
   async _llamarEliminar(uid) {
     try {
-      const token = await Pages._getAuthToken();
-      const res = await fetch(`${Pages._webhookUrl}/admin/eliminar-miembro`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-        body: JSON.stringify({ uid })
-      });
-      const data = await res.json();
-      if (!res.ok) return { ok: false, error: data.error || res.statusText };
-      return { ok: true, data };
+      const fb = window._fb;
+      if (!fb || !fb.db || !fb.doc || !fb.deleteDoc) return { ok:false, error:'Firestore no listo' };
+      await fb.deleteDoc(fb.doc(fb.db, 'miembros', uid));
+      return { ok: true };
     } catch (e) {
       return { ok: false, error: e.message };
     }

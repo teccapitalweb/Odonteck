@@ -3573,6 +3573,21 @@ if (window.__isDemoMode) {
         console.warn('No se pudo leer miembros/' + user.uid, e.message);
         window.memberData = null;
       }
+
+      // ─── Reconocer acceso VIP desde Firestore (activación/regalo manual del admin, sin webhook) ───
+      if (window.UserState.modo !== 'vip' && window.memberData) {
+        const md = window.memberData;
+        const activa = md.activa === true || md.activo === true;
+        const exp = md.expiraEn || md.fechaFinAcceso;
+        const expDate = exp ? (exp.toDate ? exp.toDate() : new Date(exp)) : null;
+        const vigente = activa && (!expDate || expDate.getTime() > Date.now());
+        if (vigente) {
+          window.UserState.modo = 'vip';
+          window.UserState.plan = md.plan || (md.esRegalo ? 'regalo' : 'mensual');
+          window.UserState.membership = { activo: true, plan: window.UserState.plan };
+          console.log('[Membresia] Acceso VIP reconocido desde Firestore - plan:', window.UserState.plan);
+        }
+      }
     }
 
     // ─── Nombre canónico · UNA sola fuente para dashboard, splash y certificados ───

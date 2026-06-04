@@ -4732,7 +4732,13 @@ const Pages={
         fechaFinAcceso: expiraTS,
         cancelacionProgramada: false,
         fechaActivacionManual: fb.serverTimestamp ? fb.serverTimestamp() : ahora,
-        activadoPor: adminEmail || 'admin'
+        activadoPor: adminEmail || 'admin',
+        notificacionPendiente: {
+          tipo: esRegalo ? 'bienvenida_regalo' : 'bienvenida_vip',
+          plan: plan,
+          dias: esRegalo ? durationDays : null,
+          mostrada: false
+        }
       });
       return { ok: true };
     } catch (e) {

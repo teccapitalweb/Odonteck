@@ -3665,6 +3665,19 @@ window.__showWelcomeSplash = function(opts) {
   const esRegalo = opts.tipo === 'bienvenida_regalo' || plan === 'regalo';
   const dias = opts.dias || null;
 
+  // ── Íconos SVG line-art (sin emojis · regla de diseño OdonTeck) ──
+  const _sv = (inner, cls='') => `<svg class="splash-svg ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
+  const _TOOTH = '<path d="M7 3C4.6 3 3 5 3 8c0 2 .6 3.2 1 5 .5 2.4.5 7 2.1 7 1.2 0 1.3-2 1.6-4 .2-1.5.5-2.6 1.3-2.6s1.1 1.1 1.3 2.6c.3 2 .4 4 1.6 4 1.6 0 1.6-4.6 2.1-7 .4-1.8 1-3 1-5 0-3-1.6-5-4-5-1.3 0-2 .7-3 .7S8.3 3 7 3z"/>';
+  const ICON_DIENTE_VIP = _sv(_TOOTH + '<path d="M9.5 8.5l1.3 1.3 2.7-2.7" stroke-width="1.4"/>', 'splash-tooth splash-tooth--vip');
+  const ICON_DIENTE_REGALO = _sv(_TOOTH, 'splash-tooth splash-tooth--regalo');
+  const SVG_FEAT = {
+    cursos: _sv('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>'),
+    clases: _sv('<polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/>'),
+    pdfs:   _sv('<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>'),
+    tools:  _sv('<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>'),
+    cert:   _sv('<circle cx="12" cy="8" r="6"/><path d="M15.5 12.9 17 22l-5-3-5 3 1.5-9.1"/>')
+  };
+
   // Quitar el query param de la URL (para que al recargar no se re-muestre)
   if (window.history.replaceState) {
     const url = new URL(window.location.href);
@@ -3675,17 +3688,17 @@ window.__showWelcomeSplash = function(opts) {
   // ── Textos de la portada según el caso ──
   let icono, kicker, titulo, desc;
   if (esRegalo) {
-    icono = '🎁';
+    icono = ICON_DIENTE_REGALO;
     kicker = 'ACCESO DE CORTESÍA';
     titulo = dias ? `OdonTeck te regaló <em>${dias} días VIP</em>` : `OdonTeck te regaló <em>acceso VIP</em>`;
     desc = `${nombre}, disfruta acceso completo sin costo durante tu periodo de cortesía. Esto es lo que tienes desbloqueado:`;
   } else if (plan === 'anual') {
-    icono = '⭐';
+    icono = ICON_DIENTE_VIP;
     kicker = '¡BIENVENIDO AL CLUB VIP!';
     titulo = `Bienvenido al <em>club VIP Anual</em>`;
     desc = `${nombre}, te uniste por todo un año a la comunidad odontológica más activa de México. Esto es tuyo:`;
   } else {
-    icono = '⭐';
+    icono = ICON_DIENTE_VIP;
     kicker = '¡MEMBRESÍA VIP ACTIVA!';
     titulo = `Bienvenido al <em>club VIP Mensual</em>`;
     desc = `${nombre}, ya eres parte de la comunidad odontológica más activa de México. Esto es tuyo:`;
@@ -3693,11 +3706,11 @@ window.__showWelcomeSplash = function(opts) {
 
   // ── Recorrido "película" · los beneficios del panel ──
   const beneficios = [
-    { ic:'📚', t:'Cursos premium',   d:'Catálogo completo con clases reales que se desbloquean a tu ritmo.' },
-    { ic:'🎥', t:'Clases en vivo',   d:'Webinars con expertos y acceso a las grabaciones cuando quieras.' },
-    { ic:'📂', t:'PDFs y material',  d:'Plantillas, formatos y recursos descargables listos para usar.' },
-    { ic:'🛠️', t:'Herramientas pro', d:'Anestésico, prescripción, odontograma, cotizador y plan de tratamiento.' },
-    { ic:'🎓', t:'Certificados',     d:'Con folio oficial OdonTeck para respaldar lo que aprendes.' }
+    { ic:SVG_FEAT.cursos, t:'Cursos premium',   d:'Catálogo completo con clases reales que se desbloquean a tu ritmo.' },
+    { ic:SVG_FEAT.clases, t:'Clases en vivo',   d:'Webinars con expertos y acceso a las grabaciones cuando quieras.' },
+    { ic:SVG_FEAT.pdfs,   t:'PDFs y material',  d:'Plantillas, formatos y recursos descargables listos para usar.' },
+    { ic:SVG_FEAT.tools,  t:'Herramientas pro', d:'Anestésico, prescripción, odontograma, cotizador y plan de tratamiento.' },
+    { ic:SVG_FEAT.cert,   t:'Certificados',     d:'Con folio oficial OdonTeck para respaldar lo que aprendes.' }
   ];
 
   // ── Slides: portada → beneficios → cierre ──
@@ -3706,7 +3719,7 @@ window.__showWelcomeSplash = function(opts) {
   beneficios.forEach(b => slides.push({ tipo:'beneficio', ic:b.ic, t:b.t, d:b.d }));
   slides.push({
     tipo:'cierre',
-    icono: esRegalo ? '🎁' : '🚀',
+    icono: esRegalo ? ICON_DIENTE_REGALO : ICON_DIENTE_VIP,
     kicker: 'TODO LISTO',
     titulo: esRegalo ? `Aprovecha tu <em>acceso de cortesía</em>` : `Todo esto <em>ya es tuyo</em>`,
     desc: esRegalo
@@ -11936,7 +11949,14 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 .splash-bnv__confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:24px}
 .splash-bnv__bit{position:absolute;top:50%;left:50%;width:9px;height:9px;background:var(--c);border-radius:2px;animation:bnvBurst 1.8s cubic-bezier(.2,.8,.25,1) var(--d) forwards;opacity:0}
 @keyframes bnvBurst{0%{opacity:0;transform:translate(0,0) rotate(0deg) scale(0)}10%{opacity:1;transform:translate(0,0) rotate(30deg) scale(1)}100%{opacity:0;transform:translate(var(--x),360px) rotate(720deg) scale(.4)}}
-.splash-bnv__icon{font-size:60px;line-height:1;margin-bottom:8px;animation:bnvSpin 6s linear infinite}
+.splash-bnv__icon{font-size:60px;line-height:1;margin-bottom:8px;display:flex;justify-content:center}
+.splash-svg{width:64px;height:64px;display:inline-block;vertical-align:middle}
+.splash-bnv__icon .splash-svg{width:88px;height:88px}
+.splash-film__feat-ic .splash-svg{width:62px;height:62px;color:var(--primary)}
+.splash-tooth--vip{color:#6FB8B0;filter:drop-shadow(0 0 16px color-mix(in srgb,#5B92C8 70%,transparent));animation:toothPulse 1.9s ease-in-out infinite}
+.splash-tooth--regalo{color:#C084FC;filter:drop-shadow(0 0 18px rgba(192,132,252,.7));animation:toothBounce 1.5s cubic-bezier(.5,1.7,.4,1) infinite}
+@keyframes toothPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.09)}}
+@keyframes toothBounce{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-9px) rotate(5deg)}}
 @keyframes bnvSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 .splash-bnv__kicker{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2.8px;text-transform:uppercase;font-weight:700;color:var(--primary);margin-bottom:12px}
 .splash-bnv__title{font-family:'Plus Jakarta Sans',sans-serif;font-size:30px;font-weight:800;letter-spacing:-.9px;line-height:1.15;margin-bottom:14px;color:var(--text)}
@@ -11999,6 +12019,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   #splash-bienvenida .splash-film__feat-ic{font-size:48px;margin-bottom:14px}
   #splash-bienvenida .splash-film__feat-t{font-size:20px}
   #splash-bienvenida .splash-bnv__icon{font-size:48px}
+  #splash-bienvenida .splash-bnv__icon .splash-svg{width:72px;height:72px}
+  #splash-bienvenida .splash-film__feat-ic .splash-svg{width:52px;height:52px}
 }
 </style>
 <style>

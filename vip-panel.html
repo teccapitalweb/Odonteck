@@ -3089,103 +3089,294 @@ button.dir-det__row{background:var(--surface-2);border:1px solid var(--border-2)
 .brand__logo{background:#fff !important;overflow:hidden;}
 .brand__logo img{width:100%;height:100%;object-fit:contain;display:block;border-radius:inherit;}
 
-/* ===== Herramienta embebida: Anestésico ===== */
-.tdent-ane{--line:var(--border-2);--line-2:var(--border-strong);--glow:var(--primary-glow);--amber:var(--warning);--ok:var(--highlight);--field-shadow:none;background:transparent;padding:0;color:var(--text);}
-.tdent-ane *{box-sizing:border-box;margin:0;padding:0}
-.tdent-ane{font-family:'Inter',-apple-system,system-ui,sans-serif;color:var(--text);
-  min-height:0;padding:0;transition:background .3s,color .3s;-webkit-font-smoothing:antialiased}
-.tdent-ane .wrap{max-width:540px;margin:0 auto}
-.tdent-ane .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
-.tdent-ane .brand{display:flex;align-items:center;gap:11px}
-.tdent-ane .brand__logo{width:44px;height:44px;border-radius:13px;background:linear-gradient(135deg,#5B92C8,#6FB8B0);
+/* ============ SISTEMA DE HERRAMIENTAS (nativo · usa el diseño del panel) ============ */
+.thx-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px;margin-bottom:20px}
+.thx-field{margin-bottom:18px}
+.thx-field:last-child{margin-bottom:0}
+.thx-label{display:block;font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-3);margin-bottom:10px}
+.thx-input{width:100%;min-height:50px;border-radius:12px;border:1px solid var(--border-2);background:var(--surface-2);color:var(--text);padding:12px 15px;font-size:14.5px;font-family:inherit;font-weight:500;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;appearance:none}
+.thx-input::placeholder{color:var(--text-3);font-weight:400}
+.thx-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px var(--primary-glow);background:var(--surface)}
+.thx-input::-webkit-inner-spin-button,.thx-input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.thx-input[type=number]{-moz-appearance:textfield}
+.thx-grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.thx-grid2{grid-template-columns:1fr}}
+.thx-dd{position:relative}
+.thx-dd__trigger{width:100%;min-height:50px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-radius:12px;border:1px solid var(--border-2);background:var(--surface-2);color:var(--text);padding:12px 15px;font-size:14.5px;font-weight:500;font-family:inherit;cursor:pointer;text-align:left;transition:border-color .2s,box-shadow .2s}
+.thx-dd__trigger:hover{border-color:var(--border-strong)}
+.thx-dd.open .thx-dd__trigger{border-color:var(--primary);box-shadow:0 0 0 4px var(--primary-glow);background:var(--surface)}
+.thx-dd__ph{color:var(--text-3);font-weight:400}
+.thx-dd__chev{width:16px;height:16px;stroke:var(--text-3);fill:none;stroke-width:2;flex-shrink:0;transition:transform .3s}
+.thx-dd.open .thx-dd__chev{transform:rotate(180deg);stroke:var(--primary)}
+.thx-dd__panel{position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:50;background:color-mix(in srgb,var(--surface) 92%,transparent);-webkit-backdrop-filter:blur(22px) saturate(150%);backdrop-filter:blur(22px) saturate(150%);border:1px solid var(--border-2);border-radius:14px;padding:6px;box-shadow:0 24px 60px rgba(0,0,0,.42),0 0 0 1px var(--border);max-height:300px;overflow-y:auto;opacity:0;visibility:hidden;transform:translateY(-10px) scale(.98);transform-origin:top;transition:opacity .2s,transform .26s cubic-bezier(.16,1,.3,1),visibility .26s}
+.thx-dd.open .thx-dd__panel{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+.thx-dd__panel::-webkit-scrollbar{width:9px}
+.thx-dd__panel::-webkit-scrollbar-thumb{background:var(--primary);border-radius:9px;border:2px solid transparent;background-clip:content-box}
+.thx-dd__panel::-webkit-scrollbar-button{display:none}
+.thx-opt{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 13px;border-radius:9px;font-size:14px;color:var(--text-2);cursor:pointer;transition:background .14s,color .14s}
+.thx-opt:hover{background:var(--surface-2);color:var(--text)}
+.thx-opt.sel{background:color-mix(in srgb,var(--primary) 14%,transparent);color:var(--primary);font-weight:600}
+.thx-opt__check{width:15px;height:15px;stroke:var(--primary);fill:none;stroke-width:2.6;flex-shrink:0;opacity:0}
+.thx-opt.sel .thx-opt__check{opacity:1}
+.thx-optgroup{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-3);padding:11px 13px 5px}
+.thx-seg{display:flex;gap:6px;background:var(--surface-2);border:1px solid var(--border-2);border-radius:12px;padding:5px}
+.thx-seg__btn{flex:1;border:none;background:transparent;color:var(--text-2);font-size:13.5px;font-weight:600;font-family:inherit;padding:11px;border-radius:9px;cursor:pointer;transition:.15s}
+.thx-seg__btn.on{background:var(--primary);color:#fff;box-shadow:0 2px 12px var(--primary-glow)}
+.thx-note{display:flex;gap:10px;align-items:flex-start;background:var(--surface-2);border:1px solid var(--border-2);border-radius:12px;padding:13px 15px;font-size:12.5px;color:var(--text-2);line-height:1.5;margin-top:18px}
+.thx-note svg{width:17px;height:17px;stroke:var(--primary);fill:none;stroke-width:2;flex-shrink:0;margin-top:1px}
+.thx-note--warn{background:color-mix(in srgb,var(--warning) 10%,transparent);border-color:color-mix(in srgb,var(--warning) 30%,transparent)}
+.thx-note--warn svg{stroke:var(--warning)}
+.kpi-card__value.is-text{font-size:21px;letter-spacing:-.3px;line-height:1.15}
+.thx-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.thx-chip{display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:100px;border:1px solid var(--border-2);background:var(--surface-2);color:var(--text-2);font-size:12.5px;font-weight:600;font-family:inherit;cursor:pointer;transition:.15s}
+.thx-chip:hover{border-color:var(--primary);color:var(--primary);background:color-mix(in srgb,var(--primary) 9%,transparent)}
+.thx-chip svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.2}
+.thx-itrow{display:grid;grid-template-columns:1fr 76px 132px 44px;gap:10px;align-items:center;margin-bottom:10px}
+@media(max-width:560px){.thx-itrow{grid-template-columns:1fr 56px 104px 40px;gap:7px}}
+.thx-itrow>input{width:100%;min-height:46px;border-radius:11px;border:1px solid var(--border-2);background:var(--surface-2);color:var(--text);padding:10px 13px;font-size:14px;font-family:inherit;font-weight:500;-webkit-appearance:none;appearance:none;transition:border-color .2s,box-shadow .2s}
+.thx-itrow>input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-glow);background:var(--surface)}
+.thx-it-cant{text-align:center}
+.thx-itrow input::-webkit-inner-spin-button,.thx-itrow input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.thx-itrow input[type=number]{-moz-appearance:textfield}
+.thx-price{display:flex;align-items:center;gap:3px;background:var(--surface-2);border:1px solid var(--border-2);border-radius:11px;padding:0 12px;min-height:46px;transition:border-color .2s,box-shadow .2s}
+.thx-price:focus-within{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-glow);background:var(--surface)}
+.thx-price>span{color:var(--text-3);font-weight:600;font-size:14px}
+.thx-price input{border:none;background:transparent;color:var(--text);font-size:14px;width:100%;font-family:inherit;font-weight:600;-webkit-appearance:none;appearance:none}
+.thx-price input:focus{outline:none}
+.thx-del{width:44px;height:46px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border-2);border-radius:11px;background:var(--surface-2);color:var(--text-3);cursor:pointer;transition:.15s}
+.thx-del:hover{border-color:var(--danger);color:var(--danger);background:color-mix(in srgb,var(--danger) 9%,transparent)}
+.thx-del svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
+.thx-empty{text-align:center;padding:26px;color:var(--text-3);font-size:13px;border:1px dashed var(--border-2);border-radius:14px}
+.thx-totals{display:flex;flex-direction:column;gap:11px;margin-top:4px}
+.thx-totline{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--text-2)}
+.thx-totline strong{color:var(--text);font-weight:700;font-feature-settings:"tnum" 1}
+.thx-total-final{display:flex;justify-content:space-between;align-items:center;background:var(--primary);color:#fff;border-radius:16px;padding:16px 22px;margin-top:4px;box-shadow:0 8px 24px var(--primary-glow)}
+.thx-total-final span{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;opacity:.92}
+.thx-total-final strong{font-family:'Plus Jakarta Sans','Inter',sans-serif;font-size:25px;font-weight:800;letter-spacing:-.5px;font-feature-settings:"tnum" 1}
+.thx-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.thx-actions .btn{min-height:48px;padding:12px 22px;font-size:13px}
+.thx-collapse-head{display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+.thx-collapse-head .thx-chev{width:18px;height:18px;stroke:var(--text-3);fill:none;stroke-width:2;transition:transform .3s}
+.thx-collapse.on .thx-collapse-head .thx-chev{transform:rotate(180deg)}
+.thx-collapse-body{display:none;margin-top:16px}
+.thx-collapse.on .thx-collapse-body{display:block}
+.thx-textarea{width:100%;border-radius:12px;border:1px solid var(--border-2);background:var(--surface-2);color:var(--text);padding:12px 15px;font-size:14px;font-family:inherit;resize:vertical;min-height:60px;transition:border-color .2s,box-shadow .2s}
+.thx-textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px var(--primary-glow);background:var(--surface)}
+
+
+/* ===== Odontograma (scoped .odo-tool · tema del panel) ===== */
+.odo-tool{--line:var(--border-2);--line-2:var(--border-strong);--glow:var(--primary-glow);--tooth-base:var(--surface-3);--tooth-line:var(--border-strong)}
+.odo-tool input{font-family:inherit;color:var(--text);background:var(--surface-2);border:1px solid var(--border-2);outline:none;-webkit-appearance:none;appearance:none}
+.odo-tool input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-glow)}
+.odo-tool input::-webkit-inner-spin-button,.odo-tool input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.odo-tool .tools{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 22px}
+.odo-tool .teeth{display:flex;justify-content:center;background:var(--surface-2);border:1px solid var(--border);border-radius:14px;padding:16px 10px;overflow-x:auto}
+.odo-tool .cond{border-radius:100px;padding:8px 13px;font-size:12.5px;font-weight:600;cursor:pointer;color:var(--text-2);transition:.15s}
+.odo-tool *{box-sizing:border-box;margin:0;padding:0}
+.odo-tool .brand__logo{width:44px;height:44px;border-radius:13px;background:linear-gradient(135deg,#5B92C8,#6FB8B0);
   display:flex;align-items:center;justify-content:center;box-shadow:0 0 34px var(--glow)}
-.tdent-ane .brand__logo svg{width:27px;height:27px}
-.tdent-ane .brand__t{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:16px;letter-spacing:-.2px}
-.tdent-ane .brand__s{font-size:11px;color:var(--text-3);letter-spacing:.3px}
-.tdent-ane .toggle{background:var(--surface);border:1px solid var(--line);color:var(--text-2);border-radius:11px;
-  height:40px;padding:0 13px;font-size:12.5px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:7px;
-  font-family:inherit;transition:background .2s,border-color .2s,transform .15s}
-.tdent-ane .toggle:hover{border-color:var(--line-2);transform:translateY(-1px)}
-.tdent-ane .toggle svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2}
-.tdent-ane .card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;margin-bottom:16px}
-.tdent-ane .h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:21px;font-weight:700;margin-bottom:6px;letter-spacing:-.3px}
-.tdent-ane .sub{font-size:13px;color:var(--text-2);line-height:1.55;margin-bottom:22px}
-.tdent-ane label{display:block;font-size:12px;color:var(--text-2);margin:0 0 8px;font-weight:500;letter-spacing:.1px}
-.tdent-ane .field{margin-bottom:18px}
-.tdent-ane .control{position:relative}
-.tdent-ane .control svg.ic{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:17px;height:17px;
-  stroke:var(--text-3);fill:none;stroke-width:2;pointer-events:none;transition:stroke .2s}
-.tdent-ane input{width:100%;background:var(--surface-2);border:1px solid var(--line);border-radius:13px;
-  padding:14px 15px;color:var(--text);font-size:15px;font-family:inherit;font-weight:500;
-  box-shadow:var(--field-shadow);transition:border-color .18s,box-shadow .18s,background .2s;appearance:none;-webkit-appearance:none}
-.tdent-ane .control.has-ic input{padding-left:42px}
-.tdent-ane input::placeholder{color:var(--text-3);font-weight:400}
-.tdent-ane input:hover{border-color:var(--line-2)}
-.tdent-ane input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px var(--glow);background:var(--surface)}
-.tdent-ane .control:focus-within svg.ic{stroke:var(--primary)}
-.tdent-ane input[type=number]{-moz-appearance:textfield}
-.tdent-ane input[type=number]::-webkit-outer-spin-button, .tdent-ane input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-.tdent-ane .suffix{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--text-3);font-weight:500;pointer-events:none}
-.tdent-ane /* ═══════ DROPDOWN PREMIUM (custom) ═══════ */
-.dd{position:relative}
-.tdent-ane .dd__trigger{width:100%;display:flex;align-items:center;gap:11px;background:var(--surface-2);
-  border:1px solid var(--line);border-radius:13px;padding:13px 15px;cursor:pointer;font-family:inherit;
-  color:var(--text);font-size:15px;font-weight:500;text-align:left;box-shadow:var(--field-shadow);
-  transition:border-color .18s,box-shadow .18s,background .2s}
-.tdent-ane .dd__trigger:hover{border-color:var(--line-2)}
-.tdent-ane .dd.open .dd__trigger{border-color:var(--primary);box-shadow:0 0 0 4px var(--glow);background:var(--surface)}
-.tdent-ane .dd__lead{width:30px;height:30px;flex-shrink:0;border-radius:9px;display:flex;align-items:center;justify-content:center;
-  background:color-mix(in srgb,var(--primary) 16%,transparent)}
-.tdent-ane .dd__lead svg{width:16px;height:16px;stroke:var(--primary);fill:none;stroke-width:2}
-.tdent-ane .dd__value{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tdent-ane .dd__chev{width:18px;height:18px;flex-shrink:0;stroke:var(--text-3);fill:none;stroke-width:2;transition:transform .3s cubic-bezier(.16,1,.3,1)}
-.tdent-ane .dd.open .dd__chev{transform:rotate(180deg);stroke:var(--primary)}
-.tdent-ane .dd__panel{position:absolute;top:calc(100% + 9px);left:0;right:0;z-index:60;
+.odo-tool .brand__logo svg{width:27px;height:27px}
+.odo-tool .brand__t{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:16px;letter-spacing:-.2px}
+.odo-tool .brand__s{font-size:11px;color:var(--text-3);letter-spacing:.3px}
+.odo-tool label{display:block;font-size:12px;color:var(--text-2);margin:0 0 8px;font-weight:500}
+.odo-tool input{width:100%;background:var(--surface-2);border:1px solid var(--line);border-radius:13px;padding:13px 15px;color:var(--text);font-size:15px;font-family:inherit;font-weight:500;box-shadow:var(--field-shadow);transition:border-color .18s,box-shadow .18s,background .2s;appearance:none;-webkit-appearance:none}
+.odo-tool input[type=number]{-moz-appearance:textfield;appearance:textfield}
+.odo-tool input[type=number]::-webkit-outer-spin-button, .odo-tool input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;appearance:none;margin:0}
+.odo-tool input::placeholder{color:var(--text-3);font-weight:400}
+.odo-tool input:hover{border-color:var(--line-2)}
+.odo-tool input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px var(--glow);background:var(--surface)}
+.odo-tool /* paleta de condiciones */
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.odo-tool .cond{display:flex;align-items:center;gap:7px;background:var(--surface-2);border:1px solid var(--line);
+  border-radius:11px;padding:8px 12px;cursor:pointer;font-size:12.5px;font-weight:500;color:var(--text-2);
+  transition:border-color .15s,background .15s,transform .12s}
+.odo-tool .cond:hover{border-color:var(--line-2)}
+.odo-tool .cond.on{border-color:var(--primary);background:color-mix(in srgb,var(--primary) 12%,transparent);color:var(--text);box-shadow:0 0 16px var(--glow)}
+.odo-tool .cond .sw{width:14px;height:14px;border-radius:5px;flex-shrink:0;border:1.5px solid var(--tooth-line)}
+.odo-tool /* arcadas */
+.arch{margin-bottom:8px}
+.odo-tool .arch__lbl{font-size:11px;color:var(--text-3);letter-spacing:.6px;text-transform:uppercase;margin:10px 0 7px;text-align:center;font-weight:600}
+.odo-tool .teeth{display:flex;justify-content:center;gap:3px;overflow-x:auto;padding-bottom:6px}
+.odo-tool .quad{display:flex;gap:3px}
+.odo-tool .quad + .quad{margin-left:12px;padding-left:12px;border-left:1px dashed var(--line)}
+.odo-tool .tooth{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;flex-shrink:0;
+  border:none;background:none;padding:2px;font-family:inherit;transition:transform .12s}
+.odo-tool .tooth:hover{transform:translateY(-3px)}
+.odo-tool .tooth__svg{width:26px;height:26px}
+.odo-tool .tooth__svg path{fill:var(--tooth-base);stroke:var(--tooth-line);stroke-width:1.4;transition:fill .15s,stroke .15s}
+.odo-tool .tooth.s-caries  .tooth__svg path{fill:#E5604D;stroke:#E5604D}
+.odo-tool .tooth.s-rest    .tooth__svg path{fill:#5B92C8;stroke:#5B92C8}
+.odo-tool .tooth.s-corona  .tooth__svg path{fill:#C9A961;stroke:#C9A961}
+.odo-tool .tooth.s-endo    .tooth__svg path{fill:#9B7EDE;stroke:#9B7EDE}
+.odo-tool .tooth.s-implante .tooth__svg path{fill:#4FA39B;stroke:#4FA39B}
+.odo-tool .tooth.s-sellante .tooth__svg path{fill:#6FB8B0;stroke:#6FB8B0}
+.odo-tool .tooth.s-ausente .tooth__svg{opacity:.32}
+.odo-tool .tooth.s-ausente .tooth__svg path{stroke-dasharray:2 2}
+.odo-tool .tooth.s-extraer .tooth__svg path{fill:none;stroke:#E5604D;stroke-width:2}
+.odo-tool .tooth.s-extraer{position:relative}
+.odo-tool .tooth.s-extraer::after{content:"";position:absolute;top:9px;left:50%;width:24px;height:2px;background:#E5604D;transform:translateX(-50%) rotate(45deg)}
+.odo-tool .tooth__n{font-size:10px;color:var(--text-3);font-weight:600;font-family:'JetBrains Mono',monospace}
+.odo-tool .tooth.marked .tooth__n{color:var(--text)}
+.odo-tool .actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.odo-tool .btn{flex:1;min-width:140px;border:none;border-radius:13px;padding:14px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;
+  display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s,box-shadow .2s,background .2s}
+.odo-tool .btn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2}
+.odo-tool .btn--primary{background:linear-gradient(135deg,var(--primary),var(--primary-deep));color:#fff;box-shadow:0 0 30px var(--glow)}
+.odo-tool .btn--primary:hover{transform:translateY(-2px)}
+.odo-tool .btn--ghost{background:var(--surface-2);color:var(--text-2);border:1px solid var(--line)}
+.odo-tool .btn--ghost:hover{border-color:var(--line-2);color:var(--text)}
+.odo-tool .summary{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.odo-tool .chip{display:flex;align-items:center;gap:7px;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:7px 11px;font-size:12px;color:var(--text-2)}
+.odo-tool .chip .sw{width:11px;height:11px;border-radius:4px;flex-shrink:0}
+.odo-tool .chip b{color:var(--text);font-weight:700}
+.odo-tool .quote{margin-top:18px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.odo-tool .quote__head{display:flex;align-items:center;justify-content:space-between;padding:13px 15px;background:var(--surface-2);cursor:pointer}
+.odo-tool .quote__head .lbl{display:flex;align-items:center;gap:9px;font-size:13.5px;font-weight:600}
+.odo-tool .quote__head .lbl svg{width:17px;height:17px;stroke:var(--primary);fill:none;stroke-width:2}
+.odo-tool .sw-toggle{width:42px;height:24px;border-radius:100px;background:var(--surface-3);border:1px solid var(--line);position:relative;transition:background .2s;flex-shrink:0}
+.odo-tool .sw-toggle::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:var(--text-3);transition:transform .2s,background .2s}
+.odo-tool .quote.on .sw-toggle{background:var(--primary)}
+.odo-tool .quote.on .sw-toggle::after{transform:translateX(18px);background:#fff}
+.odo-tool .quote__body{padding:0 15px;max-height:0;overflow:hidden;transition:max-height .3s,padding .3s}
+.odo-tool .quote.on .quote__body{max-height:680px;padding:14px 15px}
+.odo-tool .qrow{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.odo-tool .qrow:last-of-type{border-bottom:none}
+.odo-tool .qrow .qsw{width:12px;height:12px;border-radius:4px;flex-shrink:0}
+.odo-tool .qrow .qn{flex:1;font-size:13px;color:var(--text-2);min-width:0}
+.odo-tool .qrow .qn b{color:var(--text);font-weight:600}
+.odo-tool .qrow .qcount{font-size:11px;color:var(--text-3);font-family:'JetBrains Mono',monospace;margin-left:4px}
+.odo-tool .qprice{position:relative;width:115px;flex-shrink:0}
+.odo-tool .qprice>span{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--text-3)}
+.odo-tool .qprice input{width:100%;padding:9px 11px 9px 22px;font-size:13px;border-radius:10px}
+.odo-tool .qsub{width:86px;text-align:right;font-size:12.5px;font-weight:600;color:var(--primary);flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.odo-tool .qtotal{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:13px;border-top:1.5px solid var(--line-2)}
+.odo-tool .qtotal .t1{font-size:14px;font-weight:600}
+.odo-tool .qtotal .t2{font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;color:var(--primary)}
+.odo-tool .qempty{font-size:12.5px;color:var(--text-3);padding:6px 0;text-align:center}
+
+/* ===== Plan de tratamiento (scoped .plan-tool · tema del panel) ===== */
+.plan-tool{--line:var(--border-2);--line-2:var(--border-strong);--glow:var(--primary-glow);--amber:var(--warning);--ok:var(--highlight);background:transparent;color:var(--text)}
+.plan-tool *{box-sizing:border-box;margin:0;padding:0}
+.plan-tool *{scrollbar-width:thin;scrollbar-color:var(--primary) transparent}
+.plan-tool ::-webkit-scrollbar{width:11px;height:11px}
+.plan-tool ::-webkit-scrollbar-track{background:transparent;border-radius:9px}
+.plan-tool ::-webkit-scrollbar-thumb{background:var(--primary);border-radius:9px;border:2px solid transparent;background-clip:content-box}
+.plan-tool ::-webkit-scrollbar-thumb:hover{background:var(--primary-deep)}
+.plan-tool ::-webkit-scrollbar-button{display:none !important;height:0;width:0}
+.plan-tool ::-webkit-scrollbar-corner{background:transparent}
+.plan-tool .card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;margin-bottom:16px}
+.plan-tool label{display:block;font-size:12px;color:var(--text-2);margin:0 0 8px;font-weight:500}
+.plan-tool .field{margin-bottom:14px}
+.plan-tool .control{position:relative}
+.plan-tool .control svg.ic{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:17px;height:17px;stroke:var(--text-3);fill:none;stroke-width:2;pointer-events:none;transition:stroke .2s}
+.plan-tool input, .plan-tool textarea{width:100%;background:var(--surface-2);border:1px solid var(--line);border-radius:13px;padding:13px 15px;color:var(--text);font-size:15px;font-family:inherit;font-weight:500;box-shadow:var(--field-shadow);transition:border-color .18s,box-shadow .18s,background .2s;appearance:none;-webkit-appearance:none}
+.plan-tool textarea{resize:vertical;min-height:60px;font-weight:400;line-height:1.5}
+.plan-tool .control.has-ic input{padding-left:42px}
+.plan-tool input::placeholder, .plan-tool textarea::placeholder{color:var(--text-3);font-weight:400}
+.plan-tool input:hover, .plan-tool textarea:hover{border-color:var(--line-2)}
+.plan-tool input:focus, .plan-tool textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px var(--glow);background:var(--surface)}
+.plan-tool .control:focus-within svg.ic{stroke:var(--primary)}
+.plan-tool input[type=number]{-moz-appearance:textfield;appearance:textfield}
+.plan-tool input[type=number]::-webkit-outer-spin-button, .plan-tool input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;appearance:none;margin:0}
+.plan-tool input[type=date]{font-family:inherit}
+.plan-tool .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.plan-tool /* DATE PICKER PREMIUM */
+.dp{position:relative}
+.plan-tool .dp__trigger{width:100%;display:flex;align-items:center;gap:11px;background:var(--surface-2);border:1px solid var(--line);border-radius:13px;padding:13px 15px;cursor:pointer;font-family:inherit;color:var(--text);font-size:14.5px;font-weight:500;text-align:left;box-shadow:var(--field-shadow);transition:border-color .18s,box-shadow .18s,background .2s}
+.plan-tool .dp__trigger:hover{border-color:var(--line-2)}
+.plan-tool .dp.open .dp__trigger{border-color:var(--primary);box-shadow:0 0 0 4px var(--glow);background:var(--surface)}
+.plan-tool .dp__trigger .cal{width:17px;height:17px;stroke:var(--text-3);fill:none;stroke-width:2;flex-shrink:0;transition:stroke .2s}
+.plan-tool .dp.open .dp__trigger .cal{stroke:var(--primary)}
+.plan-tool .dp__val{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.plan-tool .dp__val.ph{color:var(--text-3);font-weight:400}
+.plan-tool .dp__chev{width:16px;height:16px;stroke:var(--text-3);fill:none;stroke-width:2;flex-shrink:0;transition:transform .3s}
+.plan-tool .dp.open .dp__chev{transform:rotate(180deg);stroke:var(--primary)}
+.plan-tool .dp__panel{position:absolute;top:calc(100% + 8px);left:0;z-index:80;width:282px;max-width:calc(100vw - 32px);
   background:var(--glass);-webkit-backdrop-filter:blur(22px) saturate(150%);backdrop-filter:blur(22px) saturate(150%);
-  border:1px solid var(--line-2);border-radius:18px;padding:7px;box-shadow:var(--pop-shadow);
-  max-height:340px;overflow-y:auto;
-  opacity:0;visibility:hidden;transform:translateY(-10px) scale(.97);transform-origin:top center;
-  transition:opacity .2s ease,transform .28s cubic-bezier(.16,1,.3,1),visibility .28s}
-.tdent-ane .dd.open .dd__panel{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
-.tdent-ane .dd__opt{display:flex;align-items:center;gap:12px;height:52px;padding:0 12px;border-radius:12px;cursor:pointer;
-  color:var(--text-2);position:relative;transition:background .15s,color .15s}
-.tdent-ane .dd__opt + .dd__opt{margin-top:2px}
-.tdent-ane .dd__opt:hover{background:var(--surface-3);color:var(--text)}
-.tdent-ane .dd__dot{width:30px;height:30px;flex-shrink:0;border-radius:9px;display:flex;align-items:center;justify-content:center;
-  background:color-mix(in srgb,var(--primary) 12%,transparent)}
-.tdent-ane .dd__dot svg{width:15px;height:15px;stroke:var(--primary);fill:none;stroke-width:2}
-.tdent-ane .dd__txt{flex:1;font-size:14px;font-weight:500;line-height:1.2}
-.tdent-ane .dd__txt small{display:block;font-size:11px;color:var(--text-3);font-weight:400;margin-top:2px}
-.tdent-ane .dd__check{width:18px;height:18px;flex-shrink:0;stroke:var(--primary);fill:none;stroke-width:2.4;opacity:0;transform:scale(.6);transition:.2s}
-.tdent-ane .dd__opt.sel{background:color-mix(in srgb,var(--primary) 13%,transparent);color:var(--text)}
-.tdent-ane .dd__opt.sel .dd__check{opacity:1;transform:scale(1)}
-.tdent-ane .dd.open .dd__opt{animation:optIn-ane .32s cubic-bezier(.16,1,.3,1) backwards}
-@keyframes optIn-ane{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.tdent-ane .dd__panel::-webkit-scrollbar{width:8px}
-.tdent-ane .dd__panel::-webkit-scrollbar-track{background:transparent}
-.tdent-ane .dd__panel::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:10px;border:2px solid transparent;background-clip:content-box}
-.tdent-ane .dd__panel::-webkit-scrollbar-thumb:hover{background:var(--text-3);background-clip:content-box}
-.tdent-ane .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.tdent-ane .seg{display:flex;gap:5px;background:var(--surface-2);padding:5px;border-radius:13px;border:1px solid var(--line)}
-.tdent-ane .seg button{flex:1;background:transparent;border:none;color:var(--text-3);padding:10px;border-radius:9px;
-  font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:.18s}
-.tdent-ane .seg button:hover:not(.on){color:var(--text-2)}
-.tdent-ane .seg button.on{background:var(--primary);color:#fff;box-shadow:0 2px 10px var(--glow)}
-.tdent-ane .result{background:linear-gradient(135deg,var(--primary),var(--primary-deep));border-radius:18px;padding:22px;
-  color:#fff;text-align:center;box-shadow:0 0 46px var(--glow);margin-top:6px}
-.tdent-ane .result__big{font-family:'Plus Jakarta Sans',sans-serif;font-size:46px;font-weight:800;line-height:1;letter-spacing:-1.5px;transition:transform .25s cubic-bezier(.16,1,.3,1)}
-.tdent-ane .result__big.pop{transform:scale(1.12)}
-.tdent-ane .result__lbl{font-size:13px;opacity:.92;margin-top:6px;font-weight:500}
-.tdent-ane .result__sub{font-size:12px;opacity:.88;margin-top:12px;border-top:1px solid rgba(255,255,255,.25);padding-top:11px;line-height:1.5}
-.tdent-ane .mini{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:13px}
-.tdent-ane .mini div{background:var(--surface-2);border:1px solid var(--line);border-radius:13px;padding:13px;text-align:center}
-.tdent-ane .mini b{font-family:'Plus Jakarta Sans',sans-serif;font-size:21px;font-weight:700;display:block;color:var(--primary)}
-.tdent-ane .mini span{font-size:11px;color:var(--text-3)}
-.tdent-ane .warn{display:flex;gap:10px;background:color-mix(in srgb,var(--danger) 11%,transparent);
-  border:1px solid color-mix(in srgb,var(--danger) 30%,transparent);border-radius:14px;padding:14px;margin-top:16px}
-.tdent-ane .warn svg{flex-shrink:0;width:18px;height:18px;stroke:var(--danger);fill:none;stroke-width:2;margin-top:1px}
-.tdent-ane .warn p{font-size:12px;color:var(--text-2);line-height:1.55}
-.tdent-ane .foot{font-size:11px;color:var(--text-3);text-align:center;line-height:1.6;margin-top:10px}
+  border:1px solid var(--line-2);border-radius:16px;padding:14px;box-shadow:var(--pop-shadow);
+  opacity:0;visibility:hidden;transform:translateY(-10px) scale(.97);transform-origin:top left;
+  transition:opacity .2s,transform .26s cubic-bezier(.16,1,.3,1),visibility .26s}
+.plan-tool .dp.open .dp__panel{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+.plan-tool .dp.up .dp__panel{top:auto;bottom:calc(100% + 8px);transform-origin:bottom left}
+.plan-tool .dp.right .dp__panel{left:auto;right:0;transform-origin:top right}
+.plan-tool .dp.up.right .dp__panel{transform-origin:bottom right}
+.plan-tool .dp__head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.plan-tool .dp__title{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;text-transform:capitalize}
+.plan-tool .dp__nav{width:30px;height:30px;border:1px solid var(--line);background:var(--surface-2);border-radius:9px;color:var(--text-2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s}
+.plan-tool .dp__nav:hover{border-color:var(--primary);color:var(--primary);background:color-mix(in srgb,var(--primary) 10%,transparent)}
+.plan-tool .dp__nav svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2}
+.plan-tool .dp__dows{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:6px}
+.plan-tool .dp__dows span{text-align:center;font-size:10px;font-weight:700;color:var(--text-3)}
+.plan-tool .dp__grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.plan-tool .dp__day{aspect-ratio:1;border:none;background:transparent;color:var(--text-2);font-family:inherit;font-size:13px;font-weight:500;border-radius:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .14s,color .14s,transform .1s}
+.plan-tool .dp__day:hover{background:var(--surface-3);color:var(--text)}
+.plan-tool .dp__day:active{transform:scale(.9)}
+.plan-tool .dp__day.empty{pointer-events:none}
+.plan-tool .dp__day.today{box-shadow:inset 0 0 0 1.5px var(--primary)}
+.plan-tool .dp__day.sel{background:var(--primary);color:#fff;box-shadow:0 2px 12px var(--glow)}
+.plan-tool .dp__day.sel:hover{background:var(--primary);color:#fff}
+.plan-tool .dp__actions{display:flex;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.plan-tool .dp__act{flex:1;border:1px solid var(--line);background:var(--surface-2);color:var(--text-2);border-radius:10px;padding:9px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;transition:.15s}
+.plan-tool .dp__act:hover{border-color:var(--line-2);color:var(--text)}
+.plan-tool .dp__act svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+.plan-tool .dp__act.prim{background:color-mix(in srgb,var(--primary) 14%,transparent);border-color:color-mix(in srgb,var(--primary) 30%,transparent);color:var(--primary)}
+.plan-tool .dp__act.prim:hover{background:color-mix(in srgb,var(--primary) 20%,transparent);color:var(--primary)}
+.plan-tool .quickadd{display:flex;flex-wrap:wrap;gap:7px;margin:-2px 0 18px}
+.plan-tool .qa{background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:7px 11px;font-size:12px;font-weight:500;color:var(--text-2);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;transition:border-color .15s,color .15s,background .15s}
+.plan-tool .qa:hover{border-color:var(--primary);color:var(--text);background:color-mix(in srgb,var(--primary) 10%,transparent)}
+.plan-tool .qa svg{width:13px;height:13px;stroke:var(--primary);fill:none;stroke-width:2.2}
+.plan-tool .phases{display:flex;flex-direction:column;gap:14px}
+.plan-tool .phase{border:1px solid var(--line);border-radius:15px;overflow:hidden;background:var(--surface-2)}
+.plan-tool .phase__head{display:flex;align-items:center;gap:11px;padding:13px 14px}
+.plan-tool .phase__icon{width:36px;height:36px;flex-shrink:0;border-radius:11px;background:linear-gradient(135deg,var(--primary),var(--primary-deep));display:flex;align-items:center;justify-content:center;box-shadow:0 0 16px var(--glow)}
+.plan-tool .phase__icon svg{width:19px;height:19px;stroke:#fff;fill:none;stroke-width:2}
+.plan-tool .phase__hcol{flex:1;min-width:0}
+.plan-tool .phase__hcol .fnum{font-size:10px;font-weight:700;letter-spacing:1px;color:var(--primary);text-transform:uppercase}
+.plan-tool .phase__title{width:100%;background:transparent;border:none;color:var(--text);font-size:15px;font-weight:600;font-family:inherit;padding:2px 0;border-radius:6px}
+.plan-tool .phase__title:focus{outline:none}
+.plan-tool .phase__del{width:30px;height:30px;border:none;background:transparent;color:var(--text-3);cursor:pointer;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:.15s;flex-shrink:0}
+.plan-tool .phase__del:hover{color:var(--danger);background:color-mix(in srgb,var(--danger) 12%,transparent)}
+.plan-tool .phase__del svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
+.plan-tool .phase__meta{display:flex;flex-wrap:wrap;gap:8px;padding:0 14px 12px}
+.plan-tool .estados{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:3px}
+.plan-tool .est{border:none;background:transparent;color:var(--text-3);font-size:11.5px;font-weight:600;padding:6px 9px;border-radius:7px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;transition:.15s}
+.plan-tool .est .d{width:8px;height:8px;border-radius:50%;background:currentColor}
+.plan-tool .est[data-e="pendiente"]{color:var(--text-3)}
+.plan-tool .est[data-e="progreso"]{color:var(--amber)}
+.plan-tool .est[data-e="completada"]{color:var(--ok)}
+.plan-tool .est.on[data-e="pendiente"]{background:color-mix(in srgb,var(--text-3) 16%,transparent);color:var(--text-2)}
+.plan-tool .est.on[data-e="progreso"]{background:color-mix(in srgb,var(--amber) 16%,transparent)}
+.plan-tool .est.on[data-e="completada"]{background:color-mix(in srgb,var(--ok) 16%,transparent)}
+.plan-tool .mwrap{position:relative;flex:1;min-width:130px}
+.plan-tool .mwrap svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:var(--text-3);fill:none;stroke-width:2;pointer-events:none}
+.plan-tool .mwrap input{padding:9px 11px 9px 32px;font-size:12.5px;border-radius:10px;background:var(--surface)}
+.plan-tool .cwrap{position:relative;width:108px}
+.plan-tool .cwrap>span{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--text-3);pointer-events:none}
+.plan-tool .cwrap input{padding:9px 11px 9px 20px;font-size:12.5px;border-radius:10px;background:var(--surface)}
+.plan-tool .steps{padding:0 14px;display:flex;flex-direction:column;gap:8px}
+.plan-tool .step{display:flex;align-items:center;gap:9px}
+.plan-tool .step__dot{width:7px;height:7px;border-radius:50%;background:var(--primary);flex-shrink:0}
+.plan-tool .step input{padding:10px 12px;font-size:13.5px;border-radius:10px;background:var(--surface)}
+.plan-tool .step__del{width:28px;height:28px;border:none;background:transparent;color:var(--text-3);cursor:pointer;border-radius:7px;display:flex;align-items:center;justify-content:center;transition:.15s;flex-shrink:0}
+.plan-tool .step__del:hover{color:var(--danger);background:color-mix(in srgb,var(--danger) 12%,transparent)}
+.plan-tool .step__del svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+.plan-tool .addstep{margin:8px 14px 13px;background:none;border:none;color:var(--primary);font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px;padding:4px}
+.plan-tool .addstep svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.2}
+.plan-tool .empty{text-align:center;font-size:13px;color:var(--text-3);padding:18px 0}
+.plan-tool .addbtn{width:100%;background:var(--surface-2);border:1px dashed var(--line-2);color:var(--text-2);border-radius:12px;padding:12px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:7px;transition:.15s;margin-top:14px}
+.plan-tool .addbtn:hover{border-color:var(--primary);color:var(--primary)}
+.plan-tool .addbtn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
+.plan-tool .invest{display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding:14px 16px;border-radius:13px;background:color-mix(in srgb,var(--primary) 10%,transparent);border:1px solid color-mix(in srgb,var(--primary) 24%,transparent)}
+.plan-tool .invest .l{font-size:13px;font-weight:600;color:var(--text-2)}
+.plan-tool .invest .v{font-family:'Plus Jakarta Sans',sans-serif;font-size:23px;font-weight:800;color:var(--primary)}
+.plan-tool .actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.plan-tool .btn{flex:1;min-width:140px;border:none;border-radius:13px;padding:14px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s,box-shadow .2s,background .2s}
+.plan-tool .btn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2}
+.plan-tool .btn--primary{background:linear-gradient(135deg,var(--primary),var(--primary-deep));color:#fff;box-shadow:0 0 30px var(--glow)}
+.plan-tool .btn--primary:hover{transform:translateY(-2px)}
+.plan-tool .btn--ghost{background:var(--surface-2);color:var(--text-2);border:1px solid var(--line)}
+.plan-tool .btn--ghost:hover{border-color:var(--line-2);color:var(--text)}
+.plan-tool .foot{font-size:11px;color:var(--text-3);text-align:center;line-height:1.6;margin-top:10px}
 </style>
 </head>
 <body style="visibility:hidden">
@@ -10580,108 +10771,739 @@ function init(){
   Theme.init();applyGreeting();initCountdown();initNav();
   loadProfileFromLS();
   injectSupportFAB();
-  var ANE_HTML="<div class=\"card\">\n    <div class=\"h1\">Calculadora de anest\u00e9sico local</div>\n    <div class=\"sub\">Calcula la dosis m\u00e1xima segura y el n\u00famero de cartuchos seg\u00fan el peso del paciente. Cartucho est\u00e1ndar de 1.8 mL.</div>\n\n    <div class=\"field\">\n      <label>Anest\u00e9sico</label>\n      <div class=\"dd\" id=\"ane-dd\">\n        <button class=\"dd__trigger\" id=\"ane-ddTrigger\" type=\"button\" aria-haspopup=\"listbox\" aria-expanded=\"false\">\n          <span class=\"dd__lead\"><svg viewBox=\"0 0 24 24\"><path d=\"M12 2s5 6 5 11a5 5 0 0 1-10 0c0-5 5-11 5-11z\"/></svg></span>\n          <span class=\"dd__value\" id=\"ane-ddValue\">\u2014</span>\n          <svg class=\"dd__chev\" viewBox=\"0 0 24 24\"><path d=\"M6 9l6 6 6-6\"/></svg>\n        </button>\n        <div class=\"dd__panel\" id=\"ane-ddPanel\" role=\"listbox\"></div>\n      </div>\n    </div>\n\n    <div class=\"row\">\n      <div class=\"field\">\n        <label>Peso del paciente</label>\n        <div class=\"control has-ic\">\n          <svg class=\"ic\" viewBox=\"0 0 24 24\"><path d=\"M12 3a3 3 0 0 0-2.83 2H5a2 2 0 0 0-2 2l-1 11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2l-1-11a2 2 0 0 0-2-2h-4.17A3 3 0 0 0 12 3z\"/></svg>\n          <input id=\"ane-peso\" type=\"number\" inputmode=\"decimal\" min=\"1\" max=\"200\" placeholder=\"70\" value=\"70\">\n          <span class=\"suffix\">kg</span>\n        </div>\n      </div>\n      <div class=\"field\">\n        <label>Paciente</label>\n        <div class=\"seg\">\n          <button data-tipo=\"adulto\" class=\"on\">Adulto</button>\n          <button data-tipo=\"pediatrico\">Pedi\u00e1trico</button>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"result\">\n      <div class=\"result__big\" id=\"ane-rCart\">\u2014</div>\n      <div class=\"result__lbl\">cartuchos m\u00e1ximo</div>\n      <div class=\"result__sub\" id=\"ane-rSub\">Ingresa el peso y el anest\u00e9sico</div>\n    </div>\n\n    <div class=\"mini\">\n      <div><b id=\"ane-rDosis\">\u2014</b><span>dosis m\u00e1x (mg)</span></div>\n      <div><b id=\"ane-rVol\">\u2014</b><span>volumen m\u00e1x (mL)</span></div>\n    </div>\n\n    <div class=\"warn\">\n      <svg viewBox=\"0 0 24 24\"><path d=\"M12 9v4M12 17h.01M10.3 3.9l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3L13.7 4a2 2 0 0 0-3.4 0z\"/></svg>\n      <p id=\"ane-warnTxt\">Herramienta de apoyo cl\u00ednico. No sustituye tu criterio profesional ni la ficha t\u00e9cnica del fabricante. Ajusta la dosis seg\u00fan el estado del paciente (hep\u00e1tico, card\u00edaco, renal, embarazo) y usa siempre la dosis m\u00ednima eficaz.</p>\n    </div>\n  </div>\n\n  <div class=\"foot\">Dosis m\u00e1ximas con vasoconstrictor seg\u00fan fichas t\u00e9cnicas (CIMA/AEMPS) y literatura odontol\u00f3gica \u00b7 OdonTeck Consulting Group</div>";
-/* === Herramienta embebida: Anestésico (nativa, hereda tema del panel) === */
-function initToolAne(){
-var ANESTESICOS = {
-  lido2:  {nombre:'Lidocaína 2%',        det:'con epinefrina · 36 mg/cartucho', conc:2,   mgkg:7.0, tope:500},
-  arti4:  {nombre:'Articaína 4%',        det:'con epinefrina · 72 mg/cartucho', conc:4,   mgkg:7.0, tope:500},
-  mepi3:  {nombre:'Mepivacaína 3%',      det:'sin vasoconstrictor · 54 mg/cartucho', conc:3, mgkg:6.6, tope:400},
-  mepi2:  {nombre:'Mepivacaína 2%',      det:'con epinefrina · 36 mg/cartucho', conc:2,   mgkg:6.6, tope:400},
-  prilo4: {nombre:'Prilocaína 4%',       det:'72 mg/cartucho', conc:4, mgkg:8.0, tope:600},
-  bupi05: {nombre:'Bupivacaína 0.5%',    det:'con epinefrina · larga duración · 9 mg/cartucho', conc:0.5, mgkg:1.3, tope:90}
-};
-var ML_CARTUCHO = 1.8, tipo = 'adulto', selKey = 'lido2';
-var DROP = '<svg viewBox="0 0 24 24"><path d="M12 2s5 6 5 11a5 5 0 0 1-10 0c0-5 5-11 5-11z"/></svg>';
-var dd = document.getElementById('ane-dd'), trigger = document.getElementById('ane-ddTrigger'),
-    panel = document.getElementById('ane-ddPanel'), valueEl = document.getElementById('ane-ddValue');
-
-// construir opciones
-var keys = Object.keys(ANESTESICOS);
-keys.forEach(function(k,i){
-  var a = ANESTESICOS[k];
-  var o = document.createElement('div');
-  o.className = 'dd__opt'; o.setAttribute('role','option'); o.dataset.k = k;
-  o.style.animationDelay = (i*28)+'ms';
-  o.innerHTML = '<span class="dd__dot">'+DROP+'</span>'
-    + '<span class="dd__txt">'+a.nombre+'<small>'+a.det+'</small></span>'
-    + '<svg class="dd__check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>';
-  o.addEventListener('click', function(){ elegir(k); cerrar(); });
-  panel.appendChild(o);
-});
-
-function elegir(k){
-  selKey = k;
-  valueEl.textContent = ANESTESICOS[k].nombre;
-  panel.querySelectorAll('.dd__opt').forEach(function(el){ el.classList.toggle('sel', el.dataset.k===k); });
-  calcular();
-}
-function abrir(){ dd.classList.add('open'); trigger.setAttribute('aria-expanded','true'); }
-function cerrar(){ dd.classList.remove('open'); trigger.setAttribute('aria-expanded','false'); }
-trigger.addEventListener('click', function(e){ e.stopPropagation(); dd.classList.contains('open')?cerrar():abrir(); });
-document.addEventListener('click', function(e){ if(!dd.contains(e.target)) cerrar(); });
-document.addEventListener('keydown', function(e){ if(e.key==='Escape') cerrar(); });
-
-function mgPorCartucho(a){ return a.conc * 10 * ML_CARTUCHO; }
-function pop(el){ el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
-function calcular(){
-  var a=ANESTESICOS[selKey], peso=parseFloat(document.getElementById('ane-peso').value);
-  var rCart=document.getElementById('ane-rCart'), rSub=document.getElementById('ane-rSub'),
-      rDosis=document.getElementById('ane-rDosis'), rVol=document.getElementById('ane-rVol');
-  if(!peso||peso<=0){ rCart.textContent='—'; rSub.textContent='Ingresa un peso válido'; rDosis.textContent='—'; rVol.textContent='—'; return; }
-  var porPeso=a.mgkg*peso, dosisMax=Math.min(porPeso,a.tope), topeAplica=porPeso>a.tope;
-  var mgCart=mgPorCartucho(a), cartuchos=Math.floor(dosisMax/mgCart), volMax=dosisMax/(a.conc*10);
-  rCart.textContent=cartuchos; rDosis.textContent=Math.round(dosisMax); rVol.textContent=volMax.toFixed(1);
-  pop(rCart);
-  rSub.textContent=a.mgkg+' mg/kg × '+peso+' kg = '+Math.round(porPeso)+' mg'
-    +(topeAplica?' · limitado al tope de '+a.tope+' mg':'')+' · '+mgCart+' mg/cartucho';
-  var w=document.getElementById('ane-warnTxt');
-  w.textContent = (tipo==='pediatrico')
-    ? 'PEDIÁTRICO: extrema la precaución. En niños usa muy por debajo del máximo y nunca excedas la dosis ponderal. No sustituye tu criterio ni la ficha técnica. Considera peso real, edad y estado de salud.'
-    : 'Herramienta de apoyo clínico. No sustituye tu criterio profesional ni la ficha técnica del fabricante. Ajusta la dosis según el estado del paciente (hepático, cardíaco, renal, embarazo) y usa siempre la dosis mínima eficaz.';
-}
-document.getElementById('ane-peso').addEventListener('input', calcular);
-document.querySelectorAll('.seg button').forEach(function(b){
-  b.addEventListener('click', function(){
-    document.querySelectorAll('.seg button').forEach(function(x){x.classList.remove('on');});
-    b.classList.add('on'); tipo=b.dataset.tipo; calcular();
-  });
-});
-var SUN='<path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/><circle cx="12" cy="12" r="4"/>';
-var MOON='<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
-
-elegir('lido2');
-}
+  /* === Herramienta NATIVA: Anestésico (sistema de diseño del panel) === */
 if(window.Sections && Sections.renderers){
   Sections.renderers['tool-anestesico']=function(dyn){
-    dyn.innerHTML='<div class="fade-up tdent-ane">'+ANE_HTML+'</div>';
-    try{ initToolAne(); }catch(e){ console.warn('initToolAne',e); }
+    var ANEST=[
+      {n:'Lidocaína 2% c/epinefrina',mgkg:7,tope:500,cart:36},
+      {n:'Articaína 4% c/epinefrina',mgkg:7,tope:500,cart:72},
+      {n:'Mepivacaína 3% sin epinefrina',mgkg:6.6,tope:400,cart:54},
+      {n:'Mepivacaína 2% c/epinefrina',mgkg:6.6,tope:400,cart:36},
+      {n:'Prilocaína 4%',mgkg:8,tope:600,cart:72},
+      {n:'Bupivacaína 0.5% c/epinefrina',mgkg:1.3,tope:90,cart:9}
+    ];
+    var st={idx:-1,peso:'',tipo:'adulto'};
+    dyn.innerHTML='<div class="fade-up">'
+      +'<div class="sec-hero"><span class="sec-hero__eyebrow">Herramienta pro</span><h1 class="sec-hero__title">Calculadora de anest\u00e9sico local</h1><p class="sec-hero__sub">Dosis m\u00e1xima segura y n\u00famero de cartuchos seg\u00fan el peso del paciente, el anest\u00e9sico y si es adulto o pedi\u00e1trico.</p></div>'
+      +'<div class="thx-card">'
+      +'<div class="thx-field"><label class="thx-label">Anest\u00e9sico</label><div class="thx-dd" id="aneDd"><button class="thx-dd__trigger" type="button" id="aneTrig"><span class="thx-dd__ph" id="aneVal">Selecciona el anest\u00e9sico</span><svg class="thx-dd__chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="thx-dd__panel" id="anePanel"></div></div></div>'
+      +'<div class="thx-grid2"><div class="thx-field"><label class="thx-label">Peso del paciente (kg)</label><input class="thx-input" type="number" id="anePeso" inputmode="decimal" min="1" placeholder="Ej. 70"></div>'
+      +'<div class="thx-field"><label class="thx-label">Tipo de paciente</label><div class="thx-seg" id="aneSeg"><button class="thx-seg__btn on" type="button" data-t="adulto">Adulto</button><button class="thx-seg__btn" type="button" data-t="pediatrico">Pedi\u00e1trico</button></div></div></div>'
+      +'<div class="thx-note thx-note--warn" id="aneWarn" style="display:none"><svg viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg><span id="aneWarnTxt"></span></div></div>'
+      +'<div class="kpi-grid" id="aneRes" style="display:none"><div class="kpi-card"><div class="kpi-card__label">Cartuchos m\u00e1x.</div><div class="kpi-card__value" id="aneCart">\u2014</div></div>'
+      +'<div class="kpi-card"><div class="kpi-card__label">Dosis m\u00e1xima</div><div class="kpi-card__value" id="aneDosis">\u2014</div></div>'
+      +'<div class="kpi-card"><div class="kpi-card__label">Volumen m\u00e1x.</div><div class="kpi-card__value" id="aneVol">\u2014</div></div></div>'
+      +'<div class="thx-note"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span>Valores de referencia para apoyo cl\u00ednico. La dosis final depende del criterio profesional, el estado de salud del paciente y la presentaci\u00f3n. Cartucho est\u00e1ndar: 1.8 mL.</span></div></div>';
+    var dd=document.getElementById('aneDd'),trig=document.getElementById('aneTrig'),panel=document.getElementById('anePanel'),val=document.getElementById('aneVal');
+    panel.innerHTML=ANEST.map(function(a,i){return '<div class="thx-opt" data-i="'+i+'">'+a.n+'<svg class="thx-opt__check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>';}).join('');
+    function calc(){
+      var res=document.getElementById('aneRes'),warn=document.getElementById('aneWarn');
+      var peso=parseFloat(st.peso);
+      if(st.idx<0||!peso||peso<=0){res.style.display='none';warn.style.display='none';return;}
+      var a=ANEST[st.idx],dp=a.mgkg*peso,dmax=Math.min(dp,a.tope),cart=Math.floor(dmax/a.cart),vol=cart*1.8;
+      document.getElementById('aneCart').textContent=cart;
+      document.getElementById('aneDosis').innerHTML=Math.round(dmax)+'<span class="kpi-card__value-sub">mg</span>';
+      document.getElementById('aneVol').innerHTML=vol.toFixed(1)+'<span class="kpi-card__value-sub">mL</span>';
+      res.style.display='';
+      var wt=document.getElementById('aneWarnTxt');
+      if(st.tipo==='pediatrico'){wt.textContent='Paciente pedi\u00e1trico: confirma el peso y usa la m\u00ednima dosis efectiva. Nunca superes la dosis m\u00e1xima por kg.';warn.style.display='';}
+      else if(dp>a.tope){wt.textContent='El peso permitir\u00eda m\u00e1s, pero se aplic\u00f3 el tope absoluto del anest\u00e9sico ('+a.tope+' mg).';warn.style.display='';}
+      else{warn.style.display='none';}
+    }
+    trig.addEventListener('click',function(e){e.stopPropagation();dd.classList.toggle('open');});
+    panel.querySelectorAll('.thx-opt').forEach(function(o){o.addEventListener('click',function(){st.idx=parseInt(o.dataset.i);val.textContent=ANEST[st.idx].n;val.classList.remove('thx-dd__ph');panel.querySelectorAll('.thx-opt').forEach(function(x){x.classList.remove('sel');});o.classList.add('sel');dd.classList.remove('open');calc();});});
+    document.addEventListener('click',function ah(e){var d=document.getElementById('aneDd');if(!d){document.removeEventListener('click',ah);return;}if(!d.contains(e.target))d.classList.remove('open');});
+    document.getElementById('anePeso').addEventListener('input',function(e){st.peso=e.target.value;calc();});
+    document.getElementById('aneSeg').querySelectorAll('.thx-seg__btn').forEach(function(b){b.addEventListener('click',function(){st.tipo=b.dataset.t;document.getElementById('aneSeg').querySelectorAll('.thx-seg__btn').forEach(function(x){x.classList.toggle('on',x.dataset.t===st.tipo);});calc();});});
   };
 }
-/* === Herramientas dentales OdonTeck (iframes aislados) === */
-(function(){
-  var TD=[
-    {s:'prescripcion',f:'tools/herramienta-prescripcion.html',t:'Calculadora de prescripción',d:'Analgésicos y antibióticos con dosis ajustada por peso del paciente.',ic:'i-news'},
-    {s:'odontograma',f:'tools/herramienta-odontograma.html',t:'Odontograma digital',d:'Registro dental en notación FDI, con cotización opcional y PDF.',ic:'i-tools'},
-    {s:'cotizador',f:'tools/herramienta-cotizador.html',t:'Cotizador de tratamientos',d:'Cotizaciones formales en PDF con folio, vigencia y anticipo.',ic:'i-credit-card'},
-    {s:'plan',f:'tools/herramienta-plan.html',t:'Plan de tratamiento por fases',d:'Plan por etapas con duracion, estado, costo y linea de tiempo.',ic:'i-clipboard-check'}
-  ];
-  function tema(){ return document.documentElement.getAttribute('data-theme')||'night'; }
-  TD.forEach(function(T){
-    Sections.renderers['tool-'+T.s]=function(dyn){
-      dyn.innerHTML='<div class="toolframe fade-up">'
-        +'<div class="toolframe__head"><div class="toolframe__ic"><svg class="ic"><use href="#'+T.ic+'"/></svg></div>'
-        +'<div><h2 class="toolframe__title">'+T.t+'</h2><p class="toolframe__sub">'+T.d+'</p></div></div>'
-        +'<div class="toolframe__wrap"><iframe class="toolframe__frame" id="tf-'+T.s+'" src="'+T.f+'?theme='+tema()+'" title="'+T.t+'" loading="lazy" scrolling="no"></iframe></div></div>';
+
+/* === Herramienta NATIVA: Prescripción (sistema de diseño del panel) === */
+if(window.Sections && Sections.renderers){
+  Sections.renderers['tool-prescripcion']=function(dyn){
+    var FARMACOS={
+      paracetamol:{nombre:'Paracetamol',grupo:'Analgésico / antipirético',adulto:{dosis:'650 mg – 1 g',freq:'cada 6 h',dur:'según dolor',max:'4 g/día'},ped:{min:10,max:15,tomas:4,freqH:6,maxDosis:1000,maxDiaMgkg:75},nota:'Primera línea para dolor leve-moderado. Puede alternarse con ibuprofeno.'},
+      ibuprofeno:{nombre:'Ibuprofeno',grupo:'Analgésico / antipirético',adulto:{dosis:'400 – 800 mg',freq:'cada 6–8 h',dur:'según dolor',max:'3.2 g/día'},ped:{min:5,max:10,tomas:3,freqH:8,maxDosis:800,maxDiaMgkg:40},nota:'AINE de elección en dolor dental. Tomar con alimentos. Evitar en gastropatía/renal.'},
+      amoxicilina:{nombre:'Amoxicilina',grupo:'Antibiótico',adulto:{dosis:'500 mg – 1 g',freq:'cada 8 h',dur:'7 días',max:'3 g/día'},ped:{min:25,max:50,tomas:3,freqH:8,maxDosis:500,div:true},nota:'De elección en infección odontogénica. Contraindicada en alergia a penicilina.'},
+      amoxiclav:{nombre:'Amoxicilina / clavulánico',grupo:'Antibiótico',adulto:{dosis:'875 / 125 mg',freq:'cada 12 h',dur:'7 días',max:'clavul. 375 mg/día'},ped:{min:40,max:50,tomas:3,freqH:8,maxDosis:875,div:true},nota:'Para infección que no mejora o con anaerobios. Grave: 80–100 mg/kg/día.'},
+      clindamicina:{nombre:'Clindamicina',grupo:'Antibiótico',adulto:{dosis:'300 mg',freq:'cada 6–8 h',dur:'7 días',max:'1.8 g/día'},ped:{min:8,max:20,tomas:3,freqH:8,maxDosis:450,div:true},nota:'Alternativa en alérgicos a penicilina. Buena penetración ósea.'},
+      azitromicina:{nombre:'Azitromicina',grupo:'Antibiótico',adulto:{dosis:'500 mg (día 1) → 250 mg',freq:'cada 24 h',dur:'3–5 días',max:'500 mg/día'},ped:{fijo:true,freq:'cada 24 h',porPeso:10,maxDosis:500,dur:'3 días'},nota:'Macrólido alternativo en alergia a penicilina. Pauta corta.'},
+      metronidazol:{nombre:'Metronidazol',grupo:'Antibiótico',adulto:{dosis:'400 – 500 mg',freq:'cada 8 h',dur:'7 días',max:'1.5 g/día'},ped:{min:20,max:30,tomas:3,freqH:8,maxDosis:500,div:true},nota:'Para anaerobios. Suele combinarse con amoxicilina. Sin alcohol durante el uso.'}
     };
-  });
-  window.addEventListener('message',function(e){
-    if(e.data && e.data.odtTool && e.data.slug){
-      var fr=document.getElementById('tf-'+e.data.slug);
-      if(fr && e.data.h) fr.style.height=(e.data.h+8)+'px';
+    var ORDEN=['Analgésico / antipirético','Antibiótico'];
+    var st={key:'amoxicilina',tipo:'adulto'};
+    dyn.innerHTML='<div class="fade-up">'
+      +'<div class="sec-hero"><span class="sec-hero__eyebrow">Herramienta pro</span><h1 class="sec-hero__title">Calculadora de prescripci\u00f3n</h1><p class="sec-hero__sub">Dosis de referencia de analg\u00e9sicos y antibi\u00f3ticos de uso odontol\u00f3gico, en adulto y pedi\u00e1trico por peso.</p></div>'
+      +'<div class="thx-card">'
+      +'<div class="thx-field"><label class="thx-label">Medicamento</label><div class="thx-dd" id="preDd"><button class="thx-dd__trigger" type="button" id="preTrig"><span id="preVal">Amoxicilina</span><svg class="thx-dd__chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="thx-dd__panel" id="prePanel"></div></div></div>'
+      +'<div class="thx-grid2"><div class="thx-field"><label class="thx-label">Tipo de paciente</label><div class="thx-seg" id="preSeg"><button class="thx-seg__btn on" type="button" data-t="adulto">Adulto</button><button class="thx-seg__btn" type="button" data-t="pediatrico">Pedi\u00e1trico</button></div></div>'
+      +'<div class="thx-field" id="prePesoField" style="display:none"><label class="thx-label">Peso del ni\u00f1o (kg)</label><input class="thx-input" type="number" id="prePeso" inputmode="decimal" min="1" placeholder="Ej. 18"></div></div>'
+      +'<div class="thx-note thx-note--warn"><svg viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg><span id="preWarnTxt"></span></div></div>'
+      +'<div class="kpi-grid"><div class="kpi-card"><div class="kpi-card__label">Dosis recomendada</div><div class="kpi-card__value is-text" id="preBig">\u2014</div><div class="kpi-card__value-sub" id="preLbl" style="display:block;margin:8px 0 0;font-size:13px"></div></div>'
+      +'<div class="kpi-card"><div class="kpi-card__label">Duraci\u00f3n</div><div class="kpi-card__value is-text" id="preDur">\u2014</div></div>'
+      +'<div class="kpi-card"><div class="kpi-card__label">M\u00e1ximo por d\u00eda</div><div class="kpi-card__value is-text" id="preMax">\u2014</div></div></div>'
+      +'<div class="thx-note"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span id="preSub"></span></div></div>';
+    var dd=document.getElementById('preDd'),trig=document.getElementById('preTrig'),panel=document.getElementById('prePanel'),val=document.getElementById('preVal');
+    ORDEN.forEach(function(g){
+      var hd=document.createElement('div');hd.className='thx-optgroup';hd.textContent=g;panel.appendChild(hd);
+      Object.keys(FARMACOS).forEach(function(k){var f=FARMACOS[k];if(f.grupo!==g)return;
+        var o=document.createElement('div');o.className='thx-opt';o.dataset.k=k;
+        o.innerHTML=f.nombre+'<svg class="thx-opt__check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>';
+        o.addEventListener('click',function(){elegir(k);dd.classList.remove('open');});panel.appendChild(o);});
+    });
+    function elegir(k){st.key=k;val.textContent=FARMACOS[k].nombre;panel.querySelectorAll('.thx-opt').forEach(function(el){el.classList.toggle('sel',el.dataset.k===k);});render();}
+    trig.addEventListener('click',function(e){e.stopPropagation();dd.classList.toggle('open');});
+    document.addEventListener('click',function ah(e){var d=document.getElementById('preDd');if(!d){document.removeEventListener('click',ah);return;}if(!d.contains(e.target))d.classList.remove('open');});
+    function r1(n){return Math.round(n);}
+    function render(){
+      var f=FARMACOS[st.key];
+      var big=document.getElementById('preBig'),lbl=document.getElementById('preLbl'),sub=document.getElementById('preSub'),dur=document.getElementById('preDur'),mx=document.getElementById('preMax');
+      document.getElementById('preWarnTxt').textContent=(f.grupo==='Antibiótico')
+        ? 'Dosis de referencia (apoyo clínico). No sustituye tu criterio ni la ficha técnica. Verifica alergias (penicilina), interacciones, función renal/hepática y embarazo. Antibiótico solo con indicación y tras eliminar el foco. '+f.nota
+        : 'Dosis de referencia (apoyo clínico). No sustituye tu criterio ni la ficha técnica. Verifica contraindicaciones, función renal/hepática y embarazo. '+f.nota;
+      if(st.tipo==='adulto'){big.textContent=f.adulto.dosis;lbl.textContent=f.adulto.freq;sub.textContent='Adulto · vía oral · '+f.nota;dur.textContent=f.adulto.dur;mx.textContent=f.adulto.max;return;}
+      var peso=parseFloat(document.getElementById('prePeso').value),p=f.ped;
+      if(!peso||peso<=0){big.textContent='—';lbl.textContent='Ingresa el peso del niño';sub.textContent='Indica el peso para calcular la dosis pediátrica.';dur.textContent='—';mx.textContent='—';return;}
+      if(p.fijo){var d=Math.min(p.porPeso*peso,p.maxDosis);big.textContent=r1(d)+' mg';lbl.textContent=p.freq;sub.textContent=p.porPeso+' mg/kg × '+peso+' kg (máx '+p.maxDosis+' mg) · vía oral';dur.textContent=p.dur;mx.textContent=p.maxDosis+' mg';return;}
+      if(p.div){var diaMin=p.min*peso,diaMax=p.max*peso,tMin=Math.min(diaMin/p.tomas,p.maxDosis),tMax=Math.min(diaMax/p.tomas,p.maxDosis);
+        big.textContent=(r1(tMin)===r1(tMax))?r1(tMax)+' mg':r1(tMin)+' – '+r1(tMax)+' mg';lbl.textContent='por toma · cada '+p.freqH+' h';
+        sub.textContent=p.min+'–'+p.max+' mg/kg/día ÷ '+p.tomas+' tomas · máx '+p.maxDosis+' mg/dosis';dur.textContent=f.adulto.dur;mx.textContent=r1(diaMax)+' mg/día';return;}
+      var aMin=Math.min(p.min*peso,p.maxDosis),aMax=Math.min(p.max*peso,p.maxDosis),diaMaxMgkg=p.maxDiaMgkg*peso;
+      big.textContent=r1(aMin)+' – '+r1(aMax)+' mg';lbl.textContent='por toma · cada '+p.freqH+' h';
+      sub.textContent=p.min+'–'+p.max+' mg/kg/toma · máx '+p.maxDosis+' mg/dosis';dur.textContent=f.adulto.dur;mx.textContent=r1(diaMaxMgkg)+' mg/día';
     }
+    document.getElementById('prePeso').addEventListener('input',render);
+    document.getElementById('preSeg').querySelectorAll('.thx-seg__btn').forEach(function(b){b.addEventListener('click',function(){st.tipo=b.dataset.t;document.getElementById('preSeg').querySelectorAll('.thx-seg__btn').forEach(function(x){x.classList.toggle('on',x.dataset.t===st.tipo);});document.getElementById('prePesoField').style.display=(st.tipo==='adulto')?'none':'';render();});});
+    elegir('amoxicilina');
+  };
+}
+
+/* === Herramienta NATIVA: Cotizador (sistema de diseño del panel) === */
+if(window.Sections && Sections.renderers){
+  Sections.renderers['tool-cotizador']=function(dyn){
+    dyn.innerHTML="<div class=\"fade-up\"><div class=\"sec-hero\"><span class=\"sec-hero__eyebrow\">Herramienta pro</span><h1 class=\"sec-hero__title\">Cotizador de tratamientos</h1><p class=\"sec-hero__sub\">Arma un presupuesto con tus tratamientos, cantidades y precios. Genera un PDF formal con tu marca para el paciente.</p></div><div class=\"thx-card\"><div class=\"thx-grid2\"><div class=\"thx-field\"><label class=\"thx-label\">Paciente</label><input id=\"cot-paciente\" class=\"thx-input\" placeholder=\"Nombre del paciente\"></div><div class=\"thx-field\"><label class=\"thx-label\">Atendi\u00f3 (responsable)</label><input id=\"cot-responsable\" class=\"thx-input\" placeholder=\"Dr(a). ...\"></div></div><div class=\"thx-collapse\" id=\"cot-fold\" style=\"margin-top:4px\"><div class=\"thx-collapse-head\" id=\"cot-foldHead\"><span class=\"thx-label\" style=\"margin:0\">Datos de la cl\u00ednica (opcional)</span><svg class=\"thx-chev\" viewBox=\"0 0 24 24\"><path d=\"M6 9l6 6 6-6\"/></svg></div><div class=\"thx-collapse-body\"><div class=\"thx-grid2\"><div class=\"thx-field\"><label class=\"thx-label\">Tel\u00e9fono / WhatsApp</label><input id=\"cot-telefono\" class=\"thx-input\"></div><div class=\"thx-field\"><label class=\"thx-label\">Correo</label><input id=\"cot-correo\" class=\"thx-input\"></div></div><div class=\"thx-field\"><label class=\"thx-label\">Direcci\u00f3n</label><input id=\"cot-direccion\" class=\"thx-input\"></div></div></div></div><div class=\"thx-card\"><label class=\"thx-label\">Tratamientos frecuentes</label><div class=\"thx-chips\" id=\"cot-quickadd\"></div><div id=\"cot-rows\"></div><button class=\"btn btn--primary\" id=\"cot-btnAdd\" type=\"button\" style=\"margin-top:8px\">+ Agregar tratamiento</button></div><div class=\"thx-card\"><div class=\"thx-grid2\"><div class=\"thx-field\"><label class=\"thx-label\">Descuento (%)</label><input id=\"cot-descuento\" class=\"thx-input\" type=\"number\" value=\"0\" min=\"0\" max=\"100\"></div><div class=\"thx-field\"><label class=\"thx-label\">Vigencia (d\u00edas)</label><input id=\"cot-vigencia\" class=\"thx-input\" type=\"number\" value=\"15\" min=\"1\"></div></div><div class=\"thx-grid2\"><div class=\"thx-field\"><label class=\"thx-label\">Anticipo para iniciar (%)</label><input id=\"cot-anticipo\" class=\"thx-input\" type=\"number\" value=\"0\" min=\"0\" max=\"100\"></div><div class=\"thx-field\"><label class=\"thx-label\">Notas</label><textarea id=\"cot-notas\" class=\"thx-textarea\" rows=\"2\" placeholder=\"Indicaciones, garant\u00edas, etc.\"></textarea></div></div><div class=\"thx-totals\"><div class=\"thx-totline\">Subtotal <strong id=\"cot-subtotal\">$0</strong></div><div class=\"thx-totline\">Descuento <strong id=\"cot-descMonto\">-$0</strong></div><div class=\"thx-total-final\"><span>Total</span><strong id=\"cot-total\">$0</strong></div></div></div><div class=\"thx-actions\"><button class=\"btn btn--accent\" id=\"cot-btnPdf\" type=\"button\"><svg style=\"width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2\" viewBox=\"0 0 24 24\"><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3\"/></svg>Descargar cotizaci\u00f3n PDF</button><button class=\"btn btn--primary\" id=\"cot-btnClear\" type=\"button\">Limpiar</button></div></div>";
+    var COMUNES=['Consulta / valoración','Limpieza dental','Resina (obturación)','Extracción simple','Extracción quirúrgica','Endodoncia','Corona','Blanqueamiento','Incrustación','Implante','Ortodoncia (mensualidad)','Radiografía','Sellador','Curetaje / raspado'];
+var items=[]; var uid=1;
+function fmt(n){ return '$'+Math.round(n||0).toLocaleString('es-MX'); }
+function val(id){ return (document.getElementById(id).value||'').trim(); }
+
+document.getElementById('cot-foldHead').addEventListener('click',function(){ document.getElementById('cot-fold').classList.toggle('on'); });
+
+var quick=document.getElementById('cot-quickadd');
+COMUNES.forEach(function(nom){
+  var b=document.createElement('button'); b.className='thx-chip'; b.type='button';
+  b.innerHTML='<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>'+nom;
+  b.addEventListener('click',function(){ addItem(nom); });
+  quick.appendChild(b);
+});
+function addItem(nombre){ items.push({id:uid++, nombre:nombre||'', cant:1, precio:0}); render();
+  if(!nombre){ var last=document.querySelector('.thx-itrow:last-child input'); if(last) last.focus(); } }
+function delItem(id){ items=items.filter(function(it){return it.id!==id;}); render(); }
+function escAttr(s){ return (s||'').replace(/"/g,'&quot;'); }
+function render(){
+  var cont=document.getElementById('cot-rows');
+  if(!items.length){ cont.innerHTML='<div class="thx-empty">Aún no hay tratamientos. Agrega uno con los botones de arriba.</div>'; recalc(); return; }
+  cont.innerHTML='';
+  items.forEach(function(it){
+    var row=document.createElement('div'); row.className='thx-itrow';
+    row.innerHTML='<input type="text" value="'+escAttr(it.nombre)+'" placeholder="Tratamiento" data-f="nombre">'
+      +'<input class="thx-it-cant" type="number" inputmode="numeric" min="1" value="'+it.cant+'" data-f="cant">'
+      +'<span class="thx-price"><span>$</span><input type="number" inputmode="numeric" min="0" value="'+(it.precio||'')+'" placeholder="0" data-f="precio"></span>'
+      +'<button class="thx-del" type="button" aria-label="Eliminar"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button>';
+    row.querySelectorAll('input').forEach(function(inp){
+      inp.addEventListener('input',function(){
+        var f=inp.dataset.f;
+        if(f==='nombre') it.nombre=inp.value; else if(f==='cant') it.cant=parseFloat(inp.value)||0; else it.precio=parseFloat(inp.value)||0;
+        recalc();
+      });
+    });
+    row.querySelector('.thx-del').addEventListener('click',function(){ delItem(it.id); });
+    cont.appendChild(row);
   });
-})();
+  recalc();
+}
+function recalc(){
+  var sub=0; items.forEach(function(it){ sub+=(it.cant||0)*(it.precio||0); });
+  var d=parseFloat(document.getElementById('cot-descuento').value)||0; if(d<0)d=0; if(d>100)d=100;
+  var descMonto=sub*d/100, total=sub-descMonto;
+  document.getElementById('cot-subtotal').textContent=fmt(sub);
+  document.getElementById('cot-descMonto').textContent='-'+fmt(descMonto);
+  document.getElementById('cot-total').textContent=fmt(total);
+}
+document.getElementById('cot-descuento').addEventListener('input',recalc);
+document.getElementById('cot-btnAdd').addEventListener('click',function(){ addItem(''); });
+document.getElementById('cot-btnClear').addEventListener('click',function(){
+  items=[]; document.getElementById('cot-descuento').value=0; document.getElementById('cot-notas').value=''; document.getElementById('cot-paciente').value=''; render();
+});
+
+// ---------- PDF formal ----------
+document.getElementById('cot-btnPdf').addEventListener('click',function(){
+  var valid=items.filter(function(it){ return (it.nombre||'').trim() && (it.precio||0)>0; });
+  if(!valid.length){ alert('Agrega al menos un tratamiento con nombre y precio.'); return; }
+  var jsPDF=window.jspdf.jsPDF; var doc=new jsPDF({unit:'mm',format:'a4'});
+  var W=210, mx=18, cw=W-mx*2, y=18;
+  var INK=[30,32,72], MUT=[120,130,150], SOFT=[70,85,110], PRI=[91,146,200];
+  function setc(a){ doc.setTextColor(a[0],a[1],a[2]); }
+
+  // ENCABEZADO
+  doc.setFillColor(91,146,200); doc.roundedRect(mx,y,13,13,3,3,'F');
+  doc.setFillColor(255,255,255); doc.circle(mx+6.5,y+5.6,1.7,'F');
+  doc.setFillColor(255,255,255); doc.roundedRect(mx+5,y+6.5,3,5,1,1,'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(17); setc(INK);
+  doc.text('OdonTeck',mx+18,y+6);
+  doc.setFont('helvetica','normal'); doc.setFontSize(8.5); setc(MUT);
+  doc.text('Consulting Group',mx+18,y+11);
+  // folio badge (derecha)
+  var folio='COT-'+new Date().getFullYear()+'-'+String(Date.now()).slice(-5);
+  doc.setFillColor(238,243,249); doc.roundedRect(W-mx-54,y,54,13,2.5,2.5,'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(7.5); setc(MUT); doc.text('FOLIO',W-mx-50,y+5);
+  doc.setFontSize(11); setc(INK); doc.text(folio,W-mx-50,y+10.2);
+  y+=18;
+  // contacto clínica + fecha
+  var contactoY=y;
+  var contacto=[]; if(val('cot-telefono')) contacto.push('Tel/WhatsApp: '+val('cot-telefono'));
+  if(val('cot-correo')) contacto.push(val('cot-correo'));
+  doc.setFont('helvetica','normal'); doc.setFontSize(8.5); setc(SOFT);
+  if(contacto.length){ doc.text(contacto.join('   ·   '),mx,y); y+=4.5; }
+  if(val('cot-direccion')){ doc.text(val('cot-direccion'),mx,y); y+=4.5; }
+  if(!contacto.length && !val('cot-direccion')) y+=4.5;
+  var fecha=new Date().toLocaleDateString('es-MX',{year:'numeric',month:'long',day:'numeric'});
+  doc.text('Emitida: '+fecha, W-mx, contactoY, {align:'right'});
+  y+=3; doc.setDrawColor(220,228,240); doc.setLineWidth(.5); doc.line(mx,y,W-mx,y); y+=9;
+
+  // PACIENTE + VIGENCIA
+  var vigDias=parseInt(val('cot-vigencia'))||15;
+  var vto=new Date(Date.now()+vigDias*864e5).toLocaleDateString('es-MX',{year:'numeric',month:'long',day:'numeric'});
+  doc.setFont('helvetica','bold'); doc.setFontSize(11); setc(INK);
+  doc.text('Paciente',mx,y); doc.setFont('helvetica','normal'); doc.text(val('cot-paciente')||'—',mx,y+5.5);
+  doc.setFont('helvetica','bold'); doc.text('Vigencia',W-mx,y,{align:'right'});
+  doc.setFont('helvetica','normal'); doc.setFontSize(9.5); setc(SOFT);
+  doc.text(vigDias+' días · hasta '+vto,W-mx,y+5.5,{align:'right'});
+  y+=15;
+
+  // TABLA
+  var cConc=mx+3, cCant=mx+118, cUnit=mx+150, cImp=W-mx-3;
+  var rowH=11;
+  doc.setFillColor(238,243,249); doc.roundedRect(mx,y,cw,10,1.5,1.5,'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(9); setc(SOFT);
+  doc.text('Concepto',cConc,y+6.4); doc.text('Cant.',cCant,y+6.4,{align:'right'});
+  doc.text('P. unitario',cUnit,y+6.4,{align:'right'}); doc.text('Importe',cImp,y+6.4,{align:'right'});
+  y+=10;
+  doc.setFont('helvetica','normal'); doc.setFontSize(10); var sub=0;
+  valid.forEach(function(it,idx){
+    if(y+rowH>270){ doc.addPage(); y=20; }
+    var imp=(it.cant||0)*(it.precio||0); sub+=imp;
+    if(idx%2===1){ doc.setFillColor(248,250,253); doc.rect(mx,y,cw,rowH,'F'); }
+    var baseY=y+rowH/2+1.4;
+    setc([45,55,75]); doc.text(it.nombre.substring(0,54),cConc,baseY);
+    setc(SOFT);
+    doc.text(String(it.cant),cCant,baseY,{align:'right'});
+    doc.text('$'+Math.round(it.precio).toLocaleString('es-MX'),cUnit,baseY,{align:'right'});
+    doc.setFont('helvetica','bold'); setc(INK);
+    doc.text('$'+Math.round(imp).toLocaleString('es-MX'),cImp,baseY,{align:'right'});
+    doc.setFont('helvetica','normal');
+    doc.setDrawColor(228,235,244); doc.setLineWidth(.3); doc.line(mx,y+rowH,W-mx,y+rowH);
+    y+=rowH;
+  });
+  y+=8;
+
+  // TOTALES con jerarquía
+  var d=parseFloat(document.getElementById('cot-descuento').value)||0; var descMonto=sub*d/100, total=sub-descMonto;
+  var boxX=W-mx-78, boxW=78;
+  doc.setFont('helvetica','normal'); doc.setFontSize(10); setc(SOFT);
+  doc.text('Subtotal',boxX,y); doc.text('$'+Math.round(sub).toLocaleString('es-MX'),W-mx,y,{align:'right'}); y+=7;
+  if(d>0){
+    setc([90,100,115]); doc.text('Descuento aplicado: '+d+'%',boxX,y);
+    doc.setTextColor(31,150,118); doc.text('Ahorro: -$'+Math.round(descMonto).toLocaleString('es-MX')+' MXN',W-mx,y,{align:'right'}); y+=8;
+  }
+  // TOTAL destacado
+  doc.setFillColor(91,146,200); doc.roundedRect(boxX,y,boxW,15,3,3,'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(255,255,255);
+  doc.text('TOTAL',boxX+5,y+9.5);
+  doc.setFontSize(15); doc.text('$'+Math.round(total).toLocaleString('es-MX')+' MXN',W-mx-4,y+9.8,{align:'right'});
+  y+=22;
+
+  // ANTICIPO / método de pago
+  var ant=parseFloat(val('cot-anticipo'))||0;
+  if(ant>0){
+    var antMonto=total*ant/100;
+    doc.setFont('helvetica','bold'); doc.setFontSize(9.5); setc(INK);
+    doc.text('Anticipo para iniciar: ',mx,y); var aw=doc.getTextWidth('Anticipo para iniciar: ');
+    doc.setFont('helvetica','normal'); setc(SOFT);
+    doc.text(ant+'%  ($'+Math.round(antMonto).toLocaleString('es-MX')+' MXN)',mx+aw,y); y+=8;
+  }
+
+  // NOTAS
+  var notas=val('cot-notas');
+  if(notas){
+    if(y>250){ doc.addPage(); y=20; }
+    doc.setFont('helvetica','bold'); doc.setFontSize(9.5); setc(INK); doc.text('Notas',mx,y); y+=5;
+    doc.setFont('helvetica','normal'); doc.setFontSize(9); setc(SOFT);
+    var ln=doc.splitTextToSize(notas,cw); doc.text(ln,mx,y); y+=ln.length*4.6+4;
+  }
+
+  // AUTORIZACIÓN / firma
+  if(y>235){ doc.addPage(); y=20; }
+  y+=4; doc.setDrawColor(220,228,240); doc.setLineWidth(.4); doc.line(mx,y,W-mx,y); y+=8;
+  doc.setFont('helvetica','bold'); doc.setFontSize(10); setc(INK); doc.text('Acepto la cotización',mx,y); y+=14;
+  doc.setDrawColor(150,160,180); doc.setLineWidth(.4);
+  doc.line(mx,y,mx+85,y); doc.line(W-mx-70,y,W-mx,y);
+  doc.setFont('helvetica','normal'); doc.setFontSize(8.5); setc(MUT);
+  doc.text('Nombre y firma del paciente',mx,y+4.5);
+  doc.text('Fecha',W-mx-70,y+4.5);
+  y+=14;
+  if(val('cot-responsable')){
+    doc.setFont('helvetica','normal'); doc.setFontSize(9); setc(SOFT);
+    doc.text('Atendió: '+val('cot-responsable'),mx,y); y+=7;
+  }
+
+  // NOTA LEGAL + footer
+  if(y>275){ doc.addPage(); y=20; }
+  doc.setDrawColor(228,235,244); doc.setLineWidth(.3); doc.line(mx,y,W-mx,y); y+=5;
+  doc.setFontSize(7.5); setc([140,150,168]);
+  doc.text('Esta cotización es informativa y puede variar según valoración clínica final. Precios sujetos a cambio sin previo aviso. No incluye IVA salvo que se indique.',mx,y,{maxWidth:cw});
+
+  var nombre=(val('cot-paciente')||'paciente').replace(/[^a-z0-9]/gi,'_');
+  doc.save('cotizacion_'+nombre+'.pdf');
+});
+  };
+}
+
+/* === Herramienta NATIVA: Odontograma (scoped, tema del panel) === */
+if(window.Sections && Sections.renderers){
+  Sections.renderers['tool-odontograma']=function(dyn){
+    dyn.innerHTML="<div class=\"fade-up\"><div class=\"sec-hero\"><span class=\"sec-hero__eyebrow\">Herramienta pro</span><h1 class=\"sec-hero__title\">Odontograma digital</h1><p class=\"sec-hero__sub\">Elige una condici\u00f3n y toca los dientes para marcarla (notaci\u00f3n FDI). Toca de nuevo para quitarla. Exporta el registro a PDF.</p></div><div class=\"thx-card odo-tool\"><div class=\"thx-field\"><label class=\"thx-label\">Paciente</label><input id=\"odo-paciente\" class=\"thx-input\" placeholder=\"Nombre del paciente\"></div><label class=\"thx-label\">Condici\u00f3n activa</label><div class=\"tools\" id=\"odo-tools\"></div><div class=\"arch\"><div class=\"arch__lbl\">Superior</div><div class=\"teeth\" id=\"odo-archTop\"></div></div><div class=\"arch\"><div class=\"arch__lbl\">Inferior</div><div class=\"teeth\" id=\"odo-archBot\"></div></div><div class=\"summary\" id=\"odo-summary\"></div><div class=\"quote\" id=\"odo-quote\"><div class=\"quote__head\" id=\"odo-quoteHead\"><span class=\"lbl\"><svg viewBox=\"0 0 24 24\"><path d=\"M3 6h18M3 12h18M3 18h18\"/></svg>Cotizaci\u00f3n estimada (opcional)</span><span class=\"sw-toggle\"></span></div><div class=\"quote__body\" id=\"odo-quoteBody\"></div></div></div><div class=\"thx-actions\"><button class=\"btn btn--accent\" id=\"odo-btnPdf\" type=\"button\"><svg style=\"width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2\" viewBox=\"0 0 24 24\"><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3\"/></svg>Descargar odontograma PDF</button><button class=\"btn btn--primary\" id=\"odo-btnClear\" type=\"button\">Limpiar</button></div></div>";
+    var TOOTH_PATH="M16 4C10 4 6 7 6 12c0 4 1.5 7 2.2 11c.4 2.3 .8 4 2 4 1.3 0 1.4 -2 1.8 -4 .3 -1.6 .6 -3 2 -3s1.7 1.4 2 3c.4 2 .5 4 1.8 4 1.2 0 1.6 -1.7 2.2 -4 .7 -4 2.2 -7 2.2 -11 0 -5 -4 -8 -10 -8z";
+var CONDICIONES=[
+  {k:'sano',     n:'Sano',         color:'#FFFFFF', rgb:[255,255,255]},
+  {k:'caries',   n:'Caries',       color:'#E5604D', rgb:[229,96,77]},
+  {k:'rest',     n:'Restaurado',   color:'#5B92C8', rgb:[91,146,200]},
+  {k:'corona',   n:'Corona',       color:'#C9A961', rgb:[201,169,97]},
+  {k:'endo',     n:'Endodoncia',   color:'#9B7EDE', rgb:[155,126,222]},
+  {k:'implante', n:'Implante',     color:'#4FA39B', rgb:[79,163,155]},
+  {k:'sellante', n:'Sellante',     color:'#6FB8B0', rgb:[111,184,176]},
+  {k:'ausente',  n:'Ausente',      color:'#C8D0DC', rgb:[200,208,220]},
+  {k:'extraer',  n:'A extraer',    color:'#E5604D', rgb:[229,96,77]}
+];
+// FDI
+var TOP=[18,17,16,15,14,13,12,11, 21,22,23,24,25,26,27,28];
+var BOT=[48,47,46,45,44,43,42,41, 31,32,33,34,35,36,37,38];
+var estado={}; // fdi -> condicion key
+var activa='caries';
+var precios={}, cotizOn=false;
+
+// paleta
+var tools=document.getElementById('odo-tools');
+CONDICIONES.forEach(function(c){
+  if(c.k==='sano') return; // sano = quitar, no botón
+  var b=document.createElement('button'); b.className='cond'+(c.k===activa?' on':''); b.dataset.k=c.k; b.type='button';
+  b.innerHTML='<span class="sw" style="background:'+c.color+'"></span>'+c.n;
+  b.addEventListener('click',function(){ activa=c.k; document.querySelectorAll('.cond').forEach(function(x){x.classList.toggle('on',x.dataset.k===activa);}); });
+  tools.appendChild(b);
+});
+
+function makeArch(arr,cont){
+  // dos cuadrantes separados por línea media (mitad y mitad)
+  var q1=document.createElement('div'); q1.className='quad';
+  var q2=document.createElement('div'); q2.className='quad';
+  arr.forEach(function(fdi,i){
+    var t=document.createElement('button'); t.className='tooth'; t.dataset.fdi=fdi; t.type='button';
+    t.innerHTML='<svg class="tooth__svg" viewBox="0 0 32 32"><path d="'+TOOTH_PATH+'"/></svg><span class="tooth__n">'+fdi+'</span>';
+    t.addEventListener('click',function(){ toggle(fdi,t); });
+    (i<8?q1:q2).appendChild(t);
+  });
+  cont.appendChild(q1); cont.appendChild(q2);
+}
+makeArch(TOP,document.getElementById('odo-archTop'));
+makeArch(BOT,document.getElementById('odo-archBot'));
+
+function toggle(fdi,el){
+  if(estado[fdi]===activa){ delete estado[fdi]; }
+  else { estado[fdi]=activa; }
+  CONDICIONES.forEach(function(c){ el.classList.remove('s-'+c.k); });
+  el.classList.remove('marked');
+  if(estado[fdi]){ el.classList.add('s-'+estado[fdi],'marked'); }
+  resumen();
+}
+function resumen(){
+  var cont={}; Object.keys(estado).forEach(function(f){ cont[estado[f]]=(cont[estado[f]]||0)+1; });
+  var s=document.getElementById('odo-summary'); s.innerHTML='';
+  CONDICIONES.forEach(function(c){
+    if(c.k==='sano'||!cont[c.k]) return;
+    var ch=document.createElement('div'); ch.className='chip';
+    ch.innerHTML='<span class="sw" style="background:'+c.color+'"></span>'+c.n+' <b>'+cont[c.k]+'</b>';
+    s.appendChild(ch);
+  });
+  if(!s.innerHTML){ s.innerHTML='<div class="chip">Sin hallazgos registrados</div>'; }
+  if(cotizOn) renderCotizacion();
+}
+function fmtMXN(n){ return '$'+Math.round(n||0).toLocaleString('es-MX'); }
+function conteo(){ var c={}; Object.keys(estado).forEach(function(f){ c[estado[f]]=(c[estado[f]]||0)+1; }); return c; }
+function totalCotiz(){ var c=conteo(),t=0; CONDICIONES.forEach(function(x){ if(x.k==='sano'||x.k==='ausente')return; t+=(precios[x.k]||0)*(c[x.k]||0); }); return t; }
+function renderCotizacion(){
+  var body=document.getElementById('odo-quoteBody'), c=conteo(), rows='', any=false;
+  CONDICIONES.forEach(function(x){
+    if(x.k==='sano'||x.k==='ausente')return; var n=c[x.k]||0; if(!n)return; any=true;
+    var p=precios[x.k]||0;
+    rows+='<div class="qrow"><span class="qsw" style="background:'+x.color+'"></span>'
+      +'<span class="qn"><b>'+x.n+'</b><span class="qcount">x'+n+'</span></span>'
+      +'<span class="qprice"><span>$</span><input type="number" inputmode="numeric" min="0" data-k="'+x.k+'" value="'+(p||'')+'" placeholder="0"></span>'
+      +'<span class="qsub" data-sub="'+x.k+'">'+fmtMXN(p*n)+'</span></div>';
+  });
+  if(!any){ body.innerHTML='<div class="qempty">Marca tratamientos en el odontograma para cotizarlos.</div>'; return; }
+  rows+='<div class="qtotal"><span class="t1">Total estimado</span><span class="t2" id="qTotal">'+fmtMXN(totalCotiz())+'</span></div>';
+  body.innerHTML=rows;
+  body.querySelectorAll('.qprice input').forEach(function(inp){
+    inp.addEventListener('input',function(){
+      precios[inp.dataset.k]=parseFloat(inp.value)||0;
+      var cc=conteo();
+      CONDICIONES.forEach(function(x){ if(x.k==='sano'||x.k==='ausente')return; var nn=cc[x.k]||0; if(!nn)return;
+        var el=body.querySelector('[data-sub="'+x.k+'"]'); if(el) el.textContent=fmtMXN((precios[x.k]||0)*nn); });
+      var tot=document.getElementById('odo-qTotal'); if(tot) tot.textContent=fmtMXN(totalCotiz());
+    });
+  });
+}
+document.getElementById('odo-quoteHead').addEventListener('click',function(){
+  cotizOn=!cotizOn; document.getElementById('odo-quote').classList.toggle('on',cotizOn); if(cotizOn) renderCotizacion();
+});
+resumen();
+
+document.getElementById('odo-btnClear').addEventListener('click',function(){
+  estado={}; document.querySelectorAll('.tooth').forEach(function(t){
+    CONDICIONES.forEach(function(c){ t.classList.remove('s-'+c.k); }); t.classList.remove('marked');
+  }); resumen();
+});
+
+// ---------- PDF (dibujado desde cero) ----------
+function condName(k){ for(var i=0;i<CONDICIONES.length;i++) if(CONDICIONES[i].k===k) return CONDICIONES[i]; return null; }
+document.getElementById('odo-btnPdf').addEventListener('click',function(){
+  var jsPDF=window.jspdf.jsPDF; var doc=new jsPDF({unit:'mm',format:'a4'});
+  var W=210, mx=16, y=18;
+  // encabezado
+  doc.setFillColor(91,146,200); doc.roundedRect(mx,y-6,9,9,2,2,'F');
+  doc.setTextColor(30,32,72); doc.setFont('helvetica','bold'); doc.setFontSize(16);
+  doc.text('Odontograma',mx+13,y); 
+  doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(120,130,150);
+  doc.text('OdonTeck Consulting Group',mx+13,y+5);
+  var fecha=new Date().toLocaleDateString('es-MX',{year:'numeric',month:'long',day:'numeric'});
+  doc.text(fecha, W-mx, y, {align:'right'});
+  y+=14;
+  doc.setDrawColor(220,228,240); doc.setLineWidth(.4); doc.line(mx,y,W-mx,y); y+=8;
+  // paciente
+  var pac=document.getElementById('odo-paciente').value||'—';
+  doc.setTextColor(30,32,72); doc.setFont('helvetica','bold'); doc.setFontSize(11);
+  doc.text('Paciente: ',mx,y); var pw=doc.getTextWidth('Paciente: ');
+  doc.setFont('helvetica','normal'); doc.text(pac,mx+pw,y); y+=10;
+
+  // dibujar arcadas
+  function fillFor(fdi){ var k=estado[fdi]; if(!k) return [255,255,255]; var c=condName(k); return c?c.rgb:[255,255,255]; }
+  var cell=10, gap=1.4, midGap=6;
+  function drawArch(arr,labY){
+    doc.setFontSize(7); doc.setTextColor(120,130,150);
+    var totalW=16*cell+15*gap+midGap;
+    var startX=(W-totalW)/2;
+    var x=startX;
+    arr.forEach(function(fdi,i){
+      if(i===8) x+=midGap;
+      var rgb=fillFor(fdi);
+      doc.setFillColor(rgb[0],rgb[1],rgb[2]);
+      doc.setDrawColor(170,180,195); doc.setLineWidth(.3);
+      doc.roundedRect(x,labY,cell,cell,1.5,1.5, estado[fdi]?'FD':'D');
+      // numero
+      doc.setTextColor( estado[fdi] && estado[fdi]!=='ausente' ? 255 : 90, estado[fdi]&&estado[fdi]!=='ausente'?255:98, estado[fdi]&&estado[fdi]!=='ausente'?255:112);
+      doc.text(String(fdi), x+cell/2, labY+cell/2+1.2, {align:'center'});
+      x+=cell+gap;
+    });
+  }
+  doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(120,130,150);
+  doc.text('Superior',W/2,y,{align:'center'}); y+=3;
+  drawArch(TOP,y); y+=cell+6;
+  doc.text('Inferior',W/2,y,{align:'center'}); y+=3;
+  drawArch(BOT,y); y+=cell+12;
+
+  // leyenda
+  doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(30,32,72);
+  doc.text('Leyenda',mx,y); y+=6;
+  var lx=mx, lyc=y;
+  CONDICIONES.forEach(function(c,i){
+    if(c.k==='sano') return;
+    if(lx>W-mx-40){ lx=mx; lyc+=8; }
+    doc.setFillColor(c.rgb[0],c.rgb[1],c.rgb[2]); doc.setDrawColor(170,180,195); doc.setLineWidth(.3);
+    doc.roundedRect(lx,lyc-3.2,4,4,.8,.8,'FD');
+    doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(70,85,110);
+    doc.text(c.n,lx+6,lyc); lx+=6+doc.getTextWidth(c.n)+10;
+  });
+  y=lyc+12;
+
+  // resumen
+  var cont={}; Object.keys(estado).forEach(function(f){ cont[estado[f]]=(cont[estado[f]]||0)+1; });
+  var keys=Object.keys(cont);
+  doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(30,32,72);
+  doc.text('Resumen de hallazgos',mx,y); y+=6;
+  doc.setFont('helvetica','normal'); doc.setFontSize(9.5); doc.setTextColor(70,85,110);
+  if(!keys.length){ doc.text('Sin hallazgos registrados.',mx,y); y+=6; }
+  else { keys.forEach(function(k){ var c=condName(k); doc.text('• '+c.n+': '+cont[k]+' diente(s)',mx,y); y+=5.5; }); }
+
+  // cotización (si está activa y hay precios)
+  if(cotizOn){
+    var cQ=conteo(), totalP=0, hayP=false;
+    CONDICIONES.forEach(function(x){ if(x.k==='sano'||x.k==='ausente')return; if((cQ[x.k]||0)&&(precios[x.k]||0)) hayP=true; });
+    if(hayP){
+      if(y>250){ doc.addPage(); y=20; }
+      doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(30,32,72);
+      doc.text('Cotización estimada',mx,y); y+=6;
+      doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(120,130,150);
+      doc.text('Tratamiento',mx,y); doc.text('Cant.',mx+92,y,{align:'right'}); doc.text('P. unitario',mx+132,y,{align:'right'}); doc.text('Subtotal',W-mx,y,{align:'right'}); y+=2;
+      doc.setDrawColor(220,228,240); doc.line(mx,y,W-mx,y); y+=5;
+      doc.setTextColor(70,85,110);
+      CONDICIONES.forEach(function(x){
+        if(x.k==='sano'||x.k==='ausente')return; var n=cQ[x.k]||0, p=precios[x.k]||0; if(!n||!p)return;
+        var sub=n*p; totalP+=sub;
+        doc.text(x.n,mx,y); doc.text(String(n),mx+92,y,{align:'right'});
+        doc.text('$'+Math.round(p).toLocaleString('es-MX'),mx+132,y,{align:'right'});
+        doc.text('$'+Math.round(sub).toLocaleString('es-MX'),W-mx,y,{align:'right'}); y+=5.5;
+      });
+      y+=1; doc.setDrawColor(200,210,225); doc.line(mx,y,W-mx,y); y+=6;
+      doc.setFont('helvetica','bold'); doc.setFontSize(11.5); doc.setTextColor(30,32,72);
+      doc.text('Total estimado',mx,y); doc.text('$'+Math.round(totalP).toLocaleString('es-MX')+' MXN',W-mx,y,{align:'right'}); y+=9;
+    }
+  }
+  // disclaimer
+  y+=6; doc.setDrawColor(220,228,240); doc.setLineWidth(.3); doc.line(mx,y,W-mx,y); y+=5;
+  doc.setFontSize(7.5); doc.setTextColor(140,150,168);
+  doc.text('Documento de apoyo clínico generado en OdonTeck. No sustituye la exploración profesional ni el expediente oficial.',mx,y,{maxWidth:W-mx*2});
+
+  var nombre=(document.getElementById('odo-paciente').value||'paciente').replace(/[^a-z0-9]/gi,'_');
+  doc.save('odontograma_'+nombre+'.pdf');
+});
+  };
+}
+
+/* === Herramienta NATIVA: Plan de tratamiento (scoped, tema del panel) === */
+if(window.Sections && Sections.renderers){
+  Sections.renderers['tool-plan']=function(dyn){
+    dyn.innerHTML="<div class=\"fade-up\"><div class=\"sec-hero\"><span class=\"sec-hero__eyebrow\">Herramienta pro</span><h1 class=\"sec-hero__title\">Plan de tratamiento por fases</h1><p class=\"sec-hero__sub\">Organiza el tratamiento en etapas con duraci\u00f3n, estado y costo. Genera un PDF tipo l\u00ednea de tiempo para el paciente.</p></div><div class=\"thx-card plan-tool\"><div class=\"field\">\n      <label>Paciente</label>\n      <div class=\"control has-ic\">\n        <svg class=\"ic\" viewBox=\"0 0 24 24\"><path d=\"M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2\"/><circle cx=\"12\" cy=\"7\" r=\"4\"/></svg>\n        <input id=\"plan-paciente\" type=\"text\" placeholder=\"Nombre del paciente\">\n      </div>\n    </div>\n    <div class=\"grid2\">\n      <div class=\"field\"><label>Odont\u00f3logo responsable</label><input id=\"plan-responsable\" type=\"text\" placeholder=\"Dr(a). Nombre Apellido\"></div>\n      <div class=\"field\"><label>C\u00e9dula profesional</label><input id=\"plan-cedula\" type=\"text\" placeholder=\"0000000\"></div>\n    </div>\n    <div class=\"grid2\">\n      <div class=\"field\"><label>Inicio estimado</label><div class=\"dp\" data-dp id=\"plan-dpInicio\"><button class=\"dp__trigger\" type=\"button\" aria-haspopup=\"dialog\" aria-expanded=\"false\"><svg class=\"cal\" viewBox=\"0 0 24 24\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M16 2v4M8 2v4M3 10h18\"/></svg><span class=\"dp__val ph\">Selecciona fecha</span><svg class=\"dp__chev\" viewBox=\"0 0 24 24\"><path d=\"M6 9l6 6 6-6\"/></svg></button><div class=\"dp__panel\"><div class=\"dp__head\"><button class=\"dp__nav dp__prev\" type=\"button\" aria-label=\"Mes anterior\"><svg viewBox=\"0 0 24 24\"><path d=\"M15 18l-6-6 6-6\"/></svg></button><span class=\"dp__title\"></span><button class=\"dp__nav dp__next\" type=\"button\" aria-label=\"Mes siguiente\"><svg viewBox=\"0 0 24 24\"><path d=\"M9 18l6-6-6-6\"/></svg></button></div><div class=\"dp__dows\"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div><div class=\"dp__grid\"></div><div class=\"dp__actions\"><button class=\"dp__act dp__clear\" type=\"button\"><svg viewBox=\"0 0 24 24\"><path d=\"M18 6 6 18M6 6l12 12\"/></svg>Borrar</button><button class=\"dp__act prim dp__today\" type=\"button\"><svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 8v4l2.5 1.5\"/></svg>Hoy</button></div></div></div></div>\n      <div class=\"field\"><label>Finalizaci\u00f3n estimada</label><div class=\"dp\" data-dp id=\"plan-dpFin\"><button class=\"dp__trigger\" type=\"button\" aria-haspopup=\"dialog\" aria-expanded=\"false\"><svg class=\"cal\" viewBox=\"0 0 24 24\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M16 2v4M8 2v4M3 10h18\"/></svg><span class=\"dp__val ph\">Selecciona fecha</span><svg class=\"dp__chev\" viewBox=\"0 0 24 24\"><path d=\"M6 9l6 6 6-6\"/></svg></button><div class=\"dp__panel\"><div class=\"dp__head\"><button class=\"dp__nav dp__prev\" type=\"button\" aria-label=\"Mes anterior\"><svg viewBox=\"0 0 24 24\"><path d=\"M15 18l-6-6 6-6\"/></svg></button><span class=\"dp__title\"></span><button class=\"dp__nav dp__next\" type=\"button\" aria-label=\"Mes siguiente\"><svg viewBox=\"0 0 24 24\"><path d=\"M9 18l6-6-6-6\"/></svg></button></div><div class=\"dp__dows\"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div><div class=\"dp__grid\"></div><div class=\"dp__actions\"><button class=\"dp__act dp__clear\" type=\"button\"><svg viewBox=\"0 0 24 24\"><path d=\"M18 6 6 18M6 6l12 12\"/></svg>Borrar</button><button class=\"dp__act prim dp__today\" type=\"button\"><svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 8v4l2.5 1.5\"/></svg>Hoy</button></div></div></div></div>\n    </div>\n\n    <label>Agregar fase</label>\n    <div class=\"quickadd\" id=\"plan-quickadd\"></div>\n\n    <div class=\"phases\" id=\"plan-phases\"></div>\n    <button class=\"addbtn\" id=\"plan-btnAdd\"><svg viewBox=\"0 0 24 24\"><path d=\"M12 5v14M5 12h14\"/></svg>Agregar fase personalizada</button>\n\n    <div class=\"invest\"><span class=\"l\">Inversi\u00f3n estimada total</span><span class=\"v\" id=\"plan-invTotal\">$0</span></div>\n\n    <div class=\"field\" style=\"margin-top:18px\">\n      <label>Objetivo del tratamiento</label>\n      <textarea id=\"plan-objetivo\" placeholder=\"Ej. Rehabilitar la funci\u00f3n masticatoria, eliminar lesiones cariosas y mejorar la est\u00e9tica dental.\"></textarea>\n    </div>\n    <div class=\"field\" style=\"margin-bottom:0\">\n      <label>Recomendaciones al paciente</label>\n      <textarea id=\"plan-recom\">Mantener una adecuada higiene oral (cepillado tras cada comida e hilo dental).\nAcudir puntualmente a las citas programadas.\nSeguir las indicaciones cl\u00ednicas y de medicaci\u00f3n.\nEvitar alimentos muy duros o pegajosos durante el tratamiento.</textarea>\n    </div>\n\n    <div class=\"actions\">\n      <button class=\"btn btn--ghost\" id=\"plan-btnClear\"><svg viewBox=\"0 0 24 24\"><path d=\"M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6\"/></svg>Limpiar</button>\n      <button class=\"btn btn--primary\" id=\"plan-btnPdf\"><svg viewBox=\"0 0 24 24\"><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3\"/></svg>Exportar PDF</button>\n    </div></div></div>";
+    var COMUNES=['Fase de urgencia / higiénica','Fase correctiva (restauradora)','Fase quirúrgica','Fase protésica / rehabilitación','Fase estética','Fase de mantenimiento'];
+var ICONS={
+  drop:'<path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/>',
+  tooth:'<path d="M12 3C8 3 5 5 5 9c0 3 1 5 1.6 8 .3 1.7 .6 3 1.5 3 1 0 1-1.5 1.4-3 .2-1.2 .4-2.2 1.5-2.2s1.3 1 1.5 2.2c.4 1.5 .4 3 1.4 3 .9 0 1.2-1.3 1.5-3 .6-3 1.6-5 1.6-8 0-4-3-6-7-6z"/>',
+  blade:'<path d="M3 21l9-9M14 4l6 6-8 2-2-2z"/>',
+  crown:'<path d="M4 17l-2-9 5.5 4L12 5l4.5 7L22 8l-2 9z"/>',
+  star:'<path d="M12 3l2.5 5.5 6 .5-4.5 4 1.5 6L12 16l-5.5 3 1.5-6-4.5-4 6-.5z"/>',
+  shield:'<path d="M12 3l8 3.5v5c0 5-3.5 8-8 9.5-4.5-1.5-8-4.5-8-9.5v-5z"/>',
+  dot:'<circle cx="12" cy="12" r="7"/>'
+};
+function iconKey(t){ t=(t||'').toLowerCase();
+  if(/est[eé]t/.test(t))return'star'; if(/correct|restaur|caries/.test(t))return'tooth';
+  if(/quir|cirug|extrac|implant/.test(t))return'blade'; if(/pr[oó]tes|rehab|corona/.test(t))return'crown';
+  if(/manten|control|segui/.test(t))return'shield'; if(/higi[eé]n|urgenc|limpie|profilax/.test(t))return'drop';
+  return'dot'; }
+var ESTADOS=[{k:'pendiente',n:'Pendiente',rgb:[137,151,176]},{k:'progreso',n:'En progreso',rgb:[201,169,97]},{k:'completada',n:'Completada',rgb:[79,163,155]}];
+var fases=[]; var uid=1;
+var DP_MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+function dpPad(n){return n<10?'0'+n:''+n;}
+function dpVal(id){ var el=document.getElementById(id); return el?(el.dataset.value||''):''; }
+function initDP(dp){
+  var trg=dp.querySelector('.dp__trigger'), vEl=dp.querySelector('.dp__val'),
+      ttl=dp.querySelector('.dp__title'), grid=dp.querySelector('.dp__grid');
+  var today=new Date(), view={y:today.getFullYear(),m:today.getMonth()}, sel=null;
+  function setVal(s){ sel=s;
+    if(s){ dp.dataset.value=s.y+'-'+dpPad(s.m+1)+'-'+dpPad(s.d); vEl.textContent=s.d+' '+DP_MESES[s.m].slice(0,3)+' '+s.y; vEl.classList.remove('ph'); }
+    else { dp.dataset.value=''; vEl.textContent='Selecciona fecha'; vEl.classList.add('ph'); } }
+  function draw(){
+    ttl.textContent=DP_MESES[view.m]+' '+view.y; grid.innerHTML='';
+    var off=(new Date(view.y,view.m,1).getDay()+6)%7, dim=new Date(view.y,view.m+1,0).getDate();
+    for(var i=0;i<off;i++){ var e=document.createElement('div'); e.className='dp__day empty'; grid.appendChild(e); }
+    for(var d=1;d<=dim;d++){ var b=document.createElement('button'); b.type='button'; b.className='dp__day'; b.textContent=d;
+      if(view.y===today.getFullYear()&&view.m===today.getMonth()&&d===today.getDate()) b.classList.add('today');
+      if(sel&&sel.y===view.y&&sel.m===view.m&&sel.d===d) b.classList.add('sel');
+      (function(dd){ b.addEventListener('click',function(){ setVal({y:view.y,m:view.m,d:dd}); draw(); close(); }); })(d);
+      grid.appendChild(b); } }
+  function open(){ dp.classList.remove('up','right'); var r=trg.getBoundingClientRect();
+    if(r.bottom+340>window.innerHeight && r.top>340) dp.classList.add('up');
+    if(r.left+282>window.innerWidth) dp.classList.add('right');
+    draw(); dp.classList.add('open'); trg.setAttribute('aria-expanded','true'); }
+  function close(){ dp.classList.remove('open'); trg.setAttribute('aria-expanded','false'); }
+  trg.addEventListener('click',function(e){ e.stopPropagation(); dp.classList.contains('open')?close():open(); });
+  dp.querySelector('.dp__prev').addEventListener('click',function(e){ e.stopPropagation(); view.m--; if(view.m<0){view.m=11;view.y--;} draw(); });
+  dp.querySelector('.dp__next').addEventListener('click',function(e){ e.stopPropagation(); view.m++; if(view.m>11){view.m=0;view.y++;} draw(); });
+  dp.querySelector('.dp__clear').addEventListener('click',function(e){ e.stopPropagation(); setVal(null); draw(); close(); });
+  dp.querySelector('.dp__today').addEventListener('click',function(e){ e.stopPropagation(); view={y:today.getFullYear(),m:today.getMonth()}; setVal({y:today.getFullYear(),m:today.getMonth(),d:today.getDate()}); draw(); close(); });
+  document.addEventListener('click',function(e){ if(!dp.contains(e.target)) close(); });
+  setVal(null);
+}
+document.querySelectorAll('[data-dp]').forEach(initDP);
+function val(id){ return (document.getElementById(id).value||'').trim(); }
+function escAttr(s){ return (s||'').replace(/"/g,'&quot;'); }
+function fmt(n){ return '$'+Math.round(n||0).toLocaleString('es-MX'); }
+
+var quick=document.getElementById('plan-quickadd');
+COMUNES.forEach(function(nom){
+  var b=document.createElement('button'); b.className='qa'; b.type='button';
+  b.innerHTML='<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>'+nom;
+  b.addEventListener('click',function(){ addFase(nom); }); quick.appendChild(b);
+});
+function addFase(t){ fases.push({id:uid++,titulo:t||'',estado:'pendiente',duracion:'',costo:0,pasos:[{id:uid++,texto:''}]}); render();
+  if(!t){ var x=document.querySelector('.phase:last-child .phase__title'); if(x) x.focus(); } }
+function delFase(id){ fases=fases.filter(function(f){return f.id!==id;}); render(); }
+function addPaso(fid){ var f=fases.find(function(x){return x.id===fid;}); if(f){ f.pasos.push({id:uid++,texto:''}); render();
+  var i=document.querySelectorAll('.phase[data-id="'+fid+'"] .step input'); if(i.length) i[i.length-1].focus(); } }
+function delPaso(fid,pid){ var f=fases.find(function(x){return x.id===fid;}); if(f){ f.pasos=f.pasos.filter(function(p){return p.id!==pid;}); render(); } }
+
+function recalc(){ var t=0; fases.forEach(function(f){ t+=(f.costo||0); }); document.getElementById('plan-invTotal').textContent=fmt(t); }
+
+function render(){
+  var cont=document.getElementById('plan-phases');
+  if(!fases.length){ cont.innerHTML='<div class="empty">Aún no hay fases. Agrega una con los botones de arriba.</div>'; recalc(); return; }
+  cont.innerHTML='';
+  fases.forEach(function(f,idx){
+    var ph=document.createElement('div'); ph.className='phase'; ph.dataset.id=f.id;
+    var steps=''; f.pasos.forEach(function(p){
+      steps+='<div class="step" data-pid="'+p.id+'"><span class="step__dot"></span><input type="text" value="'+escAttr(p.texto)+'" placeholder="Procedimiento o cita" data-pid="'+p.id+'"><button class="step__del" type="button" aria-label="Eliminar paso"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>';
+    });
+    var estBtns=''; ESTADOS.forEach(function(e){ estBtns+='<button class="est'+(f.estado===e.k?' on':'')+'" data-e="'+e.k+'" type="button"><span class="d"></span>'+e.n+'</button>'; });
+    ph.innerHTML='<div class="phase__head"><span class="phase__icon"><svg viewBox="0 0 24 24">'+ICONS[iconKey(f.titulo)]+'</svg></span>'
+      +'<div class="phase__hcol"><div class="fnum">Fase '+(idx+1)+'</div><input class="phase__title" type="text" value="'+escAttr(f.titulo)+'" placeholder="Nombre de la fase"></div>'
+      +'<button class="phase__del" type="button" aria-label="Eliminar fase"><svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></div>'
+      +'<div class="phase__meta"><div class="estados">'+estBtns+'</div>'
+      +'<span class="mwrap"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><input type="text" value="'+escAttr(f.duracion)+'" placeholder="Duración (ej. 3 semanas)" data-f="dur"></span>'
+      +'<span class="cwrap"><span>$</span><input type="number" inputmode="numeric" min="0" value="'+(f.costo||'')+'" placeholder="0" data-f="costo"></span></div>'
+      +'<div class="steps">'+steps+'</div><button class="addstep" type="button"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Agregar paso</button>';
+    var icon=ph.querySelector('.phase__icon svg');
+    ph.querySelector('.phase__title').addEventListener('input',function(e){ f.titulo=e.target.value; icon.innerHTML=ICONS[iconKey(f.titulo)]; });
+    ph.querySelector('.phase__del').addEventListener('click',function(){ delFase(f.id); });
+    ph.querySelector('.addstep').addEventListener('click',function(){ addPaso(f.id); });
+    ph.querySelectorAll('.est').forEach(function(b){ b.addEventListener('click',function(){ f.estado=b.dataset.e; ph.querySelectorAll('.est').forEach(function(x){x.classList.toggle('on',x.dataset.e===f.estado);}); }); });
+    ph.querySelector('[data-f="dur"]').addEventListener('input',function(e){ f.duracion=e.target.value; });
+    ph.querySelector('[data-f="costo"]').addEventListener('input',function(e){ f.costo=parseFloat(e.target.value)||0; recalc(); });
+    ph.querySelectorAll('.step input').forEach(function(inp){ inp.addEventListener('input',function(){ var p=f.pasos.find(function(x){return x.id==inp.dataset.pid;}); if(p)p.texto=inp.value; }); });
+    ph.querySelectorAll('.step__del').forEach(function(btn){ btn.addEventListener('click',function(){ delPaso(f.id,parseInt(btn.parentNode.dataset.pid)); }); });
+    cont.appendChild(ph);
+  });
+  recalc();
+}
+document.getElementById('plan-btnAdd').addEventListener('click',function(){ addFase(''); });
+document.getElementById('plan-btnClear').addEventListener('click',function(){
+  fases=[]; ['plan-paciente','plan-responsable','plan-cedula','plan-objetivo'].forEach(function(id){document.getElementById(id).value='';}); document.querySelectorAll('[data-dp]').forEach(function(dp){dp.dataset.value='';var v=dp.querySelector('.dp__val');v.textContent='Selecciona fecha';v.classList.add('ph');dp.querySelectorAll('.dp__day.sel').forEach(function(d){d.classList.remove('sel');});}); render();
+});
+
+function fdate(v){ if(!v)return''; var p=v.split('-'); return p[2]+'/'+p[1]+'/'+p[0]; }
+
+document.getElementById('plan-btnPdf').addEventListener('click',function(){
+  var valid=fases.filter(function(f){ return (f.titulo||'').trim()||f.pasos.some(function(p){return (p.texto||'').trim();}); });
+  if(!valid.length){ alert('Agrega al menos una fase con título o pasos.'); return; }
+  var jsPDF=window.jspdf.jsPDF; var doc=new jsPDF({unit:'mm',format:'a4'});
+  var W=210,mx=18,cw=W-mx*2,y=18;
+  var INK=[30,32,72],MUT=[120,130,150],SOFT=[70,85,110],PRI=[91,146,200];
+  function setc(a){ doc.setTextColor(a[0],a[1],a[2]); }
+
+  doc.setFillColor(91,146,200); doc.roundedRect(mx,y,13,13,3,3,'F');
+  doc.setFillColor(255,255,255); doc.circle(mx+6.5,y+5.6,1.7,'F'); doc.roundedRect(mx+5,y+6.5,3,5,1,1,'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(15); setc(INK); doc.text('PLAN DE TRATAMIENTO ODONTOLÓGICO',mx+18,y+5.5);
+  doc.setFont('helvetica','normal'); doc.setFontSize(8.5); setc(MUT); doc.text('OdonTeck Consulting Group',mx+18,y+10.5);
+  var folio='PT-'+new Date().getFullYear()+'-'+String(Date.now()).slice(-5);
+  var fecha=new Date().toLocaleDateString('es-MX',{year:'numeric',month:'long',day:'numeric'});
+  doc.text('Folio: '+folio,W-mx,y+4,{align:'right'}); doc.text(fecha,W-mx,y+9,{align:'right'});
+  y+=18; doc.setDrawColor(220,228,240); doc.setLineWidth(.5); doc.line(mx,y,W-mx,y); y+=8;
+
+  doc.setFont('helvetica','bold'); doc.setFontSize(10.5); setc(INK);
+  doc.text('Paciente: ',mx,y); var pw=doc.getTextWidth('Paciente: ');
+  doc.setFont('helvetica','normal'); doc.text(val('plan-paciente')||'—',mx+pw,y);
+  if(dpVal('plan-dpInicio')||dpVal('plan-dpFin')){ doc.setFont('helvetica','normal'); doc.setFontSize(9); setc(SOFT);
+    doc.text('Inicio: '+(fdate(dpVal('plan-dpInicio'))||'—')+'    Fin estimado: '+(fdate(dpVal('plan-dpFin'))||'—'),W-mx,y,{align:'right'}); }
+  y+=6;
+  if(val('plan-responsable')){ doc.setFont('helvetica','normal'); doc.setFontSize(9.5); setc(SOFT);
+    doc.text('Odontólogo responsable: '+val('plan-responsable')+(val('plan-cedula')?'   ·   Cédula: '+val('plan-cedula'):''),mx,y); y+=6; }
+  y+=4;
+
+  // timeline horizontal
+  var n=valid.length, seg=cw/n, lineY=y+4;
+  doc.setDrawColor(150,190,225); doc.setLineWidth(1.2);
+  for(var i=0;i<n;i++){
+    var cxi=mx+seg*i+seg/2;
+    if(i<n-1) doc.line(cxi+5,lineY,cxi+seg-5,lineY);
+  }
+  for(var i=0;i<n;i++){
+    var cxi=mx+seg*i+seg/2;
+    var done=valid[i].estado==='completada', prog=valid[i].estado==='progreso';
+    var col=done?[79,163,155]:(prog?[201,169,97]:[91,146,200]);
+    doc.setFillColor(col[0],col[1],col[2]); doc.circle(cxi,lineY,4.2,'F');
+    doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.text(String(i+1),cxi,lineY+1.3,{align:'center'});
+    doc.setFont('helvetica','normal'); doc.setFontSize(7.2); setc(SOFT);
+    var nm=doc.splitTextToSize(valid[i].titulo||('Fase '+(i+1)),seg-3); doc.text(nm,cxi,lineY+8,{align:'center'});
+  }
+  y=lineY+8+Math.max(1, 0)*0; y+=14;
+
+  // detalle por fase
+  doc.setLineWidth(.3);
+  valid.forEach(function(f,idx){
+    var pasos=f.pasos.filter(function(p){return (p.texto||'').trim();});
+    var est=ESTADOS.find(function(e){return e.k===f.estado;})||ESTADOS[0];
+    var needed=12+pasos.length*5.4+8;
+    if(y+needed>278){ doc.addPage(); y=20; }
+    doc.setFillColor(91,146,200); doc.circle(mx+5,y+1,4.2,'F');
+    doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(9.5); doc.text(String(idx+1),mx+5,y+2.4,{align:'center'});
+    setc(INK); doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.text(f.titulo||('Fase '+(idx+1)),mx+13,y+2.6);
+    // estado badge derecha
+    doc.setFillColor(est.rgb[0],est.rgb[1],est.rgb[2]); doc.circle(W-mx-34,y+1,1.6,'F');
+    doc.setFont('helvetica','normal'); doc.setFontSize(8.5); setc(SOFT); doc.text(est.n,W-mx-30,y+2,{align:'left'});
+    y+=7;
+    if(f.duracion){ doc.setFont('helvetica','italic'); doc.setFontSize(8.8); doc.setTextColor(120,135,160);
+      doc.text('Duración estimada: '+f.duracion,mx+13,y); y+=5; }
+    doc.setFont('helvetica','normal'); doc.setFontSize(9.7); setc(SOFT);
+    pasos.forEach(function(p){
+      var lines=doc.splitTextToSize(p.texto,cw-26);
+      doc.setFillColor(91,146,200); doc.circle(mx+15,y-1.3,0.8,'F');
+      doc.text(lines,mx+19,y); y+=lines.length*5;
+    });
+    if(f.costo){ doc.setFont('helvetica','bold'); doc.setFontSize(9.2); setc([62,111,168]);
+      doc.text(fmt(f.costo),W-mx,y-((pasos.length?5:0)),{align:'right'}); }
+    y+=7;
+  });
+
+  // inversión total
+  var total=0; valid.forEach(function(f){ total+=(f.costo||0); });
+  if(total>0){
+    if(y+24>285){ doc.addPage(); y=20; }
+    var boxX=W-mx-80;
+    doc.setFillColor(91,146,200); doc.roundedRect(boxX,y,80,16,3,3,'F');
+    doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(9.5); doc.text('INVERSIÓN ESTIMADA',boxX+5,y+6.5);
+    doc.setFontSize(15); doc.text(fmt(total)+' MXN',W-mx-4,y+12,{align:'right'}); y+=24;
+  }
+
+  // objetivo (bloque)
+  var obj=val('plan-objetivo');
+  if(obj){
+    if(y+24>285){ doc.addPage(); y=20; }
+    var lo=doc.splitTextToSize(obj,cw-10); var bh=10+lo.length*4.6;
+    doc.setFillColor(238,243,249); doc.roundedRect(mx,y,cw,bh,3,3,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(8.5); setc([62,111,168]); doc.text('OBJETIVO DEL TRATAMIENTO',mx+5,y+6);
+    doc.setFont('helvetica','normal'); doc.setFontSize(9.3); setc(SOFT); doc.text(lo,mx+5,y+11.5); y+=bh+8;
+  }
+
+  // recomendaciones
+  var rec=val('plan-recom');
+  if(rec){
+    var items=rec.split('\n').filter(function(l){return l.trim();});
+    if(y+12+items.length*5>285){ doc.addPage(); y=20; }
+    doc.setFont('helvetica','bold'); doc.setFontSize(9.5); setc(INK); doc.text('Recomendaciones',mx,y); y+=6;
+    doc.setFont('helvetica','normal'); doc.setFontSize(9.3); setc(SOFT);
+    items.forEach(function(l){ var ln=doc.splitTextToSize(l.replace(/^[•\-\s]+/,''),cw-6);
+      doc.setFillColor(91,146,200); doc.circle(mx+1,y-1.3,0.8,'F'); doc.text(ln,mx+5,y); y+=ln.length*5; });
+    y+=4;
+  }
+
+  if(y>280){ doc.addPage(); y=20; }
+  doc.setDrawColor(228,235,244); doc.setLineWidth(.3); doc.line(mx,y,W-mx,y); y+=5;
+  doc.setFontSize(7.5); setc([140,150,168]);
+  doc.text('Plan de apoyo clínico. El orden, la duración y los procedimientos pueden ajustarse según la evolución y valoración durante el tratamiento.',mx,y,{maxWidth:cw});
+
+  var nombre=(val('plan-paciente')||'paciente').replace(/[^a-z0-9]/gi,'_');
+  doc.save('plan_tratamiento_'+nombre+'.pdf');
+});
+  };
+}
+
 window.Modal=Modal;window.Tools=Tools;window.Toast=Toast;window.navigateToSection=navigateToSection;
   window.openReferralModal=openReferralModal;
 }

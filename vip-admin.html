@@ -2653,7 +2653,7 @@ const Pages={
       <div style="display:flex;gap:8px;align-items:flex-start;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:10px;">
         <span style="background:color-mix(in srgb,var(--primary) 14%,transparent);color:var(--primary);font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;letter-spacing:.6px;padding:5px 8px;border-radius:6px;flex-shrink:0;margin-top:4px;white-space:nowrap;">CLASE ${idx + 1}</span>
         <div style="flex:1;display:flex;flex-direction:column;gap:6px;min-width:0;">
-          <input type="text" class="input" placeholder="Título de la clase" value="${(s.titulo || '').replace(/"/g,'&quot;')}" data-sesion-idx="${idx}" data-sesion-campo="titulo" style="font-size:13px;padding:8px 11px;">
+          <input type="text" class="input" placeholder="Título de la clase (opcional)" value="${(s.titulo || '').replace(/"/g,'&quot;')}" data-sesion-idx="${idx}" data-sesion-campo="titulo" style="font-size:13px;padding:8px 11px;">
           <input type="url" class="input" placeholder="URL del video (Google Drive, YouTube, etc.)" value="${(s.url || '').replace(/"/g,'&quot;')}" data-sesion-idx="${idx}" data-sesion-campo="url" style="font-size:13px;padding:8px 11px;">
         </div>
         <div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0;">
@@ -2784,19 +2784,23 @@ const Pages={
       if (!titulo) { Toast.error('Falta el título', 'El curso necesita un nombre'); document.getElementById('cf-titulo')?.focus(); throw new Error('skip'); }
       if (!area) { Toast.error('Falta el área', 'Selecciona una categoría'); throw new Error('skip'); }
 
-      // Validar sesiones (todas necesitan título + URL válida)
+      // Validar sesiones · el título es OPCIONAL (se autogenera "Clase N" si solo pegas el enlace)
       const sesionesLimpias = [];
       for (let i = 0; i < this._modalCurso.sesiones.length; i++) {
         const s = this._modalCurso.sesiones[i];
-        if (!s.titulo?.trim() || !s.url?.trim()) {
-          Toast.error(`Clase ${i + 1} incompleta`, 'Completa el título y la URL del video');
+        const tit = (s.titulo || '').trim();
+        const url = (s.url || '').trim();
+        if (!tit && !url) continue;                 // fila vacía → se ignora
+        if (!url) {                                  // la URL del video sí es obligatoria
+          Toast.error(`Clase ${i + 1} sin video`, 'Pega la URL del video (el título es opcional)');
           throw new Error('skip');
         }
-        try { new URL(s.url); } catch(e) {
+        try { new URL(url); } catch(e) {
           Toast.error(`Clase ${i + 1}: URL inválida`, 'Verifica que el enlace sea correcto');
           throw new Error('skip');
         }
-        sesionesLimpias.push({ numero: i + 1, titulo: s.titulo.trim(), url: s.url.trim() });
+        const numero = sesionesLimpias.length + 1;
+        sesionesLimpias.push({ numero, titulo: tit || `Clase ${numero}`, url });
       }
 
       // Validar materiales (si tienen título, también necesitan URL · y al revés)

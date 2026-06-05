@@ -3504,7 +3504,7 @@ window.__fs = { collection, doc, getDoc, getDocs, query, orderBy, onSnapshot, li
 setPersistence(auth, browserLocalPersistence);
 
 // ⚠️ CAMBIA esta URL por la de tu Railway cuando esté deployado
-const WEBHOOK_URL = 'https://odonteck-webhook-production.up.railway.app';
+const WEBHOOK_URL = 'https://odonteck-production.up.railway.app';
 window.WEBHOOK_URL = WEBHOOK_URL;
 
 const ADMIN_EMAILS = ['teccapitalweb@gmail.com','odontckconsul@gmail.com','mediteckgroup@gmail.com'];
@@ -3539,20 +3539,10 @@ if (window.__isDemoMode) {
       window.UserState.plan = 'admin';
       window.UserState.membership = { activo:true, plan:'admin' };
     } else {
-      try {
-        const res = await fetch(`${WEBHOOK_URL}/membership/${user.uid}`, { method:'GET' });
-        const data = await res.json();
-        window.UserState.membership = data;
-        if (data.activo) {
-          window.UserState.modo = 'vip';
-          window.UserState.plan = data.plan || 'mensual';
-        } else {
-          window.UserState.modo = 'sin-membresia';
-        }
-      } catch(e) {
-        console.warn('Backend Railway no responde · modo permisivo: sin-membresia');
-        window.UserState.modo = 'sin-membresia';
-      }
+      // Sin webhook: el acceso VIP se reconoce desde Firestore (activación/regalo del admin, abajo).
+      // Antes aquí se esperaba un webhook /membership que ya no existe y retrasaba la carga del panel.
+      window.UserState.modo = 'sin-membresia';
+      window.UserState.membership = { activo:false };
 
       // ─── Leer doc miembros/{uid} de Firestore para obtener fechaAlta ───
       // (para el desbloqueo progresivo de cursos como Sinergia)
@@ -9517,7 +9507,7 @@ const Sections = (function(){
       }
       mountEl.innerHTML = `<div class="sub-loading"><div class="sub-loading__spin"></div><div>Cargando plan ${selectedPlan}…</div></div>`;
       try {
-        const res = await fetch(`${window.WEBHOOK_URL || 'https://odonteck-webhook-production.up.railway.app'}/stripe/checkout`, {
+        const res = await fetch(`${window.WEBHOOK_URL || 'https://odonteck-production.up.railway.app'}/stripe/checkout`, {
           method:'POST',
           headers:{'Content-Type':'application/json'},
           body: JSON.stringify({
@@ -9692,7 +9682,7 @@ const Sections = (function(){
   // 🚫 BOTONES DE CANCELAR/REACTIVAR + BILLING PORTAL
   // Conectan con el webhook de Railway · operación real sobre Stripe
   // ═══════════════════════════════════════════════════════════════
-  const WEBHOOK_BASE_URL = 'https://odonteck-webhook-production.up.railway.app';
+  const WEBHOOK_BASE_URL = 'https://odonteck-production.up.railway.app';
 
   function bindSuscripcionButtons(container) {
     const btnCancelar = container.querySelector('#btn-cancelar-sub');

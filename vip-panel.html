@@ -3539,18 +3539,32 @@ if (window.__isDemoMode) {
       window.UserState.plan = 'admin';
       window.UserState.membership = { activo:true, plan:'admin' };
     } else {
-      // Sin webhook: el acceso VIP se reconoce desde Firestore (activación/regalo del admin, abajo).
-      // Antes aquí se esperaba un webhook /membership que ya no existe y retrasaba la carga del panel.
-      window.UserState.modo = 'sin-membresia';
-      window.UserState.membership = { activo:false };
+      // ─── Reconocimiento de membresía vía webhook (igual que IMDIIL) ───
+      try {
+        const ctrl = new AbortController();
+        const _t = setTimeout(() => ctrl.abort(), 6000); // red de seguridad: nunca colgar la carga
+        const res = await fetch(`${WEBHOOK_URL}/membership/${user.uid}`, { method:'GET', signal: ctrl.signal });
+        clearTimeout(_t);
+        const data = await res.json();
+        window.UserState.membership = data;
+        if (data.activo) {
+          window.UserState.modo = 'vip';
+          window.UserState.plan = data.plan || 'mensual';
+          console.log('[Membresia] Acceso VIP reconocido vía webhook - plan:', window.UserState.plan);
+        } else {
+          window.UserState.modo = 'sin-membresia';
+        }
+      } catch(e) {
+        console.warn('Backend Railway no responde · modo permisivo: sin-membresia');
+        window.UserState.modo = 'sin-membresia';
+        window.UserState.membership = { activo:false };
+      }
 
-      // ─── Leer doc miembros/{uid} de Firestore para obtener fechaAlta ───
-      // (para el desbloqueo progresivo de cursos como Sinergia)
+      // ─── Leer doc miembros/{uid} de Firestore para fechaAlta/cancelación (igual que IMDIIL) ───
       try {
         const memberSnap = await getDoc(doc(db, 'miembros', user.uid));
         if (memberSnap.exists()) {
           window.memberData = memberSnap.data();
-          // Propagar campos de cancelación al UserState para que el panel los use
           window.UserState.cancelacionProgramada = !!window.memberData.cancelacionProgramada;
           const ffa = window.memberData.fechaFinAcceso;
           window.UserState.fechaFinAcceso = ffa
@@ -3562,21 +3576,6 @@ if (window.__isDemoMode) {
       } catch(e) {
         console.warn('No se pudo leer miembros/' + user.uid, e.message);
         window.memberData = null;
-      }
-
-      // ─── Reconocer acceso VIP desde Firestore (activación/regalo manual del admin, sin webhook) ───
-      if (window.UserState.modo !== 'vip' && window.memberData) {
-        const md = window.memberData;
-        const activa = md.activa === true || md.activo === true;
-        const exp = md.expiraEn || md.fechaFinAcceso;
-        const expDate = exp ? (exp.toDate ? exp.toDate() : new Date(exp)) : null;
-        const vigente = activa && (!expDate || expDate.getTime() > Date.now());
-        if (vigente) {
-          window.UserState.modo = 'vip';
-          window.UserState.plan = md.plan || (md.esRegalo ? 'regalo' : 'mensual');
-          window.UserState.membership = { activo: true, plan: window.UserState.plan };
-          console.log('[Membresia] Acceso VIP reconocido desde Firestore - plan:', window.UserState.plan);
-        }
       }
     }
 

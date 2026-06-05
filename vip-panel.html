@@ -7428,8 +7428,10 @@ const Sections = (function(){
 .cp-cert{width:1040px;height:735px;position:relative;overflow:hidden;color:#2A3548;font-family:'Plus Jakarta Sans',sans-serif;background:#FFFFFF;box-shadow:0 16px 40px rgba(0,0,0,.22);word-spacing:normal}
 .cp-cert *{box-sizing:border-box;word-spacing:normal}
 .cp-frame{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
-.cp-body{position:absolute;left:96px;right:96px;top:54px;display:flex;flex-direction:column;align-items:center;z-index:2;text-align:center}
+.cp-body{position:absolute;left:96px;right:96px;top:62px;display:flex;flex-direction:column;align-items:center;z-index:2;text-align:center}
 .cp-logo{height:80px;margin-bottom:4px}.cp-logo img{height:100%;width:auto}
+.cp-logocorner{position:absolute;top:48px;left:58px;z-index:3}
+.cp-logocorner img{height:52px;width:auto}
 .cp-medalline{display:flex;align-items:center;gap:14px;margin-top:16px}
 .cp-medalline .l{width:70px;height:1px;background:#D8DEE7}
 .cp-medalline .ic{width:26px;height:26px}
@@ -7441,19 +7443,19 @@ const Sections = (function(){
 .cp-name .u{height:1px;background:#9AA1AB;width:440px;opacity:.7}
 .cp-desc{font-size:13px;color:#6B7688;padding-top:16px}
 .cp-course{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:30px;color:#3A4048;padding-top:10px;line-height:1.25;max-width:780px;margin-left:auto;margin-right:auto;text-wrap:balance}
-.cp-meta{display:flex;align-items:center;gap:16px;padding-top:24px;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#6B7688}
+.cp-meta{display:flex;align-items:center;gap:16px;padding-top:14px;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#6B7688}
 .cp-meta .bar{width:1px;height:11px;background:#D8DEE7}
 .cp-date{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:#6B7688;margin-top:24px}
-.cp-foot{position:absolute;left:96px;right:96px;bottom:104px;display:flex;align-items:flex-end;justify-content:space-between;z-index:2}
+.cp-foot{position:absolute;left:96px;right:96px;bottom:88px;display:flex;align-items:flex-end;justify-content:space-between;z-index:2}
 .cp-qrwrap{display:flex;flex-direction:column;align-items:center;gap:8px;width:150px}
 .cp-qrwrap img{width:96px;height:96px;display:block;image-rendering:pixelated}
 .cp-qrwrap .cap{font-size:8px;font-weight:700;letter-spacing:1.6px;color:#6B7688;text-transform:uppercase;text-align:center;line-height:1.5}
-.cp-sig{width:240px;text-align:center}
-.cp-sig .im{height:46px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:5px}
-.cp-sig .im img{max-height:46px;max-width:160px;object-fit:contain}
-.cp-sig .ln{height:1px;background:#9AA1AB;margin:0 0 9px}
+.cp-sig{width:256px;text-align:center;display:flex;flex-direction:column;align-items:center}
+.cp-sig .im{height:50px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:9px}
+.cp-sig .im img{max-height:50px;max-width:70%;object-fit:contain}
+.cp-sig .ln{width:100%;height:1px;background:#9AA1AB;margin:0 0 12px}
 .cp-sig .nm{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:16px;color:#2B2F38}
-.cp-sig .ro{font-size:8.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#6B7688;margin-top:4px}
+.cp-sig .ro{font-size:8.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#6B7688;margin-top:6px}
 .cp-sealw{width:100px;height:124px;display:flex;align-items:flex-end;justify-content:center}
 .cp-sealw svg{width:86px;height:108px}
 .cp-bar{position:absolute;left:48px;right:48px;bottom:40px;padding:11px 0;border-top:1px solid #D8DEE7;display:flex;align-items:center;justify-content:center;gap:18px;font-size:9px;letter-spacing:.5px;color:#6B7688;z-index:2}
@@ -7479,8 +7481,8 @@ const Sections = (function(){
       <div class="cp-stage"><div class="cp-scaler" id="cp-scaler">
         <div class="cp-cert" id="cp-cert">
           ${CP_FRAME}
+          <div class="cp-logocorner"><img src="${CERT_LOGO}" alt="OdonTeck"></div>
           <div class="cp-body">
-            <div class="cp-logo"><img src="${CERT_LOGO}" alt="OdonTeck"></div>
             <div class="cp-medalline"><span class="l"></span><span class="ic">${CP_MEDAL}</span><span class="l"></span></div>
             <div class="cp-title">Certificado de Acreditación</div>
             <div class="cp-titleu"></div>

@@ -3555,9 +3555,28 @@ if (window.__isDemoMode) {
           window.UserState.modo = 'sin-membresia';
         }
       } catch(e) {
-        console.warn('Backend Railway no responde · modo permisivo: sin-membresia');
-        window.UserState.modo = 'sin-membresia';
-        window.UserState.membership = { activo:false };
+        // Respaldo de seguridad: si el webhook no responde, reconocer VIP desde Firestore
+        console.warn('Webhook no responde · respaldo: leyendo membresía desde Firestore');
+        try {
+          const bSnap = await getDoc(doc(db, 'miembros', user.uid));
+          const md = bSnap.exists() ? bSnap.data() : null;
+          const activa = md && (md.activa === true || md.activo === true);
+          const exp = md && (md.expiraEn || md.fechaFinAcceso);
+          const expDate = exp ? (exp.toDate ? exp.toDate() : new Date(exp)) : null;
+          const vigente = activa && (!expDate || expDate.getTime() > Date.now());
+          if (vigente) {
+            window.UserState.modo = 'vip';
+            window.UserState.plan = md.plan || (md.esRegalo ? 'regalo' : 'mensual');
+            window.UserState.membership = { activo: true, plan: window.UserState.plan };
+            console.log('[Membresia] VIP reconocido por respaldo Firestore - plan:', window.UserState.plan);
+          } else {
+            window.UserState.modo = 'sin-membresia';
+            window.UserState.membership = { activo:false };
+          }
+        } catch(e2) {
+          window.UserState.modo = 'sin-membresia';
+          window.UserState.membership = { activo:false };
+        }
       }
 
       // ─── Leer doc miembros/{uid} de Firestore para fechaAlta/cancelación (igual que IMDIIL) ───

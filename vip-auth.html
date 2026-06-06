@@ -545,6 +545,17 @@ document.querySelectorAll('[data-tab]').forEach(b => {
   });
 });
 
+/* ===== Pestaña inicial por URL (?tab=register | ?tab=login) ===== */
+(function () {
+  try {
+    const t = new URLSearchParams(location.search).get('tab');
+    if (t === 'register' || t === 'login') {
+      const b = document.querySelector('[data-tab="' + t + '"]');
+      if (b) b.click();
+    }
+  } catch (e) { /* sin parámetro válido: queda "Iniciar sesión" por defecto */ }
+})();
+
 /* ===== Toggle pass ===== */
 document.querySelectorAll('.toggle-pass').forEach(b => {
   b.addEventListener('click', () => {

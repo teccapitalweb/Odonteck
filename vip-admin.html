@@ -4171,7 +4171,7 @@ const Pages={
   // ═══════════════════════════════════════════════════════════════
 
   // URL del webhook Railway (donde están los endpoints admin)
-  _webhookUrl: 'https://odonteck-webhook-production.up.railway.app',
+  _webhookUrl: 'https://odonteck-production.up.railway.app',
 
   // Obtener token de Firebase Auth para llamar al webhook
   async _getAuthToken() {
@@ -4709,21 +4709,15 @@ const Pages={
 
   async _llamarCancelar(uid, atPeriodEnd) {
     try {
-      const fb = window._fb;
-      if (!fb || !fb.db || !fb.doc || !fb.updateDoc) return { ok:false, error:'Firestore no listo' };
-      if (atPeriodEnd) {
-        // Programar: el acceso sigue hasta expirar, solo se marca la cancelación
-        await fb.updateDoc(fb.doc(fb.db, 'miembros', uid), { cancelacionProgramada: true });
-      } else {
-        // Cortar el acceso de inmediato
-        const ahoraTS = fb.Timestamp ? fb.Timestamp.fromDate(new Date()) : new Date();
-        await fb.updateDoc(fb.doc(fb.db, 'miembros', uid), {
-          activa: false, activo: false,
-          expiraEn: ahoraTS, fechaFinAcceso: ahoraTS,
-          cancelacionProgramada: false
-        });
-      }
-      return { ok: true };
+      const token = await Pages._getAuthToken();
+      const r = await fetch(Pages._webhookUrl + '/admin/cancelar-suscripcion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify({ uid, atPeriodEnd: !!atPeriodEnd })
+      });
+      const data = await r.json().catch(() => ({}));
+      if (!r.ok) return { ok: false, error: data.error || ('HTTP ' + r.status) };
+      return { ok: true, ...data };
     } catch (e) {
       return { ok: false, error: e.message };
     }
@@ -4731,10 +4725,15 @@ const Pages={
 
   async _llamarEliminar(uid) {
     try {
-      const fb = window._fb;
-      if (!fb || !fb.db || !fb.doc || !fb.deleteDoc) return { ok:false, error:'Firestore no listo' };
-      await fb.deleteDoc(fb.doc(fb.db, 'miembros', uid));
-      return { ok: true };
+      const token = await Pages._getAuthToken();
+      const r = await fetch(Pages._webhookUrl + '/admin/eliminar-miembro', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify({ uid })
+      });
+      const data = await r.json().catch(() => ({}));
+      if (!r.ok) return { ok: false, error: data.error || ('HTTP ' + r.status) };
+      return { ok: true, ...data };
     } catch (e) {
       return { ok: false, error: e.message };
     }

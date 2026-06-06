@@ -4664,8 +4664,15 @@ const Pages={
       btn.disabled = true; btn.style.opacity = '.7'; btn.style.cursor = 'wait';
       btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" class="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>Eliminando…`;
       const r = await Pages._llamarEliminar(m.uid || m.id);
-      if (r.ok) {
+      if (r.ok && r.authBorrado) {
         Toast.success('Miembro eliminado', `${nombre} ya no existe en el sistema`);
+        Modal.close();
+      } else if (r.ok && !r.authBorrado) {
+        // Firestore (y Stripe si aplica) sí se borraron, pero Auth NO: decir la verdad.
+        Toast.error('Borrado parcial',
+          'Se quitó de Firestore' + (r.stripeCancelado ? ' y se canceló en Stripe' : '') +
+          ', pero NO se pudo borrar de Firebase Auth (' + (r.authError || 'usuario no encontrado en Auth') +
+          '). Bórralo manualmente en Authentication.');
         Modal.close();
       } else {
         Toast.error('No se pudo eliminar', r.error || 'Error desconocido');

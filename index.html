@@ -12,6 +12,35 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+<style>
+/* Botón VIP visible en móvil (acceso rápido sin abrir el menú) */
+.mobile-vip-btn{
+  display:none;
+  align-items:center;
+  gap:6px;
+  margin-left:auto;
+  margin-right:10px;
+  padding:9px 16px;
+  background:linear-gradient(135deg,#0A4F87,#0E6FB7);
+  color:#fff;
+  font-weight:700;
+  font-size:14px;
+  border-radius:999px;
+  text-decoration:none;
+  box-shadow:0 6px 16px rgba(10,79,135,.32);
+  white-space:nowrap;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.mobile-vip-btn i{font-size:13px}
+.mobile-vip-btn:active{transform:scale(.96)}
+@media(max-width:860px){
+  .mobile-vip-btn{display:inline-flex}
+}
+@media(max-width:380px){
+  .mobile-vip-btn{padding:8px 12px;font-size:13px}
+}
+</style>
 </head>
 <body>
   <div class="topbar">
@@ -29,6 +58,10 @@
           <strong>OdonTeck</strong>
           <span>Capacitación odontológica especializada</span>
         </div>
+      </a>
+
+      <a href="vip-auth.html?tab=register" class="mobile-vip-btn" aria-label="Acceder al Club Dental VIP">
+        <i class="fa-solid fa-star"></i> Club VIP
       </a>
 
       <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false">

@@ -53,6 +53,8 @@ input,select,textarea{font:inherit;color:inherit}
 body{
   font-family:'Inter',system-ui,sans-serif;font-size:14px;line-height:1.55;
   background:var(--bg);color:var(--text);overflow-x:hidden;
+  padding-top:env(safe-area-inset-top);
+  box-sizing:border-box;
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
   transition:background .35s,color .35s;
   position:relative;
@@ -2870,9 +2872,9 @@ button.dir-det__row{background:var(--surface-2);border:1px solid var(--border-2)
 
 /* ─── Banner sticky FOMO (modo invitado y sin-membresia) ─── */
 .fomo-banner{
-  position:sticky;top:0;z-index:100;
+  position:relative;z-index:100;
   display:flex;align-items:center;justify-content:center;gap:12px;
-  padding:8px 24px;
+  padding:calc(8px + env(safe-area-inset-top)) 24px 8px;
   background:linear-gradient(90deg,var(--primary),var(--highlight));
   color:#0B1018;
   font-family:'Inter',sans-serif;font-size:12.5px;font-weight:600;
@@ -2880,6 +2882,9 @@ button.dir-det__row{background:var(--surface-2);border:1px solid var(--border-2)
   border-bottom:1px solid color-mix(in srgb,#0B1018 18%,transparent);
   flex-wrap:wrap;
 }
+
+/* Si el banner FOMO está visible, él cubre el notch → el body no duplica el safe-area */
+body:has(#fomo-banner:not([style*="display:none"])){padding-top:0}
 .fomo-banner__icon{font-size:14px;line-height:1}
 .fomo-banner__text strong{font-weight:800}
 .fomo-banner__timer{

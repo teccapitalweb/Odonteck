@@ -1,6 +1,6 @@
 /* OdonTeck · Service Worker — network-first con respaldo de caché.
    No intercepta Firebase ni Stripe (solo recursos del mismo origen). */
-var CACHE = 'odonteck-vip-v1';
+var CACHE = 'odonteck-vip-v2';
 
 self.addEventListener('install', function (e) { self.skipWaiting(); });
 

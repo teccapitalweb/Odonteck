@@ -10,8 +10,10 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- MODIFICADO v2.0: capa de acabado premium (solo index, no afecta subpáginas ni lógica) -->
+  <link rel="stylesheet" href="premium.css" />
 
 <style>
 /* Botón VIP visible en móvil (acceso rápido sin abrir el menú) */
@@ -84,6 +86,11 @@
 
   <main>
     <section class="hero-section">
+      <!-- MODIFICADO v2.2: video 3D de fondo (asset existente animacion_3D.mp4) + velo navy -->
+      <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="assets/img/banner/hero-banner.png" aria-hidden="true" tabindex="-1">
+        <source src="assets/img/banner/animacion_3D.mp4" type="video/mp4" />
+      </video>
+      <div class="hero-veil" aria-hidden="true"></div>
       <div class="container hero-grid">
         <div class="hero-copy">
           <p class="eyebrow">Capacitación odontológica especializada</p>
@@ -291,5 +298,22 @@
 
   <script src="data.js"></script>
   <script src="script.js"></script>
+  <!-- MODIFICADO v2.0: reveal-on-scroll aditivo. Si no corre, todo queda visible. -->
+  <script>
+  (function () {
+    if (!('IntersectionObserver' in window)) return;
+    var els = document.querySelectorAll('.stat-card, .mini-feature, .why-card, .section-head, .intro-grid > div, .cta-box');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('r-in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    els.forEach(function (el, i) {
+      el.classList.add('r-init');
+      el.style.transitionDelay = (i % 4) * 70 + 'ms';
+      io.observe(el);
+    });
+  })();
+  </script>
 </body>
 </html>

@@ -155,3 +155,30 @@ Paleta intacta: #005187 / #0c74c4 / #7fd3ff.
 - `index.html`: se elimina el <video> del hero; el fondo ahora es una foto vía CSS
 - `premium.css`: el hero usa `assets/img/banner/hero-foto.jpg` como fondo cover (toda la imagen, adaptable a móvil/tablet/PC vía --hero-pos) + velo navy suave para que el texto blanco siempre sea legible encima. Si la foto faltara, queda un degradado navy de respaldo
 - `assets/img/banner/hero-foto.jpg`: NUEVA. Por ahora es una provisional (derivada del asset existente hero-doctors.png). Para usar la foto definitiva del cliente: guardar su imagen con ESTE MISMO nombre y subirla a esta misma ruta, reemplazando la provisional. No hay que tocar código.
+
+## v3.1 — Botón "Cómo registrarte" + modal de video tutorial
+- `index.html`: botón en el hero con icono play, modal lightbox 16:9, y script que acepta link de Google Drive O YouTube (pegar el link en la constante VIDEO_URL, claramente marcada)
+- `premium.css`: estilos del botón (glass con play pulsante) y del modal (backdrop blur, cierre con ✕ o Esc, corta la reproducción al cerrar)
+- Mientras no se pegue el link, el botón se OCULTA solo — se puede subir ya sin riesgo
+- El iframe carga solo al abrir el modal (no pesa nada en la carga de la página)
+
+---
+
+# Cambios v4.0 — Herramienta "Expediente Clínico" en el panel VIP
+
+**Archivo modificado:** `vip-panel.html` (3 inserciones):
+1. Nav sidebar: item "Expediente Clínico" (badge NUEVO) al inicio de Herramientas pro
+2. Drawer móvil: mismo item
+3. Módulo completo (CSS con prefijo hc- + JS) insertado antes del bloque Sprint 7
+
+**Qué hace:**
+- Lista de pacientes agrupada por fecha de última visita (Hoy/Ayer/fechas), buscador por nombre/teléfono, filtros Hoy/Semana/Mes/Todos, badges de alerta médica visibles desde la lista
+- Expediente por pestañas: Ficha · Antecedentes (toggles) · Exploración/Odontograma (32 piezas FDI, tap para ciclar estado) · Evolución (notas con fecha, reordena la lista) · Documentos (conexión futura)
+- Autoguardado con debounce en Firestore miembros/{uid}/pacientes/{id} + indicador Guardando/Guardado/Sin conexión
+- Consentimiento opcional en 3 modos: sin registrar / papel / firma digital (canvas táctil, se guarda como PNG en el doc)
+- PDF profesional con jsPDF: membrete, folio, alertas en rojo, antecedentes, hallazgos del odontograma, notas paginadas, firma incrustada, pie NOM-004 + numeración. Botones Descargar e Imprimir
+- Paywall toolEsVIP() como las demás herramientas; textos escapados (esc) contra XSS
+- Responsive: móvil/tablet/PC
+
+**REQUIERE:** desplegar las reglas de Firestore (ver REGLAS-FIRESTORE-EXPEDIENTE.txt)
+**NO tocado:** el resto del panel; clases con prefijo hc- sin colisiones

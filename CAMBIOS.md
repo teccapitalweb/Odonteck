@@ -113,3 +113,40 @@ Todo el bloque nuevo está al FINAL del archivo con el comentario:
 ```
 
 Si quieres revertir algo específico, puedes editar solo ese bloque sin afectar el resto del CSS original.
+
+---
+
+# Cambios v2.0 — Acabado premium del INDEX
+
+**Archivos nuevos:** `premium.css` (capa de estilo cargada SOLO en index.html)
+**Archivos modificados:** `index.html` (3 cambios: fuentes display en <head>, link a premium.css, mini-script de reveal-on-scroll al final)
+
+**NO se tocó:**
+- `styles.css` (intacto, las subpáginas siguen igual)
+- `script.js`, `data.js` (lógica intacta: carruseles, modal, contadores, menú)
+- Imágenes y assets (ninguno movido ni renombrado)
+- pages/* (no cargan premium.css, quedan como estaban)
+
+## Qué mejora
+- Hero oscuro premium (navy OdonTeck) con aurora animada, grid sutil, titular con gradiente, eyebrow tipo pill con punto pulsante, botones con glow y checks tipo chip
+- Stats en tarjetas glass flotando sobre el hero con barra shimmer superior y contadores intactos
+- Eyebrows de sección como pills monoespaciadas
+- Cards (mini-features, why, cursos) con hover lift, zoom sutil de imagen y detalles de borde
+- Carruseles de galería/reseñas con desvanecido en los bordes
+- CTA final con glows y patrón de grid
+- Footer con labels mono y línea de luz superior
+- Reveal-on-scroll aditivo (si JS no corre, todo queda visible)
+- Tipografía display Plus Jakarta Sans + acentos JetBrains Mono (misma identidad que el panel VIP)
+
+Paleta intacta: #005187 / #0c74c4 / #7fd3ff.
+
+## v2.1 — Diente 3D en hero + stats móvil
+- `index.html`: +1 div decorativo `.hero-tooth` (aria-hidden) dentro del hero
+- `premium.css`: diente 3D con el asset EXISTENTE `assets/img/banner/tooth-hero.png` (PNG alfa, sin tocar imágenes) — flotando a la derecha en desktop con glow y animación suave; en móvil asoma arriba a la derecha al 45-50% de opacidad detrás del texto
+- Stats en móvil: cuadrícula 2×2 compacta (antes 1 columna); contadores animados intactos en todos los tamaños
+
+## v2.2 — Video 3D de fondo en el hero (imagen completa)
+- `index.html`: el div .hero-tooth se sustituye por <video> de fondo con el asset EXISTENTE `assets/img/banner/animacion_3D.mp4` (loop 8s, muted, playsinline) + poster `hero-banner.png` + div .hero-veil
+- `premium.css`: video cubre todo el hero (object-fit: cover), velo navy encima para legibilidad, grid sutil sobre el velo; en móvil el encuadre apunta al diente (object-position 74%)
+- Si el navegador bloquea el autoplay o el video no carga, se ve el poster (la imagen completa del diente) bajo el mismo velo — nunca queda vacío
+- Clase .hero-video propia para NO chocar con la regla vieja .hero-bg-video de styles.css

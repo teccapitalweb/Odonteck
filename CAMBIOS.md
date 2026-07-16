@@ -150,3 +150,8 @@ Paleta intacta: #005187 / #0c74c4 / #7fd3ff.
 - `premium.css`: video cubre todo el hero (object-fit: cover), velo navy encima para legibilidad, grid sutil sobre el velo; en móvil el encuadre apunta al diente (object-position 74%)
 - Si el navegador bloquea el autoplay o el video no carga, se ve el poster (la imagen completa del diente) bajo el mismo velo — nunca queda vacío
 - Clase .hero-video propia para NO chocar con la regla vieja .hero-bg-video de styles.css
+
+## v3.0 — Hero con FOTO de fondo (reemplaza al video)
+- `index.html`: se elimina el <video> del hero; el fondo ahora es una foto vía CSS
+- `premium.css`: el hero usa `assets/img/banner/hero-foto.jpg` como fondo cover (toda la imagen, adaptable a móvil/tablet/PC vía --hero-pos) + velo navy suave para que el texto blanco siempre sea legible encima. Si la foto faltara, queda un degradado navy de respaldo
+- `assets/img/banner/hero-foto.jpg`: NUEVA. Por ahora es una provisional (derivada del asset existente hero-doctors.png). Para usar la foto definitiva del cliente: guardar su imagen con ESTE MISMO nombre y subirla a esta misma ruta, reemplazando la provisional. No hay que tocar código.

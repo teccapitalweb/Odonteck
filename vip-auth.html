@@ -796,6 +796,7 @@ window.setLoading = function(btn, isLoading, originalLabel) {
 </script>
 
 <!-- Firebase Auth (módulo) -->
+<!-- MODIFICADO v4.1: fix 404 vip-checkout → vip-panel -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
@@ -985,7 +986,7 @@ document.getElementById('btn-register').addEventListener('click', async () => {
           '⚠️ Cuenta creada pero falta actualizar reglas Firestore',
           'Tu cuenta SÍ se creó en Auth, pero no se pudo guardar en Firestore (permission-denied). El admin debe actualizar las reglas. Continúa al checkout para activar tu VIP.');
         setTimeout(() => {
-          window.location.href = isAdmin ? 'vip-admin.html' : 'vip-checkout.html';
+          window.location.href = isAdmin ? 'vip-admin.html' : 'vip-panel.html';
         }, 4500);
         return;
       } else {
@@ -993,7 +994,7 @@ document.getElementById('btn-register').addEventListener('click', async () => {
           '⚠️ Cuenta creada · advertencia',
           `Tu cuenta se creó pero hubo un problema al guardar tu perfil (${motivo}). Continúa al checkout.`);
         setTimeout(() => {
-          window.location.href = isAdmin ? 'vip-admin.html' : 'vip-checkout.html';
+          window.location.href = isAdmin ? 'vip-admin.html' : 'vip-panel.html';
         }, 4500);
         return;
       }
@@ -1008,7 +1009,7 @@ document.getElementById('btn-register').addEventListener('click', async () => {
             ? '✅ Perfil guardado · redirigiendo al checkout…'
             : 'Redirigiendo al checkout…'));
     setTimeout(() => {
-      window.location.href = isAdmin ? 'vip-admin.html' : 'vip-checkout.html';
+      window.location.href = isAdmin ? 'vip-admin.html' : 'vip-panel.html';
     }, 900);
   } catch (e) {
     setLoading(btn, false, 'Crear cuenta');

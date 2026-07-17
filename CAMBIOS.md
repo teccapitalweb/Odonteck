@@ -182,3 +182,13 @@ Paleta intacta: #005187 / #0c74c4 / #7fd3ff.
 
 **REQUIERE:** desplegar las reglas de Firestore (ver REGLAS-FIRESTORE-EXPEDIENTE.txt)
 **NO tocado:** el resto del panel; clases con prefijo hc- sin colisiones
+
+---
+
+## v4.1 — fix 404 registro
+
+**Archivo modificado:** `vip-auth.html` (3 líneas del bloque REGISTER)
+
+Las redirecciones post-registro apuntaban a `vip-checkout.html`, página que no existe en el repo: los usuarios nuevos caían en un 404 antes de poder pagar. Ahora van a `vip-panel.html`, que ya maneja el estado sin-membresía y ofrece el checkout en su sección Suscripción. La rama de admin (`vip-admin.html`) queda igual.
+
+**NO tocado:** estilos, textos, flujo de Google, y el resto de `vip-auth.html`

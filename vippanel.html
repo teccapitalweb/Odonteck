@@ -3956,7 +3956,6 @@ window.__setDisplayName = async (nombre) => {
       <a class="nav-item" data-tool="expediente"><svg class="ic"><use href="#i-clipboard-check"/></svg>Expediente Clínico<span class="nav-item__badge is-new">NUEVO</span></a>
       <a class="nav-item" data-tool="anestesico"><svg class="ic"><use href="#i-shield-check"/></svg>Anestésico</a>
       <a class="nav-item" data-tool="prescripcion"><svg class="ic"><use href="#i-news"/></svg>Prescripción</a>
-      <a class="nav-item" data-tool="odontograma"><svg class="ic"><use href="#i-tools"/></svg>Odontograma</a>
       <a class="nav-item" data-tool="cotizador"><svg class="ic"><use href="#i-credit-card"/></svg>Cotizador</a>
       <a class="nav-item" data-tool="plan"><svg class="ic"><use href="#i-clipboard-check"/></svg>Plan de tratamiento</a>
     </div>
@@ -4139,7 +4138,6 @@ window.__setDisplayName = async (nombre) => {
         <a class="mobile-drawer__item" data-tool="expediente"><svg class="ic"><use href="#i-clipboard-check"/></svg>Expediente Clínico</a>
         <a class="mobile-drawer__item" data-tool="anestesico"><svg class="ic"><use href="#i-shield-check"/></svg>Anestésico</a>
         <a class="mobile-drawer__item" data-tool="prescripcion"><svg class="ic"><use href="#i-news"/></svg>Prescripción</a>
-        <a class="mobile-drawer__item" data-tool="odontograma"><svg class="ic"><use href="#i-tools"/></svg>Odontograma</a>
         <a class="mobile-drawer__item" data-tool="cotizador"><svg class="ic"><use href="#i-credit-card"/></svg>Cotizador</a>
         <a class="mobile-drawer__item" data-tool="plan"><svg class="ic"><use href="#i-clipboard-check"/></svg>Plan de tratamiento</a>
       </div>
@@ -11667,6 +11665,17 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 .hc-sig{border:1.5px dashed var(--border-strong);border-radius:14px;background:var(--surface-2);position:relative;overflow:hidden}
 .hc-sig canvas{display:block;width:100%;height:120px;cursor:crosshair;touch-action:none}
 .hc-sig__hint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:11px;pointer-events:none;font-family:'JetBrains Mono',monospace;letter-spacing:1px}
+.hc-savebar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:6px;padding:16px 18px;background:var(--surface);border:1px solid var(--border);border-radius:16px;position:sticky;bottom:12px;box-shadow:0 8px 30px rgba(0,0,0,.18)}
+.hc-savebar__txt{font-size:12px;color:var(--text-3);font-family:'JetBrains Mono',monospace}
+.hc-modal-ov{position:fixed;inset:0;z-index:80;background:rgba(6,12,24,.72);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:22px;animation:hcFade .2s ease}
+@keyframes hcFade{from{opacity:0}to{opacity:1}}
+.hc-modal{background:var(--surface);border:1px solid var(--border-strong);border-radius:20px;padding:26px;max-width:420px;width:100%;box-shadow:var(--shadow-card);animation:hcPop .25s cubic-bezier(.2,1.1,.4,1)}
+@keyframes hcPop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+.hc-modal__t{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;letter-spacing:-.4px;margin-bottom:6px}
+.hc-modal__s{font-size:12.5px;color:var(--text-2);line-height:1.5;margin-bottom:16px}
+.hc-modal__in{width:100%;min-height:46px;border-radius:12px;border:1px solid var(--border-2);background:var(--surface-2);color:var(--text);padding:11px 14px;font-size:14px;font-family:inherit;margin-bottom:18px;transition:border-color .2s}
+.hc-modal__in:focus{outline:none;border-color:var(--primary)}
+.hc-modal__row{display:flex;gap:10px;justify-content:flex-end}
 .hc-spin{display:flex;align-items:center;justify-content:center;gap:10px;padding:50px 20px;color:var(--text-3);font-size:13px}
 .hc-spin i{width:20px;height:20px;border:2px solid var(--border-2);border-top-color:var(--primary);border-radius:50%;animation:hcRot .8s linear infinite;display:inline-block}
 @keyframes hcRot{to{transform:rotate(360deg)}}
@@ -11869,16 +11878,42 @@ if (typeof Sections !== 'undefined' && Sections.renderers) (function(){
       if(p) renderExp(p,'ficha');
     });});
   }
+  // Modal estilizado (reemplaza el prompt/confirm nativos del navegador)
+  function hcModal(opts){
+    // opts: {titulo, sub, campo(bool), placeholder, okTxt, okDanger, onOk(valor)}
+    var ov=document.createElement('div');
+    ov.className='hc-modal-ov';
+    ov.innerHTML='<div class="hc-modal">'
+      +'<div class="hc-modal__t">'+esc(opts.titulo||'')+'</div>'
+      +(opts.sub?'<div class="hc-modal__s">'+esc(opts.sub)+'</div>':'')
+      +(opts.campo?'<input class="hc-modal__in" id="hc-modal-in" placeholder="'+esc(opts.placeholder||'')+'" autocomplete="off">':'')
+      +'<div class="hc-modal__row">'
+      +'<button class="btn btn--ghost hc-modal-cancel" style="padding:9px 16px;font-size:12px">Cancelar</button>'
+      +'<button class="btn '+(opts.okDanger?'':'btn--accent')+' hc-modal-ok" style="padding:9px 18px;font-size:12px'+(opts.okDanger?';background:var(--danger);color:#fff':'')+'">'+esc(opts.okTxt||'Aceptar')+'</button>'
+      +'</div></div>';
+    document.body.appendChild(ov);
+    var inp=ov.querySelector('#hc-modal-in');
+    if(inp){ setTimeout(function(){ inp.focus(); },50); inp.addEventListener('keydown',function(e){ if(e.key==='Enter') ok(); }); }
+    function cerrar(){ ov.remove(); }
+    function ok(){ var v=inp?inp.value.trim():true; if(opts.campo && !v){ inp.focus(); return; } cerrar(); if(opts.onOk) opts.onOk(v); }
+    ov.querySelector('.hc-modal-cancel').addEventListener('click',cerrar);
+    ov.querySelector('.hc-modal-ok').addEventListener('click',ok);
+    ov.addEventListener('click',function(e){ if(e.target===ov) cerrar(); });
+    document.addEventListener('keydown',function esc2(e){ if(e.key==='Escape'){ cerrar(); document.removeEventListener('keydown',esc2); } });
+  }
+
   function crearPaciente(){
-    var nombre=prompt('Nombre completo del paciente:');
-    if(!nombre||!nombre.trim()) return;
-    var p=nuevoPaciente(nombre.trim());
-    var F=fs();
-    F.addDoc(colRef(), p).then(function(ref){
-      p.id=ref.id; HC.pacientes.unshift(p);
-      toastOK('Paciente creado','Completa su ficha');
-      renderExp(p,'ficha');
-    }).catch(function(e){ console.error(e); toastErr('No se pudo crear','Revisa tu conexión'); });
+    hcModal({ titulo:'Nuevo paciente', sub:'Escribe el nombre completo. Podrás completar el resto de la ficha después.',
+      campo:true, placeholder:'Ej. María Elena Vázquez', okTxt:'Crear expediente',
+      onOk:function(nombre){
+        var p=nuevoPaciente(nombre);
+        var F=fs();
+        F.addDoc(colRef(), p).then(function(ref){
+          p.id=ref.id; HC.pacientes.unshift(p);
+          toastOK('Paciente creado','Completa su ficha');
+          renderExp(p,'ficha');
+        }).catch(function(e){ console.error(e); toastErr('No se pudo crear','Revisa tu conexión'); });
+      }});
   }
 
   // ── Vista expediente ──
@@ -11899,17 +11934,27 @@ if (typeof Sections !== 'undefined' && Sections.renderers) (function(){
     +(al.length?'<div class="hc-alert">⚠ <span>'+al.map(function(a){return esc(a.t);}).join(' · ')+'</span></div>':'')
     +'<div class="hc-tabs">'+TABS.map(function(t){
       return '<button class="hc-tab'+(HC.tab===t[0]?' on':'')+'" data-t="'+t[0]+'">'+t[1]+'</button>';}).join('')+'</div>'
-    +'<div id="hc-tabbody"></div>';
+    +'<div id="hc-tabbody"></div>'
+    +'<div class="hc-savebar"><div class="hc-savebar__txt">Tus cambios se guardan solos, pero puedes confirmarlo aquí.</div>'
+    +'<button class="btn btn--accent" id="hc-guardar" style="padding:12px 26px;font-size:13px"><svg class="ic ic--sm" style="margin-right:2px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Guardar cambios</button></div>';
     $('#hc-volver').addEventListener('click',function(){ renderLista(); });
     $('#hc-pdf').addEventListener('click',function(){ generarPDF(p,false); });
     $('#hc-print').addEventListener('click',function(){ generarPDF(p,true); });
+    $('#hc-guardar').addEventListener('click',function(){
+      persistir(p,true);
+      var b=$('#hc-guardar'); if(b){ var o=b.innerHTML; b.innerHTML='✓ Todo guardado'; b.disabled=true; b.style.opacity='.75';
+        setTimeout(function(){ if($('#hc-guardar')){ b.innerHTML=o; b.disabled=false; b.style.opacity=''; } },1800); }
+      toastOK('Expediente guardado','Todos los datos de '+(p.nombre?p.nombre.split(' ')[0]:'el paciente')+' están a salvo');
+    });
     $('#hc-del').addEventListener('click',function(){
-      if(!confirm('¿Eliminar el expediente de '+(p.nombre||'este paciente')+'? Esta acción no se puede deshacer.')) return;
-      var F=fs();
-      F.deleteDoc(F.doc(F.db,'miembros',uid(),'pacientes',p.id)).then(function(){
-        HC.pacientes=HC.pacientes.filter(function(x){return x.id!==p.id;});
-        toastOK('Expediente eliminado'); renderLista();
-      }).catch(function(e){ console.error(e); toastErr('No se pudo eliminar'); });
+      hcModal({ titulo:'Eliminar expediente', sub:'¿Eliminar el expediente de '+(p.nombre||'este paciente')+'? Esta acción no se puede deshacer.',
+        okTxt:'Sí, eliminar', okDanger:true, onOk:function(){
+          var F=fs();
+          F.deleteDoc(F.doc(F.db,'miembros',uid(),'pacientes',p.id)).then(function(){
+            HC.pacientes=HC.pacientes.filter(function(x){return x.id!==p.id;});
+            toastOK('Expediente eliminado'); renderLista();
+          }).catch(function(e){ console.error(e); toastErr('No se pudo eliminar'); });
+        }});
     });
     $$('.hc-tab',r).forEach(function(t){ t.addEventListener('click',function(){
       HC.tab=t.dataset.t; $$('.hc-tab',r).forEach(function(x){x.classList.toggle('on',x===t);}); pintarTab(p,HC.tab);

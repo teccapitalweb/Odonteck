@@ -3956,7 +3956,6 @@ window.__setDisplayName = async (nombre) => {
       <a class="nav-item" data-tool="expediente"><svg class="ic"><use href="#i-clipboard-check"/></svg>Expediente Clínico<span class="nav-item__badge is-new">NUEVO</span></a>
       <a class="nav-item" data-tool="anestesico"><svg class="ic"><use href="#i-shield-check"/></svg>Anestésico</a>
       <a class="nav-item" data-tool="prescripcion"><svg class="ic"><use href="#i-news"/></svg>Prescripción</a>
-      <a class="nav-item" data-tool="odontograma"><svg class="ic"><use href="#i-tools"/></svg>Odontograma</a>
       <a class="nav-item" data-tool="cotizador"><svg class="ic"><use href="#i-credit-card"/></svg>Cotizador</a>
       <a class="nav-item" data-tool="plan"><svg class="ic"><use href="#i-clipboard-check"/></svg>Plan de tratamiento</a>
     </div>
@@ -4139,7 +4138,6 @@ window.__setDisplayName = async (nombre) => {
         <a class="mobile-drawer__item" data-tool="expediente"><svg class="ic"><use href="#i-clipboard-check"/></svg>Expediente Clínico</a>
         <a class="mobile-drawer__item" data-tool="anestesico"><svg class="ic"><use href="#i-shield-check"/></svg>Anestésico</a>
         <a class="mobile-drawer__item" data-tool="prescripcion"><svg class="ic"><use href="#i-news"/></svg>Prescripción</a>
-        <a class="mobile-drawer__item" data-tool="odontograma"><svg class="ic"><use href="#i-tools"/></svg>Odontograma</a>
         <a class="mobile-drawer__item" data-tool="cotizador"><svg class="ic"><use href="#i-credit-card"/></svg>Cotizador</a>
         <a class="mobile-drawer__item" data-tool="plan"><svg class="ic"><use href="#i-clipboard-check"/></svg>Plan de tratamiento</a>
       </div>
@@ -11587,6 +11585,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 .hc-search .ic{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text-3);width:15px;height:15px}
 .hc-search input{width:100%;min-height:44px;border-radius:100px;border:1px solid var(--border-2);background:var(--surface);color:var(--text);padding:10px 16px 10px 40px;font-size:13.5px;font-family:inherit;transition:border-color .2s}
 .hc-search input:focus{outline:none;border-color:var(--primary)}
+.hc-antsearch{display:flex;margin-bottom:14px}
+.hc-antgrp .hc-togs{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
 .hc-seg{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border-2);border-radius:100px;padding:4px;overflow-x:auto;scrollbar-width:none;max-width:100%}
 .hc-seg::-webkit-scrollbar{display:none}
 .hc-seg button{padding:8px 14px;border-radius:100px;font-size:12px;font-weight:600;color:var(--text-2);transition:.15s;white-space:nowrap;font-family:inherit}
@@ -11667,6 +11667,17 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 .hc-sig{border:1.5px dashed var(--border-strong);border-radius:14px;background:var(--surface-2);position:relative;overflow:hidden}
 .hc-sig canvas{display:block;width:100%;height:120px;cursor:crosshair;touch-action:none}
 .hc-sig__hint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:11px;pointer-events:none;font-family:'JetBrains Mono',monospace;letter-spacing:1px}
+.hc-savebar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:6px;padding:16px 18px;background:var(--surface);border:1px solid var(--border);border-radius:16px;position:sticky;bottom:12px;box-shadow:0 8px 30px rgba(0,0,0,.18)}
+.hc-savebar__txt{font-size:12px;color:var(--text-3);font-family:'JetBrains Mono',monospace}
+.hc-modal-ov{position:fixed;inset:0;z-index:80;background:rgba(6,12,24,.72);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:22px;animation:hcFade .2s ease}
+@keyframes hcFade{from{opacity:0}to{opacity:1}}
+.hc-modal{background:var(--surface);border:1px solid var(--border-strong);border-radius:20px;padding:26px;max-width:420px;width:100%;box-shadow:var(--shadow-card);animation:hcPop .25s cubic-bezier(.2,1.1,.4,1)}
+@keyframes hcPop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+.hc-modal__t{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;letter-spacing:-.4px;margin-bottom:6px}
+.hc-modal__s{font-size:12.5px;color:var(--text-2);line-height:1.5;margin-bottom:16px}
+.hc-modal__in{width:100%;min-height:46px;border-radius:12px;border:1px solid var(--border-2);background:var(--surface-2);color:var(--text);padding:11px 14px;font-size:14px;font-family:inherit;margin-bottom:18px;transition:border-color .2s}
+.hc-modal__in:focus{outline:none;border-color:var(--primary)}
+.hc-modal__row{display:flex;gap:10px;justify-content:flex-end}
 .hc-spin{display:flex;align-items:center;justify-content:center;gap:10px;padding:50px 20px;color:var(--text-3);font-size:13px}
 .hc-spin i{width:20px;height:20px;border:2px solid var(--border-2);border-top-color:var(--primary);border-radius:50%;animation:hcRot .8s linear infinite;display:inline-block}
 @keyframes hcRot{to{transform:rotate(360deg)}}
@@ -11707,16 +11718,30 @@ if (typeof Sections !== 'undefined' && Sections.renderers) (function(){
     if(d.getFullYear()!==hoy.getFullYear()) larga+=' de '+d.getFullYear();
     return larga;
   }
+  function tieneAlergia(p){ var a=p.ant||{}; return !!(a.alergia||a.alPenicilina||a.alLatex||a.alAnestesicos||a.alAINEs||a.alMetales); }
   function alertas(p){
     var a=p.ant||{}, out=[];
-    if(a.alergia) out.push({t:'Alergia'+(a.alergiaTxt?': '+a.alergiaTxt:''), k:'danger'});
+    if(tieneAlergia(p)){
+      var partes=[];
+      if(a.alPenicilina) partes.push('penicilina');
+      if(a.alLatex) partes.push('látex');
+      if(a.alAnestesicos) partes.push('anestésicos');
+      if(a.alAINEs) partes.push('AINEs/aspirina');
+      if(a.alMetales) partes.push('metales');
+      if(a.alergiaTxt) partes.push(a.alergiaTxt);
+      out.push({t:'Alergia'+(partes.length?': '+partes.join(', '):''), k:'danger'});
+    }
     if(a.cardio) out.push({t:'Cardiopatía', k:'danger'});
     if(a.anticoag) out.push({t:'Anticoagulantes', k:'danger'});
+    if(a.coagulacion) out.push({t:'Riesgo de sangrado', k:'danger'}); // riesgo de sangrado → rojo
+    if(a.epilepsia) out.push({t:'Epilepsia', k:'danger'});            // epilepsia → rojo
     if(a.diabetes) out.push({t:'Diabetes', k:'warn'});
     if(a.hta) out.push({t:'Hipertensión', k:'warn'});
     if(a.embarazo) out.push({t:'Embarazo', k:'warn'});
     return out;
   }
+  function alertBannerHTML(p){ var al=alertas(p); return al.length?'<div class="hc-alert">⚠ <span>'+al.map(function(a){return esc(a.t);}).join(' · ')+'</span></div>':''; }
+  function refrescarAlertas(p){ var w=$('#hc-alertwrap'); if(w) w.innerHTML=alertBannerHTML(p); }
   function toastOK(t,s){ if(typeof Toast!=='undefined'&&Toast.success) Toast.success(t,s||''); }
   function toastErr(t,s){ if(typeof Toast!=='undefined'&&Toast.error) Toast.error(t,s||''); }
 
@@ -11727,7 +11752,8 @@ if (typeof Sections !== 'undefined' && Sections.renderers) (function(){
     return { nombre:nombre||'', edad:'', sexo:'', tel:'', ocupacion:'', emergencia:'',
       motivo:'', heredofam:'', explExtra:'', explIntra:'',
       ant:{alergia:false,alergiaTxt:'',cardio:false,anticoag:false,diabetes:false,hta:false,embarazo:false,tabaco:false,bruxismo:false},
-      odo:{}, consent:'', firmaPng:'', notas:[],
+      antNotas:'', odo:{}, consent:'', firmaPng:'',
+      tutorNombre:'', tutorParentesco:'', tutorId:'', notas:[],
       creadoEn:hoyISO(), ultimaVisita:hoyISO() };
   }
 
@@ -11765,6 +11791,68 @@ if (typeof Sections !== 'undefined' && Sections.renderers) (function(){
         .then(function(){ marcarSave('saved'); })
         .catch(function(e){ console.error('[expediente] guardar:',e); marcarSave('error'); });
     }, inmediato?0:700);
+  }
+
+  // ── Antecedentes: catálogo agrupado (claves legacy conservadas: alergia, cardio, anticoag, diabetes, hta, embarazo, tabaco, bruxismo) ──
+  // Cada item: [clave, etiqueta, mod?]  ·  mod 'warn'|'ok' pinta el toggle; sin mod = rojo (danger) al activarse.
+  var ANTGRUPOS=[
+    ['Cardiovasculares',[['hta','Hipertensión','warn'],['cardio','Cardiopatía'],['soplo','Soplo cardíaco'],['infarto','Infarto / angina previo'],['marcapasos','Marcapasos'],['fiebreReumatica','Fiebre reumática']]],
+    ['Endocrino / metabólico',[['diabetes','Diabetes','warn'],['tiroides','Problemas de tiroides']]],
+    ['Respiratorio',[['asma','Asma'],['epoc','EPOC'],['tuberculosis','Tuberculosis']]],
+    ['Sangre',[['coagulacion','Trastornos de coagulación / sangrado'],['anemia','Anemia'],['anticoag','Toma anticoagulantes']]],
+    ['Hígado / riñón',[['hepatitis','Hepatitis'],['hepatica','Enfermedad hepática'],['renal','Enfermedad renal / diálisis']]],
+    ['Neurológico',[['epilepsia','Epilepsia / convulsiones'],['migrana','Migraña'],['acv','ACV / embolia']]],
+    ['Infeccioso / inmune',[['vih','VIH / SIDA'],['cancer','Cáncer'],['quimio','Quimio / radioterapia']]],
+    ['Óseo',[['bifosfonatos','Osteoporosis / bifosfonatos']]],
+    ['Otros',[['artritis','Artritis'],['lupus','Lupus'],['ansiedad','Ansiedad / depresión'],['ulcera','Úlcera / gastritis']]],
+    ['Alergias',[['alergia','Alergia (general)'],['alPenicilina','Penicilina'],['alLatex','Látex'],['alAnestesicos','Anestésicos locales'],['alAINEs','AINEs / aspirina'],['alMetales','Metales']]],
+    ['Hábitos',[['tabaco','Tabaquismo','warn'],['alcoholismo','Alcoholismo','warn'],['bruxismo','Bruxismo','warn']]],
+    ['Mujer',[['embarazo','Embarazo','warn'],['lactancia','Lactancia','warn']]]
+  ];
+
+  // ── Consentimiento (D · reacciona a la edad del paciente) ──
+  function esMenor(p){ var e=p&&p.edad; if(e===''||e==null) return false; var n=Number(e); return !isNaN(n)&&n>=0&&n<18; }
+  function consentCardHTML(p){
+    var menor=esMenor(p);
+    var titulo=menor?'Consentimiento del tutor':'Consentimiento de manejo de datos';
+    var subtag=menor?'paciente menor de edad':'opcional';
+    var firmaHint=menor?'FIRMA DEL PADRE/MADRE/TUTOR':'FIRMA AQUÍ CON EL DEDO O EL MOUSE';
+    var h='<div class="hc-card" id="hc-consent-card"><h3>'+esc(titulo)+' <span style="font-weight:500;letter-spacing:0;text-transform:none;color:var(--text-3)">· '+esc(subtag)+'</span></h3>'
+      +(menor?'<div class="hc-hint" style="margin-bottom:12px">El paciente es menor de edad — el consentimiento debe firmarlo su padre, madre o tutor legal.</div>':'')
+      +'<div class="hc-togs" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr))">'
+      +'<div class="hc-tog'+(!p.consent?' on':'')+'" data-c=""><span class="hc-sw"></span>Sin registrar</div>'
+      +'<div class="hc-tog hc-tog--warn'+(p.consent==='papel'?' on':'')+'" data-c="papel"><span class="hc-sw"></span>Firmado en papel</div>'
+      +'<div class="hc-tog hc-tog--ok'+(p.consent==='digital'?' on':'')+'" data-c="digital"><span class="hc-sw"></span>Firma digital</div></div>';
+    if(menor){
+      h+='<div class="hc-grid" style="margin-top:14px">'
+        +'<div class="hc-f"><label>Nombre del padre/madre/tutor</label><input data-bindp="tutorNombre" value="'+esc(p.tutorNombre||'')+'" placeholder="Nombre completo del tutor"></div>'
+        +'<div class="hc-f"><label>Parentesco</label><select data-bindp="tutorParentesco"><option value="">—</option>'
+        +['Madre','Padre','Tutor legal','Otro'].map(function(o){return '<option value="'+o+'"'+(p.tutorParentesco===o?' selected':'')+'>'+o+'</option>';}).join('')
+        +'</select></div>'
+        +'<div class="hc-f"><label>Identificación del tutor <span style="color:var(--text-3);letter-spacing:0;text-transform:none">· opcional</span></label><input data-bindp="tutorId" value="'+esc(p.tutorId||'')+'" placeholder="Nº de INE, pasaporte…"></div>'
+        +'</div>';
+    }
+    h+='<div id="hc-sigzone" style="margin-top:14px'+(p.consent==='digital'?'':';display:none')+'">'
+      +'<div class="hc-sig"><canvas id="hc-canvas" height="120"></canvas>'
+      +(p.firmaPng?'':'<div class="hc-sig__hint" id="hc-sighint">'+firmaHint+'</div>')+'</div>'
+      +'<div style="display:flex;gap:8px;margin-top:10px"><button class="btn btn--ghost" id="hc-sigclear" style="padding:7px 14px;font-size:11.5px">Borrar firma</button></div>'
+      +'<div class="hc-hint" style="margin-top:8px">'+(menor?'Firma del padre/madre/tutor.':'Firma del propio paciente.')+'</div></div>'
+      +'<div class="hc-hint" style="margin-top:10px">El expediente funciona igual sin firma — esto solo deja constancia de cómo se recabó el consentimiento.</div></div>';
+    return h;
+  }
+  function wireConsent(p){
+    var wrap=$('#hc-consent-wrap'); if(!wrap) return;
+    $$('.hc-tog[data-c]',wrap).forEach(function(el){ el.addEventListener('click',function(){
+      p.consent=el.dataset.c;
+      if(p.consent!=='digital') p.firmaPng='';
+      persistir(p);
+      wrap.innerHTML=consentCardHTML(p); wireConsent(p); // re-render sólo el bloque (no pierde otros campos ni foco de edad)
+    });});
+    $$('[data-bindp]',wrap).forEach(function(el){
+      var ev=(el.tagName==='SELECT')?'change':'input';
+      el.addEventListener(ev,function(){ p[el.dataset.bindp]=el.value; persistir(p); });
+    });
+    if(p.consent==='digital') initFirma(p);
   }
 
   // ── Render raíz ──
@@ -11869,16 +11957,42 @@ if (typeof Sections !== 'undefined' && Sections.renderers) (function(){
       if(p) renderExp(p,'ficha');
     });});
   }
+  // Modal estilizado (reemplaza el prompt/confirm nativos del navegador)
+  function hcModal(opts){
+    // opts: {titulo, sub, campo(bool), placeholder, okTxt, okDanger, onOk(valor)}
+    var ov=document.createElement('div');
+    ov.className='hc-modal-ov';
+    ov.innerHTML='<div class="hc-modal">'
+      +'<div class="hc-modal__t">'+esc(opts.titulo||'')+'</div>'
+      +(opts.sub?'<div class="hc-modal__s">'+esc(opts.sub)+'</div>':'')
+      +(opts.campo?'<input class="hc-modal__in" id="hc-modal-in" placeholder="'+esc(opts.placeholder||'')+'" autocomplete="off">':'')
+      +'<div class="hc-modal__row">'
+      +'<button class="btn btn--ghost hc-modal-cancel" style="padding:9px 16px;font-size:12px">Cancelar</button>'
+      +'<button class="btn '+(opts.okDanger?'':'btn--accent')+' hc-modal-ok" style="padding:9px 18px;font-size:12px'+(opts.okDanger?';background:var(--danger);color:#fff':'')+'">'+esc(opts.okTxt||'Aceptar')+'</button>'
+      +'</div></div>';
+    document.body.appendChild(ov);
+    var inp=ov.querySelector('#hc-modal-in');
+    if(inp){ setTimeout(function(){ inp.focus(); },50); inp.addEventListener('keydown',function(e){ if(e.key==='Enter') ok(); }); }
+    function cerrar(){ ov.remove(); }
+    function ok(){ var v=inp?inp.value.trim():true; if(opts.campo && !v){ inp.focus(); return; } cerrar(); if(opts.onOk) opts.onOk(v); }
+    ov.querySelector('.hc-modal-cancel').addEventListener('click',cerrar);
+    ov.querySelector('.hc-modal-ok').addEventListener('click',ok);
+    ov.addEventListener('click',function(e){ if(e.target===ov) cerrar(); });
+    document.addEventListener('keydown',function esc2(e){ if(e.key==='Escape'){ cerrar(); document.removeEventListener('keydown',esc2); } });
+  }
+
   function crearPaciente(){
-    var nombre=prompt('Nombre completo del paciente:');
-    if(!nombre||!nombre.trim()) return;
-    var p=nuevoPaciente(nombre.trim());
-    var F=fs();
-    F.addDoc(colRef(), p).then(function(ref){
-      p.id=ref.id; HC.pacientes.unshift(p);
-      toastOK('Paciente creado','Completa su ficha');
-      renderExp(p,'ficha');
-    }).catch(function(e){ console.error(e); toastErr('No se pudo crear','Revisa tu conexión'); });
+    hcModal({ titulo:'Nuevo paciente', sub:'Escribe el nombre completo. Podrás completar el resto de la ficha después.',
+      campo:true, placeholder:'Ej. María Elena Vázquez', okTxt:'Crear expediente',
+      onOk:function(nombre){
+        var p=nuevoPaciente(nombre);
+        var F=fs();
+        F.addDoc(colRef(), p).then(function(ref){
+          p.id=ref.id; HC.pacientes.unshift(p);
+          toastOK('Paciente creado','Completa su ficha');
+          renderExp(p,'ficha');
+        }).catch(function(e){ console.error(e); toastErr('No se pudo crear','Revisa tu conexión'); });
+      }});
   }
 
   // ── Vista expediente ──
@@ -11886,7 +12000,6 @@ if (typeof Sections !== 'undefined' && Sections.renderers) (function(){
   function renderExp(p, tab){
     HC.abierto=p; HC.tab=tab||'ficha';
     var r=$('#hc-root'); if(!r) return;
-    var al=alertas(p);
     r.innerHTML=
     '<button class="btn btn--ghost" id="hc-volver" style="margin-bottom:14px;padding:7px 14px;font-size:11.5px">← Pacientes</button>'
     +'<div class="hc-top"><div class="hc-ava">'+esc(ini(p.nombre))+'</div>'
@@ -11896,20 +12009,30 @@ if (typeof Sections !== 'undefined' && Sections.renderers) (function(){
     +'<button class="btn btn--ghost" id="hc-pdf" style="padding:7px 14px;font-size:11.5px">⬇ PDF</button>'
     +'<button class="btn btn--ghost" id="hc-print" style="padding:7px 14px;font-size:11.5px">🖨 Imprimir</button>'
     +'<button class="btn btn--ghost" id="hc-del" style="padding:7px 14px;font-size:11.5px;color:var(--danger)">Eliminar</button></div></div>'
-    +(al.length?'<div class="hc-alert">⚠ <span>'+al.map(function(a){return esc(a.t);}).join(' · ')+'</span></div>':'')
+    +'<div id="hc-alertwrap">'+alertBannerHTML(p)+'</div>'
     +'<div class="hc-tabs">'+TABS.map(function(t){
       return '<button class="hc-tab'+(HC.tab===t[0]?' on':'')+'" data-t="'+t[0]+'">'+t[1]+'</button>';}).join('')+'</div>'
-    +'<div id="hc-tabbody"></div>';
+    +'<div id="hc-tabbody"></div>'
+    +'<div class="hc-savebar"><div class="hc-savebar__txt">Tus cambios se guardan solos, pero puedes confirmarlo aquí.</div>'
+    +'<button class="btn btn--accent" id="hc-guardar" style="padding:12px 26px;font-size:13px"><svg class="ic ic--sm" style="margin-right:2px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Guardar cambios</button></div>';
     $('#hc-volver').addEventListener('click',function(){ renderLista(); });
     $('#hc-pdf').addEventListener('click',function(){ generarPDF(p,false); });
     $('#hc-print').addEventListener('click',function(){ generarPDF(p,true); });
+    $('#hc-guardar').addEventListener('click',function(){
+      persistir(p,true);
+      var b=$('#hc-guardar'); if(b){ var o=b.innerHTML; b.innerHTML='✓ Todo guardado'; b.disabled=true; b.style.opacity='.75';
+        setTimeout(function(){ if($('#hc-guardar')){ b.innerHTML=o; b.disabled=false; b.style.opacity=''; } },1800); }
+      toastOK('Expediente guardado','Todos los datos de '+(p.nombre?p.nombre.split(' ')[0]:'el paciente')+' están a salvo');
+    });
     $('#hc-del').addEventListener('click',function(){
-      if(!confirm('¿Eliminar el expediente de '+(p.nombre||'este paciente')+'? Esta acción no se puede deshacer.')) return;
-      var F=fs();
-      F.deleteDoc(F.doc(F.db,'miembros',uid(),'pacientes',p.id)).then(function(){
-        HC.pacientes=HC.pacientes.filter(function(x){return x.id!==p.id;});
-        toastOK('Expediente eliminado'); renderLista();
-      }).catch(function(e){ console.error(e); toastErr('No se pudo eliminar'); });
+      hcModal({ titulo:'Eliminar expediente', sub:'¿Eliminar el expediente de '+(p.nombre||'este paciente')+'? Esta acción no se puede deshacer.',
+        okTxt:'Sí, eliminar', okDanger:true, onOk:function(){
+          var F=fs();
+          F.deleteDoc(F.doc(F.db,'miembros',uid(),'pacientes',p.id)).then(function(){
+            HC.pacientes=HC.pacientes.filter(function(x){return x.id!==p.id;});
+            toastOK('Expediente eliminado'); renderLista();
+          }).catch(function(e){ console.error(e); toastErr('No se pudo eliminar'); });
+        }});
     });
     $$('.hc-tab',r).forEach(function(t){ t.addEventListener('click',function(){
       HC.tab=t.dataset.t; $$('.hc-tab',r).forEach(function(x){x.classList.toggle('on',x===t);}); pintarTab(p,HC.tab);
@@ -11945,41 +12068,57 @@ if (typeof Sections !== 'undefined' && Sections.renderers) (function(){
       +'</div></div>'
       +'<div class="hc-card"><h3>Motivo de consulta / padecimiento actual</h3>'
       +'<div class="hc-f"><textarea data-bind="motivo" placeholder="¿Qué refiere el paciente?">'+esc(p.motivo)+'</textarea></div></div>'
-      +'<div class="hc-card"><h3>Consentimiento de manejo de datos <span style="font-weight:500;letter-spacing:0;text-transform:none;color:var(--text-3)">· opcional</span></h3>'
-      +'<div class="hc-togs" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr))">'
-      +'<div class="hc-tog'+(!p.consent?' on':'')+'" data-c=""><span class="hc-sw"></span>Sin registrar</div>'
-      +'<div class="hc-tog hc-tog--warn'+(p.consent==='papel'?' on':'')+'" data-c="papel"><span class="hc-sw"></span>Firmado en papel</div>'
-      +'<div class="hc-tog hc-tog--ok'+(p.consent==='digital'?' on':'')+'" data-c="digital"><span class="hc-sw"></span>Firma digital</div></div>'
-      +'<div id="hc-sigzone" style="margin-top:12px'+(p.consent==='digital'?'':';display:none')+'">'
-      +'<div class="hc-sig"><canvas id="hc-canvas" height="120"></canvas>'
-      +(p.firmaPng?'':'<div class="hc-sig__hint" id="hc-sighint">FIRMA AQUÍ CON EL DEDO O EL MOUSE</div>')+'</div>'
-      +'<div style="display:flex;gap:8px;margin-top:10px"><button class="btn btn--ghost" id="hc-sigclear" style="padding:7px 14px;font-size:11.5px">Borrar firma</button></div></div>'
-      +'<div class="hc-hint" style="margin-top:10px">El expediente funciona igual sin firma — esto solo deja constancia de cómo se recabó el consentimiento.</div></div>';
+      +'<div id="hc-consent-wrap">'+consentCardHTML(p)+'</div>';
       bindCampos(p);
-      $$('.hc-tog[data-c]',b).forEach(function(el){ el.addEventListener('click',function(){
-        p.consent=el.dataset.c;
-        if(p.consent!=='digital') p.firmaPng='';
-        persistir(p); renderExp(p,'ficha');
-      });});
-      if(p.consent==='digital') initFirma(p);
+      // D · al cambiar la edad se re-evalúa el bloque de consentimiento (adulto ↔ menor) sin perder el foco del campo
+      var edEl=$('#hc-tabbody [data-bind="edad"]');
+      if(edEl) edEl.addEventListener('input',function(){ var w=$('#hc-consent-wrap'); if(w){ w.innerHTML=consentCardHTML(p); wireConsent(p); } });
+      wireConsent(p);
     }
     else if(t==='ant'){
-      function tg(key,label,mod){ return '<div class="hc-tog'+(mod?' hc-tog--'+mod:'')+((p.ant&&p.ant[key])?' on':'')+'" data-k="'+key+'"><span class="hc-sw"></span>'+label+'</div>'; }
+      function tg(key,label,mod){
+        var m=(mod==='warn'||mod==='ok')?' hc-tog--'+mod:''; // sin mod = rojo (danger) al activarse
+        return '<div class="hc-tog'+m+((p.ant&&p.ant[key])?' on':'')+'" data-k="'+key+'" data-label="'+esc(label.toLowerCase())+'"><span class="hc-sw"></span>'+esc(label)+'</div>';
+      }
+      var cards=ANTGRUPOS.map(function(g){
+        var esAlg=(g[0]==='Alergias');
+        return '<div class="hc-card hc-antgrp"><h3>'+esc(g[0])+'</h3><div class="hc-togs">'
+          +g[1].map(function(it){ return tg(it[0],it[1],it[2]); }).join('')
+          +'</div>'
+          +(esAlg?'<div class="hc-f" id="hc-alergiaf" style="margin-top:12px'+(tieneAlergia(p)?'':';display:none')+'">'
+            +'<label>¿A qué es alérgico(a)? · detalle</label><input data-bind-ant="alergiaTxt" value="'+esc(p.ant?p.ant.alergiaTxt||'':'')+'" placeholder="Ej. penicilina, mariscos, sulfas…"></div>':'')
+          +'</div>';
+      }).join('');
       b.innerHTML=
-      '<div class="hc-card"><h3>Personales patológicos</h3><div class="hc-togs">'
-      +tg('alergia','Alergias')+tg('cardio','Cardiopatía')+tg('anticoag','Anticoagulantes')
-      +tg('diabetes','Diabetes','warn')+tg('hta','Hipertensión','warn')+tg('embarazo','Embarazo','warn')
-      +'</div><div class="hc-f" id="hc-alergiaf" style="margin-top:12px'+(p.ant&&p.ant.alergia?'':';display:none')+'">'
-      +'<label>¿A qué es alérgico(a)?</label><input data-bind-ant="alergiaTxt" value="'+esc(p.ant?p.ant.alergiaTxt:'')+'" placeholder="Ej. penicilina, látex…"></div></div>'
-      +'<div class="hc-card"><h3>No patológicos</h3><div class="hc-togs">'
-      +tg('tabaco','Tabaquismo','warn')+tg('bruxismo','Bruxismo','warn')+'</div></div>'
+      '<div class="hc-antsearch"><div class="hc-search"><svg class="ic" viewBox="0 0 24 24" style="fill:none;stroke:currentColor;stroke-width:1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>'
+      +'<input id="hc-antq" placeholder="Buscar antecedente… (ej. diabetes, látex, epilepsia)" autocomplete="off"></div></div>'
+      +'<div id="hc-antlist">'+cards+'</div>'
       +'<div class="hc-card"><h3>Heredofamiliares</h3><div class="hc-f">'
-      +'<textarea data-bind="heredofam" placeholder="Diabetes, hipertensión, cardiopatías en la familia…">'+esc(p.heredofam)+'</textarea></div></div>';
+      +'<textarea data-bind="heredofam" placeholder="Diabetes, hipertensión, cardiopatías en la familia…">'+esc(p.heredofam)+'</textarea></div></div>'
+      +'<div class="hc-card"><h3>Otros antecedentes / notas médicas</h3><div class="hc-f">'
+      +'<textarea data-bind="antNotas" placeholder="Medicación habitual, cirugías, prótesis, alergias no listadas, notas relevantes…">'+esc(p.antNotas||'')+'</textarea></div></div>';
       bindCampos(p);
+      // Toggle en sitio (sin re-render completo → no se pierde el texto del buscador ni el scroll)
       $$('.hc-tog[data-k]',b).forEach(function(el){ el.addEventListener('click',function(){
         var k=el.dataset.k; p.ant=p.ant||{}; p.ant[k]=!p.ant[k];
-        persistir(p); renderExp(p,'ant');
+        el.classList.toggle('on', !!p.ant[k]);
+        persistir(p);
+        refrescarAlertas(p);
+        var af=$('#hc-alergiaf'); if(af) af.style.display=tieneAlergia(p)?'':'none';
       });});
+      // Buscador en vivo: filtra toggles por etiqueta y oculta los grupos sin coincidencias
+      var sb=$('#hc-antq');
+      if(sb) sb.addEventListener('input',function(){
+        var q=sb.value.toLowerCase().trim();
+        $$('.hc-antgrp',b).forEach(function(card){
+          var any=false;
+          $$('.hc-tog[data-k]',card).forEach(function(tgEl){
+            var show=!q || tgEl.getAttribute('data-label').indexOf(q)>=0;
+            tgEl.style.display=show?'':'none'; if(show) any=true;
+          });
+          card.style.display=any?'':'none';
+        });
+      });
     }
     else if(t==='expl'){
       var ESTADOS=['','caries','resina','corona','ausente'];
@@ -12120,14 +12259,19 @@ if (typeof Sections !== 'undefined' && Sections.renderers) (function(){
         doc.text(doc.splitTextToSize('ALERTAS:  '+altxt,cw-8),M+4,y+1.5);
         y+=ah+2;
       }
-      // Antecedentes
+      // Antecedentes (recorre el catálogo agrupado; Hábitos aparte como "no patológicos")
       seccion('Antecedentes');
       var a=p.ant||{};
-      var pats=[a.alergia?('Alergias'+(a.alergiaTxt?' ('+a.alergiaTxt+')':'')):null,a.cardio?'Cardiopatía':null,a.anticoag?'Anticoagulantes':null,a.diabetes?'Diabetes':null,a.hta?'Hipertensión':null,a.embarazo?'Embarazo':null].filter(Boolean);
-      var nopats=[a.tabaco?'Tabaquismo':null,a.bruxismo?'Bruxismo':null].filter(Boolean);
+      var pats=[], nopats=[];
+      ANTGRUPOS.forEach(function(g){
+        var destino=(g[0]==='Hábitos')?nopats:pats;
+        g[1].forEach(function(it){ if(a[it[0]]) destino.push(it[1]); });
+      });
       parrafo('Patológicos: '+(pats.length?pats.join(', '):'ninguno referido'));
-      parrafo('No patológicos: '+(nopats.length?nopats.join(', '):'ninguno referido'));
+      if(a.alergiaTxt && tieneAlergia(p)) parrafo('Detalle de alergias: '+a.alergiaTxt);
+      parrafo('No patológicos / hábitos: '+(nopats.length?nopats.join(', '):'ninguno referido'));
       if(p.heredofam) parrafo('Heredofamiliares: '+p.heredofam);
+      if(p.antNotas) parrafo('Otros antecedentes / notas: '+p.antNotas);
       // Motivo
       seccion('Motivo de consulta');
       parrafo(p.motivo||'—');
@@ -12157,19 +12301,28 @@ if (typeof Sections !== 'undefined' && Sections.renderers) (function(){
           parrafo(n.texto,SOFT,9.2); y+=1.5;
         });
       } else { parrafo('Sin notas registradas.',GRIS); }
-      // Consentimiento / firma
-      seccion('Consentimiento de manejo de datos');
+      // Consentimiento / firma (D · adaptado a menores de edad)
+      var menorPdf=esMenor(p);
+      var quien=menorPdf?'tutor':'paciente';
+      var firmaLbl=menorPdf?'Firma del padre/madre/tutor':'Firma del paciente';
+      var tutorLinea=(menorPdf && (p.tutorNombre||p.tutorParentesco))
+        ? 'Firmado por '+(p.tutorNombre||'—')+(p.tutorParentesco?', '+p.tutorParentesco:'')+(p.tutorId?' · ID: '+p.tutorId:'')+'.'
+        : '';
+      seccion(menorPdf?'Consentimiento del tutor':'Consentimiento de manejo de datos');
       if(p.consent==='digital' && p.firmaPng){
-        parrafo('Recabado con firma digital del paciente:',SOFT,9);
+        parrafo('Recabado con firma digital del '+quien+':',SOFT,9);
         salto(30);
         try{ doc.addImage(p.firmaPng,'PNG',M,y,70,21); }catch(e){}
         y+=23;
         doc.setDrawColor(26,35,51); doc.setLineWidth(.3); doc.line(M,y,M+70,y); y+=4;
-        doc.setFontSize(7.8); color(GRIS); doc.text('Firma del paciente',M,y); y+=5;
+        doc.setFontSize(7.8); color(GRIS); doc.text(firmaLbl,M,y); y+=5;
+        if(tutorLinea) parrafo(tutorLinea,SOFT,8.8);
       } else if(p.consent==='digital'){
         parrafo('Firma digital seleccionada · pendiente de captura.',SOFT,9);
+        if(tutorLinea) parrafo(tutorLinea,SOFT,8.8);
       } else if(p.consent==='papel'){
-        parrafo('Recabado por escrito (archivo físico del consultorio).',SOFT,9);
+        parrafo('Recabado por escrito (archivo físico del consultorio)'+(menorPdf?', firmado por el padre/madre/tutor':'')+'.',SOFT,9);
+        if(tutorLinea) parrafo(tutorLinea,SOFT,8.8);
       } else {
         parrafo('Sin registrar.',GRIS,9);
       }

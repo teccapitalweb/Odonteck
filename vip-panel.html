@@ -3953,6 +3953,7 @@ window.__setDisplayName = async (nombre) => {
 
     <div class="nav-section">
       <div class="nav-label">Herramientas pro</div>
+      <a class="nav-item" data-tool="expediente"><svg class="ic"><use href="#i-clipboard-check"/></svg>Expediente Clínico<span class="nav-item__badge is-new">NUEVO</span></a>
       <a class="nav-item" data-tool="anestesico"><svg class="ic"><use href="#i-shield-check"/></svg>Anestésico</a>
       <a class="nav-item" data-tool="prescripcion"><svg class="ic"><use href="#i-news"/></svg>Prescripción</a>
       <a class="nav-item" data-tool="odontograma"><svg class="ic"><use href="#i-tools"/></svg>Odontograma</a>
@@ -4135,6 +4136,7 @@ window.__setDisplayName = async (nombre) => {
 
       <div class="mobile-drawer__section">
         <div class="mobile-drawer__label">Herramientas pro</div>
+        <a class="mobile-drawer__item" data-tool="expediente"><svg class="ic"><use href="#i-clipboard-check"/></svg>Expediente Clínico</a>
         <a class="mobile-drawer__item" data-tool="anestesico"><svg class="ic"><use href="#i-shield-check"/></svg>Anestésico</a>
         <a class="mobile-drawer__item" data-tool="prescripcion"><svg class="ic"><use href="#i-news"/></svg>Prescripción</a>
         <a class="mobile-drawer__item" data-tool="odontograma"><svg class="ic"><use href="#i-tools"/></svg>Odontograma</a>
@@ -11570,6 +11572,633 @@ window.Modal=Modal;window.Tools=Tools;window.Toast=Toast;window.navigateToSectio
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 </script>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     EXPEDIENTE CLÍNICO · v1.0 — Historia clínica + odontograma por paciente
+     Datos en Firestore: miembros/{uid}/pacientes/{id}
+     Clases con prefijo hc- para no chocar con nada existente.
+     ═══════════════════════════════════════════════════════════════════ -->
+<style id="hc-css">
+.hc-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:4px}
+.hc-count{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;letter-spacing:-.5px;white-space:nowrap}
+.hc-count small{font-size:12px;font-weight:600;color:var(--text-3);letter-spacing:0}
+.hc-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.hc-search{flex:1;min-width:200px;position:relative}
+.hc-search .ic{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text-3);width:15px;height:15px}
+.hc-search input{width:100%;min-height:44px;border-radius:100px;border:1px solid var(--border-2);background:var(--surface);color:var(--text);padding:10px 16px 10px 40px;font-size:13.5px;font-family:inherit;transition:border-color .2s}
+.hc-search input:focus{outline:none;border-color:var(--primary)}
+.hc-seg{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border-2);border-radius:100px;padding:4px;overflow-x:auto;scrollbar-width:none;max-width:100%}
+.hc-seg::-webkit-scrollbar{display:none}
+.hc-seg button{padding:8px 14px;border-radius:100px;font-size:12px;font-weight:600;color:var(--text-2);transition:.15s;white-space:nowrap;font-family:inherit}
+.hc-seg button.on{background:var(--primary);color:#fff;box-shadow:0 3px 10px var(--primary-glow)}
+.hc-group{background:var(--surface);border:1px solid var(--border);border-radius:16px;margin-bottom:10px;overflow:hidden}
+.hc-group__head{display:flex;align-items:center;gap:11px;padding:14px 18px;cursor:pointer;transition:background .15s;width:100%;text-align:left;font-family:inherit}
+.hc-group__head:hover{background:var(--surface-2)}
+.hc-group__chev{transition:transform .25s;color:var(--text-3);width:13px;height:13px}
+.hc-group.open .hc-group__chev{transform:rotate(90deg)}
+.hc-group__title{font-weight:700;font-size:13.5px}
+.hc-group__count{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-3)}
+.hc-group__body{display:none;border-top:1px solid var(--border)}
+.hc-group.open .hc-group__body{display:block}
+.hc-prow{display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s}
+.hc-prow:last-child{border-bottom:none}
+.hc-prow:hover{background:var(--surface-2)}
+.hc-ava{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12.5px;color:#fff;flex-shrink:0;background:linear-gradient(135deg,var(--primary),var(--primary-deep))}
+.hc-prow__name{font-weight:600;font-size:13.5px;line-height:1.2}
+.hc-prow__meta{font-size:11px;color:var(--text-3);font-family:'JetBrains Mono',monospace;margin-top:2px}
+.hc-prow__badges{margin-left:auto;display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.hc-badge{display:inline-flex;align-items:center;gap:5px;font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:100px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap}
+.hc-badge--danger{background:color-mix(in srgb,var(--danger) 15%,transparent);color:var(--danger);border:1px solid color-mix(in srgb,var(--danger) 35%,transparent)}
+.hc-badge--warn{background:color-mix(in srgb,var(--warning) 15%,transparent);color:var(--warning);border:1px solid color-mix(in srgb,var(--warning) 35%,transparent)}
+.hc-badge--ok{background:color-mix(in srgb,var(--success) 15%,transparent);color:var(--success);border:1px solid color-mix(in srgb,var(--success) 35%,transparent)}
+.hc-empty{padding:34px;text-align:center;color:var(--text-3);font-size:13px}
+.hc-top{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.hc-top .hc-ava{width:52px;height:52px;font-size:17px}
+.hc-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:21px;font-weight:800;letter-spacing:-.5px;line-height:1.1}
+.hc-meta{font-size:11.5px;color:var(--text-3);font-family:'JetBrains Mono',monospace;margin-top:3px}
+.hc-actions{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.hc-save{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--text-3);padding:6px 12px;border-radius:100px;background:var(--surface);border:1px solid var(--border-2);transition:.3s;white-space:nowrap}
+.hc-save.saving{color:var(--warning)}
+.hc-save.saved{color:var(--success)}
+.hc-save.error{color:var(--danger)}
+.hc-alert{display:flex;align-items:center;gap:10px;background:color-mix(in srgb,var(--danger) 13%,transparent);border:1px solid color-mix(in srgb,var(--danger) 38%,transparent);color:var(--danger);border-radius:14px;padding:12px 16px;font-size:12.5px;font-weight:600;margin-bottom:14px}
+.hc-tabs{display:flex;gap:6px;background:var(--surface-2);border:1px solid var(--border-2);border-radius:14px;padding:5px;margin-bottom:18px;overflow-x:auto;scrollbar-width:none}
+.hc-tabs::-webkit-scrollbar{display:none}
+.hc-tab{flex:1;min-width:max-content;padding:10px 16px;border-radius:10px;font-size:12.5px;font-weight:600;color:var(--text-2);text-align:center;transition:.15s;white-space:nowrap;font-family:inherit}
+.hc-tab.on{background:var(--surface);color:var(--primary);box-shadow:0 2px 8px rgba(0,0,0,.14)}
+.hc-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:20px;margin-bottom:14px}
+.hc-card h3{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--text-3);margin-bottom:14px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.hc-card h3::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--primary)}
+.hc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.hc-f{display:flex;flex-direction:column;gap:6px}
+.hc-f label{font-size:10.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text-3);font-family:'JetBrains Mono',monospace}
+.hc-f input,.hc-f select,.hc-f textarea{min-height:44px;border-radius:11px;border:1px solid var(--border-2);background:var(--surface-2);color:var(--text);padding:10px 13px;font-size:13.5px;font-family:inherit;transition:border-color .2s;-webkit-appearance:none;appearance:none}
+.hc-f textarea{min-height:74px;resize:vertical}
+.hc-f input:focus,.hc-f select:focus,.hc-f textarea:focus{outline:none;border-color:var(--primary)}
+.hc-togs{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:9px}
+.hc-tog{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:12px;border:1px solid var(--border-2);background:var(--surface-2);cursor:pointer;transition:.15s;font-size:12.5px;font-weight:600;color:var(--text-2);user-select:none}
+.hc-tog:hover{border-color:var(--border-strong)}
+.hc-tog .hc-sw{width:34px;height:20px;border-radius:100px;background:var(--surface-3);position:relative;flex-shrink:0;transition:.2s}
+.hc-tog .hc-sw::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.2s}
+.hc-tog.on{border-color:color-mix(in srgb,var(--danger) 45%,transparent);color:var(--text)}
+.hc-tog.on .hc-sw{background:var(--danger)}
+.hc-tog.on .hc-sw::after{left:16px}
+.hc-tog--warn.on{border-color:color-mix(in srgb,var(--warning) 50%,transparent)}
+.hc-tog--warn.on .hc-sw{background:var(--warning)}
+.hc-tog--ok.on{border-color:color-mix(in srgb,var(--success) 50%,transparent)}
+.hc-tog--ok.on .hc-sw{background:var(--success)}
+.hc-odo{display:flex;flex-direction:column;gap:12px;align-items:center;padding:6px 0}
+.hc-odo__row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.hc-tooth{width:32px;height:37px;border-radius:9px 9px 12px 12px;border:1.5px solid var(--border-strong);background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--text-3);cursor:pointer;transition:.15s;user-select:none}
+.hc-tooth:hover{transform:scale(1.14)}
+.hc-tooth.caries{background:color-mix(in srgb,var(--danger) 24%,transparent);border-color:var(--danger);color:var(--danger)}
+.hc-tooth.resina{background:color-mix(in srgb,var(--primary) 24%,transparent);border-color:var(--primary);color:var(--primary-soft)}
+.hc-tooth.corona{background:color-mix(in srgb,var(--warning) 24%,transparent);border-color:var(--warning);color:var(--warning)}
+.hc-tooth.ausente{background:transparent;border-style:dashed;opacity:.4}
+.hc-legend{display:flex;gap:13px;flex-wrap:wrap;justify-content:center;font-size:11px;color:var(--text-2)}
+.hc-legend span{display:inline-flex;align-items:center;gap:6px}
+.hc-legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.hc-hint{font-size:11px;color:var(--text-3);font-family:'JetBrains Mono',monospace}
+.hc-nota{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid var(--border)}
+.hc-nota:last-child{border-bottom:none}
+.hc-nota__dot{width:10px;height:10px;border-radius:50%;background:var(--primary);margin-top:5px;flex-shrink:0;box-shadow:0 0 8px var(--primary-glow)}
+.hc-nota__fecha{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--primary);font-weight:700;letter-spacing:.5px}
+.hc-nota__txt{font-size:13px;color:var(--text-2);margin-top:3px;line-height:1.55;white-space:pre-wrap}
+.hc-sig{border:1.5px dashed var(--border-strong);border-radius:14px;background:var(--surface-2);position:relative;overflow:hidden}
+.hc-sig canvas{display:block;width:100%;height:120px;cursor:crosshair;touch-action:none}
+.hc-sig__hint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:11px;pointer-events:none;font-family:'JetBrains Mono',monospace;letter-spacing:1px}
+.hc-spin{display:flex;align-items:center;justify-content:center;gap:10px;padding:50px 20px;color:var(--text-3);font-size:13px}
+.hc-spin i{width:20px;height:20px;border:2px solid var(--border-2);border-top-color:var(--primary);border-radius:50%;animation:hcRot .8s linear infinite;display:inline-block}
+@keyframes hcRot{to{transform:rotate(360deg)}}
+@media(max-width:860px){
+  .hc-count{font-size:18px}
+  .hc-prow{flex-wrap:wrap;padding:12px 14px}
+  .hc-prow__badges{margin-left:50px;width:100%;justify-content:flex-start;margin-top:2px}
+  .hc-actions{margin-left:0;width:100%}
+}
+@media(max-width:560px){
+  .hc-tooth{width:26px;height:31px;font-size:8px;border-radius:7px 7px 10px 10px}
+  .hc-odo__row{gap:4px}
+  .hc-seg button{padding:8px 12px;font-size:11px}
+  .hc-top .hc-ava{width:44px;height:44px;font-size:14px}
+  .hc-name{font-size:18px}
+  .hc-tabs{margin-left:-4px;margin-right:-4px}
+}
+</style>
+<script>
+/* ═══ EXPEDIENTE CLÍNICO · lógica ═══ */
+if (typeof Sections !== 'undefined' && Sections.renderers) (function(){
+  'use strict';
+
+  // ── Utilerías ──
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function $(s,c){ return (c||document).querySelector(s); }
+  function $$(s,c){ return Array.prototype.slice.call((c||document).querySelectorAll(s)); }
+  function ini(n){ var p=(n||'??').trim().split(/\s+/); return ((p[0]&&p[0][0]||'?')+(p[1]&&p[1][0]||'')).toUpperCase(); }
+  function hoyISO(){ return new Date().toISOString(); }
+  function fmtCorta(iso){ if(!iso) return '—'; var d=new Date(iso); return d.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'}); }
+  function mismoDia(a,b){ return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate(); }
+  function fmtGrupo(iso){
+    var d=new Date(iso), hoy=new Date(), ayer=new Date(); ayer.setDate(hoy.getDate()-1);
+    var larga=d.toLocaleDateString('es-MX',{weekday:'long',day:'numeric',month:'long'});
+    larga=larga.charAt(0).toUpperCase()+larga.slice(1);
+    if(mismoDia(d,hoy)) return 'Hoy · '+larga;
+    if(mismoDia(d,ayer)) return 'Ayer · '+larga;
+    if(d.getFullYear()!==hoy.getFullYear()) larga+=' de '+d.getFullYear();
+    return larga;
+  }
+  function alertas(p){
+    var a=p.ant||{}, out=[];
+    if(a.alergia) out.push({t:'Alergia'+(a.alergiaTxt?': '+a.alergiaTxt:''), k:'danger'});
+    if(a.cardio) out.push({t:'Cardiopatía', k:'danger'});
+    if(a.anticoag) out.push({t:'Anticoagulantes', k:'danger'});
+    if(a.diabetes) out.push({t:'Diabetes', k:'warn'});
+    if(a.hta) out.push({t:'Hipertensión', k:'warn'});
+    if(a.embarazo) out.push({t:'Embarazo', k:'warn'});
+    return out;
+  }
+  function toastOK(t,s){ if(typeof Toast!=='undefined'&&Toast.success) Toast.success(t,s||''); }
+  function toastErr(t,s){ if(typeof Toast!=='undefined'&&Toast.error) Toast.error(t,s||''); }
+
+  // ── Estado ──
+  var HC = { pacientes:[], cargado:false, cargando:false, q:'', per:'todos', abierto:null, tab:'ficha', grupos:{} };
+
+  function nuevoPaciente(nombre){
+    return { nombre:nombre||'', edad:'', sexo:'', tel:'', ocupacion:'', emergencia:'',
+      motivo:'', heredofam:'', explExtra:'', explIntra:'',
+      ant:{alergia:false,alergiaTxt:'',cardio:false,anticoag:false,diabetes:false,hta:false,embarazo:false,tabaco:false,bruxismo:false},
+      odo:{}, consent:'', firmaPng:'', notas:[],
+      creadoEn:hoyISO(), ultimaVisita:hoyISO() };
+  }
+
+  // ── Firestore ──
+  function fs(){ return window.__fs; }
+  function uid(){ return window.UserState && window.UserState.uid; }
+  function colRef(){ var F=fs(); return F.collection(F.db,'miembros',uid(),'pacientes'); }
+
+  function cargar(cb){
+    if(HC.cargando) return;
+    HC.cargando=true;
+    var F=fs();
+    F.getDocs(F.query(colRef(), F.orderBy('ultimaVisita','desc'), F.limit(500)))
+      .then(function(snap){
+        HC.pacientes=[]; snap.forEach(function(d){ var x=d.data(); x.id=d.id; HC.pacientes.push(x); });
+        HC.cargado=true; HC.cargando=false; if(cb)cb();
+      })
+      .catch(function(e){ console.error('[expediente] cargar:',e); HC.cargando=false;
+        toastErr('No se pudieron cargar tus pacientes','Revisa tu conexión'); if(cb)cb(e); });
+  }
+
+  var saveTimers={};
+  function marcarSave(estado){
+    var el=$('#hc-save'); if(!el) return;
+    el.className='hc-save '+estado;
+    el.innerHTML = estado==='saving'?'● Guardando…' : estado==='saved'?'✓ Guardado' : '⚠ Sin conexión';
+  }
+  function persistir(p, inmediato){
+    marcarSave('saving');
+    clearTimeout(saveTimers[p.id]);
+    saveTimers[p.id]=setTimeout(function(){
+      var F=fs(); var data={}; Object.keys(p).forEach(function(k){ if(k!=='id') data[k]=p[k]; });
+      data.actualizadoEn=hoyISO();
+      F.setDoc(F.doc(F.db,'miembros',uid(),'pacientes',p.id), data, {merge:true})
+        .then(function(){ marcarSave('saved'); })
+        .catch(function(e){ console.error('[expediente] guardar:',e); marcarSave('error'); });
+    }, inmediato?0:700);
+  }
+
+  // ── Render raíz ──
+  Sections.renderers['tool-expediente']=function(dyn){
+    if(!toolEsVIP()){
+      dyn.innerHTML='<div class="fade-up"><div class="sec-hero"><span class="sec-hero__eyebrow">Herramienta pro</span>'
+      +'<h1 class="sec-hero__title">Expediente Clínico</h1>'
+      +'<p class="sec-hero__sub">Historia clínica y odontograma de tus pacientes, guardados en tu cuenta y disponibles en cualquier dispositivo.</p></div>'
+      +toolLockHTML('El Expediente Clínico guarda a tus pacientes en la nube. Activa tu membresía VIP para usarlo.')+'</div>';
+      return;
+    }
+    if(!uid()){
+      dyn.innerHTML='<div class="fade-up">'+toolLockHTML('Inicia sesión para acceder a tus expedientes.')+'</div>';
+      return;
+    }
+    dyn.innerHTML='<div class="fade-up" id="hc-root"></div>';
+    if(!HC.cargado){
+      $('#hc-root').innerHTML='<div class="hc-spin"><i></i>Cargando tus pacientes…</div>';
+      cargar(function(err){ if(!err) renderLista(); });
+    } else {
+      if(HC.abierto){ renderExp(HC.abierto, HC.tab); } else { renderLista(); }
+      cargar(function(err){ if(!err && !HC.abierto) pintarGrupos(); }); // refresco silencioso
+    }
+  };
+
+  // ── Vista lista ──
+  function enPeriodo(iso){
+    if(HC.per==='todos') return true;
+    var d=new Date(iso), hoy=new Date();
+    if(HC.per==='hoy') return mismoDia(d,hoy);
+    if(HC.per==='mes') return d.getMonth()===hoy.getMonth()&&d.getFullYear()===hoy.getFullYear();
+    if(HC.per==='semana'){
+      var lunes=new Date(hoy); var dow=(hoy.getDay()+6)%7; lunes.setDate(hoy.getDate()-dow); lunes.setHours(0,0,0,0);
+      return d>=lunes;
+    }
+    return true;
+  }
+  function renderLista(){
+    HC.abierto=null;
+    var r=$('#hc-root'); if(!r) return;
+    r.innerHTML=
+    '<div class="sec-hero" style="padding-bottom:18px;margin-bottom:18px">'
+    +'<div class="hc-head"><div><span class="sec-hero__eyebrow">Herramienta pro · Nueva</span>'
+    +'<h1 class="sec-hero__title">Expediente Clínico</h1>'
+    +'<p class="sec-hero__sub">Historia clínica y odontograma por paciente — todo guardado en tu cuenta.</p></div>'
+    +'<div class="hc-count" id="hc-total"></div></div></div>'
+    +'<div class="hc-toolbar">'
+    +'<div class="hc-search"><svg class="ic" viewBox="0 0 24 24" style="fill:none;stroke:currentColor;stroke-width:1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>'
+    +'<input id="hc-q" placeholder="Buscar por nombre o teléfono…" value="'+esc(HC.q)+'" autocomplete="off"></div>'
+    +'<div class="hc-seg" id="hc-seg">'
+    +['hoy|Hoy','semana|Esta semana','mes|Este mes','todos|Todos'].map(function(x){var p=x.split('|');
+      return '<button data-p="'+p[0]+'"'+(HC.per===p[0]?' class="on"':'')+'>'+p[1]+'</button>';}).join('')
+    +'</div>'
+    +'<button class="btn btn--accent" id="hc-nuevo">+ Nuevo paciente</button>'
+    +'</div><div id="hc-grupos"></div>';
+    $('#hc-q').addEventListener('input',function(e){ HC.q=e.target.value; pintarGrupos(); });
+    $$('#hc-seg button').forEach(function(b){ b.addEventListener('click',function(){
+      HC.per=b.dataset.p; $$('#hc-seg button').forEach(function(x){x.classList.toggle('on',x===b);}); pintarGrupos();
+    });});
+    $('#hc-nuevo').addEventListener('click',crearPaciente);
+    pintarGrupos();
+  }
+  function pintarGrupos(){
+    var w=$('#hc-grupos'); if(!w) return;
+    var tot=$('#hc-total'); if(tot) tot.innerHTML=HC.pacientes.length+' <small>paciente'+(HC.pacientes.length===1?'':'s')+'</small>';
+    var q=HC.q.toLowerCase();
+    var list=HC.pacientes.filter(function(p){
+      return (p.nombre||'').toLowerCase().indexOf(q)>=0 || (p.tel||'').indexOf(HC.q)>=0;
+    }).filter(function(p){ return enPeriodo(p.ultimaVisita); });
+    var grupos={};
+    list.forEach(function(p){
+      var d=new Date(p.ultimaVisita); var k=d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();
+      (grupos[k]=grupos[k]||{iso:p.ultimaVisita,ps:[]}).ps.push(p);
+    });
+    var keys=Object.keys(grupos).sort(function(a,b){return b-a;});
+    if(!keys.length){
+      w.innerHTML='<div class="hc-group"><div class="hc-empty">'
+      +(HC.pacientes.length? 'Sin pacientes en este periodo'+(HC.q?' con “'+esc(HC.q)+'”':'')+'. Cambia el filtro o el buscador.'
+        : 'Aún no tienes pacientes. Registra el primero con “+ Nuevo paciente” — su historia, odontograma y notas quedarán guardados aquí.')
+      +'</div></div>';
+      return;
+    }
+    w.innerHTML=keys.map(function(k,i){
+      var g=grupos[k];
+      return '<div class="hc-group'+(i<2?' open':'')+'">'
+      +'<button class="hc-group__head"><svg class="ic hc-group__chev" viewBox="0 0 24 24" style="fill:none;stroke:currentColor;stroke-width:2"><path d="M9 18l6-6-6-6"/></svg>'
+      +'<span class="hc-group__title">'+esc(fmtGrupo(g.iso))+'</span>'
+      +'<span class="hc-group__count">'+g.ps.length+' paciente'+(g.ps.length>1?'s':'')+'</span></button>'
+      +'<div class="hc-group__body">'+g.ps.map(function(p){
+        var al=alertas(p);
+        return '<div class="hc-prow" data-id="'+esc(p.id)+'"><div class="hc-ava">'+esc(ini(p.nombre))+'</div>'
+        +'<div><div class="hc-prow__name">'+esc(p.nombre||'(sin nombre)')+'</div>'
+        +'<div class="hc-prow__meta">'+(p.edad?esc(p.edad)+' años':'—')+(p.tel?' · '+esc(p.tel):'')+'</div></div>'
+        +'<div class="hc-prow__badges">'+al.map(function(a){
+          return '<span class="hc-badge hc-badge--'+a.k+'">'+(a.k==='danger'?'⚠ ':'')+esc(a.t)+'</span>';}).join('')+'</div>'
+        +'<svg class="ic ic--sm" viewBox="0 0 24 24" style="fill:none;stroke:currentColor;stroke-width:2;color:var(--text-3)"><path d="M9 18l6-6-6-6"/></svg></div>';
+      }).join('')+'</div></div>';
+    }).join('');
+    $$('.hc-group__head',w).forEach(function(h){ h.addEventListener('click',function(){ h.parentElement.classList.toggle('open'); });});
+    $$('.hc-prow',w).forEach(function(row){ row.addEventListener('click',function(){
+      var p=HC.pacientes.filter(function(x){return x.id===row.dataset.id;})[0];
+      if(p) renderExp(p,'ficha');
+    });});
+  }
+  function crearPaciente(){
+    var nombre=prompt('Nombre completo del paciente:');
+    if(!nombre||!nombre.trim()) return;
+    var p=nuevoPaciente(nombre.trim());
+    var F=fs();
+    F.addDoc(colRef(), p).then(function(ref){
+      p.id=ref.id; HC.pacientes.unshift(p);
+      toastOK('Paciente creado','Completa su ficha');
+      renderExp(p,'ficha');
+    }).catch(function(e){ console.error(e); toastErr('No se pudo crear','Revisa tu conexión'); });
+  }
+
+  // ── Vista expediente ──
+  var TABS=[['ficha','Ficha'],['ant','Antecedentes'],['expl','Exploración / Odontograma'],['evo','Evolución'],['docs','Documentos']];
+  function renderExp(p, tab){
+    HC.abierto=p; HC.tab=tab||'ficha';
+    var r=$('#hc-root'); if(!r) return;
+    var al=alertas(p);
+    r.innerHTML=
+    '<button class="btn btn--ghost" id="hc-volver" style="margin-bottom:14px;padding:7px 14px;font-size:11.5px">← Pacientes</button>'
+    +'<div class="hc-top"><div class="hc-ava">'+esc(ini(p.nombre))+'</div>'
+    +'<div><div class="hc-name">'+esc(p.nombre||'(sin nombre)')+'</div>'
+    +'<div class="hc-meta">'+(p.edad?esc(p.edad)+' años · ':'')+(p.tel?esc(p.tel)+' · ':'')+'Última visita: '+fmtCorta(p.ultimaVisita)+'</div></div>'
+    +'<div class="hc-actions"><span class="hc-save saved" id="hc-save">✓ Guardado</span>'
+    +'<button class="btn btn--ghost" id="hc-pdf" style="padding:7px 14px;font-size:11.5px">⬇ PDF</button>'
+    +'<button class="btn btn--ghost" id="hc-print" style="padding:7px 14px;font-size:11.5px">🖨 Imprimir</button>'
+    +'<button class="btn btn--ghost" id="hc-del" style="padding:7px 14px;font-size:11.5px;color:var(--danger)">Eliminar</button></div></div>'
+    +(al.length?'<div class="hc-alert">⚠ <span>'+al.map(function(a){return esc(a.t);}).join(' · ')+'</span></div>':'')
+    +'<div class="hc-tabs">'+TABS.map(function(t){
+      return '<button class="hc-tab'+(HC.tab===t[0]?' on':'')+'" data-t="'+t[0]+'">'+t[1]+'</button>';}).join('')+'</div>'
+    +'<div id="hc-tabbody"></div>';
+    $('#hc-volver').addEventListener('click',function(){ renderLista(); });
+    $('#hc-pdf').addEventListener('click',function(){ generarPDF(p,false); });
+    $('#hc-print').addEventListener('click',function(){ generarPDF(p,true); });
+    $('#hc-del').addEventListener('click',function(){
+      if(!confirm('¿Eliminar el expediente de '+(p.nombre||'este paciente')+'? Esta acción no se puede deshacer.')) return;
+      var F=fs();
+      F.deleteDoc(F.doc(F.db,'miembros',uid(),'pacientes',p.id)).then(function(){
+        HC.pacientes=HC.pacientes.filter(function(x){return x.id!==p.id;});
+        toastOK('Expediente eliminado'); renderLista();
+      }).catch(function(e){ console.error(e); toastErr('No se pudo eliminar'); });
+    });
+    $$('.hc-tab',r).forEach(function(t){ t.addEventListener('click',function(){
+      HC.tab=t.dataset.t; $$('.hc-tab',r).forEach(function(x){x.classList.toggle('on',x===t);}); pintarTab(p,HC.tab);
+    });});
+    pintarTab(p,HC.tab);
+  }
+
+  function bindCampos(p){
+    $$('#hc-tabbody [data-bind]').forEach(function(el){
+      el.addEventListener('input',function(){
+        p[el.dataset.bind]=el.value;
+        if(el.dataset.bind==='nombre'||el.dataset.bind==='edad'||el.dataset.bind==='tel'){ /* refresco de cabecera al guardar */ }
+        persistir(p);
+      });
+    });
+    $$('#hc-tabbody [data-bind-ant]').forEach(function(el){
+      el.addEventListener('input',function(){ p.ant[el.dataset.bindAnt]=el.value; persistir(p); });
+    });
+  }
+
+  function pintarTab(p,t){
+    var b=$('#hc-tabbody'); if(!b) return;
+    if(t==='ficha'){
+      b.innerHTML=
+      '<div class="hc-card"><h3>Identificación</h3><div class="hc-grid">'
+      +'<div class="hc-f"><label>Nombre completo</label><input data-bind="nombre" value="'+esc(p.nombre)+'"></div>'
+      +'<div class="hc-f"><label>Edad</label><input data-bind="edad" type="number" inputmode="numeric" value="'+esc(p.edad)+'"></div>'
+      +'<div class="hc-f"><label>Sexo</label><select data-bind="sexo"><option value="">—</option>'
+      +'<option value="F"'+(p.sexo==='F'?' selected':'')+'>Femenino</option><option value="M"'+(p.sexo==='M'?' selected':'')+'>Masculino</option></select></div>'
+      +'<div class="hc-f"><label>Teléfono</label><input data-bind="tel" inputmode="tel" value="'+esc(p.tel)+'"></div>'
+      +'<div class="hc-f"><label>Ocupación</label><input data-bind="ocupacion" value="'+esc(p.ocupacion)+'"></div>'
+      +'<div class="hc-f"><label>Contacto de emergencia</label><input data-bind="emergencia" value="'+esc(p.emergencia)+'"></div>'
+      +'</div></div>'
+      +'<div class="hc-card"><h3>Motivo de consulta / padecimiento actual</h3>'
+      +'<div class="hc-f"><textarea data-bind="motivo" placeholder="¿Qué refiere el paciente?">'+esc(p.motivo)+'</textarea></div></div>'
+      +'<div class="hc-card"><h3>Consentimiento de manejo de datos <span style="font-weight:500;letter-spacing:0;text-transform:none;color:var(--text-3)">· opcional</span></h3>'
+      +'<div class="hc-togs" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr))">'
+      +'<div class="hc-tog'+(!p.consent?' on':'')+'" data-c=""><span class="hc-sw"></span>Sin registrar</div>'
+      +'<div class="hc-tog hc-tog--warn'+(p.consent==='papel'?' on':'')+'" data-c="papel"><span class="hc-sw"></span>Firmado en papel</div>'
+      +'<div class="hc-tog hc-tog--ok'+(p.consent==='digital'?' on':'')+'" data-c="digital"><span class="hc-sw"></span>Firma digital</div></div>'
+      +'<div id="hc-sigzone" style="margin-top:12px'+(p.consent==='digital'?'':';display:none')+'">'
+      +'<div class="hc-sig"><canvas id="hc-canvas" height="120"></canvas>'
+      +(p.firmaPng?'':'<div class="hc-sig__hint" id="hc-sighint">FIRMA AQUÍ CON EL DEDO O EL MOUSE</div>')+'</div>'
+      +'<div style="display:flex;gap:8px;margin-top:10px"><button class="btn btn--ghost" id="hc-sigclear" style="padding:7px 14px;font-size:11.5px">Borrar firma</button></div></div>'
+      +'<div class="hc-hint" style="margin-top:10px">El expediente funciona igual sin firma — esto solo deja constancia de cómo se recabó el consentimiento.</div></div>';
+      bindCampos(p);
+      $$('.hc-tog[data-c]',b).forEach(function(el){ el.addEventListener('click',function(){
+        p.consent=el.dataset.c;
+        if(p.consent!=='digital') p.firmaPng='';
+        persistir(p); renderExp(p,'ficha');
+      });});
+      if(p.consent==='digital') initFirma(p);
+    }
+    else if(t==='ant'){
+      function tg(key,label,mod){ return '<div class="hc-tog'+(mod?' hc-tog--'+mod:'')+((p.ant&&p.ant[key])?' on':'')+'" data-k="'+key+'"><span class="hc-sw"></span>'+label+'</div>'; }
+      b.innerHTML=
+      '<div class="hc-card"><h3>Personales patológicos</h3><div class="hc-togs">'
+      +tg('alergia','Alergias')+tg('cardio','Cardiopatía')+tg('anticoag','Anticoagulantes')
+      +tg('diabetes','Diabetes','warn')+tg('hta','Hipertensión','warn')+tg('embarazo','Embarazo','warn')
+      +'</div><div class="hc-f" id="hc-alergiaf" style="margin-top:12px'+(p.ant&&p.ant.alergia?'':';display:none')+'">'
+      +'<label>¿A qué es alérgico(a)?</label><input data-bind-ant="alergiaTxt" value="'+esc(p.ant?p.ant.alergiaTxt:'')+'" placeholder="Ej. penicilina, látex…"></div></div>'
+      +'<div class="hc-card"><h3>No patológicos</h3><div class="hc-togs">'
+      +tg('tabaco','Tabaquismo','warn')+tg('bruxismo','Bruxismo','warn')+'</div></div>'
+      +'<div class="hc-card"><h3>Heredofamiliares</h3><div class="hc-f">'
+      +'<textarea data-bind="heredofam" placeholder="Diabetes, hipertensión, cardiopatías en la familia…">'+esc(p.heredofam)+'</textarea></div></div>';
+      bindCampos(p);
+      $$('.hc-tog[data-k]',b).forEach(function(el){ el.addEventListener('click',function(){
+        var k=el.dataset.k; p.ant=p.ant||{}; p.ant[k]=!p.ant[k];
+        persistir(p); renderExp(p,'ant');
+      });});
+    }
+    else if(t==='expl'){
+      var ESTADOS=['','caries','resina','corona','ausente'];
+      function row(nums){ return '<div class="hc-odo__row">'+nums.map(function(n){
+        var st=(p.odo&&p.odo[n])||'';
+        return '<div class="hc-tooth '+st+'" data-n="'+n+'" title="Pieza '+n+(st?' · '+st:' · sana')+'">'+n+'</div>';}).join('')+'</div>'; }
+      b.innerHTML=
+      '<div class="hc-card"><h3>Odontograma <span class="hc-hint" style="text-transform:none;letter-spacing:0">— toca una pieza para cambiar su estado, se guarda solo</span></h3>'
+      +'<div class="hc-odo">'
+      +row([18,17,16,15,14,13,12,11,21,22,23,24,25,26,27,28])
+      +row([48,47,46,45,44,43,42,41,31,32,33,34,35,36,37,38])
+      +'<div class="hc-legend"><span><i style="background:var(--danger)"></i>Caries</span><span><i style="background:var(--primary)"></i>Resina</span><span><i style="background:var(--warning)"></i>Corona</span><span><i style="border:1px dashed var(--text-3);background:transparent"></i>Ausente</span></div>'
+      +'</div></div>'
+      +'<div class="hc-card"><h3>Exploración extraoral</h3><div class="hc-f"><textarea data-bind="explExtra" placeholder="ATM, ganglios, simetría facial…">'+esc(p.explExtra)+'</textarea></div></div>'
+      +'<div class="hc-card"><h3>Exploración intraoral</h3><div class="hc-f"><textarea data-bind="explIntra" placeholder="Encías, mucosas, lengua, oclusión…">'+esc(p.explIntra)+'</textarea></div></div>';
+      bindCampos(p);
+      $$('.hc-tooth',b).forEach(function(el){ el.addEventListener('click',function(){
+        var n=el.dataset.n; p.odo=p.odo||{};
+        var cur=ESTADOS.indexOf(p.odo[n]||''); var next=ESTADOS[(cur+1)%ESTADOS.length];
+        if(next) p.odo[n]=next; else delete p.odo[n];
+        el.className='hc-tooth '+(next||''); el.title='Pieza '+n+(next?' · '+next:' · sana');
+        persistir(p);
+      });});
+    }
+    else if(t==='evo'){
+      var notas=(p.notas||[]);
+      b.innerHTML=
+      '<div class="hc-card"><h3>Nueva nota de evolución</h3>'
+      +'<div class="hc-f"><textarea id="hc-notatxt" placeholder="¿Qué se realizó hoy? Diagnóstico, tratamiento, indicaciones…"></textarea></div>'
+      +'<div style="display:flex;justify-content:flex-end;margin-top:10px"><button class="btn btn--accent" id="hc-addnota" style="padding:9px 16px;font-size:12px">+ Agregar nota</button></div></div>'
+      +'<div class="hc-card"><h3>Historial de visitas ('+notas.length+')</h3>'
+      +(notas.length? notas.map(function(n){
+        return '<div class="hc-nota"><div class="hc-nota__dot"></div><div>'
+        +'<div class="hc-nota__fecha">'+esc(fmtCorta(n.fecha)).toUpperCase()+'</div>'
+        +'<div class="hc-nota__txt">'+esc(n.texto)+'</div></div></div>';}).join('')
+        :'<div class="hc-empty">Aún no hay notas — la primera visita se registra aquí.</div>')
+      +'</div>';
+      $('#hc-addnota').addEventListener('click',function(){
+        var txt=$('#hc-notatxt').value.trim();
+        if(!txt){ toastErr('Escribe la nota primero'); return; }
+        p.notas=p.notas||[]; p.notas.unshift({fecha:hoyISO(), texto:txt});
+        p.ultimaVisita=hoyISO();
+        persistir(p,true);
+        toastOK('Nota agregada','El paciente sube a hoy en la lista');
+        pintarTab(p,'evo');
+      });
+    }
+    else { // docs
+      b.innerHTML=
+      '<div class="hc-card"><h3>Documentos del paciente</h3>'
+      +'<div class="hc-nota"><div class="hc-nota__dot"></div><div><div class="hc-nota__fecha">PRÓXIMAMENTE</div>'
+      +'<div class="hc-nota__txt">Aquí se juntarán las cotizaciones, recetas y consentimientos que generes para este paciente con las demás herramientas. Mientras tanto, ábrelas desde el menú de Herramientas.</div></div></div>'
+      +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">'
+      +'<button class="btn btn--ghost hc-goto" data-go="tool-cotizador" style="padding:8px 14px;font-size:11.5px">+ Cotización</button>'
+      +'<button class="btn btn--ghost hc-goto" data-go="tool-prescripcion" style="padding:8px 14px;font-size:11.5px">+ Receta</button>'
+      +'<button class="btn btn--ghost hc-goto" data-go="tool-plan" style="padding:8px 14px;font-size:11.5px">+ Plan de tratamiento</button></div></div>';
+      $$('.hc-goto',b).forEach(function(el){ el.addEventListener('click',function(){ navigateToSection(el.dataset.go); });});
+    }
+  }
+
+  // ── Firma digital ──
+  function initFirma(p){
+    var cv=$('#hc-canvas'); if(!cv) return;
+    var ctx=cv.getContext('2d'), drawing=false;
+    function resize(){
+      var r=cv.getBoundingClientRect(); cv.width=r.width; cv.height=120;
+      ctx.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue('--text').trim()||'#F0F4FA';
+      ctx.lineWidth=2.2; ctx.lineCap='round'; ctx.lineJoin='round';
+      if(p.firmaPng){ var img=new Image(); img.onload=function(){ ctx.drawImage(img,0,0,cv.width,cv.height); }; img.src=p.firmaPng; }
+    }
+    setTimeout(resize,60);
+    function pos(e){ var r=cv.getBoundingClientRect(); var t=e.touches?e.touches[0]:e; return {x:t.clientX-r.left,y:t.clientY-r.top}; }
+    var saveSig=null;
+    function st(e){ drawing=true; var q=pos(e); ctx.beginPath(); ctx.moveTo(q.x,q.y); e.preventDefault(); }
+    function mv(e){ if(!drawing) return; var q=pos(e); ctx.lineTo(q.x,q.y); ctx.stroke();
+      var h=$('#hc-sighint'); if(h) h.style.display='none'; e.preventDefault(); }
+    function fin(){ if(!drawing) return; drawing=false;
+      clearTimeout(saveSig);
+      saveSig=setTimeout(function(){ p.firmaPng=cv.toDataURL('image/png'); persistir(p); },400);
+    }
+    cv.addEventListener('mousedown',st); cv.addEventListener('mousemove',mv); window.addEventListener('mouseup',fin);
+    cv.addEventListener('touchstart',st,{passive:false}); cv.addEventListener('touchmove',mv,{passive:false}); cv.addEventListener('touchend',fin);
+    var bc=$('#hc-sigclear'); if(bc) bc.addEventListener('click',function(){
+      ctx.clearRect(0,0,cv.width,cv.height); p.firmaPng=''; persistir(p);
+      var h=$('#hc-sighint'); if(h) h.style.display='flex';
+    });
+  }
+
+  // ── PDF (jsPDF, texto nativo, multipágina) ──
+  function generarPDF(p, imprimir){
+    if(!window.jspdf){ toastErr('Generador no disponible','Revisa tu conexión'); return; }
+    try{
+      var jsPDF=window.jspdf.jsPDF;
+      var doc=new jsPDF({unit:'mm',format:'a4'});
+      var W=210, M=16, cw=W-M*2, y=0;
+      var AZUL=[62,111,168], INK=[26,35,51], SOFT=[90,102,126], GRIS=[122,133,153], ROJO=[220,45,63];
+      function color(c){ doc.setTextColor(c[0],c[1],c[2]); }
+      function salto(min){ if(y>282-(min||10)){ doc.addPage(); y=18; } }
+      function seccion(titulo){
+        salto(16); y+=4;
+        doc.setFont('helvetica','bold'); doc.setFontSize(8.2); color(GRIS);
+        doc.text(titulo.toUpperCase(),M,y);
+        doc.setDrawColor(228,235,244); doc.setLineWidth(.3);
+        doc.line(M+doc.getTextWidth(titulo.toUpperCase())+3,y-1,W-M,y-1);
+        y+=5.5;
+      }
+      function parrafo(txt,c,size){
+        doc.setFont('helvetica','normal'); doc.setFontSize(size||9.6); color(c||INK);
+        var lines=doc.splitTextToSize(txt||'—',cw);
+        lines.forEach(function(l){ salto(); doc.text(l,M,y); y+=4.6; });
+      }
+      // Encabezado
+      doc.setFillColor(AZUL[0],AZUL[1],AZUL[2]); doc.rect(0,0,W,24,'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(15); doc.setTextColor(255,255,255);
+      doc.text('OdonTeck',M,11);
+      doc.setFont('helvetica','normal'); doc.setFontSize(8.2);
+      var docName=(window.UserState&&window.UserState.displayName)||'';
+      doc.text('Expediente clínico'+(docName?' · '+docName:''),M,17);
+      doc.setFontSize(8);
+      doc.text('EXP-'+String(p.id||'').slice(0,8).toUpperCase(),W-M,10,{align:'right'});
+      doc.text(new Date().toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'}),W-M,15.5,{align:'right'});
+      y=33;
+      // Paciente
+      doc.setFont('helvetica','bold'); doc.setFontSize(13.5); color(INK);
+      doc.text(p.nombre||'(sin nombre)',M,y); y+=6;
+      doc.setFont('helvetica','normal'); doc.setFontSize(9); color(SOFT);
+      var linea2=[(p.edad?p.edad+' años':null),(p.sexo==='F'?'Femenino':p.sexo==='M'?'Masculino':null),p.tel||null,p.ocupacion||null].filter(Boolean).join('  ·  ');
+      if(linea2){ doc.text(linea2,M,y); y+=5; }
+      if(p.emergencia){ doc.text('Emergencia: '+p.emergencia,M,y); y+=5; }
+      // Alertas
+      var al=alertas(p);
+      if(al.length){
+        y+=2; doc.setFillColor(253,235,238); doc.setDrawColor(ROJO[0],ROJO[1],ROJO[2]);
+        var altxt=al.map(function(a){return a.t;}).join('  ·  ');
+        var ah=Math.max(10,doc.splitTextToSize(altxt,cw-8).length*4.5+5.5);
+        doc.roundedRect(M,y-4,cw,ah,2,2,'FD');
+        doc.setFont('helvetica','bold'); doc.setFontSize(9); color(ROJO);
+        doc.text(doc.splitTextToSize('ALERTAS:  '+altxt,cw-8),M+4,y+1.5);
+        y+=ah+2;
+      }
+      // Antecedentes
+      seccion('Antecedentes');
+      var a=p.ant||{};
+      var pats=[a.alergia?('Alergias'+(a.alergiaTxt?' ('+a.alergiaTxt+')':'')):null,a.cardio?'Cardiopatía':null,a.anticoag?'Anticoagulantes':null,a.diabetes?'Diabetes':null,a.hta?'Hipertensión':null,a.embarazo?'Embarazo':null].filter(Boolean);
+      var nopats=[a.tabaco?'Tabaquismo':null,a.bruxismo?'Bruxismo':null].filter(Boolean);
+      parrafo('Patológicos: '+(pats.length?pats.join(', '):'ninguno referido'));
+      parrafo('No patológicos: '+(nopats.length?nopats.join(', '):'ninguno referido'));
+      if(p.heredofam) parrafo('Heredofamiliares: '+p.heredofam);
+      // Motivo
+      seccion('Motivo de consulta');
+      parrafo(p.motivo||'—');
+      // Exploración
+      if(p.explExtra||p.explIntra){
+        seccion('Exploración');
+        if(p.explExtra) parrafo('Extraoral: '+p.explExtra);
+        if(p.explIntra) parrafo('Intraoral: '+p.explIntra);
+      }
+      // Odontograma
+      seccion('Odontograma · hallazgos');
+      var odoKeys=Object.keys(p.odo||{}).sort();
+      if(odoKeys.length){
+        var porEstado={};
+        odoKeys.forEach(function(n){ var e=p.odo[n]; (porEstado[e]=porEstado[e]||[]).push(n); });
+        Object.keys(porEstado).forEach(function(e){
+          parrafo(e.charAt(0).toUpperCase()+e.slice(1)+': OD '+porEstado[e].join(', '));
+        });
+      } else { parrafo('Sin hallazgos registrados.',GRIS); }
+      // Evolución
+      seccion('Notas de evolución ('+((p.notas||[]).length)+')');
+      if((p.notas||[]).length){
+        p.notas.forEach(function(n){
+          salto(14);
+          doc.setFont('helvetica','bold'); doc.setFontSize(8.4); color(AZUL);
+          doc.text(fmtCorta(n.fecha).toUpperCase(),M,y); y+=4.4;
+          parrafo(n.texto,SOFT,9.2); y+=1.5;
+        });
+      } else { parrafo('Sin notas registradas.',GRIS); }
+      // Consentimiento / firma
+      seccion('Consentimiento de manejo de datos');
+      if(p.consent==='digital' && p.firmaPng){
+        parrafo('Recabado con firma digital del paciente:',SOFT,9);
+        salto(30);
+        try{ doc.addImage(p.firmaPng,'PNG',M,y,70,21); }catch(e){}
+        y+=23;
+        doc.setDrawColor(26,35,51); doc.setLineWidth(.3); doc.line(M,y,M+70,y); y+=4;
+        doc.setFontSize(7.8); color(GRIS); doc.text('Firma del paciente',M,y); y+=5;
+      } else if(p.consent==='digital'){
+        parrafo('Firma digital seleccionada · pendiente de captura.',SOFT,9);
+      } else if(p.consent==='papel'){
+        parrafo('Recabado por escrito (archivo físico del consultorio).',SOFT,9);
+      } else {
+        parrafo('Sin registrar.',GRIS,9);
+      }
+      // Pies con número de página
+      var total=doc.internal.getNumberOfPages();
+      for(var i=1;i<=total;i++){
+        doc.setPage(i);
+        doc.setFont('helvetica','normal'); doc.setFontSize(7); color(GRIS);
+        doc.text('Expediente clínico · conservación conforme a la NOM-004-SSA3-2012',M,290);
+        doc.text('Página '+i+' de '+total,W-M,290,{align:'right'});
+      }
+      var archivo='Expediente-'+(p.nombre||'paciente').replace(/[^a-z0-9áéíóúñ ]/gi,'').trim().replace(/\s+/g,'_')+'.pdf';
+      if(imprimir){
+        doc.autoPrint();
+        var url=doc.output('bloburl');
+        var w=window.open(url,'_blank');
+        if(!w){ doc.save(archivo); toastOK('PDF descargado','El navegador bloqueó la ventana de impresión'); }
+      } else {
+        doc.save(archivo);
+        toastOK('PDF descargado',archivo);
+      }
+    }catch(e){ console.error('[expediente] PDF:',e); toastErr('No se pudo generar el PDF','Intenta de nuevo'); }
+  }
+
+  // ── Registro en el panel ──
+  if(typeof Tools!=='undefined'){ Tools.expediente={ open:function(){ navigateToSection('tool-expediente'); } }; }
+})();
+</script>
+
 
 <!-- ═══════════════════════════════════════════════════════════════════
      Sprint 7 · Aplicador de UserState · Paywall · Timer · Checkout inline

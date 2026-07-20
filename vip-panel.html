@@ -10377,10 +10377,34 @@ function marcarNotifsLeidas(ids) {
   } catch(e) {}
 }
 
-// Cuenta cuántas notif son nuevas (no leídas)
+// ─── v4.5 · Eliminar notificaciones SOLO del lado del cliente ───
+// ⚠️ La colección `notificaciones` de Firestore es GLOBAL/compartida por todos
+//    los miembros VIP (la alimenta crearNotificacion para todos a la vez). Por eso
+//    "eliminar" NUNCA borra el doc de Firestore — sería quitarlo para los demás.
+//    Se maneja 100% en localStorage por uid, idéntico patrón que las leídas.
+// Devuelve IDs de notificaciones eliminadas localmente (por usuario)
+function getNotifsEliminadas() {
+  const uid = window.UserState?.uid || 'guest';
+  try {
+    return JSON.parse(localStorage.getItem('odonteck_notif_deleted_' + uid) || '[]');
+  } catch(e) { return []; }
+}
+
+// Marca un array de IDs como eliminados (solo localStorage, jamás Firestore)
+function marcarNotifsEliminadas(ids) {
+  const uid = window.UserState?.uid || 'guest';
+  const ya = getNotifsEliminadas();
+  const todas = Array.from(new Set([...ya, ...ids]));
+  try {
+    localStorage.setItem('odonteck_notif_deleted_' + uid, JSON.stringify(todas));
+  } catch(e) {}
+}
+
+// Cuenta cuántas notif son nuevas (no leídas y no eliminadas)
 function contarNotifsNuevas() {
   const leidas = new Set(getNotifsLeidas());
-  return window.__notifsState.items.filter(n => !leidas.has(n.id)).length;
+  const eliminadas = new Set(getNotifsEliminadas()); // v4.5 · no contar las que el usuario ya quitó
+  return window.__notifsState.items.filter(n => !eliminadas.has(n.id) && !leidas.has(n.id)).length;
 }
 
 // Actualiza el badge (puntito rojo) según haya notif nuevas
@@ -10412,7 +10436,10 @@ function toggleNotifDropdown(){
   let dd=document.getElementById('notif-dropdown');
   if(dd){dd.remove();return;}
 
-  const notifs = window.__notifsState.items || [];
+  // v4.5 · excluir (solo localmente) las notificaciones que el usuario eliminó,
+  // ANTES de pintar y de contar nuevas · nunca se toca Firestore
+  const eliminadas = new Set(getNotifsEliminadas());
+  const notifs = (window.__notifsState.items || []).filter(n => !eliminadas.has(n.id));
   const leidas = new Set(getNotifsLeidas());
 
   dd=document.createElement('div');
@@ -10452,6 +10479,7 @@ function toggleNotifDropdown(){
             <div style="font-size:11.5px;color:var(--text-2);line-height:1.45;margin-top:3px;text-align:left;">${n.descripcion}</div>
             <div style="font-size:10px;color:var(--text-3);margin-top:5px;letter-spacing:.3px;text-transform:uppercase;text-align:left;">${formatNotifTime(n.createdAtMs)}</div>
           </div>
+          <button class="notif-del-btn" data-id="${n.id}" aria-label="Eliminar notificación" title="Eliminar" style="flex-shrink:0;width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;background:transparent;border:0;color:var(--text-3);cursor:pointer;padding:0;margin:-1px -2px 0 0;opacity:.65;transition:opacity .15s,color .15s;"><svg class="ic" style="width:13px;height:13px;"><use href="#i-x"/></svg></button>
         </div>
       `;
     }).join('');
@@ -10463,11 +10491,35 @@ function toggleNotifDropdown(){
       <span style="font-size:10px;color:${nuevasCount>0?'var(--primary)':'var(--text-3)'};letter-spacing:.5px;text-transform:uppercase;font-weight:700;">${nuevasCount>0 ? nuevasCount + ' nuevas' : 'Al día'}</span>
     </div>
     ${bodyHTML}
-    ${notifs.length > 0 ? `<div style="padding:9px 12px;border-top:0.5px solid var(--border);text-align:center;"><span style="font-size:11px;color:var(--text-3);">Mostrando últimas ${notifs.length}</span></div>` : ''}`;
+    ${notifs.length > 0 ? `<div style="padding:9px 12px;border-top:0.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:10px;"><span style="font-size:11px;color:var(--text-3);">Mostrando últimas ${notifs.length}</span><button id="notif-del-all" style="font-size:11px;color:var(--danger);background:transparent;border:0;cursor:pointer;font-weight:600;padding:2px 4px;font-family:inherit;">Eliminar todo</button></div>` : ''}`;
 
   dd.querySelectorAll('.notif-item').forEach(el=>{
     el.addEventListener('mouseenter',()=>el.style.background='var(--surface-2)');
     el.addEventListener('mouseleave',()=>el.style.background='transparent');
+  });
+
+  // v4.5 · re-pinta el dropdown desde cero (refleja empty state, contador y footer)
+  const repintarNotifDropdown = () => { dd.remove(); toggleNotifDropdown(); };
+
+  // v4.5 · eliminar UNA notificación (solo local · nunca Firestore)
+  dd.querySelectorAll('.notif-del-btn').forEach(btn=>{
+    btn.addEventListener('mouseenter',()=>{ btn.style.opacity='1'; btn.style.color='var(--danger)'; });
+    btn.addEventListener('mouseleave',()=>{ btn.style.opacity='.65'; btn.style.color='var(--text-3)'; });
+    btn.addEventListener('click',(e)=>{
+      e.stopPropagation(); // no disparar hover/click del row ni el cierre por click-fuera
+      marcarNotifsEliminadas([btn.dataset.id]);
+      actualizarBadgeNotif(); // por si era "nueva", baja el badge rojo
+      repintarNotifDropdown();
+    });
+  });
+
+  // v4.5 · "Eliminar todo" · marca los ids visibles y cae al empty state existente
+  const delAllBtn = dd.querySelector('#notif-del-all');
+  if (delAllBtn) delAllBtn.addEventListener('click',(e)=>{
+    e.stopPropagation();
+    marcarNotifsEliminadas(notifs.map(n => n.id));
+    actualizarBadgeNotif();
+    repintarNotifDropdown();
   });
 
   if (isMobile) {

@@ -230,3 +230,22 @@ En la pestaña "Exploración / Odontograma", las dos filas de 16 dientes usaban 
 **Verificado (responsive 375/768/1280):** en los 3 anchos el diente 11 queda exactamente sobre el 41 (delta 0px medido en el DOM), 16 piezas por fila; a 375px aparece el scroll horizontal y ambos extremos (18 y 28) son alcanzables; el tap sigue ciclando el estado y disparando el guardado (`persistir`/`p.odo`).
 
 **NO tocado:** la lógica de click ni el guardado del odontograma (`p.odo`), la estructura de las piezas, el resto del módulo Expediente, y el odontograma pro standalone (`.odo-tool` / `tool-odontograma`, que es otro módulo).
+
+---
+
+## v4.5 — Notificaciones: eliminar (individual y todo) SOLO del lado del cliente
+
+**Archivo modificado:** `vip-panel.html` (módulo de notificaciones)
+
+La colección `notificaciones` de Firestore es **global/compartida**: `crearNotificacion` la alimenta para todos los miembros VIP a la vez. Por eso "eliminar" **nunca** borra el documento de Firestore (lo quitaría para todos los demás). Se resuelve 100% en `localStorage` por uid, replicando exactamente el patrón de las "leídas".
+
+**Qué se agregó:**
+1. `getNotifsEliminadas()` / `marcarNotifsEliminadas(ids)` — junto a las de leídas, mismo estilo y try/catch, con clave nueva `odonteck_notif_deleted_<uid>`. Cero llamadas a Firestore
+2. `toggleNotifDropdown()` filtra `notifs` para excluir los ids eliminados **antes** de pintar y de calcular `nuevasCount`
+3. `contarNotifsNuevas()` (alimenta el badge rojo de la campana) también excluye los eliminados
+4. Botón × por notificación (reusa el símbolo `#i-x`, clase nueva `notif-del-btn`, `aria-label`): `stopPropagation`, `marcarNotifsEliminadas([id])`, actualiza el badge y re-pinta el dropdown
+5. "Eliminar todo" en el footer (junto a "Mostrando últimas N", visible solo si hay notifs): marca todos los ids visibles y re-pinta hasta el empty state existente ("Sin notificaciones")
+
+**Verificado:** responsive 375/768 (dropdown `fixed` móvil) y 1280 (`absolute` desktop) — × y "Eliminar todo" bien colocados en ambos; eliminar una la quita y baja el badge si era nueva; "Eliminar todo" llega al empty state; tras F5 las eliminadas siguen ocultas (persisten en localStorage) aunque los items reales siguen en `__notifsState`. **Confirmado que NO se agregó ningún `deleteDoc`/`updateDoc` contra `notificaciones`** (grep: los únicos writes del archivo son a `posts`/`comentarios`/`miembros`).
+
+**NO tocado:** `setupNotificacionesListener`, `crearNotificacion`, ni la lógica de "leídas" existente.

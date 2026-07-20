@@ -503,6 +503,63 @@ body{display:block}
 @media (max-width: 860px){
   .brand--hero{ padding-right: 64px; }
 }
+
+/* ═══ Gate de sesión · tapa el formulario hasta que Firebase Auth resuelve ═══ */
+/* Por default el gate manda: .auth-shell oculto, overlay visible.
+   Cuando NO hay sesión (o salta el salvavidas) se agrega .auth-ready a <body>. */
+body:not(.auth-ready) .auth-shell{display:none !important}
+body.auth-ready .auth-gate{display:none !important}
+
+.auth-gate{
+  position:fixed;inset:0;z-index:9998;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:22px;padding:32px 20px;
+  text-align:center;
+  background:linear-gradient(157deg,#131A28 0%,#0B1018 55%,#070A10 100%);
+}
+:root[data-theme="day"] .auth-gate{background:linear-gradient(157deg,#F4F8FC 0%,#EEF3F9 55%,#DBE6F2 100%)}
+.auth-gate::before{
+  content:"";position:absolute;top:-10%;left:50%;transform:translateX(-50%);
+  width:min(560px,90vw);height:min(560px,55vh);
+  background:radial-gradient(circle,var(--primary-glow),transparent 62%);
+  filter:blur(70px);pointer-events:none;opacity:.7;
+}
+.auth-gate > *{position:relative;z-index:1}
+.ag-logo{
+  width:76px;height:76px;border-radius:20px;overflow:hidden;
+  display:grid;place-items:center;
+  background:var(--surface-2);border:1px solid var(--border-2);
+  box-shadow:var(--shadow-card);
+  animation:agPulse 2.4s ease-in-out infinite;
+}
+.ag-logo img{width:100%;height:100%;object-fit:contain}
+.ag-name{
+  font-family:'Plus Jakarta Sans','Inter',sans-serif;
+  font-size:22px;font-weight:800;letter-spacing:-.6px;color:var(--text);
+}
+.ag-row{display:flex;align-items:center;gap:10px}
+.ag-spinner{
+  width:16px;height:16px;flex-shrink:0;border-radius:50%;
+  border:2px solid var(--border-strong);border-top-color:var(--primary);
+  animation:spin .7s linear infinite;
+}
+.ag-text{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10.5px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;
+  color:var(--text-3);
+}
+@keyframes agPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.78;transform:scale(.965)}}
+@media (max-width:420px){
+  .auth-gate::before{opacity:.5}
+  .auth-gate{gap:18px}
+  .ag-logo{width:64px;height:64px;border-radius:17px}
+  .ag-name{font-size:19px}
+  .ag-text{font-size:9.5px;letter-spacing:1.1px}
+}
+@media (prefers-reduced-motion:reduce){
+  .ag-logo{animation:none}
+  .ag-spinner{animation-duration:1.6s}
+}
 </style>
 </head>
 <body>
@@ -510,6 +567,27 @@ body{display:block}
 <button class="theme-toggle" id="theme-toggle" aria-label="Tema">
   <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3A7 7 0 0 0 21 12.79z"/></svg>
 </button>
+
+<!-- Gate de sesión · visible por default, se oculta cuando Firebase confirma que NO hay sesión -->
+<div class="auth-gate" id="auth-gate" role="status" aria-live="polite">
+  <div class="ag-logo">
+    <img src="assets/img/odonteck-logo.png" alt="OdonTeck">
+  </div>
+  <div class="ag-name">OdonTeck</div>
+  <div class="ag-row">
+    <div class="ag-spinner" aria-hidden="true"></div>
+    <span class="ag-text">Verificando tu sesión…</span>
+  </div>
+</div>
+<script>
+/* Salvavidas de emergencia · si el módulo de Firebase ni siquiera cargó
+   (CDN caído, red bloqueada), revelamos el formulario para no dejar
+   al usuario atrapado en el gate. */
+setTimeout(function(){
+  if (window.__odtAuthBooted) return;
+  document.body.classList.add('auth-ready');
+}, 5000);
+</script>
 
 <div class="auth-shell">
   <aside class="auth-hero">
@@ -844,6 +922,8 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 setPersistence(auth, browserLocalPersistence);
+/* Marca que el módulo sí arrancó · el salvavidas de emergencia lo consulta */
+window.__odtAuthBooted = true;
 
 /* =========================================================
    Crear o actualizar documento del miembro en Firestore
@@ -909,8 +989,22 @@ onAuthStateChanged(auth, async (user) => {
     try { localStorage.setItem('odonteck_last_user', JSON.stringify({ email:user.email||'', nombre:user.displayName||'' })); } catch(e){}
     const isAdmin = ADMINS.includes((user.email || "").toLowerCase());
     window.location.href = isAdmin ? "vip-admin.html" : "vip-panel.html";
+  } else {
+    // No hay sesión · bajar el gate y mostrar el formulario normal
+    revealAuthShell();
   }
 });
+
+/* ===== Gate de sesión · revelar formulario ===== */
+function revealAuthShell() {
+  document.body.classList.add('auth-ready');
+}
+/* Salvavidas · si Firebase nunca resuelve, igual mostramos el formulario.
+   Si YA sabemos que hay sesión (redirect en curso), el gate se queda puesto. */
+setTimeout(() => {
+  if (auth.currentUser) return;
+  revealAuthShell();
+}, 2500);
 
 /* ===== Traducir errores Firebase ===== */
 function translateError(code) {

@@ -192,3 +192,23 @@ Paleta intacta: #005187 / #0c74c4 / #7fd3ff.
 Las redirecciones post-registro apuntaban a `vip-checkout.html`, página que no existe en el repo: los usuarios nuevos caían en un 404 antes de poder pagar. Ahora van a `vip-panel.html`, que ya maneja el estado sin-membresía y ofrece el checkout en su sección Suscripción. La rama de admin (`vip-admin.html`) queda igual.
 
 **NO tocado:** estilos, textos, flujo de Google, y el resto de `vip-auth.html`
+
+---
+
+## v4.3 — gate de sesión (evita el flash del login)
+
+**Archivo modificado:** `vip-auth.html` (4 inserciones, 94 líneas, 0 borrados)
+
+El formulario de login/registro se renderizaba visible de inmediato, pero `onAuthStateChanged` es asíncrono: espera a que Firebase Auth restaure la sesión persistida (`browserLocalPersistence`) antes de decidir el redirect. Un usuario que YA tenía sesión alcanzaba a ver el formulario parpadear antes de que lo mandara al panel. Ahora una pantalla de carga de marca tapa el contenido desde el primer paint y solo se retira si Firebase confirma que NO hay sesión.
+
+**Qué se agregó:**
+1. CSS del gate (prefijo nuevo `auth-gate` / `ag-` para no colisionar): overlay full-screen con logo, spinner y "Verificando tu sesión…", en modo noche y día, responsive 375/768/1280 y con `prefers-reduced-motion`. El control son dos reglas: `body:not(.auth-ready) .auth-shell{display:none}` y `body.auth-ready .auth-gate{display:none}` — el gate es el estado por default, no requiere JS para mostrarse
+2. Markup del `div#auth-gate` justo antes de `.auth-shell`, con `role="status"` y `aria-live="polite"`
+3. Un `else` en `onAuthStateChanged` que llama `revealAuthShell()` cuando no hay usuario
+4. Dos salvavidas para que nadie quede atrapado en el spinner: uno de 2.5s dentro del módulo (con guarda `auth.currentUser` para no interrumpir un redirect en curso) y uno de 5s en script clásico que solo dispara si el módulo de Firebase nunca arrancó (CDN caído), apoyado en la bandera `window.__odtAuthBooted`
+
+**Verificado:** con sesión activa el formulario nunca se pinta — solo el gate y luego `vip-panel.html`; sin sesión el formulario aparece igual que antes. Login, registro, "olvidé mi contraseña" y Google sin cambios.
+
+**Riesgo conocido:** si en una red lenta Firebase tarda más de 2.5s en restaurar la sesión, `auth.currentUser` sigue `null`, el salvavidas revela el formulario y el redirect llega después — flash. Es el trade-off deliberado contra dejar al usuario atrapado viendo solo el spinner.
+
+**NO tocado:** la lógica interna del bloque `if (user)` (quedó idéntica), `index.html`, y los flujos de login / registro / forgot-password / Google

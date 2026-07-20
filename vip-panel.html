@@ -11647,9 +11647,16 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 .hc-tog--warn.on .hc-sw{background:var(--warning)}
 .hc-tog--ok.on{border-color:color-mix(in srgb,var(--success) 50%,transparent)}
 .hc-tog--ok.on .hc-sw{background:var(--success)}
-.hc-odo{display:flex;flex-direction:column;gap:12px;align-items:center;padding:6px 0}
-.hc-odo__row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
-.hc-tooth{width:32px;height:37px;border-radius:9px 9px 12px 12px;border:1.5px solid var(--border-strong);background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--text-3);cursor:pointer;transition:.15s;user-select:none}
+/* v4.4 · Odontograma: arcadas SIEMPRE alineadas columna a columna.
+   Antes las filas eran flex-wrap:wrap y en móvil las 16 piezas se envolvían,
+   desalineando arriba/abajo. Ahora cada fila es un grid de 16 columnas fijas
+   (mismo ancho --hc-tw) para que 11 quede siempre sobre 41, y un wrapper
+   .hc-odo__scroll da scroll horizontal en pantallas muy angostas sin romper
+   la cuadrícula. Sin tocar JS de click ni el guardado (p.odo). */
+.hc-odo{--hc-tw:32px;display:flex;flex-direction:column;gap:12px;align-items:center;padding:6px 0}
+.hc-odo__scroll{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;gap:12px;padding-bottom:2px}
+.hc-odo__row{display:grid;grid-template-columns:repeat(16,var(--hc-tw));gap:6px;margin-inline:auto}
+.hc-tooth{width:var(--hc-tw);min-width:var(--hc-tw);height:37px;border-radius:9px 9px 12px 12px;border:1.5px solid var(--border-strong);background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--text-3);cursor:pointer;transition:.15s;user-select:none}
 .hc-tooth:hover{transform:scale(1.14)}
 .hc-tooth.caries{background:color-mix(in srgb,var(--danger) 24%,transparent);border-color:var(--danger);color:var(--danger)}
 .hc-tooth.resina{background:color-mix(in srgb,var(--primary) 24%,transparent);border-color:var(--primary);color:var(--primary-soft)}
@@ -11688,12 +11695,23 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   .hc-actions{margin-left:0;width:100%}
 }
 @media(max-width:560px){
-  .hc-tooth{width:26px;height:31px;font-size:8px;border-radius:7px 7px 10px 10px}
+  /* v4.4 · reducir el ancho de columna (--hc-tw) para que las 16 piezas
+     quepan; la fila sigue siendo un grid de 16, alineado con la de abajo */
+  .hc-odo{--hc-tw:26px}
+  .hc-tooth{height:31px;font-size:8px;border-radius:7px 7px 10px 10px}
   .hc-odo__row{gap:4px}
   .hc-seg button{padding:8px 12px;font-size:11px}
   .hc-top .hc-ava{width:44px;height:44px;font-size:14px}
   .hc-name{font-size:18px}
   .hc-tabs{margin-left:-4px;margin-right:-4px}
+}
+@media(max-width:400px){
+  /* v4.4 · en teléfonos angostos apretamos lo justo para que las 16 quepan
+     sin scroll (~360-375px); por debajo de eso, .hc-odo__scroll resuelve con
+     scroll horizontal sin desalinear las arcadas ni aplastar el número */
+  .hc-odo{--hc-tw:20px}
+  .hc-tooth{height:26px;font-size:7.5px;border-radius:6px 6px 8px 8px}
+  .hc-odo__row{gap:3px}
 }
 </style>
 <script>
@@ -12128,8 +12146,10 @@ if (typeof Sections !== 'undefined' && Sections.renderers) (function(){
       b.innerHTML=
       '<div class="hc-card"><h3>Odontograma <span class="hc-hint" style="text-transform:none;letter-spacing:0">— toca una pieza para cambiar su estado, se guarda solo</span></h3>'
       +'<div class="hc-odo">'
+      +'<div class="hc-odo__scroll">' /* v4.4 · wrapper de scroll horizontal; mantiene las 2 arcadas alineadas columna a columna */
       +row([18,17,16,15,14,13,12,11,21,22,23,24,25,26,27,28])
       +row([48,47,46,45,44,43,42,41,31,32,33,34,35,36,37,38])
+      +'</div>'
       +'<div class="hc-legend"><span><i style="background:var(--danger)"></i>Caries</span><span><i style="background:var(--primary)"></i>Resina</span><span><i style="background:var(--warning)"></i>Corona</span><span><i style="border:1px dashed var(--text-3);background:transparent"></i>Ausente</span></div>'
       +'</div></div>'
       +'<div class="hc-card"><h3>Exploración extraoral</h3><div class="hc-f"><textarea data-bind="explExtra" placeholder="ATM, ganglios, simetría facial…">'+esc(p.explExtra)+'</textarea></div></div>'

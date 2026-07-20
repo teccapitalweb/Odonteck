@@ -212,3 +212,21 @@ El formulario de login/registro se renderizaba visible de inmediato, pero `onAut
 **Riesgo conocido:** si en una red lenta Firebase tarda más de 2.5s en restaurar la sesión, `auth.currentUser` sigue `null`, el salvavidas revela el formulario y el redirect llega después — flash. Es el trade-off deliberado contra dejar al usuario atrapado viendo solo el spinner.
 
 **NO tocado:** la lógica interna del bloque `if (user)` (quedó idéntica), `index.html`, y los flujos de login / registro / forgot-password / Google
+
+---
+
+## v4.4 — Odontograma del Expediente: arcadas siempre alineadas en móvil
+
+**Archivo modificado:** `vip-panel.html` (módulo Expediente Clínico, prefijo `hc-`)
+
+En la pestaña "Exploración / Odontograma", las dos filas de 16 dientes usaban `display:flex; flex-wrap:wrap`. En pantallas angostas (≤400px) las 16 piezas no cabían, se envolvían y las arcadas superior/inferior quedaban desalineadas (el 11 dejaba de estar sobre el 41).
+
+**Qué se cambió (solo CSS + un wrapper de presentación):**
+1. `.hc-odo__row` pasó de flex-wrap a `display:grid; grid-template-columns:repeat(16, var(--hc-tw))` — 16 columnas fijas del mismo ancho, así ambas arcadas comparten la misma cuadrícula y nunca se parten
+2. Nuevo wrapper `.hc-odo__scroll` (prefijo nuevo, sin colisión) alrededor de las dos filas, con `overflow-x:auto` + `-webkit-overflow-scrolling:touch`: en pantallas muy angostas hay scroll horizontal en vez de romper la cuadrícula
+3. `.hc-tooth` recibió `width/min-width: var(--hc-tw)` para no aplastarse ilegible
+4. Media queries: `--hc-tw` baja a 26px (≤560px) y 20px (≤400px) para que las 16 quepan; por debajo de eso el scroll horizontal lo resuelve sin desalinear
+
+**Verificado (responsive 375/768/1280):** en los 3 anchos el diente 11 queda exactamente sobre el 41 (delta 0px medido en el DOM), 16 piezas por fila; a 375px aparece el scroll horizontal y ambos extremos (18 y 28) son alcanzables; el tap sigue ciclando el estado y disparando el guardado (`persistir`/`p.odo`).
+
+**NO tocado:** la lógica de click ni el guardado del odontograma (`p.odo`), la estructura de las piezas, el resto del módulo Expediente, y el odontograma pro standalone (`.odo-tool` / `tool-odontograma`, que es otro módulo).

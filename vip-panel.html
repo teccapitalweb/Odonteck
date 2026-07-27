@@ -3510,6 +3510,24 @@ window.__db = db;
 window.__fs = { collection, doc, getDoc, getDocs, query, orderBy, onSnapshot, limit, where, addDoc, setDoc, updateDoc, deleteDoc, deleteField, increment, serverTimestamp, Timestamp, db };
 setPersistence(auth, browserLocalPersistence);
 
+/* ══ MODIFICADO · Precios en vivo (Firestore config/club · patrón SYNOVA) ══
+   Misma fuente de verdad que el webhook: lo que se muestra aquí es lo que
+   Stripe cobra en el checkout (price_data dinámico). */
+/* cargado:false → la UI muestra "$—" hasta tener el precio REAL de Firestore.
+   Así jamás se muestra un número viejo aunque el admin acabe de cambiarlo. */
+window.__preciosClub = { mes: 199, ano: 1899, equivMes: 158, ahorro: 489, cargado: false };
+window.__cargarPreciosClub = async function(){
+  try {
+    const snap = await getDoc(doc(db, 'config', 'club'));
+    const c = snap.exists() ? snap.data() : {};
+    const mes = Number(c.precioMes) > 0 ? Number(c.precioMes) : 199;
+    const ano = Number(c.precioAno) > 0 ? Number(c.precioAno) : 1899;
+    window.__preciosClub = { mes, ano, equivMes: Math.round(ano / 12), ahorro: Math.max(0, (mes * 12) - ano), cargado: true };
+  } catch (e) { console.warn('[OdonTeck] No se pudo leer config/club:', e.message); }
+  return window.__preciosClub;
+};
+window.__cargarPreciosClub();
+
 // ⚠️ CAMBIA esta URL por la de tu Railway cuando esté deployado
 const WEBHOOK_URL = 'https://odonteck-production.up.railway.app';
 window.WEBHOOK_URL = WEBHOOK_URL;
@@ -9468,6 +9486,7 @@ const Sections = (function(){
           <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;letter-spacing:-.2px;margin:28px 0 14px;text-align:center">
             Elige tu plan
           </h3>
+          <!-- MODIFICADO: precios en vivo desde config/club · coinciden con el cobro real de Stripe -->
           <div class="plan-picker" id="plan-picker">
             <button class="plan-picker__card ${intentPlan==='mensual'?'is-active':''}" data-plan="mensual" type="button">
               <div>
@@ -9475,17 +9494,17 @@ const Sections = (function(){
                 <div class="plan-picker__sub">Cancela cuando quieras</div>
               </div>
               <div style="text-align:right">
-                <div class="plan-picker__price">$199</div>
+                <div class="plan-picker__price" data-precio-picker-mes>${window.__preciosClub.cargado ? '$'+window.__preciosClub.mes.toLocaleString('es-MX') : '$—'}</div>
                 <div class="plan-picker__price-sub">MXN/mes</div>
               </div>
             </button>
             <button class="plan-picker__card ${intentPlan==='anual'?'is-active':''}" data-plan="anual" type="button">
               <div>
                 <div class="plan-picker__name">VIP Anual</div>
-                <div class="plan-picker__sub">Ahorras 21%</div>
+                <div class="plan-picker__sub" data-precio-picker-ahorro>${window.__preciosClub.cargado ? 'Ahorras $'+window.__preciosClub.ahorro.toLocaleString('es-MX') : 'Mejor precio'}</div>
               </div>
               <div style="text-align:right">
-                <div class="plan-picker__price">$1,899</div>
+                <div class="plan-picker__price" data-precio-picker-ano>${window.__preciosClub.cargado ? '$'+window.__preciosClub.ano.toLocaleString('es-MX') : '$—'}</div>
                 <div class="plan-picker__price-sub">MXN/año</div>
               </div>
             </button>
@@ -9512,6 +9531,15 @@ const Sections = (function(){
     // ─── Lógica del selector de plan + Stripe Embedded ───
     let selectedPlan = intentPlan;
     const mountEl = document.getElementById('sub-checkout-mount');
+
+    // MODIFICADO: refrescar el precio del picker con el valor más reciente de
+    // config/club (por si el admin lo cambió mientras el panel estaba abierto)
+    window.__cargarPreciosClub().then(p => {
+      const fmt = n => '$' + Number(n).toLocaleString('es-MX');
+      document.querySelectorAll('[data-precio-picker-mes]').forEach(el => el.textContent = fmt(p.mes));
+      document.querySelectorAll('[data-precio-picker-ano]').forEach(el => el.textContent = fmt(p.ano));
+      document.querySelectorAll('[data-precio-picker-ahorro]').forEach(el => el.textContent = 'Ahorras ' + fmt(p.ahorro));
+    });
 
     // Destruir cualquier checkout previo que haya quedado vivo de un render anterior
     // (al salir y volver a la pestaña, esta función se re-ejecuta; la instancia
@@ -9608,10 +9636,19 @@ const Sections = (function(){
 
   /* ─── Estado: VIP activo · muestra plan real y historial ─── */
   function renderSuscripcionVIP(container, S){
+    // MODIFICADO: precios en vivo desde config/club · "$—" hasta tener el real
+    const __p = window.__preciosClub || {};
+    const __fmt = n => '$' + Number(n).toLocaleString('es-MX');
     const PLAN_DATA = {
-      mensual: { name:'VIP Mensual', priceNum:'$199',   priceSub:'MXN / mes', period:'mensual' },
-      anual:   { name:'VIP Anual',   priceNum:'$1,899', priceSub:'MXN / año',  period:'anual' }
+      mensual: { name:'VIP Mensual', priceNum:(__p.cargado ? __fmt(__p.mes) : '$—'), priceSub:'MXN / mes', period:'mensual' },
+      anual:   { name:'VIP Anual',   priceNum:(__p.cargado ? __fmt(__p.ano) : '$—'), priceSub:'MXN / año',  period:'anual' }
     };
+    // Refrescar en cuanto Firestore responda (por si el render ganó la carrera)
+    if (window.__cargarPreciosClub) window.__cargarPreciosClub().then(pp => {
+      if (!pp.cargado) return;
+      const el = container.querySelector('.plan-card__price-num');
+      if (el) el.textContent = (S.plan === 'anual') ? __fmt(pp.ano) : __fmt(pp.mes);
+    });
     const plan = PLAN_DATA[S.plan] || PLAN_DATA.mensual;
     const proxRenovStr = S.membership?.proximaRenovacion
       ? new Date(S.membership.proximaRenovacion).toLocaleDateString('es-MX', {day:'numeric',month:'long',year:'numeric'})
@@ -12437,6 +12474,24 @@ if (typeof Sections !== 'undefined' && Sections.renderers) (function(){
     regalo:  { name:'Acceso temporal', price:'—', period:'cortesía', cycle:'cortesía' },
     admin:   { name:'ADMIN',       price:'—',     period:'',         cycle:'—' }
   };
+  // MODIFICADO: sincronizar las etiquetas con el precio en vivo de config/club
+  // en cuanto esté disponible (evita que quede un precio viejo en cualquier UI
+  // que use PLAN_LABELS).
+  (function syncPlanLabels(){
+    const aplicar = () => {
+      const p = window.__preciosClub; if (!p) return;
+      const fmt = n => '$' + Number(n).toLocaleString('es-MX');
+      PLAN_LABELS.mensual.price = fmt(p.mes);
+      PLAN_LABELS.anual.price   = fmt(p.ano);
+    };
+    // Este script clásico corre ANTES que el módulo de Firebase que define
+    // __cargarPreciosClub — si aún no existe, esperar a DOMContentLoaded
+    // (los módulos ya se ejecutaron para ese momento).
+    const arrancar = () => window.__cargarPreciosClub ? window.__cargarPreciosClub().then(aplicar) : aplicar();
+    if (window.__cargarPreciosClub) arrancar();
+    else if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', arrancar);
+    else arrancar();
+  })();
 
   // ─── Aplicador de UserState · llamado después del auth check ───
   window.__applyUserState = function applyUserState(){

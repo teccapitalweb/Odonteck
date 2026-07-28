@@ -5263,7 +5263,23 @@ function dirAdminCargar(){
   }, (err)=>{ console.error('dir admin',err); const c=document.getElementById('dir-admin-list'); if(c) c.innerHTML='<div class="empty-state">Error al cargar el directorio.</div>'; });
 }
 
-function navigate(section){
+/* ═══════════════════════════════════════════════════════════════════
+   MODIFICADO · Persistencia de sección (deep-linking con hash)
+   Antes: al recargar (F5) siempre volvías al Dashboard.
+   Ahora: la sección vive en la URL (#miembros, #config, …), así el
+   refresh te deja donde estabas, los botones atrás/adelante del
+   navegador funcionan y puedes compartir un link directo a la sección.
+   ═══════════════════════════════════════════════════════════════════ */
+const SECCIONES_VALIDAS = ['dashboard','notificaciones','cursos','webinars','pdfs','certificados','miembros','noticias','config','foro','directorio'];
+
+function seccionDesdeHash(){
+  const h = (window.location.hash || '').replace(/^#\/?/, '').trim();
+  return SECCIONES_VALIDAS.includes(h) ? h : null;
+}
+
+function navigate(section, opts){
+  opts = opts || {};
+  if(!SECCIONES_VALIDAS.includes(section)) section = 'dashboard';
   if(section!=='foro' && typeof _foroAdminUnsub==='function'){ _foroAdminUnsub(); _foroAdminUnsub=null; }
   if(section!=='directorio' && typeof _dirAdminUnsub==='function'){ _dirAdminUnsub(); _dirAdminUnsub=null; }
   document.querySelectorAll('.nav-item, .mobile-nav__item').forEach(n=>n.classList.remove('is-active'));
@@ -5271,9 +5287,41 @@ function navigate(section){
   const p=document.getElementById('page');
   const fn=Pages[section]||Pages.dashboard;
   fn(p);
+
+  // Reflejar la sección en la URL · replaceState cuando venimos del propio
+  // hash (restaurar / atrás) para no ensuciar el historial con duplicados.
+  if(!opts.silent){
+    const nuevoHash = '#' + section;
+    if(window.location.hash !== nuevoHash){
+      try {
+        if(opts.replace) history.replaceState({section}, '', nuevoHash);
+        else history.pushState({section}, '', nuevoHash);
+      } catch(e){ window.location.hash = section; }
+    }
+  }
+  // Respaldo por si el navegador pierde el hash (algunos flujos de auth)
+  try { sessionStorage.setItem('odt_admin_seccion', section); } catch(e){}
+
   window.scrollTo({top:0,behavior:'instant'});
   document.querySelector('.main')?.scrollTo({top:0,behavior:'instant'});
 }
+
+/* Sección inicial: hash de la URL → respaldo en sessionStorage → dashboard */
+function seccionInicial(){
+  const deHash = seccionDesdeHash();
+  if(deHash) return deHash;
+  try {
+    const guardada = sessionStorage.getItem('odt_admin_seccion');
+    if(guardada && SECCIONES_VALIDAS.includes(guardada)) return guardada;
+  } catch(e){}
+  return 'dashboard';
+}
+
+/* Botones atrás/adelante del navegador */
+window.addEventListener('popstate', () => {
+  const s = seccionDesdeHash() || 'dashboard';
+  navigate(s, { silent:true });
+});
 
 /* =========================================================
    ADMIN STORE · estado reactivo conectado a Firestore
@@ -5534,7 +5582,9 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('modal-close').addEventListener('click',()=>Modal.close());
   document.getElementById('modal-backdrop').addEventListener('click',e=>{if(e.target.id==='modal-backdrop')Modal.close();});
   document.addEventListener('keydown',e=>{if(e.key==='Escape')Modal.close();});
-  navigate('dashboard');
+  // MODIFICADO: restaurar la sección donde estabas (hash de la URL), no siempre Dashboard.
+  // replace:true → no deja una entrada extra en el historial al cargar.
+  navigate(seccionInicial(), { replace:true });
 });
 
 // Cuando Firebase confirma admin, arrancar listeners de Firestore

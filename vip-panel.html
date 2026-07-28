@@ -3546,7 +3546,11 @@ const isCheckoutSuccess = new URLSearchParams(window.location.search).get('check
 
 // Si ya estamos en modo demo (configurado en script anterior), aplicar UserState y salir
 if (window.__isDemoMode) {
-  setTimeout(() => { window.__applyUserState && window.__applyUserState(); }, 80);
+  setTimeout(() => {
+    window.__applyUserState && window.__applyUserState();
+    // MODIFICADO: restaurar la sección donde estaba el usuario antes del F5
+    window.__restaurarSeccionPanel && window.__restaurarSeccionPanel();
+  }, 80);
 } else {
   // ─── Auth normal · puede ser sin-membresia o vip ───
   onAuthStateChanged(auth, async (user) => {
@@ -3669,7 +3673,13 @@ if (window.__isDemoMode) {
       } catch(e) { console.warn('notificacionPendiente:', e.message); }
     }
 
-    setTimeout(() => { window.__applyUserState && window.__applyUserState(); }, 50);
+    setTimeout(() => {
+      window.__applyUserState && window.__applyUserState();
+      // MODIFICADO: restaurar la sección donde estaba el usuario antes del F5.
+      // Va aquí (no en init) porque ya se sabe si es VIP, sin-membresía o admin,
+      // y las secciones se renderizan según ese estado.
+      window.__restaurarSeccionPanel && window.__restaurarSeccionPanel();
+    }, 50);
 
     // ─── Popup: confirmar/editar nombre (1ª vez) · evita certificados con el email ───
     setTimeout(() => { try { window.__maybeAskName && window.__maybeAskName(); } catch(e){} }, 900);
@@ -6155,9 +6165,44 @@ const NOMTool = (function(){
   return {open(){navigateToSection('tool-noms');}, mount};
 })();
 
-function navigateToSection(section){
+/* ═══════════════════════════════════════════════════════════════════
+   MODIFICADO · Persistencia de sección (deep-linking con hash)
+   Antes: al recargar (F5) siempre volvías al Inicio.
+   Ahora: la sección vive en la URL (#cursos, #certificados, …), así el
+   refresh te deja donde estabas, los botones atrás/adelante del
+   navegador funcionan y puedes compartir un link directo a la sección.
+   ═══════════════════════════════════════════════════════════════════ */
+const SECCIONES_VALIDAS_PANEL = [
+  'inicio','cursos','certificados','logros','webinars','pdfs','foro',
+  'directorio','canal','perfil','suscripcion',
+  'tool-anestesico','tool-prescripcion','tool-odontograma','tool-cotizador',
+  'tool-plan','tool-expediente','tool-iper','tool-oee','tool-ats',
+  'tool-logistica','tool-noms'
+];
+
+function seccionPanelDesdeHash(){
+  const h = (window.location.hash || '').replace(/^#\/?/, '').trim();
+  return SECCIONES_VALIDAS_PANEL.includes(h) ? h : null;
+}
+
+function navigateToSection(section, opts){
+  opts = opts || {};
+  if(!SECCIONES_VALIDAS_PANEL.includes(section)) section = 'inicio';
   document.querySelectorAll('.nav-item, .mobile-nav__item, .mobile-drawer__item').forEach(n=>n.classList.remove('is-active'));
   document.querySelectorAll(`[data-section="${section}"]`).forEach(ni => ni.classList.add('is-active'));
+
+  // Reflejar la sección en la URL · replaceState al restaurar/volver para no
+  // ensuciar el historial con entradas duplicadas.
+  if(!opts.silent){
+    const nuevoHash = '#' + section;
+    if(window.location.hash !== nuevoHash){
+      try {
+        if(opts.replace) history.replaceState({section}, '', nuevoHash);
+        else history.pushState({section}, '', nuevoHash);
+      } catch(e){ window.location.hash = section; }
+    }
+  }
+  try { sessionStorage.setItem('odt_panel_seccion', section); } catch(e){}
   // Si es una herramienta-sección (tool-iper, tool-oee...), resaltar su item data-tool
   if(section.startsWith('tool-')){
     const toolKey=section.slice(5);
@@ -6183,6 +6228,32 @@ function navigateToSection(section){
   window.scrollTo({top:0,behavior:'instant'});
   document.querySelector('main.main')?.scrollTo({top:0,behavior:'instant'});
 }
+
+/* MODIFICADO · Restaurar la sección al cargar.
+   Se llama DESPUÉS de resolver el estado del usuario (VIP / sin-membresía /
+   invitado), porque secciones como "suscripción" y las herramientas se
+   renderizan distinto según el acceso. Si no hay hash, se queda en Inicio
+   como siempre — no cambia el comportamiento de una visita nueva. */
+window.__restaurarSeccionPanel = function(){
+  if (window.__seccionRestaurada) return;
+  window.__seccionRestaurada = true;
+  let destino = seccionPanelDesdeHash();
+  if(!destino){
+    try {
+      const guardada = sessionStorage.getItem('odt_panel_seccion');
+      if(guardada && SECCIONES_VALIDAS_PANEL.includes(guardada)) destino = guardada;
+    } catch(e){}
+  }
+  if(!destino || destino === 'inicio') return; // ya estamos en Inicio
+  try { navigateToSection(destino, { replace:true }); }
+  catch(e){ console.warn('[OdonTeck] No se pudo restaurar la sección:', e.message); }
+};
+
+/* Botones atrás/adelante del navegador */
+window.addEventListener('popstate', () => {
+  if (!window.__seccionRestaurada) return; // aún no arranca el panel
+  navigateToSection(seccionPanelDesdeHash() || 'inicio', { silent:true });
+});
 
 function sectionPlaceholder(section){
   const names={pdfs:'PDFs y material','mes-mayo':'Biblioteca · Mayo 2026','mes-abril':'Biblioteca · Abril 2026','mes-marzo':'Biblioteca · Marzo 2026',foro:'Foro VIP',canal:'Canal WhatsApp',perfil:'Mi perfil',suscripcion:'Suscripción'};
@@ -10919,6 +10990,10 @@ function init(){
   Theme.init();applyGreeting();initCountdown();initNav();
   loadProfileFromLS();
   injectSupportFAB();
+  // MODIFICADO · Salvavidas: si el estado del usuario tarda demasiado (red lenta
+  // o webhook caído), restaurar la sección de todos modos a los 2.5s para no
+  // dejar al usuario en Inicio después de un F5.
+  setTimeout(() => { window.__restaurarSeccionPanel && window.__restaurarSeccionPanel(); }, 2500);
   /* === Herramienta NATIVA: Anestésico (sistema de diseño del panel) === */
 if(typeof Sections!=='undefined' && Sections.renderers){
   Sections.renderers['tool-anestesico']=function(dyn){

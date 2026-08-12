@@ -3505,6 +3505,7 @@ const firebaseConfig = {
 const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+window.__auth = auth;
 window.__db = db;
 // Exponer funciones de Firestore para que el script no-module pueda usarlas
 window.__fs = { collection, doc, getDoc, getDocs, query, orderBy, onSnapshot, limit, where, addDoc, setDoc, updateDoc, deleteDoc, deleteField, increment, serverTimestamp, Timestamp, db };
@@ -6615,7 +6616,11 @@ const Sections = (function(){
 
     frame.src = convertirUrlDrive(url);
     titleEl.textContent = titulo || 'Visor';
-    if (dlEl) dlEl.href = url;
+    if (dlEl) {
+      dlEl.href = url;
+      dlEl.style.display = 'inline-flex';
+      dlEl.title = 'Abrir material en una pestaña nueva';
+    }
 
     // Botón "Marcar como vista" solo si es clase con cursoId+numClase
     if (markBtn) {
@@ -6647,11 +6652,72 @@ const Sections = (function(){
     document.body.style.overflow = 'hidden';
   };
 
+  // Reproductor Bunny protegido. El navegador nunca recibe la Stream API Key:
+  // solo obtiene del webhook un enlace firmado y temporal después de validar
+  // la sesión de Firebase y la membresía VIP.
+  window.abrirClaseBunny = async function(cursoId, sesionIdx) {
+    const curso = cursos.find(x => x.id === cursoId);
+    const sesion = curso?.sesiones?.[sesionIdx];
+    if (!sesion) {
+      Toast.error('Clase no encontrada', 'Actualiza la página e intenta de nuevo');
+      return;
+    }
+
+    // Compatibilidad con cursos antiguos que todavía conserven una URL de Drive.
+    if (!sesion.videoId) {
+      if (sesion.url) window.abrirVisor(sesion.url, sesion.titulo, cursoId, sesion.numero || (sesionIdx + 1));
+      else Toast.info('Video pendiente', 'Esta clase todavía no tiene un video asignado');
+      return;
+    }
+
+    const user = window.__auth?.currentUser;
+    if (!user) {
+      Toast.error('Sesión vencida', 'Vuelve a iniciar sesión para reproducir la clase');
+      return;
+    }
+
+    const numClase = sesion.numero || (sesionIdx + 1);
+    window.abrirVisor('about:blank', sesion.titulo || `Clase ${numClase}`, cursoId, numClase);
+    const frame = document.getElementById('visorFrame');
+    const titleEl = document.getElementById('visorTitle');
+    const dlEl = document.getElementById('visorDownload');
+    const requestId = `${Date.now()}-${Math.random()}`;
+    if (frame) frame.dataset.bunnyRequest = requestId;
+    if (titleEl) titleEl.textContent = `Cargando · ${sesion.titulo || `Clase ${numClase}`}`;
+    if (dlEl) dlEl.style.display = 'none';
+
+    try {
+      const idToken = await user.getIdToken();
+      const response = await fetch(`${window.WEBHOOK_URL}/api/bunny/embed-token`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${idToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ videoId: sesion.videoId })
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data.embedUrl) {
+        throw new Error(data.error || 'No se pudo autorizar la reproducción');
+      }
+      if (frame?.dataset.bunnyRequest !== requestId) return;
+      frame.src = data.embedUrl;
+      if (titleEl) titleEl.textContent = sesion.titulo || `Clase ${numClase}`;
+    } catch (error) {
+      console.error('[Bunny player]', error);
+      if (frame?.dataset.bunnyRequest === requestId) window.cerrarVisor();
+      Toast.error('No se pudo abrir la clase', error.message || 'Intenta nuevamente');
+    }
+  };
+
   window.cerrarVisor = function() {
     const overlay = document.getElementById('visorOverlay');
     const frame = document.getElementById('visorFrame');
     if (overlay) overlay.style.display = 'none';
-    if (frame) frame.src = ''; // detener video
+    if (frame) {
+      frame.src = ''; // detener video
+      delete frame.dataset.bunnyRequest;
+    }
     document.body.style.overflow = '';
   };
 
@@ -7120,7 +7186,7 @@ const Sections = (function(){
 
               if (vista) {
                 return `
-                <div class="modulo" onclick="window.abrirVisor('${urlEsc}', '${titEsc}', '${cursoId}', ${numSes})" style="cursor:pointer;background:color-mix(in srgb,var(--success) 8%,var(--surface-2));border-color:color-mix(in srgb,var(--success) 30%,transparent);" data-bypass-paywall="true">
+                <div class="modulo" onclick="window.abrirClaseBunny('${String(cursoId).replace(/'/g, "\\'")}', ${i})" style="cursor:pointer;background:color-mix(in srgb,var(--success) 8%,var(--surface-2));border-color:color-mix(in srgb,var(--success) 30%,transparent);" data-bypass-paywall="true">
                   <div class="modulo__num" style="background:var(--success);color:#0B1018;">✓</div>
                   <div style="flex:1;min-width:0;">
                     <div class="modulo__title">${s.titulo}</div>
@@ -7131,7 +7197,7 @@ const Sections = (function(){
               }
               if (desblok) {
                 return `
-                <div class="modulo" onclick="window.abrirVisor('${urlEsc}', '${titEsc}', '${cursoId}', ${numSes})" style="cursor:pointer;" data-bypass-paywall="true">
+                <div class="modulo" onclick="window.abrirClaseBunny('${String(cursoId).replace(/'/g, "\\'")}', ${i})" style="cursor:pointer;" data-bypass-paywall="true">
                   <div class="modulo__num">${numSes}</div>
                   <div style="flex:1;min-width:0;">
                     <div class="modulo__title">${s.titulo}</div>
@@ -12898,7 +12964,7 @@ if (typeof Sections !== 'undefined' && Sections.renderers) (function(){
       </div>
     </div>
     <div class="visor-frame-wrap">
-      <iframe id="visorFrame" class="visor-frame" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <iframe id="visorFrame" class="visor-frame" src="" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
   </div>
 </div>

@@ -12873,12 +12873,22 @@ if (typeof Sections !== 'undefined' && Sections.renderers) (function(){
     document.getElementById('paywall-modal').classList.remove('is-open');
   });
   document.getElementById('paywall-cta')?.addEventListener('click', () => {
-    document.getElementById('paywall-modal').classList.remove('is-open');
+    const paywall = document.getElementById('paywall-modal');
     const S = window.UserState;
     if (S.modo === 'invitado') {
+      paywall.classList.remove('is-open');
       window.location.href = 'vip-auth.html?plan=' + (localStorage.getItem('odonteck_intent_plan') || 'anual');
     } else {
-      window.navigateToSection?.('suscripcion');
+      // Cerrar primero cualquier "Detalle del curso". El paywall permanece al
+      // frente durante la animación y luego deja visible únicamente los planes.
+      const detalles = Array.from(document.querySelectorAll('.modal-backdrop.is-open[data-modal-id^="curso-"]'));
+      detalles.forEach(bd => Modal.close(bd.dataset.modalId));
+      const mostrarPlanes = () => {
+        window.navigateToSection?.('suscripcion');
+        paywall.classList.remove('is-open');
+      };
+      if (detalles.length) setTimeout(mostrarPlanes, 270);
+      else mostrarPlanes();
     }
   });
   // Cerrar al click fuera del box

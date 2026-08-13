@@ -6385,8 +6385,8 @@ const Sections = (function(){
   function cursoDesbloqueado(indexCurso, curso){
     if (esAdminReal()) return true;
     if (curso && curso.marcarProximamente === true) return false;
-    // Todos pueden abrir cada curso publicado para ver la clase 1.
-    // La membresía desbloquea las clases restantes dentro de la ficha.
+    // Todos pueden abrir la ficha; solo la clase 1 del primer curso es gratis.
+    // La membresía desbloquea todas las clases dentro de cada ficha.
     return true;
   }
 
@@ -6454,11 +6454,20 @@ const Sections = (function(){
     return p[cursoId];
   };
 
+  function primerCursoGratisId() {
+    const primero = cursos.find(c => c.activo !== false && c.publicado !== false && c.marcarProximamente !== true && Array.isArray(c.sesiones) && c.sesiones.length);
+    return primero ? String(primero.id) : '';
+  }
+
+  function esClaseGratisGlobal(cursoId, indexClase) {
+    return indexClase === 0 && String(cursoId) === primerCursoGratisId();
+  }
+
   function claseDesbloqueada(cursoId, indexClase, sesiones) {
     if (esAdminReal()) return true;
-    if (indexClase === 0) return true; // primera siempre desbloqueada
-    // Al pagar se desbloquean todas las clases del curso; sin membresía solo la primera.
-    return window.UserState?.modo === 'vip';
+    if (window.UserState?.modo === 'vip') return true;
+    // Sin membresía solo se abre la clase 1 del primer curso del catálogo.
+    return esClaseGratisGlobal(cursoId, indexClase);
   }
 
   function progresoCursoPct(cursoId, totalClases) {
@@ -6661,10 +6670,11 @@ const Sections = (function(){
       Toast.error('Clase no encontrada', 'Actualiza la página e intenta de nuevo');
       return;
     }
-    if (sesionIdx > 0 && !toolEsVIP()) {
+    if (!claseDesbloqueada(cursoId, sesionIdx, curso.sesiones)) {
+      const totalMateriales = Array.isArray(curso.materiales) ? curso.materiales.length : 0;
       window.__showPaywallModal?.({
         title: 'Desbloquea el curso completo',
-        sub: 'La primera clase es gratis. Activa tu membresía OdonTeck para ver todas las demás clases y materiales.'
+        sub: `Disfruta gratis la primera clase. Activa tu membresía para abrir las demás clases${totalMateriales ? ` y ${totalMateriales} material${totalMateriales !== 1 ? 'es' : ''} del curso` : ''}.`
       });
       return;
     }
@@ -6813,6 +6823,8 @@ const Sections = (function(){
           // Flags de desbloqueo
           disponibleSiempre: data.disponibleSiempre === true,
           marcarProximamente: data.marcarProximamente === true,
+          activo: data.activo !== false,
+          publicado: data.publicado !== false,
           orden: data.orden || (i + 1),
           // Portada automática
           portada: data.portada || getPortadaCurso({ titulo: data.titulo, portada: data.portada }),
@@ -7011,7 +7023,7 @@ const Sections = (function(){
         <div class="sec-hero">
           <span class="sec-hero__eyebrow">Tu camino</span>
           <h1 class="sec-hero__title">Mis cursos</h1>
-          <p class="sec-hero__sub">Explora todos los cursos con su primera clase gratis. Activa tu membresía para desbloquear todas las clases y materiales.</p>
+          <p class="sec-hero__sub">Disfruta gratis la primera clase del catálogo. Activa tu membresía para desbloquear todos los cursos, clases y materiales.</p>
         </div>
         <div class="tabs">
           <button class="tab ${cursosState.tab==='progreso'?'is-active':''}" data-curtab="progreso">En progreso · ${c.progreso}</button>
@@ -7095,7 +7107,7 @@ const Sections = (function(){
         <div class="curso-card__cover" style="background-image:linear-gradient(180deg,rgba(0,0,0,.15),rgba(0,0,0,.55)),url('${portada}');background-size:cover;background-position:center;">
           <svg class="ic" style="opacity:.85;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5));"><use href="#${ICON_AREA[c.area]||'i-book'}"/></svg>
           ${c.disponibleSiempre ? '<span class="curso-card__cover-badge" style="background:var(--success);color:#0B1018;">DISPONIBLE</span>' : ''}
-          ${!toolEsVIP() ? '<span class="curso-card__cover-badge" style="background:var(--success);color:#0B1018;left:12px;right:auto;">CLASE 1 GRATIS</span>' : ''}
+          ${!toolEsVIP() && String(c.id) === primerCursoGratisId() ? '<span class="curso-card__cover-badge" style="background:var(--success);color:#0B1018;left:12px;right:auto;">1 CLASE GRATIS</span>' : ''}
           ${!desbloqueado && diasFalta > 0 ? `<span class="curso-card__cover-badge" style="background:rgba(14,10,6,.85);color:var(--primary);border:1px solid var(--primary);">🔒 Se desbloquea en ${diasFalta} día${diasFalta!==1?'s':''}</span>` : ''}
         </div>
         <div class="curso-card__body">
@@ -7210,7 +7222,7 @@ const Sections = (function(){
               }
               // Bloqueada
               return `
-                <div class="modulo" style="cursor:not-allowed;opacity:.55;">
+                <div class="modulo" onclick="window.abrirClaseBunny('${String(cursoId).replace(/'/g, "\\'")}', ${i})" style="cursor:pointer;opacity:.65;" data-bypass-paywall="true">
                   <div class="modulo__num" style="background:var(--surface-3);color:var(--text-3);">🔒</div>
                   <div style="flex:1;min-width:0;">
                     <div class="modulo__title" style="color:var(--text-2);">${s.titulo}</div>
@@ -12708,7 +12720,7 @@ if (typeof Sections !== 'undefined' && Sections.renderers) (function(){
         startDemoTimer();
       } else { // sin-membresia
         banner.style.display = '';
-        if (bannerText) bannerText.innerHTML = '<strong>Tu primera clase es gratis</strong> en cada curso. Activa tu suscripción para desbloquear el contenido completo.';
+        if (bannerText) bannerText.innerHTML = '<strong>Tu primera clase es gratis.</strong> Activa tu suscripción para desbloquear todos los cursos y materiales.';
         if (bannerTimer) bannerTimer.style.display = 'none';
       }
     }

@@ -2938,7 +2938,7 @@ body:has(#fomo-banner:not([style*="display:none"])){padding-top:0}
 
 /* ─── Popup paywall ─── */
 .paywall-modal{
-  position:fixed;inset:0;z-index:200;
+  position:fixed;inset:0;z-index:200000;
   background:rgba(0,0,0,.65);
   backdrop-filter:blur(4px);
   display:none;align-items:center;justify-content:center;padding:20px;
@@ -12859,6 +12859,8 @@ if (typeof Sections !== 'undefined' && Sections.renderers) (function(){
     const modal = document.getElementById('paywall-modal');
     if (opts && opts.title) document.getElementById('paywall-title').textContent = opts.title;
     if (opts && opts.sub) document.getElementById('paywall-sub').textContent = opts.sub;
+    // Mantener el paywall por encima del detalle del curso y cualquier otro modal.
+    if (modal && modal.parentElement !== document.body) document.body.appendChild(modal);
     modal.classList.add('is-open');
   }
   window.__showPaywallModal = showPaywallModal;

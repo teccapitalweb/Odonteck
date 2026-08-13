@@ -1180,6 +1180,7 @@ window.__signOut = async () => {
     <div class="nav-section">
       <div class="nav-label">Comunidad</div>
       <a class="nav-item" data-section="miembros"><svg class="ic"><use href="#i-users"/></svg>Miembros VIP<span class="nav-item__badge">486</span></a>
+      <a class="nav-item" data-section="referidos"><svg class="ic"><use href="#i-users"/></svg>Referidos</a>
       <a class="nav-item" data-section="noticias"><svg class="ic"><use href="#i-news"/></svg>Noticias</a>
       <a class="nav-item" data-section="foro"><svg class="ic"><use href="#i-users"/></svg>Foro<span class="nav-item__badge" id="badge-foro">0</span></a>
       <a class="nav-item" data-section="directorio"><svg class="ic"><use href="#i-user"/></svg>Directorio<span class="nav-item__badge" id="badge-dir">0</span></a>
@@ -5410,7 +5411,7 @@ function dirAdminCargar(){
    refresh te deja donde estabas, los botones atrás/adelante del
    navegador funcionan y puedes compartir un link directo a la sección.
    ═══════════════════════════════════════════════════════════════════ */
-const SECCIONES_VALIDAS = ['dashboard','notificaciones','cursos','webinars','pdfs','certificados','miembros','noticias','config','foro','directorio'];
+const SECCIONES_VALIDAS = ['dashboard','notificaciones','cursos','webinars','pdfs','certificados','miembros','referidos','noticias','config','foro','directorio'];
 
 function seccionDesdeHash(){
   const h = (window.location.hash || '').replace(/^#\/?/, '').trim();
@@ -5735,5 +5736,6 @@ window.addEventListener('adminready', () => {
 if (window.__currentAdmin) AdminStore.init();
 </script>
 
+<script src="assets/odonteck-referrals-admin.js"></script>
 </body>
 </html>

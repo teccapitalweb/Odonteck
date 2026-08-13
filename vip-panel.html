@@ -4001,6 +4001,7 @@ window.__setDisplayName = async (nombre) => {
       <div class="nav-label">Mi cuenta</div>
       <a class="nav-item" data-section="perfil"><svg class="ic"><use href="#i-user"/></svg>Mi perfil</a>
       <a class="nav-item" data-section="suscripcion"><svg class="ic"><use href="#i-credit-card"/></svg>Suscripción</a>
+      <a class="nav-item" data-section="referidos"><svg class="ic"><use href="#i-users"/></svg>Invita y gana</a>
       <a class="nav-item" id="btn-logout"><svg class="ic"><use href="#i-logout"/></svg>Cerrar sesión</a>
     </div>
   </aside>
@@ -4183,6 +4184,7 @@ window.__setDisplayName = async (nombre) => {
         <div class="mobile-drawer__label">Mi cuenta</div>
         <a class="mobile-drawer__item" data-section="perfil"><svg class="ic"><use href="#i-user"/></svg>Mi perfil</a>
         <a class="mobile-drawer__item" data-section="suscripcion"><svg class="ic"><use href="#i-credit-card"/></svg>Suscripción</a>
+        <a class="mobile-drawer__item" data-section="referidos"><svg class="ic"><use href="#i-users"/></svg>Invita y gana</a>
         <a class="mobile-drawer__item" id="drawer-logout-btn" style="color:#EF4444;"><svg class="ic"><use href="#i-logout"/></svg>Cerrar sesión</a>
       </div>
     </div>
@@ -6175,7 +6177,7 @@ const NOMTool = (function(){
    ═══════════════════════════════════════════════════════════════════ */
 const SECCIONES_VALIDAS_PANEL = [
   'inicio','cursos','certificados','logros','webinars','pdfs','foro',
-  'directorio','canal','perfil','suscripcion',
+  'directorio','canal','perfil','suscripcion','referidos',
   'tool-anestesico','tool-prescripcion','tool-odontograma','tool-cotizador',
   'tool-plan','tool-expediente','tool-iper','tool-oee','tool-ats',
   'tool-logistica','tool-noms'
@@ -9705,13 +9707,16 @@ const Sections = (function(){
       }
       mountEl.innerHTML = `<div class="sub-loading"><div class="sub-loading__spin"></div><div>Cargando plan ${selectedPlan}…</div></div>`;
       try {
+        const idToken = window.__auth?.currentUser ? await window.__auth.currentUser.getIdToken() : '';
+        const referralCode = localStorage.getItem('odonteck_referral_code') || '';
         const res = await fetch(`${window.WEBHOOK_URL || 'https://odonteck-production.up.railway.app'}/stripe/checkout`, {
           method:'POST',
-          headers:{'Content-Type':'application/json'},
+          headers:{'Content-Type':'application/json','Authorization':'Bearer '+idToken},
           body: JSON.stringify({
             plan: selectedPlan,
             uid: S.uid,
-            email: S.email
+            email: S.email,
+            referralCode
           })
         });
         if (!res.ok) {
@@ -10764,48 +10769,11 @@ window.crearNotificacion = async function(opts) {
   }
 };
 
-// ═══════════════════════════════════════════════════════════════════
-// Sistema de referidos · código + copiar + compartir
-// ═══════════════════════════════════════════════════════════════════
-function getReferralCode(){
-  let code=localStorage.getItem('odonteck_referral');
-  if(!code){
-    const rand=Math.random().toString(36).slice(2,7).toUpperCase().replace(/[01OIL]/g,'X');
-    code='OdonTeck-'+rand;
-    localStorage.setItem('odonteck_referral',code);
-  }
-  return code;
-}
-
+// El modal antiguo generaba códigos aleatorios sin respaldo en el servidor.
+// Conservamos su entrada pública para que cualquier botón existente abra la
+// sección real, cuyo código y avance vienen del webhook autenticado.
 function openReferralModal(){
-  const code=getReferralCode();
-  const refLink=OdonTeck_CONTACT.sitio+'/?ref='+code;
-  const shareTxt=`Conoce OdonTeck · cursos de odontología con certificación oficial.\n\nUsa mi código ${code} y obtén un descuento especial.\n\nMás info: ${refLink}`;
-  Modal.open({
-    id:'referral',
-    title:'Tu código de referidos',
-    subtitle:'Comparte y gana beneficios',
-    icon:'i-trophy',
-    size:'sm',
-    body:`
-      <div style="background:linear-gradient(135deg,color-mix(in srgb,var(--primary) 16%,transparent),color-mix(in srgb,var(--highlight) 8%,transparent));border:0.5px solid color-mix(in srgb,var(--primary) 30%,transparent);border-radius:14px;padding:18px 16px;text-align:center;margin-bottom:14px;">
-        <div style="font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--primary);font-weight:700;">Tu código personal</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:700;letter-spacing:1.5px;color:var(--text);margin-top:8px;">${code}</div>
-      </div>
-      <p style="font-size:13px;color:var(--text-2);line-height:1.6;margin:0;">Cuando alguien se registre con tu código en OdonTeck, ambos reciben beneficios. Comparte por WhatsApp, redes o copia el enlace.</p>
-    `,
-    footer:`<button class="btn btn--ghost" id="ref-copy"><svg class="ic"><use href="#i-download"/></svg>Copiar código</button><button class="btn btn--accent" id="ref-share"><svg class="ic"><use href="#i-whatsapp"/></svg>Compartir por WhatsApp</button>`
-  });
-  document.getElementById('ref-copy')?.addEventListener('click',()=>{
-    navigator.clipboard?.writeText(code).then(
-      ()=>Toast.success('Código copiado',code),
-      ()=>Toast.info('Copia manual',code)
-    );
-  });
-  document.getElementById('ref-share')?.addEventListener('click',()=>{
-    window.open(`https://wa.me/?text=${encodeURIComponent(shareTxt)}`,'_blank');
-    Toast.success('Abriendo WhatsApp…','Comparte con tus colegas');
-  });
+  navigate('referidos');
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -13412,5 +13380,6 @@ if (typeof Sections !== 'undefined' && Sections.renderers) (function(){
   if (overlay) overlay.addEventListener('click', function(){ ocultar(false); });
 })();
 </script>
+<script src="assets/odonteck-referrals.js"></script>
 </body>
 </html>

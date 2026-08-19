@@ -1,19 +1,52 @@
 {
-  "name": "OdonTeck · Panel VIP",
-  "short_name": "OdonTeck VIP",
-  "description": "Capacitación odontológica, cursos y certificación con folio oficial OdonTeck.",
-  "start_url": ".",
-  "scope": ".",
+  "id": "/",
+  "name": "OdonTeck Consulting",
+  "short_name": "OdonTeck",
+  "description": "Capacitación odontológica especializada: cursos en vivo y grabados, servicios y certificación con folio verificable.",
+  "start_url": "./?source=pwa",
+  "scope": "./",
   "display": "standalone",
-  "orientation": "portrait-primary",
-  "background_color": "#0B1018",
-  "theme_color": "#0B1018",
+  "display_override": ["standalone", "minimal-ui", "browser"],
+  "orientation": "any",
+  "background_color": "#f7f9fc",
+  "theme_color": "#0c223d",
   "lang": "es-MX",
   "dir": "ltr",
   "categories": ["education", "medical", "productivity"],
+  "prefer_related_applications": false,
   "icons": [
     { "src": "assets/img/odonteck-favicon.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "assets/img/odonteck-apple-touch.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
     { "src": "assets/img/odonteck-apple-touch.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Ver cursos",
+      "short_name": "Cursos",
+      "description": "Catálogo de cursos de OdonTeck",
+      "url": "./pages/cursos.html",
+      "icons": [{ "src": "assets/img/odonteck-favicon.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Panel VIP",
+      "short_name": "Panel VIP",
+      "description": "Entrar al Club OdonTeck",
+      "url": "./vip-panel.html",
+      "icons": [{ "src": "assets/img/odonteck-favicon.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Verificar certificado",
+      "short_name": "Verificar",
+      "description": "Comprobar la validez de un folio",
+      "url": "./verificar.html",
+      "icons": [{ "src": "assets/img/odonteck-favicon.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Contacto",
+      "short_name": "Contacto",
+      "description": "Escríbenos por WhatsApp o correo",
+      "url": "./pages/contacto.html",
+      "icons": [{ "src": "assets/img/odonteck-favicon.png", "sizes": "192x192", "type": "image/png" }]
+    }
   ]
 }

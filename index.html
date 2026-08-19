@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>OdonTeck | Capacitación odontológica especializada</title>
   <link rel="icon" type="image/png" href="assets/img/odonteck-favicon.png" />
   <link rel="apple-touch-icon" href="assets/img/odonteck-apple-touch.png" />
@@ -43,6 +43,15 @@
   .mobile-vip-btn{padding:8px 12px;font-size:13px}
 }
 </style>
+
+<!-- Instalable como app (manifest.json / sw.js / pwa.js) -->
+<meta name="theme-color" content="#0c223d">
+<link rel="manifest" href="manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="OdonTeck">
+<link rel="apple-touch-icon" href="assets/img/odonteck-apple-touch.png">
+<link rel="stylesheet" href="mobile.css">
 </head>
 <body>
   <div class="topbar">
@@ -311,5 +320,6 @@
     });
   })();
   </script>
+<script src="pwa.js" defer></script>
 </body>
 </html>

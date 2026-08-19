@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>Términos y Condiciones | Club Dental OdonTeck</title>
   <link rel="stylesheet" href="../styles.css"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -18,6 +18,15 @@
     .legal-wrap strong{color:var(--text)}
     .back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--primary);font-weight:700;font-size:14px;margin-bottom:28px;cursor:pointer}
   </style>
+
+<!-- Instalable como app (manifest.json / sw.js / pwa.js) -->
+<meta name="theme-color" content="#0c223d">
+<link rel="manifest" href="../manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="OdonTeck">
+<link rel="apple-touch-icon" href="../assets/img/odonteck-apple-touch.png">
+<link rel="stylesheet" href="../mobile.css">
 </head>
 <body>
   <header class="site-header">
@@ -81,5 +90,6 @@
   <footer class="site-footer">
     <div class="footer-bottom">© 2026 OdonTeck. Todos los derechos reservados.</div>
   </footer>
+<script src="../pwa.js" defer></script>
 </body>
 </html>

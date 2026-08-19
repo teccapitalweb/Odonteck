@@ -3,6 +3,32 @@ document.addEventListener('DOMContentLoaded', () => {
   const basePath = isSubpage ? '../' : '';
   const resolvePath = (path) => /^https?:/.test(path) ? path : basePath + path;
 
+  // -- Imagenes: WebP responsivo con el original como respaldo -----
+  // Las variantes viven en assets/img/opt (generadas desde los originales).
+  // Si una carpeta no tiene variantes, se devuelve el <img> de siempre.
+  const ANCHOS_OPT = {
+    cursos:  [400, 760],
+    alumnos: [340, 680],
+    banner:  [640, 1280],
+    logo:    [128, 256]
+  };
+  const imagen = (ruta, alt, opciones) => {
+    opciones = opciones || {};
+    const src = resolvePath(ruta);
+    const carga = opciones.eager
+      ? 'fetchpriority="high" decoding="async"'
+      : 'loading="lazy" decoding="async"';
+    const attrs = `alt="${alt}" ${carga}`;
+    const m = /assets\/img\/([a-z-]+)\/([^/.]+)\.(?:jpg|jpeg|png)$/i.exec(ruta || '');
+    if (!m || !ANCHOS_OPT[m[1]]) return `<img src="${src}" ${attrs}>`;
+    const srcset = ANCHOS_OPT[m[1]]
+      .map(w => `${resolvePath('assets/img/opt/' + m[2] + '-' + w + '.webp')} ${w}w`)
+      .join(', ');
+    const sizes = opciones.sizes || '(max-width:780px) calc(100vw - 48px), 360px';
+    return `<picture><source type="image/webp" srcset="${srcset}" sizes="${sizes}">`
+         + `<img src="${src}" ${attrs}></picture>`;
+  };
+
   // Mobile menu
   const hamburger = document.getElementById('hamburger');
   const navLinks = document.getElementById('navLinks');
@@ -99,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── Render course cards ───────────────────────────────────────
   const renderCourseCard = (course) => `
     <article class="course-card">
-      <img src="${resolvePath(course.img)}" alt="${course.nombre}">
+      ${imagen(course.img, course.nombre)}
       <div class="course-card-body">
         <span class="course-badge">${course.area}</span>
         <h3>${course.nombre}</h3>
@@ -142,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!modal || !modalContent) return;
     modalContent.innerHTML = `
       <div>
-        <img src="${resolvePath(course.img)}" alt="${course.nombre}" />
+        ${imagen(course.img, course.nombre, { sizes: "(max-width:780px) calc(100vw - 64px), 420px" })}
       </div>
       <div class="modal-meta">
         <span class="modal-topline">${course.area}</span>
@@ -203,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (homeGalleryTrack && homeGalleryScroller && typeof alumnos !== 'undefined') {
     const doubled = [...alumnos, ...alumnos];
     homeGalleryTrack.innerHTML = doubled.map(src =>
-      `<img src="${resolvePath(src)}" alt="Alumno OdonTeck" loading="lazy">`
+      `${imagen(src, "Alumno OdonTeck", { sizes: "(max-width:780px) 70vw, 320px" })}`
     ).join('');
     initDrag(homeGalleryScroller);
     initAutoScroll(homeGalleryScroller, 'homeGalleryTrack', 22);
@@ -215,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (homeReviewsTrack && homeReviewsScroller && typeof resenas !== 'undefined') {
     const doubled = [...resenas, ...resenas];
     homeReviewsTrack.innerHTML = doubled.map(src =>
-      `<div class="review-img-card"><img src="${resolvePath(src)}" alt="Reseña OdonTeck" loading="lazy"></div>`
+      `<div class="review-img-card">${imagen(src, "Reseña OdonTeck")}</div>`
     ).join('');
     initDrag(homeReviewsScroller);
     initAutoScroll(homeReviewsScroller, 'homeReviewsTrack', 32);
@@ -225,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const galleryPageGrid = document.getElementById('galleryPageGrid');
   if (galleryPageGrid && typeof alumnos !== 'undefined') {
     galleryPageGrid.innerHTML = alumnos.map(src =>
-      `<img src="${resolvePath(src)}" alt="Alumno OdonTeck">`
+      `${imagen(src, "Alumno OdonTeck", { sizes: "(max-width:780px) calc(50vw - 32px), 300px" })}`
     ).join('');
   }
 
@@ -233,7 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const reviewsPageGrid = document.getElementById('reviewsPageGrid');
   if (reviewsPageGrid && typeof resenas !== 'undefined') {
     reviewsPageGrid.innerHTML = resenas.map(src =>
-      `<div class="review-img-card"><img src="${resolvePath(src)}" alt="Reseña OdonTeck"></div>`
+      `<div class="review-img-card">${imagen(src, "Reseña OdonTeck")}</div>`
     ).join('');
   }
 });

@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Iniciar sesión | Club Dental OdonTeck</title>
   <link rel="stylesheet" href="../styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -47,6 +47,15 @@
     .login-member a:hover{text-decoration:underline}
     @media(max-width:560px){.login-card{padding:28px 20px;border-radius:22px}}
   </style>
+
+<!-- Instalable como app (manifest.json / sw.js / pwa.js) -->
+<meta name="theme-color" content="#0c223d">
+<link rel="manifest" href="manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="OdonTeck">
+<link rel="apple-touch-icon" href="assets/img/odonteck-apple-touch.png">
+<link rel="stylesheet" href="mobile.css">
 </head>
 <body>
   <div class="topbar">
@@ -64,7 +73,7 @@
       <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
       <ul class="nav-links" id="navLinks">
         <li><a href="../index.html">Inicio</a></li>
-        <li><a href="cursos.html">Cursos</a></li>
+        <li><a href="pages/cursos.html">Cursos</a></li>
         <li><a href="club.html">⭐ Club Dental</a></li>
         <li><a class="active" href="club-login.html">Iniciar sesión</a></li>
         <li><a class="nav-cta" href="https://wa.me/5212381479365" target="_blank" rel="noopener">WhatsApp</a></li>
@@ -151,7 +160,7 @@
   <footer class="site-footer">
     <div class="container footer-grid">
       <div><div class="brand footer-brand"><img src="../assets/img/logo/logo.jpg" alt="Logo OdonTeck" /><div><strong>OdonTeck</strong><span>Capacitación odontológica especializada</span></div></div></div>
-      <div><h3>Secciones</h3><ul><li><a href="cursos.html">Cursos</a></li><li><a href="club.html">Club Dental</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
+      <div><h3>Secciones</h3><ul><li><a href="pages/cursos.html">Cursos</a></li><li><a href="club.html">Club Dental</a></li><li><a href="pages/contacto.html">Contacto</a></li></ul></div>
       <div><h3>Contacto</h3><ul><li><a href="mailto:odontckconsul@gmail.com">odontckconsul@gmail.com</a></li><li><a href="https://wa.me/5212381479365" target="_blank">+52 238 147 9365</a></li></ul></div>
     </div>
     <div class="footer-bottom">© 2025 OdonTeck. Todos los derechos reservados.</div>
@@ -207,5 +216,6 @@
       }
     });
   </script>
+<script src="pwa.js" defer></script>
 </body>
 </html>

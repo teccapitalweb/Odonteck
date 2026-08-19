@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Club Dental OdonTeck | Membresía exclusiva para dentistas</title>
   <meta name="description" content="Únete al Club Dental OdonTeck: casos clínicos semanales, sesiones en vivo, comunidad privada y descuentos exclusivos." />
   <link rel="stylesheet" href="../styles.css" />
@@ -84,6 +84,15 @@
     .faq-item.open .faq-a{max-height:200px;padding-top:10px}
     @media(max-width:820px){.pain-grid,.get-grid,.pricing-grid{grid-template-columns:1fr}.ba-grid{grid-template-columns:1fr;gap:14px}.ba-arrow{transform:rotate(90deg)}.cal-item{grid-template-columns:60px 1fr}.cal-badge{display:none}}
   </style>
+
+<!-- Instalable como app (manifest.json / sw.js / pwa.js) -->
+<meta name="theme-color" content="#0c223d">
+<link rel="manifest" href="../manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="OdonTeck">
+<link rel="apple-touch-icon" href="../assets/img/odonteck-apple-touch.png">
+<link rel="stylesheet" href="../mobile.css">
 </head>
 <body>
   <div class="topbar">
@@ -279,5 +288,6 @@
     scrollTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
   </script>
 
+<script src="../pwa.js" defer></script>
 </body>
 </html>

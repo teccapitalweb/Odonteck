@@ -2,7 +2,7 @@
 <html lang="es" data-theme="night">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>OdonTeck · Calculadora de prescripción</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -126,6 +126,15 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .warn p{font-size:12px;color:var(--text-2);line-height:1.55}
 .foot{font-size:11px;color:var(--text-3);text-align:center;line-height:1.6;margin-top:10px}
 </style>
+
+<!-- Instalable como app (manifest.json / sw.js / pwa.js) -->
+<meta name="theme-color" content="#0c223d">
+<link rel="manifest" href="../manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="OdonTeck">
+<link rel="apple-touch-icon" href="../assets/img/odonteck-apple-touch.png">
+<link rel="stylesheet" href="../mobile.css">
 </head>
 <body>
 <div class="wrap">
@@ -331,5 +340,6 @@ setTipo('adulto'); elegir('amoxicilina');
   setInterval(postH,1500);
 })();
 </script>
+<script src="../pwa.js" defer></script>
 </body>
 </html>

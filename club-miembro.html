@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Club Dental · OdonTeck</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
@@ -202,6 +202,15 @@
     @media(max-width:800px){.shell{grid-template-columns:1fr}.sb{display:none}.mets{grid-template-columns:repeat(2,1fr)}.main{padding:1.25rem}}
     @media(max-width:500px){.mets{grid-template-columns:1fr 1fr}.rcol{grid-template-columns:1fr!important}.cgrid{grid-template-columns:1fr}}
   </style>
+
+<!-- Instalable como app (manifest.json / sw.js / pwa.js) -->
+<meta name="theme-color" content="#0c223d">
+<link rel="manifest" href="manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="OdonTeck">
+<link rel="apple-touch-icon" href="assets/img/odonteck-apple-touch.png">
+<link rel="stylesheet" href="mobile.css">
 </head>
 <body>
 
@@ -747,5 +756,6 @@ const h=new Date();
 document.getElementById('fhoy').textContent = D[h.getDay()] + ' ' + h.getDate() + ' de ' + M[h.getMonth()] + ', ' + h.getFullYear();
 </script>
 
+<script src="pwa.js" defer></script>
 </body>
 </html>

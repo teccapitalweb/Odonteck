@@ -606,7 +606,7 @@ setTimeout(function(){
       <div class="hero-marquee" aria-hidden="true"><div class="track"><img src="assets/img/cursos-mini/curso-01.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-02.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-03.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-04.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-05.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-06.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-07.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-08.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-09.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-10.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-11.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-12.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-13.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-14.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-15.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-16.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-17.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-18.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-19.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-20.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-21.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-22.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-01.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-02.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-03.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-04.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-05.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-06.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-07.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-08.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-09.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-10.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-11.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-12.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-13.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-14.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-15.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-16.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-17.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-18.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-19.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-20.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-21.webp" alt="" loading="lazy"><img src="assets/img/cursos-mini/curso-22.webp" alt="" loading="lazy"></div></div>
       <!-- MODIFICADO: el "al día" se recalcula en vivo con el precio mensual ·
            sin número fijo en el HTML (se llena al cargar config/club) -->
-      <p class="hero-hook">Todo esto por <b data-precio-dia-hook>menos de lo que crees al día</b>:</p>
+      <p class="hero-hook">Todo esto <b>te espera adentro</b>:</p>
       <ul class="hero-benefits">
         <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span><b>Biblioteca completa</b> de cursos: clínica, ortodoncia, endodoncia y gestión dental</span></li>
         <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span><b>Clases en vivo</b> con especialistas del gremio dental</span></li>
@@ -614,18 +614,13 @@ setTimeout(function(){
         <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span><b>Certificados con folio oficial</b> verificables</span></li>
         <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span><b>Asesoría personalizada</b> y canal VIP · sin permanencia</span></li>
       </ul>
-      <!-- MODIFICADO: precios 100% en vivo desde Firestore config/club (patrón SYNOVA).
-           SIN números fijos en el HTML: los "$—" son placeholders que el script llena
-           al cargar — así NUNCA se puede ver un precio viejo, ni por un parpadeo. -->
+      <!-- MODIFICADO: se ocultan los precios de los planes en el auth.
+           Ahora solo se invita a registrarse gratis; los planes se ven
+           adentro del panel (sección Suscripción). -->
       <div class="hero-price">
-        <div class="opt" data-precio-opt-mes>
-          <b data-precio-mes-full>$—</b>
-          <small>MXN al mes · <span data-precio-dia>cancela cuando quieras</span><br>Cancela cuando quieras</small>
-        </div>
-        <div class="opt opt--star" data-precio-opt-ano>
-          <span class="badge" data-precio-ahorro-badge>Precio anual</span>
-          <b data-precio-ano-full>$—</b>
-          <small>MXN al año · sale en <span class="tachado" data-precio-mes-full-2>$—</span><strong style="color:var(--primary-soft);" data-precio-ano-equiv>menos al mes</strong><br>Acceso completo los 365 días</small>
+        <div class="opt opt--star" data-cta-registro style="cursor:pointer;text-align:center;">
+          <b style="font-size:1.5rem;">Regístrate Gratis</b>
+          <small>Crea tu cuenta sin tarjeta y empieza hoy<br>Cancela cuando quieras</small>
         </div>
       </div>
       <!-- ⚠️ BORRADORES: reemplazar con testimonios REALES antes de pautar fuerte -->
@@ -654,7 +649,7 @@ setTimeout(function(){
           </div>
         </div>
       </div>
-      <p class="hero-trust">Pago seguro con Stripe · Acceso inmediato · Sin permanencia</p>
+      <p class="hero-trust">Registro gratis · Sin tarjeta · Pago seguro con Stripe · Sin permanencia</p>
     </div>
     <div class="auth-hero__stats">
       <div class="auth-stat"><span class="auth-stat__num">24/7</span><span class="auth-stat__lbl">acceso</span></div>
@@ -930,30 +925,14 @@ setPersistence(auth, browserLocalPersistence);
 /* Marca que el módulo sí arrancó · el salvavidas de emergencia lo consulta */
 window.__odtAuthBooted = true;
 
-/* ══ MODIFICADO · Precio en vivo del hero (patrón SYNOVA) ══
-   Lee config/club y actualiza los data-precio-* — el mismo documento que
-   consume el webhook para armar el cobro real en Stripe, así el precio que
-   se MUESTRA aquí siempre coincide con el que se COBRA en el checkout. */
-async function actualizarPrecioHero(){
-  try {
-    const snap = await getDoc(doc(db, 'config', 'club'));
-    const c = snap.exists() ? snap.data() : {};
-    const mes = Number(c.precioMes) || 199;
-    const ano = Number(c.precioAno) || 1899;
-    const equivMes = Math.round(ano / 12);
-    const ahorro = Math.max(0, (mes * 12) - ano);
-    const fmt = n => '$' + Number(n).toLocaleString('es-MX');
-    document.querySelectorAll('[data-precio-mes-full]').forEach(el => el.textContent = fmt(mes));
-    document.querySelectorAll('[data-precio-mes-full-2]').forEach(el => el.textContent = fmt(mes));
-    document.querySelectorAll('[data-precio-ano-full]').forEach(el => el.textContent = fmt(ano));
-    document.querySelectorAll('[data-precio-ano-equiv]').forEach(el => el.textContent = fmt(equivMes) + '/mes');
-    document.querySelectorAll('[data-precio-ahorro-badge]').forEach(el => el.textContent = 'Ahorras ' + fmt(ahorro));
-    const dia = Math.ceil(mes / 30);
-    document.querySelectorAll('[data-precio-dia]').forEach(el => el.textContent = 'menos de $' + dia + ' al día');
-    document.querySelectorAll('[data-precio-dia-hook]').forEach(el => el.textContent = 'menos de $' + dia + ' al día');
-  } catch (e) { console.warn('[OdonTeck] No se pudo leer config/club, se usan precios por defecto:', e.message); }
-}
-actualizarPrecioHero();
+/* ══ MODIFICADO · Los precios ya NO se muestran en el auth ══
+   El hero solo invita a registrarse gratis. Los precios reales siguen
+   viviendo en config/club y se muestran/cobran adentro del panel.
+   El CTA "Regístrate Gratis" cambia a la pestaña de Crear cuenta. */
+document.querySelector('[data-cta-registro]')?.addEventListener('click', () => {
+  document.querySelector('[data-tab="register"]')?.click();
+  document.querySelector(".card")?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
 
 /* =========================================================
    Crear o actualizar documento del miembro en Firestore

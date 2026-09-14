@@ -8436,10 +8436,8 @@ const Sections = (function(){
         });
       });
     });
-    const totalMateriales = out.length;
     out.forEach((material, indiceGlobal) => {
       material.indiceGlobal = indiceGlobal;
-      material.totalMateriales = totalMateriales;
     });
     return out;
   }
@@ -8447,12 +8445,10 @@ const Sections = (function(){
   // Determina si un material está disponible para este usuario AHORA
   function _materialDisponible(mat) {
     if (esAdminReal()) return true;
-    // Sin membresía: desbloquear la primera mitad del catálogo, desde
-    // el primer material. Si el total es impar, se redondea hacia arriba.
+    // Sin membresía: desbloquear únicamente el primer material del catálogo.
     if (window.UserState?.modo !== 'vip') {
       const indice = Number(mat.indiceGlobal);
-      const total = Number(mat.totalMateriales);
-      return Number.isInteger(indice) && Number.isInteger(total) && indice < Math.ceil(total / 2);
+      return Number.isInteger(indice) && indice === 0;
     }
     if (mat.disponibleSiempre === true) return true;
     if (mat.cursoDisponibleSiempre === true) return true;
@@ -8513,7 +8509,7 @@ const Sections = (function(){
         <div class="sec-hero">
           <span class="sec-hero__eyebrow">Descargables</span>
           <h1 class="sec-hero__title">PDFs y material</h1>
-          <p class="sec-hero__sub">Plantillas, guías y recursos clínicos listos para usar. ${toolEsVIP() ? '<strong style="color:var(--primary);">Se desbloquean según tus días de membresía</strong>, igual que las clases.' : '<strong style="color:var(--primary);">La primera mitad está disponible gratis</strong>; activa tu membresía para desbloquear el resto.'}</p>
+          <p class="sec-hero__sub">Plantillas, guías y recursos clínicos listos para usar. ${toolEsVIP() ? '<strong style="color:var(--primary);">Se desbloquean según tus días de membresía</strong>, igual que las clases.' : '<strong style="color:var(--primary);">El primer material está disponible gratis</strong>; activa tu membresía para desbloquear el resto.'}</p>
         </div>
         ${total === 0 ? `
           <div style="text-align:center;padding:60px 24px;background:var(--surface-2);border:1px dashed var(--border-2);border-radius:14px;margin-top:18px;">
@@ -8601,7 +8597,7 @@ const Sections = (function(){
             if (window.UserState?.modo !== 'vip') {
               Toast.info(
                 'Material exclusivo para miembros',
-                'La primera mitad es gratis. Activa tu membresía para desbloquear los materiales restantes.'
+                'El primer material es gratis. Activa tu membresía para desbloquear los materiales restantes.'
               );
             } else {
               Toast.info(
@@ -12790,7 +12786,7 @@ if (typeof Sections !== 'undefined' && Sections.renderers) (function(){
         startDemoTimer();
       } else { // sin-membresia
         banner.style.display = '';
-        if (bannerText) bannerText.innerHTML = '<strong>Tus primeras 4 clases y la mitad de los materiales son gratis.</strong> Activa tu suscripción para desbloquear el resto del contenido.';
+        if (bannerText) bannerText.innerHTML = '<strong>Tus primeras 4 clases y el primer material son gratis.</strong> Activa tu suscripción para desbloquear el resto del contenido.';
         if (bannerTimer) bannerTimer.style.display = 'none';
       }
     }

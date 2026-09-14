@@ -11,7 +11,8 @@
       {
         title: 'Bienvenido a tu consultorio digital',
         text: 'Este panel reúne tu formación, recursos clínicos y herramientas para acompañarte en la práctica diaria.',
-        selectors: ['#inicio-content .banner', '.topbar']
+        selectors: ['#inicio-content .banner', '.topbar'],
+        mobileSelectors: ['.topbar']
       },
       {
         title: 'Tu formación odontológica',
@@ -88,11 +89,11 @@
       .odt-tour-profile-btn{display:inline-flex;align-items:center;gap:8px;align-self:flex-start}
       .odt-tour-profile-btn::before{content:'?';display:grid;place-items:center;width:18px;height:18px;border:1px solid currentColor;border-radius:50%;font-size:12px}
       @media (max-width:880px){
-        .odt-tour-card{left:14px!important;right:14px!important;bottom:calc(14px + env(safe-area-inset-bottom))!important;top:auto!important;width:auto;padding:19px;border-radius:17px}
+        .odt-tour-card{left:14px!important;right:14px!important;bottom:calc(14px + env(safe-area-inset-bottom));top:auto;width:auto;max-height:calc(100dvh - 28px - env(safe-area-inset-top) - env(safe-area-inset-bottom));overflow-y:auto;padding:19px;border-radius:17px}
         .odt-tour-spotlight{border-radius:12px}
         .odt-tour-title{font-size:20px}.odt-tour-text{font-size:13px;line-height:1.55}.odt-tour-progress{margin:16px 0 14px}
       }
-      @media (max-width:380px){.odt-tour-card{left:9px!important;right:9px!important;bottom:calc(9px + env(safe-area-inset-bottom))!important;padding:16px}.odt-tour-actions{gap:6px}.odt-tour-btn{padding:9px 12px}}
+      @media (max-width:380px){.odt-tour-card{left:9px!important;right:9px!important;padding:16px}.odt-tour-actions{gap:6px}.odt-tour-btn{padding:9px 12px}}
       @media (prefers-reduced-motion:reduce){.odt-tour-spotlight,.odt-tour-track span{transition:none!important}}
     `;
     document.head.appendChild(style);
@@ -184,6 +185,8 @@
     const gap = 16;
     if (!currentTarget || !isVisible(currentTarget)) {
       spotlight.style.cssText = 'display:none';
+      card.style.bottom = 'auto';
+      card.style.maxHeight = '';
       card.style.left = Math.max(14, (innerWidth - card.offsetWidth) / 2) + 'px';
       card.style.top = Math.max(14, (innerHeight - card.offsetHeight) / 2) + 'px';
       return;
@@ -201,9 +204,26 @@
     spotlight.style.top = rect.top + 'px';
     spotlight.style.width = rect.width + 'px';
     spotlight.style.height = rect.height + 'px';
-    if (onMobile()) return;
     const cardWidth = card.offsetWidth;
     const cardHeight = card.offsetHeight;
+    if (onMobile()) {
+      const targetInLowerHalf = rect.top + (rect.height / 2) >= innerHeight / 2;
+      if (targetInLowerHalf) {
+        const spaceAbove = Math.max(96, Math.floor(rect.top - gap - 12));
+        const top = Math.max(12, Math.floor(rect.top - Math.min(cardHeight, spaceAbove) - gap));
+        card.style.bottom = 'auto';
+        card.style.top = `max(${top}px, calc(12px + env(safe-area-inset-top)))`;
+        card.style.maxHeight = `min(${spaceAbove}px, calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom)))`;
+      } else {
+        const spaceBelow = Math.max(96, Math.floor(innerHeight - rect.top - rect.height - gap - 12));
+        card.style.top = 'auto';
+        card.style.bottom = 'calc(12px + env(safe-area-inset-bottom))';
+        card.style.maxHeight = `min(${spaceBelow}px, calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom)))`;
+      }
+      return;
+    }
+    card.style.bottom = 'auto';
+    card.style.maxHeight = '';
     let left = rect.left;
     let top = rect.top + rect.height + gap;
     if (left + cardWidth > innerWidth - 14) left = innerWidth - cardWidth - 14;
@@ -225,7 +245,7 @@
     setMobileDrawer(Boolean(step.mobileDrawer));
     window.setTimeout(function () {
       if (!running || token !== renderToken) return;
-      currentTarget = firstVisible(step.selectors);
+      currentTarget = firstVisible(onMobile() && step.mobileSelectors ? step.mobileSelectors : step.selectors);
       if (currentTarget) currentTarget.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'auto' });
       card.querySelector('#odt-tour-title').textContent = step.title;
       card.querySelector('#odt-tour-text').textContent = step.text;

@@ -3591,7 +3591,11 @@ if (window.__isDemoMode) {
           const bSnap = await getDoc(doc(db, 'miembros', user.uid));
           const md = bSnap.exists() ? bSnap.data() : null;
           const activa = md && (md.activa === true || md.activo === true);
-          const exp = md && (md.expiraEn || md.fechaFinAcceso);
+          const exp = md && (md.cancelacionProgramada === true
+            ? (md.fechaFinAcceso || md.fechaProximaRenovacion || md.expiraEn)
+            : md.stripeSubscriptionId
+              ? (md.fechaProximaRenovacion || md.expiraEn)
+              : (md.expiraEn || md.fechaFinAcceso || md.fechaProximaRenovacion));
           const expDate = exp ? (exp.toDate ? exp.toDate() : new Date(exp)) : null;
           const vigente = activa && (!expDate || expDate.getTime() > Date.now());
           if (vigente) {
